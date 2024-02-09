@@ -10,7 +10,7 @@ declare global {
 
 const MapContainer: React.FC = () => {
   const [mainMap, setMainMap] = useState<any>()
-  const [currmarker, setcurrmarker] = useState<any>()
+  const [mainMarker, setMainMarker] = useState<any>()
 
   useEffect(() => {
     const kakaoMapScript = document.createElement('script')
@@ -29,7 +29,7 @@ const MapContainer: React.FC = () => {
         const marker = new window.kakao.maps.Marker({
           position: map.getCenter(),
         })
-        
+
         window.kakao.maps.event.addListener(
           map,
           'click',
@@ -53,6 +53,7 @@ const MapContainer: React.FC = () => {
 
         marker.setMap(map)
         setMainMap(map)
+        setMainMarker(marker)
       })
     }
     // 지도 클릭 이벤트 핸들러 등록
@@ -65,6 +66,7 @@ const MapContainer: React.FC = () => {
       pos.coords.latitude, // 위도
       pos.coords.longitude, // 경도
     )
+    console.log(currentPos)
     // 지도를 이동 시킨다.
     let markerPosition = new window.kakao.maps.LatLng(currentPos)
 
@@ -72,12 +74,12 @@ const MapContainer: React.FC = () => {
     let currmarker = new window.kakao.maps.Marker({
       position: markerPosition,
     })
-    // setcurrmarker(marker)
+    setMainMarker(currmarker)
 
     // 기존 마커를 제거하고 새로운 마커를 넣는다.
-    currmarker.setMap(null)
-    currmarker.setPosition(currentPos)
-    currmarker.setMap(mainMap)
+    mainMarker.setMap(null)
+    mainMarker.setPosition(currentPos)
+    mainMarker.setMap(mainMap)
   }
   const getCurrentPosBtn = () => {
     navigator.geolocation.getCurrentPosition(
@@ -91,14 +93,10 @@ const MapContainer: React.FC = () => {
     )
   }
 
-  // const map = new window.kakao.maps.Map(container, options);
-  // // 마커 생성
-
   return (
     <div>
       {/* 페이지 컨텐츠 및 지도를 표시할 컨테이너 */}
       <div id="map" style={{ width: '100%', height: '400px' }}></div>
-
       {/* 다른 페이지 컨텐츠 */}
       <div onClick={getCurrentPosBtn}>현재 위치</div>
       {/* 클릭한 위치의 위도, 경도 정보를 표시 */}
