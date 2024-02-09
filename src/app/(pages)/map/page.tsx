@@ -8,6 +8,7 @@ declare global {
   }
 }
 
+
 const MapContainer: React.FC = () => {
   const [mainMap, setMainMap] = useState<any>()
   const [mainMarker, setMainMarker] = useState<any>()
@@ -97,9 +98,13 @@ const MapContainer: React.FC = () => {
     <div>
       {/* 페이지 컨텐츠 및 지도를 표시할 컨테이너 */}
       <div id="map" style={{ width: '100%', height: '400px' }}></div>
+
       {/* 다른 페이지 컨텐츠 */}
+
       <div onClick={getCurrentPosBtn}>현재 위치</div>
+      
       {/* 클릭한 위치의 위도, 경도 정보를 표시 */}
+      
       <div id="clickLatlng"></div>
     </div>
   )
