@@ -1,6 +1,7 @@
 'use client'
 
-import React, { useEffect, useState } from 'react'
+import React, { useEffect, useState } from 'react';
+import logo from '/public/images/logo.png';
 
 declare global {
   interface Window {
@@ -26,10 +27,22 @@ const MapContainer: React.FC = () => {
           center: new window.kakao.maps.LatLng(33.450701, 126.570667),
           level: 3,
         }
-        var map = new window.kakao.maps.Map(container, options)
+
+        const map = new window.kakao.maps.Map(container, options);
+
+
+         // 이미지 마커 생성
+         const markerImage = new window.kakao.maps.MarkerImage(
+          logo.src,
+          new window.kakao.maps.Size(30,30),
+        )
+
+
         const marker = new window.kakao.maps.Marker({
           position: map.getCenter(),
-        })
+          image:markerImage,
+        });
+
 
         window.kakao.maps.event.addListener(
           map,
@@ -72,8 +85,16 @@ const MapContainer: React.FC = () => {
     let markerPosition = new window.kakao.maps.LatLng(currentPos)
 
     mainMap.panTo(currentPos)
+
+    // 이미지 마커 생성
+    const markerImage = new window.kakao.maps.MarkerImage(
+     logo.src,
+      new window.kakao.maps.Size(30,30),
+    )
+
     let currmarker = new window.kakao.maps.Marker({
       position: markerPosition,
+      image:markerImage,
     })
     setMainMarker(currmarker)
 
