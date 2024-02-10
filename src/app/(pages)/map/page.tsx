@@ -37,12 +37,22 @@ const MapContainer: React.FC = () => {
           new window.kakao.maps.Size(30,30),
         )
 
-
+        // 마커 생성
         const marker = new window.kakao.maps.Marker({
           position: map.getCenter(),
           image:markerImage,
         });
 
+        // 마커클릭 시 인포윈도우 내용 
+        // TODO: 나중에 커스컴 할 부분!
+        const iwContent = `<div>Hello World</div>`,
+              iwRemoveable = true;
+
+        // 마커 인포윈도우 설정 
+        const infowindow = new window.kakao.maps.InfoWindow({
+          content : iwContent,
+          removable : iwRemoveable
+      });      
 
         window.kakao.maps.event.addListener(
           map,
@@ -53,6 +63,9 @@ const MapContainer: React.FC = () => {
     
             // 마커 위치를 클릭한 위치
             marker.setPosition(latlng)
+            
+            // 마커 인포윈도우 생성
+            infowindow.open(map, marker);
     
             let message = '클릭한 위치의 위도는 ' + latlng.getLat() + ' 이고, '
             message += '경도는 ' + latlng.getLng() + ' 입니다'
