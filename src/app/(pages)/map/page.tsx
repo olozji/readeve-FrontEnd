@@ -13,19 +13,8 @@ declare global {
 const MapContainer: React.FC = () => {
   const [mainMap, setMainMap] = useState<any>();
   const [mainMarker, setMainMarker] = useState<any>();
+  const [markers, setMarkers] = useState<any[]>([]);
   const [isMarkersVisible, setIsMarkerVisible] = useState(true);
-
-
-    // 마커 감추기
-    const hideMarkers = () => {
-      setIsMarkerVisible(false);
-    }
-  
-    // 마커 보이기
-    const showMarkers = () => {
-      setIsMarkerVisible(true);
-    }
-  
 
 
   useEffect(() => {
@@ -35,6 +24,10 @@ const MapContainer: React.FC = () => {
     document.head.appendChild(kakaoMapScript)
 
     const onLoadKakaoAPI = () => {
+
+
+      //----------------------지도 불러올 때-------------------------//
+
       window.kakao.maps.load(() => {
         const container = document.getElementById('map')
         const options = {
@@ -44,9 +37,6 @@ const MapContainer: React.FC = () => {
 
         // 지도 생성
         const map = new window.kakao.maps.Map(container, options);
-
-        // 생성된 마커들을 저장할 배열
-        const markerList : any[] = [];
 
 
          // 이미지 마커 생성
@@ -73,6 +63,9 @@ const MapContainer: React.FC = () => {
           removable : iwRemoveable
       });      
 
+
+    //-------------------- 지도 클릭이벤트---------------------//
+
         window.kakao.maps.event.addListener(
           map,
           'click',
@@ -80,6 +73,8 @@ const MapContainer: React.FC = () => {
             // 클릭한 위도, 경도 정보 가져오기
             const latlng = mouseEvent.latLng;
 
+             // 생성된 마커들을 저장할 배열
+            const markerList : any[] = [];
 
             // 클릭한 위치에 마커 생성
             const clickMarker = new window.kakao.maps.Marker({
@@ -87,12 +82,14 @@ const MapContainer: React.FC = () => {
               map: isMarkersVisible ? map : null,
               image:markerImage,
             });
+
+            setMarkers((prevMarkers) => [...prevMarkers, clickMarker]);
+            clickMarker.setPosition(latlng);
             
             markerList.push(clickMarker);
 
             // 마커 위치를 클릭한 위치
             marker.setPosition(latlng);
-
            
             // 마커 인포윈도우 생성
             infowindow.open(map, marker);
@@ -105,9 +102,11 @@ const MapContainer: React.FC = () => {
             if (resultDiv) {
               resultDiv.innerHTML = message
             }
+            markerList.push(marker);
+            marker.setMap(map);
           },
         )
-
+        
         marker.setMap(map);
         setMainMap(map)
         setMainMarker(marker)
@@ -117,6 +116,29 @@ const MapContainer: React.FC = () => {
     kakaoMapScript.addEventListener('load', onLoadKakaoAPI)
   }, []);
 
+
+  // 마크 감추기 보이기
+
+  const hideMarkers = () => {
+    setMarkers((prevMarkers) => {
+      // 모든 마커를 지도에서 감춤
+      prevMarkers.forEach((marker) => marker.setMap(null));
+      return prevMarkers;
+    });
+    setIsMarkerVisible(false);
+  };
+
+  const showMarkers = () => {
+    setMarkers((prevMarkers) => {
+      // 모든 마커를 지도에 표시
+      prevMarkers.forEach((marker) => marker.setMap(mainMap));
+      return prevMarkers;
+    });
+    setIsMarkerVisible(true);
+  };
+
+
+  //---------------------현재 위치 가져오기---------------------------//
 
 
   const getPosSuccess = (pos: GeolocationPosition) => {
