@@ -1,6 +1,7 @@
 'use client'
 import { useSession } from 'next-auth/react'
 import Image from 'next/image'
+import AddPlace from './components/map'
 
 export default function Home() {
   let session = useSession()
@@ -23,6 +24,7 @@ export default function Home() {
       ) : (
         <div>로그인된 정보 X</div>
       )}
+      <AddPlace></AddPlace>
     </div>
   )
 }
