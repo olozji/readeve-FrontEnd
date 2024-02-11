@@ -26,7 +26,8 @@ export default function RootLayout({
         </div>
         <RecoilRootProvider>
           {children}
-          </RecoilRootProvider>
+        </RecoilRootProvider>
+        <script type="text/javascript" src="//dapi.kakao.com/v2/maps/sdk.js?appkey=6d8ac2fb0740657f1e67a9163c8b331b&autoload=false&libraries=services"></script>
       </body>
     </html>
   );
