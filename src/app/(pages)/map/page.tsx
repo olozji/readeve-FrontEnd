@@ -20,7 +20,7 @@ const MapContainer: React.FC = () => {
   useEffect(() => {
     const kakaoMapScript = document.createElement('script')
     kakaoMapScript.async = false
-    kakaoMapScript.src = `//dapi.kakao.com/v2/maps/sdk.js?appkey=6d8ac2fb0740657f1e67a9163c8b331b&autoload=false`
+    kakaoMapScript.src = `//dapi.kakao.com/v2/maps/sdk.js?appkey=6d8ac2fb0740657f1e67a9163c8b331b&autoload=false&libraries=services`
     document.head.appendChild(kakaoMapScript)
 
     const onLoadKakaoAPI = () => {
@@ -62,6 +62,7 @@ const MapContainer: React.FC = () => {
           content : iwContent,
           removable : iwRemoveable
       });      
+
 
 
     //-------------------- 지도 클릭이벤트---------------------//

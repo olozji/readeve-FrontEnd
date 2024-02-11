@@ -1,6 +1,6 @@
 'use client'
 
-import React, { useEffect, useState } from 'react'
+import React, { useEffect, useState, useRef } from 'react'
 
 declare global {
   interface Window {
@@ -12,6 +12,9 @@ interface MapSearchProps {
 }
 
 const MapSearch = ({ searchPlace }: MapSearchProps): React.ReactElement => {
+
+  const mapRef = useRef<any>(null)
+
   const [Place, setPlaces] = useState([]) // 추가할 장소데이터 설정
   useEffect(() => {
     const kakaoMapScript = document.createElement('script')
@@ -27,6 +30,8 @@ const MapSearch = ({ searchPlace }: MapSearchProps): React.ReactElement => {
           level: 3,
         }
         const map = new window.kakao.maps.Map(container, options)
+
+        mapRef.current = map;
 
         //장소 검색 라이브러리
         const ps = new window.kakao.maps.services.Places()
@@ -66,6 +71,8 @@ const MapSearch = ({ searchPlace }: MapSearchProps): React.ReactElement => {
             infowindow.open(map, marker)
           })
         }
+
+
         function displayPagination(pagination: any) {
           var paginationEl = document.getElementById('pagination')
 
@@ -106,6 +113,13 @@ const MapSearch = ({ searchPlace }: MapSearchProps): React.ReactElement => {
     kakaoMapScript.addEventListener('load', onLoadKakaoAPI)
   }, [searchPlace])
 
+  // 리스트 아이템 클릭 이벤트 핸들러
+  const handleListItem = (place: any) => {
+    // useRef로 저장한 map을 참조하여 지도 이동 및 확대
+    mapRef.current.panTo(new window.kakao.maps.LatLng(place.y, place.x));
+    mapRef.current.setLevel(2);
+  };
+
   return (
     <div>
       {/* 페이지 컨텐츠 및 지도를 표시할 컨테이너 */}
@@ -119,7 +133,9 @@ const MapSearch = ({ searchPlace }: MapSearchProps): React.ReactElement => {
         }}
       >
         {Place.map((item: any, i) => (
-          <div key={i} style={{ marginTop: '5px', marginBottom: '20px' }}>
+          <div key={i} style={{ marginTop: '5px', marginBottom: '20px', cursor:'pointer' }}
+           onClick={() => handleListItem(item)}
+          >
             <span style={{ fontSize: 'x-small' }}>[ {i + 1} ]</span>
             <div>
               <div style={{ marginTop: '10px', marginBottom: '10px' }}>
