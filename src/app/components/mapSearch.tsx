@@ -47,7 +47,7 @@ const MapSearch = ({ searchPlace }: MapSearchProps): React.ReactElement => {
 
         let infowindow = new window.kakao.maps.InfoWindow({
             zIndex: 1, 
-            removable : true,
+            // removable : true,
           })
 
         ps.keywordSearch(searchPlace, placesSearchCB)
@@ -153,7 +153,7 @@ const MapSearch = ({ searchPlace }: MapSearchProps): React.ReactElement => {
       const infowindow = new window.kakao.maps.InfoWindow({
         content: '<div style="padding:5px;font-size:12px;">' + place.place_name + '</div>',
         zIndex: 1,
-        removable : true,
+        // removable : true,
       });
 
       // 호버 이벤트 처리
@@ -200,18 +200,19 @@ const MapSearch = ({ searchPlace }: MapSearchProps): React.ReactElement => {
   return (
     <div>
       {/* 페이지 컨텐츠 및 지도를 표시할 컨테이너 */}
-      <div id="map" style={{ width: '100%', height: '400px' }}></div>
+      <div id="map" 
+           className='relative'    
+      style={{ width: '100%', height: '800px' }}>
       {/* 다른 페이지 컨텐츠 */}
+      </div>
       <div
         id="result-list"
-        style={{
-          display: 'inline-block',
-          width: '40%',
-        }}
+        className='absolute top-80 right-10 w-50 inline-block overflow-scroll overflow-y-auto max-h-[40rem] z-10 box-border rounded-md border-slate-300 hover:border-indigo-30'
       >
         {Place.map((item: any, i) => (
           <div 
             key={i} 
+            className=' bg-white border-4 rounded-md border-slate-300 hover:bg-slate-200'
             style={{ marginTop: '5px', marginBottom: '20px', cursor:'pointer' }}
             onClick={() => clickListItem(item)}
             onMouseEnter={() => handleListItem(item)}
