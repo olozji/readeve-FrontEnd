@@ -16,16 +16,25 @@ const MapSearch = ({ searchPlace }: MapSearchProps): React.ReactElement => {
   const mapRef = useRef<any>(null)
 
   const [Place, setPlaces] = useState([]) // 추가할 장소데이터 설정
+
+  const [selectedPlace, setSelectedPlace] = useState<any | null>(null);
+  const [hoveredPlace, setHoveredPlace] = useState<any | null>(null);
+
+
+  
   useEffect(() => {
     const kakaoMapScript = document.createElement('script')
     kakaoMapScript.async = false
     kakaoMapScript.src = `//dapi.kakao.com/v2/maps/sdk.js?appkey=6d8ac2fb0740657f1e67a9163c8b331b&autoload=false&libraries=services`
     document.head.appendChild(kakaoMapScript)
 
+    
+
     const onLoadKakaoAPI = () => {
       window.kakao.maps.load(() => {
-        var container = document.getElementById('map')
-        var options = {
+
+        const container = document.getElementById('map')
+        let options = {
           center: new window.kakao.maps.LatLng(33.450701, 126.570667),
           level: 3,
         }
@@ -36,7 +45,10 @@ const MapSearch = ({ searchPlace }: MapSearchProps): React.ReactElement => {
         //장소 검색 라이브러리
         const ps = new window.kakao.maps.services.Places()
 
-        let infowindow = new window.kakao.maps.InfoWindow({ zIndex: 1 })
+        let infowindow = new window.kakao.maps.InfoWindow({
+            zIndex: 1, 
+            removable : true,
+          })
 
         ps.keywordSearch(searchPlace, placesSearchCB)
 
@@ -55,12 +67,17 @@ const MapSearch = ({ searchPlace }: MapSearchProps): React.ReactElement => {
             setPlaces(data)
           }
         }
+
+        
         //장소데이터를 마커로 지도위에 표시하는 함수
         function displayMarker(place: any) {
           let marker = new window.kakao.maps.Marker({
             map: map,
             position: new window.kakao.maps.LatLng(place.y, place.x),
+            
           })
+
+
           //호버 했을 때 infoWindow 뜨게 만들어 놨어요!! 근데 마우스 내렸을때 안 없어져서 내릴때 없애는 코드 추가해야 대요
           window.kakao.maps.event.addListener(marker, 'mouseover', function () {
             infowindow.setContent(
@@ -70,15 +87,19 @@ const MapSearch = ({ searchPlace }: MapSearchProps): React.ReactElement => {
             )
             infowindow.open(map, marker)
           })
+
+          window.kakao.maps.event.addListener(marker, 'mouseout', function () {
+            infowindow.close();
+          })
         }
 
 
         function displayPagination(pagination: any) {
-          var paginationEl = document.getElementById('pagination')
+          let paginationEl = document.getElementById('pagination')
 
           if (!paginationEl) return // Exit early if element is not found
 
-          var fragment = document.createDocumentFragment(),
+          let fragment = document.createDocumentFragment(),
             i
 
           // 기존에 추가된 페이지 번호 삭제
@@ -89,7 +110,7 @@ const MapSearch = ({ searchPlace }: MapSearchProps): React.ReactElement => {
           }
 
           for (i = 1; i <= pagination.last; i++) {
-            var el = document.createElement('a')
+            let el = document.createElement('a')
             el.href = '#'
             el.innerHTML = i.toString()
 
@@ -113,12 +134,68 @@ const MapSearch = ({ searchPlace }: MapSearchProps): React.ReactElement => {
     kakaoMapScript.addEventListener('load', onLoadKakaoAPI)
   }, [searchPlace])
 
-  // 리스트 아이템 클릭 이벤트 핸들러
+
+
+  // 리스트 아이템 이벤트
   const handleListItem = (place: any) => {
+
+    // 클릭한 장소가 이미 선택된 상태인지 확인
+    if (selectedPlace && selectedPlace.id === place.id) {
+      // 같은 장소라면 정보 창을 닫고 selectedPlace 상태를 재설정
+      selectedPlace.infowindow.close();
+      setSelectedPlace(null);
+    } else {
+      if (selectedPlace) {
+        selectedPlace.infowindow.close();
+      }
+
+      // selectedPlace 상태를 업데이트
+      const infowindow = new window.kakao.maps.InfoWindow({
+        content: '<div style="padding:5px;font-size:12px;">' + place.place_name + '</div>',
+        zIndex: 1,
+        removable : true,
+      });
+
+      // 호버 이벤트 처리
+      const handleMarkerHover = (place:any) => {
+        setHoveredPlace(place);
+        infowindow.open(mapRef.current, marker);
+      };
+
+
+      const marker = new window.kakao.maps.Marker({
+        map: mapRef.current,
+        position: new window.kakao.maps.LatLng(place.y, place.x), 
+      });
+
+
+      window.kakao.maps.event.addListener(marker, 'mouseover', handleMarkerHover);
+
+     
+      window.kakao.maps.event.addListener(marker, 'mouseout', function () {
+        setHoveredPlace(null);
+        infowindow.close();
+      });
+
+      infowindow.open(mapRef.current, marker);
+
+      mapRef.current.panTo(new window.kakao.maps.LatLng(place.y, place.x));
+
+
+      setSelectedPlace({ id: place.id, infowindow, marker });
+    }
+  };
+  
+  // TODO:첫 클릭시 해당 위치 못잡는 버그 추후에 수정해야됨
+  const clickListItem = (place: any) => {
     // useRef로 저장한 map을 참조하여 지도 이동 및 확대
     mapRef.current.panTo(new window.kakao.maps.LatLng(place.y, place.x));
     mapRef.current.setLevel(2);
   };
+
+
+  
+
 
   return (
     <div>
@@ -133,8 +210,11 @@ const MapSearch = ({ searchPlace }: MapSearchProps): React.ReactElement => {
         }}
       >
         {Place.map((item: any, i) => (
-          <div key={i} style={{ marginTop: '5px', marginBottom: '20px', cursor:'pointer' }}
-           onClick={() => handleListItem(item)}
+          <div 
+            key={i} 
+            style={{ marginTop: '5px', marginBottom: '20px', cursor:'pointer' }}
+            onClick={() => clickListItem(item)}
+            onMouseEnter={() => handleListItem(item)}
           >
             <span style={{ fontSize: 'x-small' }}>[ {i + 1} ]</span>
             <div>
