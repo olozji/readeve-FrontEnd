@@ -14,6 +14,7 @@ interface MapSearchProps {
 const MapSearch = ({ searchPlace }: MapSearchProps): React.ReactElement => {
 
   const mapRef = useRef<any>(null)
+  const listContainerRef = useRef<any>(null);
 
   const [Place, setPlaces] = useState([]) // 추가할 장소데이터 설정
 
@@ -74,7 +75,7 @@ const MapSearch = ({ searchPlace }: MapSearchProps): React.ReactElement => {
             let bounds = new window.kakao.maps.LatLngBounds()
 
             for (let i = 0; i < data.length; i++) {
-              displayMarker(data[i]) //장소 데이터드를 마커로 표시
+              displayMarker(data[i], i) //장소 데이터드를 마커로 표시
               bounds.extend(new window.kakao.maps.LatLng(data[i].y, data[i].x))
             }
 
@@ -87,7 +88,7 @@ const MapSearch = ({ searchPlace }: MapSearchProps): React.ReactElement => {
 
         
         //장소데이터를 마커로 지도위에 표시하는 함수
-        function displayMarker(place: any) {
+        function displayMarker(place: any, index:any) {
           let marker = new window.kakao.maps.Marker({
             map: map,
             position: new window.kakao.maps.LatLng(place.y, place.x),
@@ -101,14 +102,57 @@ const MapSearch = ({ searchPlace }: MapSearchProps): React.ReactElement => {
                 place.place_name +
                 '</div>',
             )
-            setSelectedMarkerIndex(marker);
+            setHoveredPlace(place);
+            setSelectedMarkerIndex(index);
             infowindow.open(map, marker)
            
-          })
+            // 리스트 아이템에 hover 이벤트 처리
+            // 각 아이템에 place.id를 부여해 마커 place.id가 아이템 인덱스가 일치할때
+            const listItem = document.getElementById(`list-item-${place.id}`);
+            if (listItem) {
+              listItem.addEventListener('mouseover', () => {
+                handleMarkerHover(place.id)
+              });
+              listItem.addEventListener('mouseout', () => {
+                handleMarkerMouseOut();
+            });
+            console.log(`Marker ID: ${place.id}, ListItem ID: ${listItem.id}`)}
+            
 
+              // 리스트 아이템 hover 이벤트 처리
+              const handleMarkerHover = (index: number) => {
+                setSelectedMarkerIndex(index);
+              };
+
+              // 리스트 아이템 마우스 아웃 이벤트 처리
+              const handleMarkerMouseOut = () => {
+                setHoveredPlace(null);
+              };
+
+              // 마커를 누르면 해당 아이템으로 스크롤 위치 조절
+              const handleMarkerClick = (id: string) => {
+                const listItem = document.getElementById(`list-item-${id}`);
+                if (listItem && listContainerRef.current) {
+                  // listItem의 위치를 계산하여 해당 위치로 스크롤 조절
+                  const offsetTop = listItem.offsetTop - listContainerRef.current.offsetTop;
+                  listContainerRef.current.scrollTo({ top: offsetTop, behavior: 'smooth' });
+                }
+              };
+
+              window.kakao.maps.event.addListener(marker, 'click', () => {
+                handleMarkerClick(place.id);
+              });
+
+            })
+
+            
           window.kakao.maps.event.addListener(marker, 'mouseout', function () {
+            setHoveredPlace(null);
+            setSelectedMarkerIndex(null); 
             infowindow.close();
           })
+
+          
         }
 
 
@@ -156,8 +200,9 @@ const MapSearch = ({ searchPlace }: MapSearchProps): React.ReactElement => {
 
 
   // 리스트 아이템 이벤트
-
+  //TODO: 아이템 리스트에 호버 시 다시 마커에 호버하면 인포윈도가 안뜨는 현상 발생. 수정보완해야함
   const handleListItem = (place: any, index:any) => {
+
     if (selectedPlace && selectedPlace.id === place.id) {
       // 같은 장소라면 정보 창을 닫고 selectedPlace 상태를 재설정
       selectedPlace.infowindow.close();
@@ -175,23 +220,15 @@ const MapSearch = ({ searchPlace }: MapSearchProps): React.ReactElement => {
         // removable : true,
       });
 
-      // 호버 이벤트 처리
-      const handleMarkerHover = (place:any) => {
-        if (!hoveredPlace) {  // 한 번만 처리하도록 추가
-          setSelectedPlace({ id: place.id, infowindow, marker });
-          setSelectedMarkerIndex(index);
-          infowindow.open(mapRef.current, marker);
-        }
-      };
+    
 
-     // TODO:스타일 이벤트 왜 안되는지?? 진행 중..
-     /*const handleMarkerClick = () => {
-      if (!hoveredPlace) {  // 한 번만 처리하도록 추가
-        setSelectedPlace({ id: place.id, infowindow, marker });
+    const handleMarkerHover = () => {
+      if (selectedMarkerIndex !== index) {
         setSelectedMarkerIndex(index);
-        infowindow.open(mapRef.current, marker);
       }
-    };*/
+    };
+
+    
 
 
       const marker = new window.kakao.maps.Marker({
@@ -215,6 +252,7 @@ const MapSearch = ({ searchPlace }: MapSearchProps): React.ReactElement => {
       setSelectedPlace({ id: place.id, infowindow, marker });
       setSelectedMarkerIndex(index);
     }
+   
   };
   
   // TODO:첫 클릭시 해당 위치 못잡는 버그 추후에 수정해야됨
@@ -223,8 +261,11 @@ const MapSearch = ({ searchPlace }: MapSearchProps): React.ReactElement => {
     mapRef.current.panTo(new window.kakao.maps.LatLng(place.y, place.x));
     mapRef.current.setLevel(2);
   };
-  
 
+ 
+
+  
+  
 
   return (
     <div>
@@ -235,13 +276,15 @@ const MapSearch = ({ searchPlace }: MapSearchProps): React.ReactElement => {
       {/* 다른 페이지 컨텐츠 */}
       </div>
       <div
+        ref={listContainerRef}
         id="result-list"
         className='absolute top-80 right-10 w-50 inline-block overflow-scroll overflow-y-auto max-h-[40rem] z-10 box-border rounded-md border-slate-300 hover:border-indigo-30'
       >
         {Place.map((item: any, i) => (
           <div 
-            key={i} 
-            className={`bg-white border-4 rounded-md border-slate-300 hover:bg-slate-300 ${selectedMarkerIndex === i ? 'bg-slate-200' : ''}`}
+            key={item.id}
+            id={`list-item-${item.id}`} 
+            className={`bg-white border-4 rounded-md border-slate-300 hover:bg-slate-300 ${selectedMarkerIndex === i ? 'bg-slate-300' : ''}`}
             style={{ marginTop: '5px', marginBottom: '20px', cursor:'pointer' }}
             onClick={() => clickListItem(item)}
             onMouseEnter={() => handleListItem(item, i)}
