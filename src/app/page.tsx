@@ -21,15 +21,15 @@ export default function Home() {
             height={100}
             alt="Picture of the author"
           />
-        </div>
-      ) : (
-        <>
-        <div>로그인된 정보 X</div>
-        <div>
+            <div>
           <Link href='/mypage/:[id]'>
             내 서재
           </Link>
           </div>
+        </div>
+      ) : (
+        <>
+        <div>로그인된 정보 X</div>
         </>
       )}
       <AddPlace></AddPlace>
