@@ -1,4 +1,6 @@
+import { markersState } from '@/store/mapAtoms'
 import { useEffect, useRef, useState } from 'react'
+import { useRecoilState } from 'recoil'
 
 declare global {
   interface Window {
@@ -10,6 +12,8 @@ export const MapDirectSearch = () => {
   const [map, setMap] = useState<any>()
   const [marker, setMarker] = useState<any>()
   const [address, setAddress] = useState('')
+
+  const [markers, setMarkers] = useRecoilState(markersState);
 
     
   //초기값이 false 여서 처음 마운트될때는 실행 안 되는 useEffect인 커스텀 훅 이에요  
@@ -58,6 +62,14 @@ export const MapDirectSearch = () => {
 
                 // 클릭한 위치 주소를 가져온다.
                 setAddress(addr)
+
+                const newMarker = {
+                  lat: mouseEvent.latLng.getLat(),
+                  lng: mouseEvent.latLng.getLng(),
+                  address: addr,
+                };
+  
+                setMarkers((prevMarkers) => [...prevMarkers, newMarker]);
 
                 // 기존 마커를 제거하고 새로운 마커를 넣는다.
                 marker.setMap(null)

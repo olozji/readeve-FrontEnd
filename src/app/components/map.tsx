@@ -1,12 +1,14 @@
 /*global kakao */
 import React, { useEffect, useState } from 'react'
-
 import MapSearch from './mapSearch'
 import searchIcon from 'public/images/searchIcon.png'
 import Image from 'next/image'
 import { MapDirectSearch } from './mapDirectSearch'
 
 const AddPlace = () => {
+
+  
+
   const [InputText, setInputText] = useState('') // 추가할 장소이름 검색
   const [Place, setPlace] = useState('') // 추가할 장소 데이터 설정
   const [directSearch, setDirectSerach] = useState(false) //초기 상태는 검색창으로 검색

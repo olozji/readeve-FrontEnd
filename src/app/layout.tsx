@@ -4,6 +4,7 @@ import "./globals.css";
 import RecoilRootProvider from '../utils/recoilRootProvider'
 import LoginBtn from "./components/buttons/LoginButton";
 import LogoutButton from "./components/buttons/LogoutButton";
+import NavBar from "./components/NavBar";
 
 const inter = Inter({ subsets: ["latin"] });
 
@@ -21,6 +22,7 @@ export default function RootLayout({
     <html lang="en">
       <body className={inter.className}>
         <div>
+        <NavBar/>
           <LoginBtn></LoginBtn>
           <LogoutButton></LogoutButton>
         </div>
