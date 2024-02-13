@@ -34,7 +34,7 @@ const NavBar = () => {
             <Link href="/">기록하기</Link>
           </li>
           <li>
-            <Link href="/mypage">내 서재</Link>
+            <Link href="/mypage/:[id]">내 서재</Link>
           </li>
           <li>
             <Link href="/">장소 보기</Link>
@@ -54,7 +54,7 @@ const NavBar = () => {
           <Link href="/">기록하기</Link>
           </div>
         <div className='block py-2 pl-3 pr-4 font-bold text-white-900 rounded hover:bg-gray-100 md:hover:bg-transparent dark:border-gray-700 mx-8 text-lg'>
-          <Link href="/mypage">내 서재</Link>
+          <Link href="/mypage/:[id]">내 서재</Link>
           </div>
         <div className='block py-2 pl-3 pr-4 font-bold text-white-900 rounded hover:bg-gray-100 md:hover:bg-transparent dark:border-gray-700 mx-8 text-lg'>
           <Link href="/">장소 보기</Link>
