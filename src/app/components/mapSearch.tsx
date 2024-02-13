@@ -19,6 +19,12 @@ const MapSearch = ({ searchPlace }: MapSearchProps): React.ReactElement => {
 
   const [selectedPlace, setSelectedPlace] = useState<any | null>(null);
   const [hoveredPlace, setHoveredPlace] = useState<any | null>(null);
+  //const [hoveredMarker, setHoveredMarker] = useState<any | null>(null);
+
+
+  // TODO:마커 호버시 리스트 배경색 효과를 위해 만든 state -> 아직 진행중
+  const [selectedMarkerIndex, setSelectedMarkerIndex] = useState<number | null>(null);
+
 
 
   
@@ -85,7 +91,6 @@ const MapSearch = ({ searchPlace }: MapSearchProps): React.ReactElement => {
           let marker = new window.kakao.maps.Marker({
             map: map,
             position: new window.kakao.maps.LatLng(place.y, place.x),
-            
           })
 
 
@@ -96,7 +101,9 @@ const MapSearch = ({ searchPlace }: MapSearchProps): React.ReactElement => {
                 place.place_name +
                 '</div>',
             )
+            setSelectedMarkerIndex(marker);
             infowindow.open(map, marker)
+           
           })
 
           window.kakao.maps.event.addListener(marker, 'mouseout', function () {
@@ -149,12 +156,13 @@ const MapSearch = ({ searchPlace }: MapSearchProps): React.ReactElement => {
 
 
   // 리스트 아이템 이벤트
-  const handleListItem = (place: any) => {
-    // 클릭한 장소가 이미 선택된 상태인지 확인
+
+  const handleListItem = (place: any, index:any) => {
     if (selectedPlace && selectedPlace.id === place.id) {
       // 같은 장소라면 정보 창을 닫고 selectedPlace 상태를 재설정
       selectedPlace.infowindow.close();
       setSelectedPlace(null);
+      setSelectedMarkerIndex(index);
     } else {
       if (selectedPlace) {
         selectedPlace.infowindow.close();
@@ -169,9 +177,21 @@ const MapSearch = ({ searchPlace }: MapSearchProps): React.ReactElement => {
 
       // 호버 이벤트 처리
       const handleMarkerHover = (place:any) => {
-        setHoveredPlace(place);
-        infowindow.open(mapRef.current, marker);
+        if (!hoveredPlace) {  // 한 번만 처리하도록 추가
+          setSelectedPlace({ id: place.id, infowindow, marker });
+          setSelectedMarkerIndex(index);
+          infowindow.open(mapRef.current, marker);
+        }
       };
+
+     // TODO:스타일 이벤트 왜 안되는지?? 진행 중..
+     /*const handleMarkerClick = () => {
+      if (!hoveredPlace) {  // 한 번만 처리하도록 추가
+        setSelectedPlace({ id: place.id, infowindow, marker });
+        setSelectedMarkerIndex(index);
+        infowindow.open(mapRef.current, marker);
+      }
+    };*/
 
 
       const marker = new window.kakao.maps.Marker({
@@ -192,8 +212,8 @@ const MapSearch = ({ searchPlace }: MapSearchProps): React.ReactElement => {
 
       mapRef.current.panTo(new window.kakao.maps.LatLng(place.y, place.x));
 
-
       setSelectedPlace({ id: place.id, infowindow, marker });
+      setSelectedMarkerIndex(index);
     }
   };
   
@@ -203,8 +223,6 @@ const MapSearch = ({ searchPlace }: MapSearchProps): React.ReactElement => {
     mapRef.current.panTo(new window.kakao.maps.LatLng(place.y, place.x));
     mapRef.current.setLevel(2);
   };
-
-
   
 
 
@@ -223,10 +241,10 @@ const MapSearch = ({ searchPlace }: MapSearchProps): React.ReactElement => {
         {Place.map((item: any, i) => (
           <div 
             key={i} 
-            className=' bg-white border-4 rounded-md border-slate-300 hover:bg-slate-200'
+            className={`bg-white border-4 rounded-md border-slate-300 hover:bg-slate-300 ${selectedMarkerIndex === i ? 'bg-slate-200' : ''}`}
             style={{ marginTop: '5px', marginBottom: '20px', cursor:'pointer' }}
             onClick={() => clickListItem(item)}
-            onMouseEnter={() => handleListItem(item)}
+            onMouseEnter={() => handleListItem(item, i)}
           >
             <span style={{ fontSize: 'x-small' }}>[ {i + 1} ]</span>
             <div>

@@ -2,6 +2,7 @@
 import { useSession } from 'next-auth/react'
 import Image from 'next/image'
 import AddPlace from './components/map'
+import Link from 'next/link'
 
 export default function Home() {
   let session = useSession()
@@ -22,7 +23,14 @@ export default function Home() {
           />
         </div>
       ) : (
+        <>
         <div>로그인된 정보 X</div>
+        <div>
+          <Link href='/mypage/:[id]'>
+            내 서재
+          </Link>
+          </div>
+        </>
       )}
       <AddPlace></AddPlace>
     </div>
