@@ -20,8 +20,6 @@ const MapSearch = ({ searchPlace }: MapSearchProps): React.ReactElement => {
 
   const [selectedPlace, setSelectedPlace] = useState<any | null>(null);
   const [hoveredPlace, setHoveredPlace] = useState<any | null>(null);
-  //const [hoveredMarker, setHoveredMarker] = useState<any | null>(null);
-
 
   // TODO:마커 호버시 리스트 배경색 효과를 위해 만든 state -> 아직 진행중
   const [selectedMarkerIndex, setSelectedMarkerIndex] = useState<number | null>(null);
@@ -114,7 +112,8 @@ const MapSearch = ({ searchPlace }: MapSearchProps): React.ReactElement => {
                 handleMarkerHover(place.id)
               });
               listItem.addEventListener('mouseout', () => {
-                handleMarkerMouseOut();
+                //handleMarkerMouseOut();
+                //infowindow.close();
             });
             console.log(`Marker ID: ${place.id}, ListItem ID: ${listItem.id}`)}
             
@@ -125,9 +124,9 @@ const MapSearch = ({ searchPlace }: MapSearchProps): React.ReactElement => {
               };
 
               // 리스트 아이템 마우스 아웃 이벤트 처리
-              const handleMarkerMouseOut = () => {
-                setHoveredPlace(null);
-              };
+              // const handleMarkerMouseOut = () => {
+              //   setHoveredPlace(null);
+              // };
 
               // 마커를 누르면 해당 아이템으로 스크롤 위치 조절
               const handleMarkerClick = (id: string) => {
@@ -149,7 +148,7 @@ const MapSearch = ({ searchPlace }: MapSearchProps): React.ReactElement => {
           window.kakao.maps.event.addListener(marker, 'mouseout', function () {
             setHoveredPlace(null);
             setSelectedMarkerIndex(null); 
-            //infowindow.close();
+            infowindow.close();
           })
         }
 
@@ -197,60 +196,67 @@ const MapSearch = ({ searchPlace }: MapSearchProps): React.ReactElement => {
 
 
 
-  // 리스트 아이템 이벤트
-  //TODO: 아이템 리스트에 호버 시 다시 마커에 호버하면 인포윈도가 안뜨는 현상 발생. 수정보완해야함
-  const handleListItem = (place: any, index:any) => {
-    mapRef.current.panTo(new window.kakao.maps.LatLng(place.y, place.x));
-    // if (selectedPlace && selectedPlace.id === place.id) {
-    //   // 같은 장소라면 정보 창을 닫고 selectedPlace 상태를 재설정
-    //   selectedPlace.infowindow.close();
-    //   setSelectedPlace(null);
-    //   setSelectedMarkerIndex(index);
-    // } else {
-    //   if (selectedPlace) {
-    //     selectedPlace.infowindow.close();
-    //   }
-
-      // selectedPlace 상태를 업데이트
-    //   const infowindow = new window.kakao.maps.InfoWindow({
-    //     content: '<div style="padding:5px;font-size:12px;">' + place.place_name + '</div>',
-    //     zIndex: 1,
-    //     // removable : true,
-    //   });
-
-    
-
-    // const handleMarkerHover = () => {
-    //   if (selectedMarkerIndex !== index) {
-    //     setSelectedMarkerIndex(index);
-    //   }
-    // };
-
-    
-
-
-    //   const marker = new window.kakao.maps.Marker({
-    //     map: mapRef.current,
-    //     position: new window.kakao.maps.LatLng(place.y, place.x), 
-    //   });
-
-
-    //   window.kakao.maps.event.addListener(marker, 'mouseover', handleMarkerHover);
-
-     
-    //   window.kakao.maps.event.addListener(marker, 'mouseout', function () {
-    //     setHoveredPlace(null);
-    //     infowindow.close();
-    //   });
-
-      
-
-    //  mapRef.current.panTo(new window.kakao.maps.LatLng(place.y, place.x));
-
-      // setSelectedPlace({ id: place.id, infowindow, marker });
-      // setSelectedMarkerIndex(index);
-      // infowindow.open(mapRef.current, marker);
+  const handleListItem = (place: any, index: number) => {
+   
+    if (selectedPlace && selectedPlace.infowindow) {
+      selectedPlace.infowindow.close();
     }
+
+  
+    const infowindow = new window.kakao.maps.InfoWindow({
+      content: `<div style="padding:5px;font-size:12px;">${place.place_name}</div>`,
+      zIndex: 1,
+    });
+
+    const marker = new window.kakao.maps.Marker({
+      map: mapRef.current,
+      position: new window.kakao.maps.LatLng(place.y, place.x),
+    });
+
+    window.kakao.maps.event.addListener(marker, 'mouseover', () => {
+      setHoveredPlace(place);
+      setSelectedMarkerIndex(index);
+      infowindow.open(mapRef.current, marker);
+    });
+
+    
+
+    window.kakao.maps.event.addListener(marker, 'mouseout', () => {
+      setHoveredPlace(null);
+      setSelectedMarkerIndex(null);
+      infowindow.close();
+    });
+
+    window.kakao.maps.event.addListener(marker, 'mouseout', () => {
+      setHoveredPlace(null);
+      setSelectedMarkerIndex(null);
+      infowindow.close();
+    });
+
+    const listItem = document.getElementById(`list-item-${place.id}`);
+    if (listItem) {
+      listItem.addEventListener('mouseleave', () => {
+        infowindow.close();
+      });
+    }
+
+     const handleMarkerHover = (index:any) => {
+      if (selectedMarkerIndex == index) {
+        setSelectedMarkerIndex(index);
+      }
+    };
+
+    mapRef.current.panTo(new window.kakao.maps.LatLng(place.y, place.x));
+
+    setSelectedPlace({ id: place.id, infowindow, marker });
+    setSelectedMarkerIndex(index);
+    handleMarkerHover(index);
+    infowindow.open(mapRef.current, marker);
+    mapRef.current.panTo(new window.kakao.maps.LatLng(place.y, place.x));
+
+
+  };
+
   
 
 
@@ -261,10 +267,7 @@ const MapSearch = ({ searchPlace }: MapSearchProps): React.ReactElement => {
     mapRef.current.setLevel(2);
   };
 
- 
 
-  
-  
 
   return (
     <div>
@@ -283,10 +286,11 @@ const MapSearch = ({ searchPlace }: MapSearchProps): React.ReactElement => {
           <div 
             key={item.id}
             id={`list-item-${item.id}`} 
-            className={`bg-white border-4 rounded-md border-slate-300 hover:bg-slate-300 ${selectedMarkerIndex === i ? 'bg-slate-300' : ''}`}
+            className={`border-4 rounded-md border-slate-300 bg-slate-200 hover:bg-slate-400 ${selectedMarkerIndex === i ? 'bg-slate-300' : ''}`}
             style={{ marginTop: '5px', marginBottom: '20px', cursor:'pointer' }}
             onClick={() => clickListItem(item)}
             onMouseEnter={() => handleListItem(item, i)}
+            onMouseLeave={() => handleListItem(item, i)}
           >
             <span style={{ fontSize: 'x-small' }}>[ {i + 1} ]</span>
             <div>
