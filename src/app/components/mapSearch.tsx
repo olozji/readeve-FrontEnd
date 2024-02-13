@@ -149,10 +149,8 @@ const MapSearch = ({ searchPlace }: MapSearchProps): React.ReactElement => {
           window.kakao.maps.event.addListener(marker, 'mouseout', function () {
             setHoveredPlace(null);
             setSelectedMarkerIndex(null); 
-            infowindow.close();
+            //infowindow.close();
           })
-
-          
         }
 
 
@@ -202,59 +200,60 @@ const MapSearch = ({ searchPlace }: MapSearchProps): React.ReactElement => {
   // 리스트 아이템 이벤트
   //TODO: 아이템 리스트에 호버 시 다시 마커에 호버하면 인포윈도가 안뜨는 현상 발생. 수정보완해야함
   const handleListItem = (place: any, index:any) => {
-
-    if (selectedPlace && selectedPlace.id === place.id) {
-      // 같은 장소라면 정보 창을 닫고 selectedPlace 상태를 재설정
-      selectedPlace.infowindow.close();
-      setSelectedPlace(null);
-      setSelectedMarkerIndex(index);
-    } else {
-      if (selectedPlace) {
-        selectedPlace.infowindow.close();
-      }
+    mapRef.current.panTo(new window.kakao.maps.LatLng(place.y, place.x));
+    // if (selectedPlace && selectedPlace.id === place.id) {
+    //   // 같은 장소라면 정보 창을 닫고 selectedPlace 상태를 재설정
+    //   selectedPlace.infowindow.close();
+    //   setSelectedPlace(null);
+    //   setSelectedMarkerIndex(index);
+    // } else {
+    //   if (selectedPlace) {
+    //     selectedPlace.infowindow.close();
+    //   }
 
       // selectedPlace 상태를 업데이트
-      const infowindow = new window.kakao.maps.InfoWindow({
-        content: '<div style="padding:5px;font-size:12px;">' + place.place_name + '</div>',
-        zIndex: 1,
-        // removable : true,
-      });
+    //   const infowindow = new window.kakao.maps.InfoWindow({
+    //     content: '<div style="padding:5px;font-size:12px;">' + place.place_name + '</div>',
+    //     zIndex: 1,
+    //     // removable : true,
+    //   });
 
     
 
-    const handleMarkerHover = () => {
-      if (selectedMarkerIndex !== index) {
-        setSelectedMarkerIndex(index);
-      }
-    };
+    // const handleMarkerHover = () => {
+    //   if (selectedMarkerIndex !== index) {
+    //     setSelectedMarkerIndex(index);
+    //   }
+    // };
 
     
 
 
-      const marker = new window.kakao.maps.Marker({
-        map: mapRef.current,
-        position: new window.kakao.maps.LatLng(place.y, place.x), 
-      });
+    //   const marker = new window.kakao.maps.Marker({
+    //     map: mapRef.current,
+    //     position: new window.kakao.maps.LatLng(place.y, place.x), 
+    //   });
 
 
-      window.kakao.maps.event.addListener(marker, 'mouseover', handleMarkerHover);
+    //   window.kakao.maps.event.addListener(marker, 'mouseover', handleMarkerHover);
 
      
-      window.kakao.maps.event.addListener(marker, 'mouseout', function () {
-        setHoveredPlace(null);
-        infowindow.close();
-      });
+    //   window.kakao.maps.event.addListener(marker, 'mouseout', function () {
+    //     setHoveredPlace(null);
+    //     infowindow.close();
+    //   });
 
-      infowindow.open(mapRef.current, marker);
+      
 
-      mapRef.current.panTo(new window.kakao.maps.LatLng(place.y, place.x));
+    //  mapRef.current.panTo(new window.kakao.maps.LatLng(place.y, place.x));
 
-      setSelectedPlace({ id: place.id, infowindow, marker });
-      setSelectedMarkerIndex(index);
+      // setSelectedPlace({ id: place.id, infowindow, marker });
+      // setSelectedMarkerIndex(index);
+      // infowindow.open(mapRef.current, marker);
     }
-   
-  };
   
+
+
   // TODO:첫 클릭시 해당 위치 못잡는 버그 추후에 수정해야됨
   const clickListItem = (place: any) => {
     // useRef로 저장한 map을 참조하여 지도 이동 및 확대
