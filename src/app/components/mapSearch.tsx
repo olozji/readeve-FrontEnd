@@ -32,13 +32,19 @@ const MapSearch = ({ searchPlace }: MapSearchProps): React.ReactElement => {
 
     const onLoadKakaoAPI = () => {
       window.kakao.maps.load(() => {
+        navigator.geolocation.getCurrentPosition((position) => {
+          const { latitude, longitude } = position.coords
+          const currentPosition = new window.kakao.maps.LatLng(
+            latitude,
+            longitude,
+          )
 
-        const container = document.getElementById('map')
-        let options = {
-          center: new window.kakao.maps.LatLng(33.450701, 126.570667),
-          level: 3,
-        }
-        const map = new window.kakao.maps.Map(container, options)
+          const container = document.getElementById('map')
+          let options = {
+            center: currentPosition,
+            level: 3,
+          }
+          const map = new window.kakao.maps.Map(container, options)
 
         mapRef.current = map;
 
@@ -49,8 +55,13 @@ const MapSearch = ({ searchPlace }: MapSearchProps): React.ReactElement => {
             zIndex: 1, 
             // removable : true,
           })
-
-        ps.keywordSearch(searchPlace, placesSearchCB)
+          let searchOptions = {
+            location: currentPosition,
+            // radius: 10000,
+            sort: window.kakao.maps.services.SortBy.DISTANCE,
+            // useMapBound:true
+          }
+          ps.keywordSearch(searchPlace, placesSearchCB, searchOptions)
 
         function placesSearchCB(data: any, status: any, pagination: any) {
           if (status === window.kakao.maps.services.Status.OK) {
@@ -124,10 +135,11 @@ const MapSearch = ({ searchPlace }: MapSearchProps): React.ReactElement => {
               })(i)
             }
 
-            fragment.appendChild(el)
+              fragment.appendChild(el)
+            }
+            paginationEl?.appendChild(fragment)
           }
-          paginationEl?.appendChild(fragment)
-        }
+        })
       })
     }
 
@@ -138,7 +150,6 @@ const MapSearch = ({ searchPlace }: MapSearchProps): React.ReactElement => {
 
   // 리스트 아이템 이벤트
   const handleListItem = (place: any) => {
-
     // 클릭한 장소가 이미 선택된 상태인지 확인
     if (selectedPlace && selectedPlace.id === place.id) {
       // 같은 장소라면 정보 창을 닫고 selectedPlace 상태를 재설정
