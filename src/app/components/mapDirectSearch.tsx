@@ -29,16 +29,35 @@ export const MapDirectSearch = () => {
     // 1) 카카오맵 불러오기
     // 올려주신거 그대로 구현하려고 script태그를 app/layout.tsx에 삽입해서 지도 띄웠어요!
   useEffect(() => {
-    window.kakao.maps.load(() => {
-      const container = document.getElementById('map')
-      const options = {
-        center: new window.kakao.maps.LatLng(33.450701, 126.570667),
-        level: 3,
-      }
+    navigator.geolocation.getCurrentPosition(
+      (position) => {
+        const { latitude, longitude } = position.coords
+        const currentPosition = new window.kakao.maps.LatLng(
+          latitude,
+          longitude,
+        )
 
-      setMap(new window.kakao.maps.Map(container, options))
-      setMarker(new window.kakao.maps.Marker())
-    })
+        window.kakao.maps.load(() => {
+          const container = document.getElementById('map')
+          const options = {
+            center: currentPosition, // 현재 위치를 지도의 중심으로 설정
+            level: 3,
+          }
+
+          // 지도와 마커 초기화
+          setMap(new window.kakao.maps.Map(container, options))
+          setMarker(new window.kakao.maps.Marker())
+          let currMarker = new window.kakao.maps.Marker({
+            position: currentPosition,
+          })
+            currMarker.setMap(map)
+        })
+        
+      },
+      (error) => {
+        console.error('Error getting current position:', error)
+      },
+    )
   }, [])
 
   // 2) 최초 렌더링 시에는 제외하고 map이 변경되면 실행
@@ -135,7 +154,7 @@ export const MapDirectSearch = () => {
 
   return (
     <div>
-      <div id="map" style={{ width: '100%', height: '400px' }}></div>
+      <div id="map" style={{ width: '50%', height: '400px' }}></div>
       <div onClick={getCurrentPosBtn}>현재 위치</div>
       <div>{address}</div>
     </div>
