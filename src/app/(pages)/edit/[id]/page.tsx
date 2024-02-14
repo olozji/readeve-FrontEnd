@@ -1,6 +1,8 @@
 'use client';
 
 import { BookSearch } from "@/app/components/bookSearch";
+import AddPlace from "@/app/components/map";
+import MapSearch from "@/app/components/mapSearch";
 import { useCallback, useContext, useEffect, useRef, useState } from "react";
 
 const Editor = () => {
@@ -13,6 +15,9 @@ const Editor = () => {
 
     const [ image, setImage] = useState('');
     const [ loading, setloading] = useState(false);
+
+    const [showMap, setShowMap] = useState(false);
+    const [searchData, setSearchData] = useState(''); 
         
     
 
@@ -64,6 +69,16 @@ const Editor = () => {
         setImage(file.secure_url);
         setloading(false);
     }
+
+    const handleSearchMap = useCallback((e:any) => {
+        e.preventDefault();
+        setShowMap(true);
+    },[])
+
+    const handleSearchResult = (data:any) => {
+        setSearchData(data);
+    }
+
       
 
 
@@ -81,8 +96,10 @@ const Editor = () => {
             <input 
             className="border-slate-400 rounded-md bg-slate-200"
             placeholder="독서한 장소를 입력해주세요"
+            onClick={handleSearchMap}
             type="text"
             />
+            {showMap && <AddPlace/>}
             </div>
         </section>
         <section className="py-8 flex gap-10 border border-slate-400">
@@ -100,7 +117,6 @@ const Editor = () => {
                   <div>
                   <BookSearch></BookSearch>
                   </div>
-          
         </section>
         <section className="py-8 flex gap-10 border border-slate-400">
             <h4 className="px-5">나의 한줄평</h4>
