@@ -9,9 +9,10 @@ declare global {
 }
 interface MapSearchProps {
   searchPlace: string
+  onMarkerClick: (place: string) => void;
 }
 
-const MapSearch = ({ searchPlace }: MapSearchProps): React.ReactElement => {
+const MapSearch = ({ searchPlace, onMarkerClick }: MapSearchProps): React.ReactElement => {
 
   const mapRef = useRef<any>(null)
   const listContainerRef = useRef<any>(null);
@@ -92,6 +93,11 @@ const MapSearch = ({ searchPlace }: MapSearchProps): React.ReactElement => {
             position: new window.kakao.maps.LatLng(place.y, place.x),
           })
 
+          // 마커를 클릭했을 때, input에 장소이름 반영되게 props로 받아온 콜백함수 호출
+          window.kakao.maps.event.addListener(marker, 'click', () => {
+            onMarkerClick(place.place_name);
+            console.log(place.place_name)
+          });
 
           //호버 했을 때 infoWindow 뜨게 만들어 놨어요!! 근데 마우스 내렸을때 안 없어져서 내릴때 없애는 코드 추가해야 대요
           window.kakao.maps.event.addListener(marker, 'mouseover', function () {
