@@ -68,7 +68,7 @@ const Editor = () => {
 
     return (
         <div className="flex justify-center mx-auto box-border min-h-full">
-       <div className="w-full px-5 py-10 sm:px-10 md:px-20 lg:px-40 xl:px-80 border border-slate-400 rounded-md">
+       <form className="w-full px-5 py-10 sm:px-10 md:px-20 lg:px-40 xl:px-80 border border-slate-400 rounded-md">
        <header className="h-10">
             <h1>기록하기</h1>
         </header>
@@ -155,7 +155,7 @@ const Editor = () => {
                 <button className="bg-indigo-400 rounded-md">작성완료</button>
             </div>
         </section>
-       </div>
+       </form>
         </div>
     )
 }
