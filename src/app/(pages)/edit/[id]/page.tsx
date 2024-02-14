@@ -1,5 +1,6 @@
 'use client';
 
+import { BookSearch } from "@/app/components/bookSearch";
 import { useCallback, useContext, useEffect, useRef, useState } from "react";
 
 const Editor = () => {
@@ -93,6 +94,13 @@ const Editor = () => {
             type="date"
             />
             </div>
+        </section>
+        <section className="py-8 flex gap-10 border border-slate-400">
+                  <h4 className="px-5">when</h4>
+                  <div>
+                  <BookSearch></BookSearch>
+                  </div>
+          
         </section>
         <section className="py-8 flex gap-10 border border-slate-400">
             <h4 className="px-5">나의 한줄평</h4>
