@@ -67,30 +67,58 @@ const Editor = () => {
 
 
     return (
-        <div className="DiaryEditor">
-         <header>
-            기록하기
+        <div className="flex justify-center mx-auto box-border min-h-full">
+       <form className="w-full px-5 py-10 sm:px-10 md:px-20 lg:px-40 xl:px-80 border border-slate-400 rounded-md">
+       <header className="h-10">
+            <h1>기록하기</h1>
         </header>
-       <div>
-        <section>
-            <h4>오늘은 언제인가요?</h4>
+        <h1 className="py-8">제목</h1>
+        {/* 추후에 받아올 지도 장소 */}
+        <section className="py-8 flex gap-10 border border-slate-400 rounded-t-md">
+            <h4 className="px-5">where</h4>
+            <div className='input_box'>
+            <input 
+            className="border-slate-400 rounded-md bg-slate-200"
+            placeholder="독서한 장소를 입력해주세요"
+            type="text"
+            />
+            </div>
+        </section>
+        <section className="py-8 flex gap-10 border border-slate-400">
+            <h4 className="px-5">when</h4>
             <div className='input_box'>
             <input 
             className="input_date"
             value={date}
-            onChange={(e)=>setDate(e.target.value)}
             type="date"
             />
             </div>
         </section>
-        <section>
-            <h4>나의 한줄평</h4>
+        <section className="py-8 flex gap-10 border border-slate-400">
+            <h4 className="px-5">나의 한줄평</h4>
             <div className="input_box emotion_list_wrapper">
+                <input 
+                className="border-slate-400 rounded-md bg-slate-200"
+                placeholder="예시)재미있었다"/>
             </div>
         </section>
-        <section>
-            <h4>오늘의 기록</h4>
-            <div className="image">
+        <section className="py-8 flex border border-slate-400 gap-3">
+            <h4 className="px-5">tag</h4>
+            <div className="tag_name flex gap-3">
+                <div className="border bg-slate-200 rounded-md">#조용한</div>
+                <div className="border bg-slate-200 rounded-md">#시끄러운</div>
+                <div className="border bg-slate-200 rounded-md">#고양이</div>
+            </div>
+        </section>
+        <section className="py-8 flex border border-b-0 border-slate-400 gap-3">
+            <div className="tag_name flex mx-auto gap-5">
+                <div className="border bg-red-200 rounded-md">나만보기 </div>
+                <div className="border bg-indigo-200 rounded-md">전체보기</div>
+            </div>
+        </section>
+        <section className="py-8 border border-t-0 border-slate-400 rounded-b-md">
+            <h4 className="px-5">이미지</h4>
+            <div className="px-5 py-8 image">
                 <label htmlFor="image_input">
                 <img className="image_icon"/>
                     </label>
@@ -106,22 +134,28 @@ const Editor = () => {
                     ):(
                         <img src={image} style={{width:'300px'}}/>
                     )}
+                    <div className="flex gap-4 px-5 py-8">
+                    <div className="w-64 h-64 border bg-slate-200 rounded-md">이미지</div>
+                    <div className="w-64 h-64 border bg-slate-200 rounded-md">이미지</div>
+                    <div className="w-64 h-64 border bg-slate-200 rounded-md">이미지</div>
                     </div>
-            <div className="input_content">
+                    </div>
+            <div className="px-5 py-8">
                 <textarea
-                placeholder="오늘 나의 기분은..."
+                className="border border-slate-200 rounded-md w-full h-80 bg-slate-200"
+                placeholder="오늘 나의 독서는..."
                 value={content}
                 onChange={(e)=>setContent(e.target.value)}
                 /> 
             </div>
         </section>
         <section>
-            <div className="control_btn">
-                <button>취소하기</button>
-                <button>작성완료</button>
+            <div className="control_btn flex gap-5">
+                <button className="bg-red-300 rounded-md">취소하기</button>
+                <button className="bg-indigo-400 rounded-md">작성완료</button>
             </div>
         </section>
-       </div>
+       </form>
         </div>
     )
 }
