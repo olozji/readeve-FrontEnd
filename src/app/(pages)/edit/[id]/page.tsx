@@ -18,14 +18,9 @@ const Editor = () => {
 
     const [showMap, setShowMap] = useState(false);
     const [searchData, setSearchData] = useState(''); 
+
         
     
-
-    const handleClickEmotion = useCallback(()=>{
-            setEmotion(emotion);
-    },[]);
-
-
 
    const handleSubmit = () => {
     if(content.length < 1) {
@@ -79,7 +74,6 @@ const Editor = () => {
         setSearchData(data);
     }
 
-      
 
 
     return (
@@ -92,13 +86,13 @@ const Editor = () => {
         {/* 추후에 받아올 지도 장소 */}
         <section className="py-8 flex gap-10 border border-slate-400 rounded-t-md">
             <h4 className="px-5">where</h4>
-            <div className='input_box'>
-            <input 
+            <div className='input_box w-full'>
+            <button
             className="border-slate-400 rounded-md bg-slate-200"
-            placeholder="독서한 장소를 입력해주세요"
             onClick={handleSearchMap}
-            type="text"
-            />
+            >
+                지도 검색하기
+            </button>
             {showMap && <AddPlace/>}
             </div>
         </section>

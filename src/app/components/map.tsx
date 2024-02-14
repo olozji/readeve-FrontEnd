@@ -7,11 +7,11 @@ import { MapDirectSearch } from './mapDirectSearch'
 
 const AddPlace = () => {
 
-  
 
   const [InputText, setInputText] = useState('') // 추가할 장소이름 검색
   const [Place, setPlace] = useState('') // 추가할 장소 데이터 설정
   const [directSearch, setDirectSerach] = useState(false) //초기 상태는 검색창으로 검색
+  const [placeName, setPlaceName] = useState<string>('');
 
   const onChange = (e: any) => {
     setInputText(e.target.value)
@@ -23,9 +23,24 @@ const AddPlace = () => {
     setInputText('')
   }
 
+  const changeSearchType = (e:any) => {
+    e.preventDefault();
+    setDirectSerach(!directSearch);
+  }
+
+  // 마커의 장소를 받아오기 위한 함수
+  const onMarkerClick = (placeName: string) => {
+    setPlaceName(placeName)
+    setInputText(placeName)
+    console.log(placeName);
+  };
+
+  
+
   return (
       <>
-          <button onClick={() => { setDirectSerach(!directSearch); }}>
+          <button
+            onClick={changeSearchType}>
               {directSearch? `직접 핀으로 검색`:`이름으로 검색`}
           </button>
       {directSearch ? (
@@ -44,20 +59,21 @@ const AddPlace = () => {
                   placeholder="장소를 검색하세요"
                   onChange={onChange}
                   value={InputText}
+
                 />
                 {/* <Image id="searchIcon" onClick={handleSubmit} src={searchIcon} alt='search'/> */}
               </div>
               <div className="buttonDiv">
-                <button type="submit" style={{ display: 'none' }}>
+                {/* <button type="submit" style={{ display: 'none' }}>
                   enterKey시 검색할 수 있는 형식상 submit 버튼
-                </button>
+                </button> */}
                 <button id="searchBtn" onClick={handleSubmit}>
                   검색
                 </button>
               </div>
             </div>
           </form>
-          <MapSearch searchPlace={Place} />
+          <MapSearch searchPlace={Place} onMarkerClick={onMarkerClick} />
         </div>
       )}
       {/* <MapSearch searchPlace={Place} /> */}
