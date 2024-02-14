@@ -286,7 +286,7 @@ const MapSearch = ({ searchPlace }: MapSearchProps): React.ReactElement => {
           <div 
             key={item.id}
             id={`list-item-${item.id}`} 
-            className={`border-4 rounded-md border-slate-300 bg-slate-200 hover:bg-slate-400 ${selectedMarkerIndex === i ? 'bg-slate-300' : ''}`}
+            className={`p-2 rounded-md  bg-slate-200 hover:bg-slate-300 ${selectedMarkerIndex === i ? 'bg-slate-300' : ''}`}
             style={{ marginTop: '5px', marginBottom: '20px', cursor:'pointer' }}
             onClick={() => clickListItem(item)}
             onMouseEnter={() => handleListItem(item, i)}
