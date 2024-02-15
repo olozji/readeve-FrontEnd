@@ -15,7 +15,7 @@ export const BookSearch = () => {
   }, [page]); // 페이지가 변경될 때마다 호출
 
   const callAPI = async () => {
-    const url = `https://dapi.kakao.com/v3/search/book?target=title&query=${bookName}&page=${page}`;
+    const url = `https://dapi.kakao.com/v3/search/book?target=title&query=${bookName}&page=${page}&size=10`;
     const config = {
       headers: { Authorization: `KakaoAK 4a3294385b3e838f9f020a39fe8c04e3` },
     };
@@ -25,6 +25,7 @@ export const BookSearch = () => {
       const total = result.data.meta.pageable_count;
       setLast(Math.ceil(total / 10));
       setModalOpen(true); // API 호출 후 모달 열기
+      console.log(documents)
     } catch (error) {
       console.error('데이터 가져오기 오류:', error);
     }
@@ -58,7 +59,6 @@ export const BookSearch = () => {
   };
   const handleConfirmation = (confirmed: boolean) => {
     if (confirmed) {
-      // 여기서 선택된 책을 처리하거나 추가 동작을 수행할 수 있습니다.
       console.log('사용자가 선택한 책:', selectedBook);
     }
     setModalOpen(false);
@@ -85,9 +85,9 @@ export const BookSearch = () => {
             <span className="absolute top-4 right-4 text-gray-600 cursor-pointer" onClick={closeModal}>
               &times;
             </span>
-            <div className="grid grid-rows-2 grid-flow-col gap-" >
-              {documents.map((d: any) => (
-                <div className={`${selectedBook === d.title ? 'rounded-lg border-4 border-blue-500' : 'rounded-lg border-4 border-transparent'}`} key={d.title} onClick ={()=>{handleBookClick(d.title)}} style={{display: 'flex', flexDirection: 'column', alignItems: 'center'}}>
+            <div className="grid grid-rows-2 grid-flow-col " >
+              {documents.map((d: any,i:number) => (
+                <div className={`${selectedBook === d.title ? 'rounded-lg border-4 border-blue-500' : 'rounded-lg border-4 border-transparent'}`} key={i} onClick ={()=>{handleBookClick(d.title)}} style={{display: 'flex', flexDirection: 'column', alignItems: 'center'}}>
                   <img
                     src={d.thumbnail ? d.thumbnail : 'http://via.placeholder.com/120X150'}
                     alt="책 표지"
