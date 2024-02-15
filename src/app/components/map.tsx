@@ -4,6 +4,7 @@ import MapSearch from './mapSearch'
 import searchIcon from 'public/images/searchIcon.png'
 import Image from 'next/image'
 import { MapDirectSearch } from './mapDirectSearch'
+import CustomModal from '../components/modal'
 
 const AddPlace = () => {
 
@@ -38,7 +39,7 @@ const AddPlace = () => {
   
 
   return (
-      <>
+      <CustomModal isOpen={true} closeModal={undefined}>
           <button
             onClick={changeSearchType}>
               {directSearch? `직접 핀으로 검색`:`이름으로 검색`}
@@ -80,7 +81,7 @@ const AddPlace = () => {
 
       {/*검색한 값을 props로 MapSearch 컴포넌트로 보냄*/}
       {/* <MapDirectSearch></MapDirectSearch> */}
-    </>
+    </CustomModal>
   )
 }
 // AddPlaceMap 컴포넌트에 이름으로 검색한 장소 데이터 전달
