@@ -49,7 +49,9 @@ const AddPlace : React.FC<AddPlaceProps> = ({ onClose }) => {
   };
 
   return (
-      <CustomModal isOpen={true} onClose={onClose}>
+    
+    <CustomModal isOpen={true} onClose={onClose}>
+      <div className="bg-white p-8 rounded-lg">
           <button
             onClick={changeSearchType}>
               {directSearch? `직접 핀으로 검색`:`이름으로 검색`}
@@ -91,7 +93,9 @@ const AddPlace : React.FC<AddPlaceProps> = ({ onClose }) => {
 
       {/*검색한 값을 props로 MapSearch 컴포넌트로 보냄*/}
       {/* <MapDirectSearch></MapDirectSearch> */}
+      </div>  
     </CustomModal>
+      
   )
 }
 // AddPlaceMap 컴포넌트에 이름으로 검색한 장소 데이터 전달
