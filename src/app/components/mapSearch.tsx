@@ -219,6 +219,12 @@ const MapSearch = ({ searchPlace, onMarkerClick }: MapSearchProps): React.ReactE
       position: new window.kakao.maps.LatLng(place.y, place.x),
     });
 
+     // 마커를 클릭했을 때, input에 장소이름 반영되게 props로 받아온 콜백함수 호출
+     window.kakao.maps.event.addListener(marker, 'click', () => {
+      onMarkerClick(place.place_name);
+      console.log(place.place_name)
+    });
+
     window.kakao.maps.event.addListener(marker, 'mouseover', () => {
       setHoveredPlace(place);
       setSelectedMarkerIndex(index);
