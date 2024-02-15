@@ -3,6 +3,7 @@ import { useSession } from 'next-auth/react'
 import Image from 'next/image'
 import AddPlace from './components/map'
 import Link from 'next/link'
+import SlideCarousel from './components/carousel'
 
 export default function Home() {
   let session = useSession()
@@ -33,6 +34,7 @@ export default function Home() {
         </>
       )}
       <AddPlace></AddPlace>
+      <SlideCarousel/>
     </div>
   )
 }

@@ -4,7 +4,7 @@ import "./globals.css";
 import RecoilRootProvider from '../utils/recoilRootProvider'
 import LoginBtn from "./components/buttons/LoginButton";
 import LogoutButton from "./components/buttons/LogoutButton";
-import NavBar from "./components/NavBar";
+import LayOut from "./components/Layout/Page";
 
 const inter = Inter({ subsets: ["latin"] });
 
@@ -21,15 +21,14 @@ export default function RootLayout({
   return (
     <html lang="en">
       <body className={inter.className}>
-        <div>
-        <NavBar/>
+        <LayOut>
           <LoginBtn></LoginBtn>
           <LogoutButton></LogoutButton>
-        </div>
         <RecoilRootProvider>
           {children}
         </RecoilRootProvider>
         <script type="text/javascript" src="//dapi.kakao.com/v2/maps/sdk.js?appkey=6d8ac2fb0740657f1e67a9163c8b331b&autoload=false&libraries=services"></script>
+        </LayOut>
       </body>
     </html>
   );

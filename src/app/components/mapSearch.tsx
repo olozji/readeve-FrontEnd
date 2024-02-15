@@ -280,7 +280,7 @@ const MapSearch = ({ searchPlace, onMarkerClick }: MapSearchProps): React.ReactE
       {/* 페이지 컨텐츠 및 지도를 표시할 컨테이너 */}
       <div id="map" 
            className='relative'    
-      style={{ width: '100%', height: '800px' }}>
+      style={{ width: '100%', height: '500px' }}>
       {/* 다른 페이지 컨텐츠 */}
       </div>
       <div
