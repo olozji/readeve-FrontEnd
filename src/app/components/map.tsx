@@ -6,7 +6,12 @@ import Image from 'next/image'
 import { MapDirectSearch } from './mapDirectSearch'
 import CustomModal from '../components/modal'
 
-const AddPlace = () => {
+
+interface AddPlaceProps {
+  onClose: () => void;
+}
+
+const AddPlace : React.FC<AddPlaceProps> = ({ onClose }) => {
 
 
   const [InputText, setInputText] = useState('') // 추가할 장소이름 검색
@@ -22,6 +27,8 @@ const AddPlace = () => {
     e.preventDefault()
     setPlace(InputText)
     setInputText('')
+
+    
   }
 
   const changeSearchType = (e:any) => {
@@ -36,10 +43,13 @@ const AddPlace = () => {
     console.log(placeName);
   };
 
-  
+
+  const handleCloseModal = () => {
+    setDirectSerach(false);
+  };
 
   return (
-      <CustomModal isOpen={true} closeModal={undefined}>
+      <CustomModal isOpen={true} onClose={onClose}>
           <button
             onClick={changeSearchType}>
               {directSearch? `직접 핀으로 검색`:`이름으로 검색`}
@@ -50,7 +60,7 @@ const AddPlace = () => {
         </div>
       ) : (
         <div>
-          <form className="inputForm" onSubmit={handleSubmit}>
+          <form className="inputForm">
             <div className="addSearchDiv">
               <div className="searchInputDiv">
                 <input
