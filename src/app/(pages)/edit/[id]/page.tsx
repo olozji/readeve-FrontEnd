@@ -10,6 +10,7 @@ const Editor = () => {
 
     const [content, setContent] = useState("");
     const [showMap, setShowMap] = useState(false);
+    const [selectedPlace, setSelectedPlace] = useState('');
  
     const handleSearchMap = useCallback((e:any) => {
         e.preventDefault();
@@ -33,15 +34,14 @@ const Editor = () => {
         <section className="py-8 flex gap-10 border border-slate-400 rounded-t-md">
             <h4 className="px-5">where</h4>
             <div className='input_box w-full'>
-            <button
+            <input
             className="border-slate-400 rounded-md bg-slate-200"
+            value={selectedPlace}
             onClick={handleSearchMap}
-            >
-                지도 검색하기
-            </button>
+            />
             {showMap && (
                 <CustomModal isOpen={true} onClose={handleCloseMap}>
-                    <AddPlace onClose={handleCloseMap} />
+                    <AddPlace onClose={handleCloseMap} onMarkerClickParent={setSelectedPlace} selectedPlace={selectedPlace} />
                 </CustomModal>
             )}
             </div>

@@ -8,9 +8,12 @@ import CustomModal from '../components/modal';
 
 interface AddPlaceProps {
   onClose: () => void;
+  onMarkerClickParent: (markerInfo: string) => void;
+  selectedPlace: string;
 }
 
-const AddPlace: React.FC<AddPlaceProps> = ({ onClose }) => {
+const AddPlace: React.FC<AddPlaceProps> = ({ onClose, onMarkerClickParent, selectedPlace  }) => {
+ 
   const [InputText, setInputText] = useState(''); // 추가할 장소이름 검색
   const [Place, setPlace] = useState(''); // 추가할 장소 데이터 설정
   const [directSearch, setDirectSearch] = useState(false); // 초기 상태는 검색창으로 검색
@@ -24,6 +27,7 @@ const AddPlace: React.FC<AddPlaceProps> = ({ onClose }) => {
     e.preventDefault();
     setPlace(InputText);
     setInputText('');
+    onMarkerClickParent(InputText);
   };
 
   const changeSearchType = (e: any) => {
@@ -42,6 +46,17 @@ const AddPlace: React.FC<AddPlaceProps> = ({ onClose }) => {
     onClose(); // 부모 컴포넌트에서 전달받은 onClose 함수 호출
   };
 
+  const handleConfirmation = (confirmed: boolean) => {
+    if (confirmed) {
+      setPlace(InputText);
+      setInputText('');
+      onMarkerClickParent(InputText);
+      console.log('사용자가 선택한 책:', selectedPlace);
+    }
+    onClose();
+  };
+
+
   return (
     <div className="bg-white p-8 rounded-lg">
       <button onClick={changeSearchType}>
@@ -49,7 +64,7 @@ const AddPlace: React.FC<AddPlaceProps> = ({ onClose }) => {
       </button>
       {directSearch ? (
         <div>
-          <MapDirectSearch></MapDirectSearch>
+         <MapDirectSearch onMarkerClick={onMarkerClick} selectedPlace={selectedPlace} />
         </div>
       ) : (
         <div>
@@ -75,6 +90,12 @@ const AddPlace: React.FC<AddPlaceProps> = ({ onClose }) => {
           <MapSearch searchPlace={Place} onMarkerClick={onMarkerClick} />
         </div>
       )}
+      <div className="mt-4 text-center">
+          <p>선택된 책: {placeName}</p>
+          <p>선택된 장소가 맞습니까?</p>
+          <button onClick={() => handleConfirmation(true)} className="px-4 py-2 bg-blue-500 text-white rounded">예</button>
+          <button onClick={() => handleConfirmation(false)} className="px-4 py-2 bg-red-500 text-white rounded">아니오</button>
+          </div>
     </div>
   );
 };
