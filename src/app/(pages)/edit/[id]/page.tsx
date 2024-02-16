@@ -2,6 +2,7 @@
 
 import { BookSearch } from "@/app/components/bookSearch";
 import AddPlace from "@/app/components/map";
+import CustomModal from "@/app/components/modal";
 import { useCallback, useState } from "react";
 
 
@@ -38,7 +39,11 @@ const Editor = () => {
             >
                 지도 검색하기
             </button>
-            {showMap && <AddPlace onClose={handleCloseMap} />}
+            {showMap && (
+                <CustomModal isOpen={true} onClose={handleCloseMap}>
+                    <AddPlace onClose={handleCloseMap} />
+                </CustomModal>
+            )}
             </div>
         </section>
         <section className="py-8 flex gap-10 border border-slate-400">

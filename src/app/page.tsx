@@ -4,12 +4,21 @@ import Image from 'next/image'
 import AddPlace from './components/map'
 import Link from 'next/link'
 import SlideCarousel from './components/carousel'
+import { useEffect, useState } from 'react'
 
 export default function Home() {
+
+  const [map, setMap] = useState(false);
+
   let session = useSession()
   if (session) {
     console.log(session)
   }
+
+  useEffect(()=> {
+    setMap(true);
+  },[])
+
   return (
     <div>
       <div>읽는곳곳</div>
@@ -33,7 +42,7 @@ export default function Home() {
         <div>로그인된 정보 X</div>
         </>
       )}
-      <AddPlace></AddPlace>
+      <AddPlace onClose={() => setMap(false)}/>
       <SlideCarousel/>
     </div>
   )
