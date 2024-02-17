@@ -56,10 +56,16 @@ const NavBar = () => {
             <Link href="/">홈</Link>
           </li>
           <li>
-            <Link href="/">기록하기</Link>
-          </li>
+          {session.data && (
+          <>
           <li>
-            <Link href="/mypage/:[id]">내 서재</Link>
+              <Link href="/">기록하기</Link>
+          </li>
+            <li>
+              <Link href="/mypage/:[id]">내 서재</Link>
+            </li>
+          </>
+        )}
           </li>
           <li>
             <Link href="/">장소 보기</Link>
@@ -81,12 +87,16 @@ const NavBar = () => {
         <h1 className='self-center text-2xl font-semibold whitespace-nowrap dark:text-white mx-8'>
           <Link href='/'>읽는곳곳</Link>
           </h1>
+        {session.data && (
+        <>
         <div className='block py-2 pl-3 pr-4 font-bold text-white-900 rounded hover:bg-gray-100 md:hover:bg-transparent dark:border-gray-700 mx-8 text-lg'>
           <Link href="/">기록하기</Link>
           </div>
-        <div className='block py-2 pl-3 pr-4 font-bold text-white-900 rounded hover:bg-gray-100 md:hover:bg-transparent dark:border-gray-700 mx-8 text-lg'>
+         <div className='block py-2 pl-3 pr-4 font-bold text-white-900 rounded hover:bg-gray-100 md:hover:bg-transparent dark:border-gray-700 mx-8 text-lg'>
           <Link href="/mypage/:[id]">내 서재</Link>
-          </div>
+        </div>
+        </>
+        )}
         <div className='block py-2 pl-3 pr-4 font-bold text-white-900 rounded hover:bg-gray-100 md:hover:bg-transparent dark:border-gray-700 mx-8 text-lg'>
           <Link href="/">장소 보기</Link>
           </div>

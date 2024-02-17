@@ -33,9 +33,6 @@ export default function Home() {
             alt="Picture of the author"
           />
             <div>
-          <Link href='/mypage/:[id]'>
-            내 서재
-          </Link>
           </div>
         </div>
       ) : (
