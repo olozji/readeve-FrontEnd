@@ -22,6 +22,7 @@ export default function Home() {
   return (
     <div>
       <div>읽는곳곳</div>
+      <h1>누구나 볼 수 있는 페이지</h1>
       {session.data ? (
         <div>
           {session.data.user?.name}
@@ -42,7 +43,9 @@ export default function Home() {
         <div>로그인된 정보 X</div>
         </>
       )}
-      <AddPlace onClose={() => setMap(false)}/>
+      <AddPlace onClose={() => setMap(false)} selectedPlace={''} onMarkerClickParent={function (markerInfo: string): void {
+        throw new Error('Function not implemented.')
+      } }/>
       <SlideCarousel/>
     </div>
   )

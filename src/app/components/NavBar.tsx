@@ -1,9 +1,34 @@
 'use client';
 
+import { useSession } from 'next-auth/react';
 import Link from 'next/link';
-import React from 'react'
+import React, { useState } from 'react'
+import CustomModal from './modal';
+import LoginBtn from './buttons/LoginButton';
+import LogoutBtn from './buttons/LogoutButton';
+
 
 const NavBar = () => {
+
+  const [ isLogin, setIsLogin] = useState(false);
+  const [isLoginOpen, setIsLoginOpen] = useState(false);
+
+  let session = useSession()
+  if (session) {
+    console.log(session)
+  }
+
+  const openLoginModal = () => {
+    setIsLoginOpen(true);
+  }
+
+  const closeLoginModal = () => {
+    setIsLoginOpen(false);
+  }
+
+  const toggleLoginStatus = () => {
+    setIsLogin((prevLogin) => !prevLogin)
+  }
   
   return (
     <nav className="navbar sticky top-0 z-10 bg-slate-200">
@@ -40,7 +65,13 @@ const NavBar = () => {
             <Link href="/">장소 보기</Link>
           </li>
           <li>
-            <Link href="/">로그인</Link>
+            <div>
+          {session ? (
+            <LoginBtn/>
+          ) : (
+            <button onClick={openLoginModal}>로그인</button>
+          )}
+            </div>
           </li>
         </ul>
       </div>
@@ -60,10 +91,29 @@ const NavBar = () => {
           <Link href="/">장소 보기</Link>
           </div>
           <div className='block py-2 pl-3 pr-4 font-bold text-white-900 rounded hover:bg-gray-100 md:hover:bg-transparent dark:border-gray-700 mx-8 text-lg'>
-          <Link href="/">로그인</Link>
-          </div>
+          {session.data ? (
+        <div>
+          {session.data.user?.name}
+        </div>
+      ) : (
+        <>
+        <div>
+          <button onClick={openLoginModal}>로그인</button>
+        </div>
+        </>
+      )}
+            </div>
         </ul>
         </div>
+        {isLoginOpen && (
+        <CustomModal onClose={closeLoginModal} isOpen={true}>
+          <div>
+            <h1>로그인을 하고 모든 기능을 이용해 보세요</h1>
+            <h1>필요한 시간은 단 3초!</h1>
+            <LoginBtn onLogin={toggleLoginStatus} />
+          </div>
+        </CustomModal>
+      )}
         <div className="grow" id="space"></div>
       </nav>
    
