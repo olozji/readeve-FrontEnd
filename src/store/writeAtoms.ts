@@ -9,8 +9,8 @@ export const writeState = atom({
 })
 
 // 모든 공유리뷰 호출
-export const allRevieSelector = selector({
-    key:'allRevieSelector',
+export const allReviewSelector = selector({
+    key:'allReviewSelector',
     get:({get}) => {
         
     }

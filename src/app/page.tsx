@@ -5,6 +5,7 @@ import AddPlace from './components/map'
 import Link from 'next/link'
 import SlideCarousel from './components/carousel'
 import { useEffect, useState } from 'react'
+import Review from './components/review'
 
 export default function Home() {
 
@@ -44,6 +45,7 @@ export default function Home() {
         throw new Error('Function not implemented.')
       } }/>
       <SlideCarousel/>
+      <Review/>
     </div>
   )
 }

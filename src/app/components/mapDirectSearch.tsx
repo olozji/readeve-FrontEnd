@@ -89,7 +89,7 @@ export const MapDirectSearch = ({onMarkerClick}:any) => {
                   address: addr,
                 };
   
-                setMarkers((prevMarkers) => [...prevMarkers, newMarker]);
+                setMarkers((prevMarkers:any) => [...prevMarkers, newMarker]);
 
                 // 기존 마커를 제거하고 새로운 마커를 넣는다.
                 marker.setMap(null)
