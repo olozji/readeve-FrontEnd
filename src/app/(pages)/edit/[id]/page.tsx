@@ -3,7 +3,7 @@
 import { BookSearch } from "@/app/components/bookSearch";
 import AddPlace from "@/app/components/map";
 import CustomModal from "@/app/components/modal";
-import { useCallback, useState } from "react";
+import { useCallback, useEffect, useState } from "react";
 
 
 const Editor = () => {
@@ -11,6 +11,7 @@ const Editor = () => {
     const [content, setContent] = useState("");
     const [showMap, setShowMap] = useState(false);
     const [selectedPlace, setSelectedPlace] = useState('');
+    const [InputText, setInputText] = useState(''); 
  
     const handleSearchMap = useCallback((e:any) => {
         e.preventDefault();
@@ -21,7 +22,21 @@ const Editor = () => {
         setShowMap(false);
     }, []);
 
+    const handleConfirmation = (confirmed: boolean) => {
+        if (confirmed) {
+          setSelectedPlace(selectedPlace);
+          setInputText(selectedPlace);
+          onMarkerClickParent(selectedPlace);
+          console.log('사용자가 선택한 장소:', selectedPlace);
+        }
+        handleCloseMap();
+      };
 
+      const onMarkerClickParent = (markerInfo: string) => {
+        setInputText(markerInfo);
+      };
+
+     
 
     return (
     <div className="flex justify-center mx-auto box-border min-h-full">
@@ -42,6 +57,12 @@ const Editor = () => {
             {showMap && (
                 <CustomModal isOpen={true} onClose={handleCloseMap}>
                     <AddPlace onClose={handleCloseMap} onMarkerClickParent={setSelectedPlace} selectedPlace={selectedPlace} />
+                    <div className="mt-4 text-center">
+                    <p>선택된 장소: {selectedPlace}</p>
+                    <p>선택된 장소가 맞습니까?</p>
+                    <button onClick={() => handleConfirmation(true)} className="px-4 py-2 bg-blue-500 text-white rounded">예</button>
+                    <button onClick={() => handleConfirmation(false)} className="px-4 py-2 bg-red-500 text-white rounded">아니오</button>
+                </div>
                 </CustomModal>
             )}
             </div>
@@ -89,3 +110,7 @@ const Editor = () => {
 
 
 export default Editor;
+function onMarkerClickParent(InputText: string) {
+    throw new Error("Function not implemented.");
+}
+

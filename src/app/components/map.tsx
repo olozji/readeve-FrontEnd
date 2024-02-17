@@ -39,8 +39,10 @@ const AddPlace: React.FC<AddPlaceProps> = ({ onClose, onMarkerClickParent, selec
   const onMarkerClick = (placeName: string) => {
     setPlaceName(placeName);
     setInputText(placeName);
+    onMarkerClickParent(placeName); // 이 부분을 추가
     console.log(placeName);
   };
+  
 
   const handleCloseModal = () => {
     onClose(); // 부모 컴포넌트에서 전달받은 onClose 함수 호출
@@ -48,13 +50,13 @@ const AddPlace: React.FC<AddPlaceProps> = ({ onClose, onMarkerClickParent, selec
 
   const handleConfirmation = (confirmed: boolean) => {
     if (confirmed) {
-      setPlace(InputText);
+      setPlaceName(placeName); // 선택된 장소 정보를 반영
       setInputText('');
-      onMarkerClickParent(InputText);
-      console.log('사용자가 선택한 책:', selectedPlace);
+      onMarkerClickParent(placeName); // 선택된 장소 정보를 Editor 컴포넌트로 전달
     }
-    onClose();
+    onClose(); // 모달 닫기
   };
+
 
 
   return (
@@ -90,12 +92,7 @@ const AddPlace: React.FC<AddPlaceProps> = ({ onClose, onMarkerClickParent, selec
           <MapSearch searchPlace={Place} onMarkerClick={onMarkerClick} />
         </div>
       )}
-      <div className="mt-4 text-center">
-          <p>선택된 책: {placeName}</p>
-          <p>선택된 장소가 맞습니까?</p>
-          <button onClick={() => handleConfirmation(true)} className="px-4 py-2 bg-blue-500 text-white rounded">예</button>
-          <button onClick={() => handleConfirmation(false)} className="px-4 py-2 bg-red-500 text-white rounded">아니오</button>
-          </div>
+      
     </div>
   );
 };
