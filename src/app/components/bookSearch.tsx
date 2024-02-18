@@ -77,6 +77,7 @@ export const BookSearch = () => {
   const handleConfirmation = (confirmed: boolean) => {
     if (confirmed) {
       let selectedBookInfo = {
+        isbn:selectedBook.isbn,
         title: selectedBook.title,
         thumbnail:selectedBook.thumbnail
       }
