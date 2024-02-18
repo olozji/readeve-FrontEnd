@@ -89,16 +89,15 @@ const ReviewPage = () => {
               href={`/review/${item.id}`}
               key={item.id}
               onClick={() => setSelectedReview(item)}>
-              <div className="card shadow-xl m-2">
-                <figure className='w-30 h-72 bg-white'>
-                  <img className='w-60 max-h-[100%] hover:scale-110 ease-linear duration-200"'
-                       src={item.image}/>
-                </figure>
-                <div className="card-body h-52 items-center">
-                  <h2 className='card-title lg:text-xl md:text-sm'>{item.title}</h2>
-                  <h2 className='text-base font-bold lg:text-3xl md:text-sm'>${item.date}</h2>
+              <div className="w-80 h-80 border border-slate-200 bg-slate-200 relative">
+              <div className="absolute transform -translate-y-1/2 md:left-20 top-1/2 mx-8">
+                <div className="text-white text-left">
+                  <h1 className="text-3xl md:text-5xl font-bold"></h1>
+                  <p className="py-4 md:text-2xl"></p>
+                  <div>책 이미지</div>
                 </div>
               </div>
+            </div>
             </Link>
           ))
         )}
