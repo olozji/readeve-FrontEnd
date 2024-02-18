@@ -89,6 +89,7 @@ const ReviewPage = () => {
               href={`/review/${item.id}`}
               key={item.id}
               onClick={() => setSelectedReview(item)}>
+              <h1>모든 기록</h1>
               <div className="w-80 h-80 border border-slate-200 bg-slate-200 relative">
               <div className="absolute transform -translate-y-1/2 md:left-20 top-1/2 mx-8">
                 <div className="text-white text-left">
@@ -102,16 +103,6 @@ const ReviewPage = () => {
           ))
         )}
     </div>
-          <h1>모든 기록</h1>
-            <div className="w-80 h-80 border border-slate-200 bg-slate-200 relative">
-              <div className="absolute transform -translate-y-1/2 md:left-20 top-1/2 mx-8">
-                <div className="text-white text-left">
-                  <h1 className="text-3xl md:text-5xl font-bold"></h1>
-                  <p className="py-4 md:text-2xl"></p>
-                  <div>책 이미지</div>
-                </div>
-              </div>
-            </div>
         </section>
         </section>
   );
