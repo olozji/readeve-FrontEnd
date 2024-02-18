@@ -1,6 +1,8 @@
 'use client'
 
+import { placeState } from '@/store/writeAtoms';
 import React, { useEffect, useState, useRef } from 'react'
+import { useRecoilState } from 'recoil';
 
 declare global {
   interface Window {
@@ -21,6 +23,7 @@ const MapSearch = ({ searchPlace, onMarkerClick }: MapSearchProps): React.ReactE
 
   const [selectedPlace, setSelectedPlace] = useState<any | null>(null);
   const [hoveredPlace, setHoveredPlace] = useState<any | null>(null);
+  const [placeInfo,setPlaceInfo] = useRecoilState<any>(placeState)
 
   // TODO:마커 호버시 리스트 배경색 효과를 위해 만든 state -> 아직 진행중
   const [selectedMarkerIndex, setSelectedMarkerIndex] = useState<number | null>(null);
@@ -95,8 +98,7 @@ const MapSearch = ({ searchPlace, onMarkerClick }: MapSearchProps): React.ReactE
 
           // 마커를 클릭했을 때, input에 장소이름 반영되게 props로 받아온 콜백함수 호출
           window.kakao.maps.event.addListener(marker, 'click', () => {
-            onMarkerClick(place.place_name);
-            console.log(place.place_name)
+            setPlaceInfo(place)
           });
 
           //호버 했을 때 infoWindow 뜨게 만들어 놨어요!! 근데 마우스 내렸을때 안 없어져서 내릴때 없애는 코드 추가해야 대요
@@ -142,6 +144,7 @@ const MapSearch = ({ searchPlace, onMarkerClick }: MapSearchProps): React.ReactE
                   const offsetTop = listItem.offsetTop - listContainerRef.current.offsetTop;
                   listContainerRef.current.scrollTo({ top: offsetTop, behavior: 'smooth' });
                 }
+              
               };
 
               window.kakao.maps.event.addListener(marker, 'click', () => {
@@ -221,8 +224,7 @@ const MapSearch = ({ searchPlace, onMarkerClick }: MapSearchProps): React.ReactE
 
      // 마커를 클릭했을 때, input에 장소이름 반영되게 props로 받아온 콜백함수 호출
      window.kakao.maps.event.addListener(marker, 'click', () => {
-      onMarkerClick(place.place_name);
-      console.log(place.place_name)
+       setPlaceInfo(place)
     });
 
     window.kakao.maps.event.addListener(marker, 'mouseover', () => {
@@ -277,6 +279,7 @@ const MapSearch = ({ searchPlace, onMarkerClick }: MapSearchProps): React.ReactE
     // useRef로 저장한 map을 참조하여 지도 이동 및 확대
     mapRef.current.panTo(new window.kakao.maps.LatLng(place.y, place.x));
     mapRef.current.setLevel(2);
+    setPlaceInfo(place)
   };
 
 
