@@ -94,13 +94,14 @@ export const BookSearch = () => {
   return (
     <div>
       <input
+        className="border-slate-400 rounded-md bg-slate-200"
         type="text"
-        placeholder="검색어"
+        placeholder=""
         value={bookName}
         onChange={(e) => setBookName(e.target.value)}
         onKeyDown={handleKeyDown} 
       />
-      <button onClick={onSubmit} >검색</button>
+      <button className='px-2 rounded-lg border-2 border-slate-400'onClick={onSubmit} >검색</button>
       {modalOpen && (
         <div
           className="fixed inset-0 bg-black bg-opacity-50 z-50 flex items-center justify-center"
@@ -113,7 +114,7 @@ export const BookSearch = () => {
             <div className="grid grid-rows-2 grid-flow-col">
             {documents.map((d: any, i: number) => (
               <div
-                className={`${selectedBook && selectedBook.title === d.title ? 'rounded-lg border-4 border-blue-500' : 'rounded-lg border-4 border-transparent'}`}
+                className={`justify-items-center${selectedBook && selectedBook.title === d.title ? 'rounded-lg border-4 border-blue-500' : 'rounded-lg border-4 border-transparent'}`}
                 key={i}
                 onClick={() => handleBookClick(d)}
                 style={{ display: 'flex', flexDirection: 'column', alignItems: 'center' }}
