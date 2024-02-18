@@ -2,6 +2,8 @@
 
 import { BookLayout } from '@/app/components/bookLayout';
 import { markersState } from '@/store/mapAtoms'
+import { useSession } from 'next-auth/react';
+import Image from 'next/image'
 import { useEffect, useRef, useState } from 'react'
 import { useRecoilState, useRecoilValue } from 'recoil'
 
@@ -12,10 +14,18 @@ declare global {
 }
 
 const myPage = () => {
+
+  let session = useSession()
+  if (session) {
+    console.log(session)
+  }
+
+
   const [map, setMap] = useState<any>()
   const [marker, setMarker] = useState<any>()
   const [address, setAddress] = useState('')
   const [documents, setDocuments] = useState<any[]>([]);
+  const [selectBook, setSelectBook] = useState<any[]>([]);
 
 
   // 저장된 지도의 마크 데이터를 꺼내와 쓰기
@@ -116,12 +126,35 @@ const myPage = () => {
   }
 
   return (
+    <section className=''>
+    <h1 className='text-center font-bold text-lg'>내 서재</h1>
+  <section>
+  {session?.data && 
+    <div className='flex border border-b-8'>
+    <>
+  <div>
+    <Image
+      src={session.data.user?.image}
+      width={100}
+      height={100}
+      alt="Picture of the author"
+    />
+  </div>
+  <div className=''>
+    <h2>이름 {session.data.user?.name}</h2>
+  </div>
+    </>
+    </div>
+  }
+  </section>
     <div>
       <div id="map" style={{ width: '100%', height: '400px' }}></div>
       <div onClick={getCurrentPosBtn}>현재 위치</div>
       <div>{address}</div>
+      {selectBook}
       <BookLayout></BookLayout>
     </div>
+    </section>
   )
 }
 
