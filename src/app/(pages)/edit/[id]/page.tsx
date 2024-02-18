@@ -128,6 +128,8 @@ const Editor = () => {
         </section>
         <section className="py-8 flex border border-b-0 border-slate-400 gap-3">
           <div className="tag_name flex mx-auto gap-5">
+          <div className={`border bg-slate-200 rounded-md ${isPrivate?`border-4 border-blue-500`:``}`} onClick={()=>{setIsPrivate(!isPrivate)}}>나만보기 </div>
+
           </div>
         </section>
         <section className="py-8 border border-t-0 border-slate-400 rounded-b-md">
