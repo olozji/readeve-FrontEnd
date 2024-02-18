@@ -54,7 +54,7 @@ const Editor = () => {
     e.preventDefault()
     setTitleInfo(e.target.value)
   }
-  
+
   const handleAllData = (e:any) => {
     e.preventDefault();
     let data = {
@@ -77,8 +77,17 @@ const Editor = () => {
       tags: tagInfo,
       content:content
     }
+    // 이전 데이터 가져오기
+    const storedData = localStorage.getItem('allDataInfo');
+    const previousData = storedData ? JSON.parse(storedData) : [];
+
+    // 새로운 데이터 추가
+    const newData = [...previousData, data];
+
+    // 로컬 스토리지에 저장
+    localStorage.setItem('allDataInfo', JSON.stringify(newData));
     setAllDataInfo(data);
-    console.log(data)
+    console.log(allDataInfo)
   }
   return (
     <div className="flex justify-center mx-auto box-border min-h-full">
