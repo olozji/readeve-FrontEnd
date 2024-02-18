@@ -38,6 +38,14 @@ export const titleState = atom({
   key: 'titleState',
   default: []
 })
+export const placeState = atom({
+  key: 'placaeState',
+  default:{}
+})
+export const allDataState = atom({
+  key: 'allDataState',
+  default:{},
+})
 // 리뷰 필터링
 export const filterReviewState = atom({
     key:'filterReviewState',
