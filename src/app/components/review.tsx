@@ -15,21 +15,32 @@ const Review = () => {
     setCurrentIndex(index);
   };
 
-  const mainReviewToShow = 3; // 메인화면에서 보여질 갯수
+  const mainReviewToShow = 6; // 메인화면에서 보여질 갯수
+
+  const mainReviews = Array.isArray(allReviews) ? allReviews.slice(0, mainReviewToShow) : [];
 
  
   return (
         <div className="">
-          <h1>모든 기록</h1>
-            <div className="w-80 h-80 border border-slate-200 bg-slate-200 relative">
+          <div className='flex justify-between'>
+          <span>모든 기록</span>
+          <span>
+            <Link href={'/reviews'}>
+            더 보기
+            </Link>
+            </span>
+          </div>
+          {mainReviews.map((review:any, index:any) => (
+            <div key={index} className="reviewItem w-80 h-80 border border-slate-200 bg-slate-200 relative">
               <div className="absolute transform -translate-y-1/2 md:left-20 top-1/2 mx-8">
                 <div className="text-white text-left">
-                  <h1 className="text-3xl md:text-5xl font-bold"></h1>
-                  <p className="py-4 md:text-2xl"></p>
+                  <h1 className="text-3xl md:text-5xl font-bold">{review.title}</h1>
+                  <p className="py-4 md:text-2xl">{review.content}</p>
                   <div>책 이미지</div>
                 </div>
               </div>
             </div>
+            ))}
         </div>
   );
 };
