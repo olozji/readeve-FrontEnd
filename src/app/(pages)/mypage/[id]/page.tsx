@@ -2,6 +2,8 @@
 
 import { BookLayout } from '@/app/components/bookLayout';
 import { markersState } from '@/store/mapAtoms'
+import { useSession } from 'next-auth/react';
+import Image from 'next/image'
 import { useEffect, useRef, useState } from 'react'
 import { useRecoilState, useRecoilValue } from 'recoil'
 
@@ -12,10 +14,13 @@ declare global {
 }
 
 const myPage = () => {
+
   const [map,setMap] = useState<any>()
+
   const [marker, setMarker] = useState<any>()
   const [address, setAddress] = useState('')
   const [documents, setDocuments] = useState<any[]>([]);
+  const [selectBook, setSelectBook] = useState<any[]>([]);
 
    
 
@@ -74,11 +79,34 @@ const myPage = () => {
 
 
   return (
+    <section className=''>
+    <h1 className='text-center font-bold text-lg'>내 서재</h1>
+  <section>
+  {session?.data && 
+    <div className='flex border border-b-8'>
+    <>
+  <div>
+    <Image
+      src={session.data.user?.image}
+      width={100}
+      height={100}
+      alt="Picture of the author"
+    />
+  </div>
+  <div className=''>
+    <h2>이름 {session.data.user?.name}</h2>
+  </div>
+    </>
+    </div>
+  }
+  </section>
     <div>
       <div id="map" style={{ width: '100%', height: '400px' }}></div>
       <div>{address}</div>
+      {selectBook}
       <BookLayout></BookLayout>
     </div>
+    </section>
   )
 }
 

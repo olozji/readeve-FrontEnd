@@ -1,6 +1,8 @@
+import Link from "next/link";
 import { useEffect, useState } from "react";
 
 export const BookLayout = () => {
+
     const [documents, setDocuments] = useState<any[]>([]);
 
     useEffect(() => {
@@ -15,6 +17,7 @@ export const BookLayout = () => {
     return (
         <div className="grid grid-cols-3 ">
             {documents.map((d: any, i: number) => (
+              <Link key={i} href={`/detail/${i}`}>
               <div
                 className={`justify-items-center rounded-lg border-4 border-transparent`}
                 key={i}
@@ -27,6 +30,7 @@ export const BookLayout = () => {
                 />
                 <div className="p-4">{d.book.title}</div>
               </div>
+              </Link>
             ))}
           </div>
     )
