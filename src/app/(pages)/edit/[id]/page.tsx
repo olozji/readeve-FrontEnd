@@ -4,7 +4,7 @@ import { BookSearch } from '@/app/components/bookSearch'
 import AddPlace from '@/app/components/map'
 import CustomModal from '@/app/components/modal'
 import { Tag } from '@/app/components/tags';
-import { bookState, tagState } from '@/store/writeAtoms'
+import { bookState, tagState, titleState } from '@/store/writeAtoms'
 import { useCallback, useEffect, useState } from 'react'
 import { useRecoilState } from 'recoil'
 
@@ -13,8 +13,11 @@ const Editor = () => {
   const [showMap, setShowMap] = useState(false)
   const [selectedPlace, setSelectedPlace] = useState('')
   const [InputText, setInputText] = useState('')
-    const [bookInfo] = useRecoilState<any>(bookState)
-    const [tagInfo] = useRecoilState<any>(tagState)
+  const [titleInfo, setTitleInfo] = useRecoilState(titleState);
+  const [bookInfo] = useRecoilState<any>(bookState)
+  const [tagInfo] = useRecoilState<any>(tagState);
+  const [isPrivate,setIsPrivate] = useState(false)
+
 
   const handleSearchMap = useCallback((e: any) => {
     e.preventDefault()
@@ -38,6 +41,10 @@ const Editor = () => {
   const onMarkerClickParent = (markerInfo: string) => {
     setInputText(markerInfo)
   }
+  const handleTitle = (e: any) => {
+    e.preventDefault();
+    setTitleInfo(e.target.value)
+  }
 
   return (
     <div className="flex justify-center mx-auto box-border min-h-full">
@@ -45,9 +52,17 @@ const Editor = () => {
         <header className="h-10">
           <h1>기록하기</h1>
         </header>
-        <h1 className="py-8">제목</h1>
-        {/* 추후에 받아올 지도 장소 */}
-        <section className="py-8 flex gap-10 border border-slate-400 rounded-t-md">
+              <section className="py-8 flex gap-10 border border-slate-400 rounded-t-md">
+              <h4 className="px-5">제목</h4>
+          <div className="input_box">
+            <input
+              className="border-slate-400 rounded-md bg-slate-200"
+              value={titleInfo}
+              onChange={handleTitle}
+            />
+          </div>
+        </section>
+        <section className="py-8 flex gap-10 border border-slate-400">
           <h4 className="px-5">where</h4>
           <div className="input_box w-full">
             <input
@@ -86,7 +101,7 @@ const Editor = () => {
           <h4 className="px-5">Book</h4>
           <div>
             {bookInfo.title && (
-                          <div>
+                          <div className='justify-items-center' style={{ display: 'flex', flexDirection: 'column', alignItems: 'center' }}>
                               <div>현재 선택된 책</div>
                 <img
                   src={bookInfo.thumbnail ? bookInfo.thumbnail: 'http://via.placeholder.com/120X150'}
@@ -113,8 +128,6 @@ const Editor = () => {
         </section>
         <section className="py-8 flex border border-b-0 border-slate-400 gap-3">
           <div className="tag_name flex mx-auto gap-5">
-            <div className="border bg-red-200 rounded-md">나만보기 </div>
-            <div className="border bg-indigo-200 rounded-md">전체보기</div>
           </div>
         </section>
         <section className="py-8 border border-t-0 border-slate-400 rounded-b-md">

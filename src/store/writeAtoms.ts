@@ -34,6 +34,10 @@ export const tagState = atom({
     key: 'tagState',
     default: []
 })
+export const titleState = atom({
+  key: 'titleState',
+  default: []
+})
 // 리뷰 필터링
 export const filterReviewState = atom({
     key:'filterReviewState',
