@@ -4,15 +4,26 @@ import Image from 'next/image'
 import AddPlace from './components/map'
 import Link from 'next/link'
 import SlideCarousel from './components/carousel'
+import { useEffect, useState } from 'react'
+import Review from './components/review'
 
 export default function Home() {
+
+  const [map, setMap] = useState(false);
+
   let session = useSession()
   if (session) {
     console.log(session)
   }
+
+  useEffect(()=> {
+    setMap(true);
+  },[])
+
   return (
     <div>
       <div>읽는곳곳</div>
+      <h1>누구나 볼 수 있는 페이지</h1>
       {session.data ? (
         <div>
           {session.data.user?.name}
@@ -23,9 +34,6 @@ export default function Home() {
             alt="Picture of the author"
           />
             <div>
-          <Link href='/mypage/:[id]'>
-            내 서재
-          </Link>
           </div>
         </div>
       ) : (
@@ -33,8 +41,11 @@ export default function Home() {
         <div>로그인된 정보 X</div>
         </>
       )}
-      <AddPlace></AddPlace>
+      <AddPlace onClose={() => setMap(false)} selectedPlace={''} onMarkerClickParent={function (markerInfo: string): void {
+        throw new Error('Function not implemented.')
+      } }/>
       <SlideCarousel/>
+      <Review/>
     </div>
   )
 }

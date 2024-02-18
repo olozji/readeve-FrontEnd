@@ -8,7 +8,7 @@ declare global {
   }
 }
 
-export const MapDirectSearch = () => {
+export const MapDirectSearch = ({onMarkerClick}:any) => {
   const [map, setMap] = useState<any>()
   const [marker, setMarker] = useState<any>()
   const [address, setAddress] = useState('')
@@ -81,6 +81,7 @@ export const MapDirectSearch = () => {
 
                 // 클릭한 위치 주소를 가져온다.
                 setAddress(addr)
+                onMarkerClick(addr);
 
                 const newMarker = {
                   lat: mouseEvent.latLng.getLat(),
@@ -88,7 +89,7 @@ export const MapDirectSearch = () => {
                   address: addr,
                 };
   
-                setMarkers((prevMarkers) => [...prevMarkers, newMarker]);
+                setMarkers((prevMarkers:any) => [...prevMarkers, newMarker]);
 
                 // 기존 마커를 제거하고 새로운 마커를 넣는다.
                 marker.setMap(null)

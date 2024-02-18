@@ -6,7 +6,8 @@ export default function RecoilRootProvider({
 }: {
   children: React.ReactNode
 }) {
-  return (<RecoilRoot>
+  return (
+  <RecoilRoot>
     <SessionProvider>
       {children}
     </SessionProvider>

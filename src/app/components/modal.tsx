@@ -10,6 +10,7 @@ interface ModalType {
 
 const CustomModal = ({ isOpen, onClose, children }: ModalType) => {
   const [open, setOpen] = useState(false);
+  const [selected, setSelected] = useState('');
 
   useEffect(() => {
     setOpen(isOpen);
@@ -28,6 +29,18 @@ const CustomModal = ({ isOpen, onClose, children }: ModalType) => {
       handleClose();
     }
   };
+
+//   const handleConfirmation = (selected:any) => {
+//     if(selected) {
+//         onConfirm(selected);
+//     }
+//     setOpen(false);
+// }
+
+const confirmPlace = (place:any) => {
+    setSelected(place);
+}
+
 
   return (
     <Modal open={open} onClose={handleClose}>

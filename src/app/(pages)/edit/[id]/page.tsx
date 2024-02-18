@@ -2,13 +2,16 @@
 
 import { BookSearch } from "@/app/components/bookSearch";
 import AddPlace from "@/app/components/map";
-import { useCallback, useState } from "react";
+import CustomModal from "@/app/components/modal";
+import { useCallback, useEffect, useState } from "react";
 
 
 const Editor = () => {
 
     const [content, setContent] = useState("");
     const [showMap, setShowMap] = useState(false);
+    const [selectedPlace, setSelectedPlace] = useState('');
+    const [InputText, setInputText] = useState(''); 
  
     const handleSearchMap = useCallback((e:any) => {
         e.preventDefault();
@@ -19,7 +22,21 @@ const Editor = () => {
         setShowMap(false);
     }, []);
 
+    const handleConfirmation = (confirmed: boolean) => {
+        if (confirmed) {
+          setSelectedPlace(selectedPlace);
+          setInputText(selectedPlace);
+          onMarkerClickParent(selectedPlace);
+          console.log('사용자가 선택한 장소:', selectedPlace);
+        }
+        handleCloseMap();
+      };
 
+      const onMarkerClickParent = (markerInfo: string) => {
+        setInputText(markerInfo);
+      };
+
+     
 
     return (
     <div className="flex justify-center mx-auto box-border min-h-full">
@@ -32,13 +49,22 @@ const Editor = () => {
         <section className="py-8 flex gap-10 border border-slate-400 rounded-t-md">
             <h4 className="px-5">where</h4>
             <div className='input_box w-full'>
-            <button
+            <input
             className="border-slate-400 rounded-md bg-slate-200"
+            value={selectedPlace}
             onClick={handleSearchMap}
-            >
-                지도 검색하기
-            </button>
-            {showMap && <AddPlace onClose={handleCloseMap} />}
+            />
+            {showMap && (
+                <CustomModal isOpen={true} onClose={handleCloseMap}>
+                    <AddPlace onClose={handleCloseMap} onMarkerClickParent={setSelectedPlace} selectedPlace={selectedPlace} />
+                    <div className="mt-4 text-center">
+                    <p>선택된 장소: {selectedPlace}</p>
+                    <p>선택된 장소가 맞습니까?</p>
+                    <button onClick={() => handleConfirmation(true)} className="px-4 py-2 bg-blue-500 text-white rounded">예</button>
+                    <button onClick={() => handleConfirmation(false)} className="px-4 py-2 bg-red-500 text-white rounded">아니오</button>
+                </div>
+                </CustomModal>
+            )}
             </div>
         </section>
         <section className="py-8 flex gap-10 border border-slate-400">
@@ -84,3 +110,7 @@ const Editor = () => {
 
 
 export default Editor;
+function onMarkerClickParent(InputText: string) {
+    throw new Error("Function not implemented.");
+}
+

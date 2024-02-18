@@ -21,14 +21,13 @@ export default function RootLayout({
   return (
     <html lang="en">
       <body className={inter.className}>
+      <RecoilRootProvider>
         <LayOut>
-          <LoginBtn></LoginBtn>
           <LogoutButton></LogoutButton>
-        <RecoilRootProvider>
-          {children}
-        </RecoilRootProvider>
+          {children} 
         <script type="text/javascript" src="//dapi.kakao.com/v2/maps/sdk.js?appkey=6d8ac2fb0740657f1e67a9163c8b331b&autoload=false&libraries=services"></script>
         </LayOut>
+        </RecoilRootProvider>
       </body>
     </html>
   );
