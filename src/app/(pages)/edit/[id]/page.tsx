@@ -63,14 +63,14 @@ const Editor = () => {
       place: {
         place_name: placeInfo.place_name,
         id: placeInfo.id,
-        lat:placeInfo.y,
-        lng: placeInfo.x,
+        y:placeInfo.y,
+        x: placeInfo.x,
         address: placeInfo.road_address_name,
         url:placeInfo.place_url,
         isPrivatePlace: isPrivatePlace,
-        
       },
       book: {
+        isbn:bookInfo.isbn,
         title: bookInfo.title,
         thumbnail: bookInfo.thumbnail,
       },
