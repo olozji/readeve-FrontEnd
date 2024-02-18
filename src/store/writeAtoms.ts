@@ -26,7 +26,10 @@ export const selectedReviewState = atom<ReviewData | null>({
     key:'selectedReviewState',
     default:null,
 })
-
+export const bookState = atom({
+    key: 'bookState',
+    default: {}
+})
 // 리뷰 필터링
 export const filterReviewState = atom({
     key:'filterReviewState',
