@@ -3,7 +3,8 @@
 import { BookSearch } from '@/app/components/bookSearch'
 import AddPlace from '@/app/components/map'
 import CustomModal from '@/app/components/modal'
-import { bookState } from '@/store/writeAtoms'
+import { Tag } from '@/app/components/tags';
+import { bookState, tagState } from '@/store/writeAtoms'
 import { useCallback, useEffect, useState } from 'react'
 import { useRecoilState } from 'recoil'
 
@@ -12,7 +13,8 @@ const Editor = () => {
   const [showMap, setShowMap] = useState(false)
   const [selectedPlace, setSelectedPlace] = useState('')
   const [InputText, setInputText] = useState('')
-  const [bookInfo] = useRecoilState<any>(bookState)
+    const [bookInfo] = useRecoilState<any>(bookState)
+    const [tagInfo] = useRecoilState<any>(tagState)
 
   const handleSearchMap = useCallback((e: any) => {
     e.preventDefault()
@@ -98,12 +100,16 @@ const Editor = () => {
           </div>
         </section>
         <section className="py-8 flex border border-slate-400 gap-3">
-          <h4 className="px-5">tag</h4>
-          <div className="tag_name flex gap-3">
-            <div className="border bg-slate-200 rounded-md">#조용한</div>
-            <div className="border bg-slate-200 rounded-md">#시끄러운</div>
-            <div className="border bg-slate-200 rounded-md">#고양이</div>
-          </div>
+                  <h4 className="px-5">tag</h4>
+                  
+                  <Tag></Tag>
+                  {tagInfo.length!=0 && <div className='flex gap-4'>
+                      {tagInfo.map((ele:any,i:number) => {
+                          if (ele.selected) {
+                              return <div key={i}>{ele.name}</div>
+                      }
+                  })}
+                  </div>}
         </section>
         <section className="py-8 flex border border-b-0 border-slate-400 gap-3">
           <div className="tag_name flex mx-auto gap-5">
