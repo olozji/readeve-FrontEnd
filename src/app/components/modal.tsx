@@ -9,8 +9,10 @@ interface ModalType {
 }
 
 const CustomModal = ({ isOpen, onClose, children }: ModalType) => {
+  
   const [open, setOpen] = useState(false);
   const [selected, setSelected] = useState('');
+
 
   useEffect(() => {
     setOpen(isOpen);
