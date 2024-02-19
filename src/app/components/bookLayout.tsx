@@ -24,7 +24,7 @@ export const BookLayout = () => {
     return (
         <div className="grid grid-cols-3 ">
         {documents.map((d: any, i: number) => (
-             
+        
               <Link key={i} href={`/detail/${d.book && d.book.isbn ? d.book.isbn.replace(" ","") : ""}`}>
               <div
                 className={`justify-items-center rounded-lg border-4 border-transparent`}
