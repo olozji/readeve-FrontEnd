@@ -14,7 +14,10 @@ declare global {
 }
 
 const myPage = () => {
-
+  let session = useSession()
+  if (session) {
+    console.log(session)
+  }
   const [map,setMap] = useState<any>()
 
   const [marker, setMarker] = useState<any>()
