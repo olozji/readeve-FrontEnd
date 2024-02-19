@@ -128,7 +128,7 @@ const BookLayoutItem = (props: PropType) => {
                       : 'http://via.placeholder.com/120X150'
                   }
                     alt="책 표지"
-                    className="w-80 h-80 mb-2 rounded"
+                    className="w-[14rem] mb-2 rounded object-fll"
                   />
                   <div>
                   <h1 className='text-lg font-extrabold'>{data.title}</h1>
@@ -142,17 +142,10 @@ const BookLayoutItem = (props: PropType) => {
                     </div>
                     <div className='flex gap-4'>
                     <span>tags</span>
-                    {data.tags.map((data:any) => 
-                        {data && data.selected ? (
-                        <div>
-                        { data.name}
-                        </div>
-                          ) : (
-                            {}
+                    {data.tags.map((data:any) => (
+                        data.selected && <div>{data.name}</div>
                           )
-                          }
                     )}
-                    
                     </div>
                   </div>
                 </div>
