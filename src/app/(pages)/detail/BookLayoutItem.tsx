@@ -11,7 +11,7 @@ export interface PropType {
   }
 }
 
-const BookLayoutItem = (props: PropType) => {
+const BookLayoutItem : React.FC<PropType>= (props:PropType) => {
   const [bookData, setBookData] = useState<any>(null)
   const [detailOpen, setDetailOpen] = useState<boolean[]>([false,false,false]);
 

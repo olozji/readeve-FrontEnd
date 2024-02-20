@@ -2,17 +2,17 @@ import BookLayoutItem from "../BookLayoutItem"
 
 export interface PropType {
   params: {
-    id: string
-    searchParams: {}
+    id: string;
+    searchParams: {};
   }
 }
 
-const Detail  = (props:PropType) => {
+const Detail = (props: PropType) => {
   return (
-    <BookLayoutItem props={params}>
+    <BookLayoutItem params={props.params}>
       {props}
     </BookLayoutItem>
-  )
-}
+  );
+};
 
 export default Detail;
