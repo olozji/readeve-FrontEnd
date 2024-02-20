@@ -55,7 +55,7 @@ const NavBar = () => {
            <li>
             <Link href="/">홈</Link>
           </li>
-          <li>
+          <ul>
           {session.data && (
           <>
           <li>
@@ -66,7 +66,7 @@ const NavBar = () => {
             </li>
           </>
         )}
-          </li>
+          </ul>
           <li>
             <Link href="/">장소 보기</Link>
           </li>

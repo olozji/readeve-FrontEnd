@@ -10,9 +10,9 @@ export default function LoginBtn({onLogin} : {onLogin?: () => void}) {
   return (
     <Image
       src={kakaologin}
-      fit ={true}
+      alt=''
       onClick={ async () => {
-        const result = await signIn('kakao');
+        const result = await signIn('kakao',{callbackUrl:'http://localhost:8081/login/oauth2/code/kakao'});
         if(result?.error) {
           // 로그인 실패시
         } else if (result?.url && onLogin) {
