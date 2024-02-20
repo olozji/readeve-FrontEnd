@@ -236,6 +236,3 @@ const Editor = () => {
 }
 
 export default Editor
-function onMarkerClickParent(InputText: string) {
-  throw new Error('Function not implemented.')
-}

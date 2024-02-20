@@ -14,7 +14,7 @@ export default function Home() {
 
   let session = useSession()
   if (session) {
-    // console.log(session)
+    console.log(session)
   }
 
   const [map, setMap] = useState(false);
@@ -42,15 +42,14 @@ export default function Home() {
     setMap(true);
   }, [])
 
-  useEffect(() => {
-    fetchData()
-  },[fetchData])
+  // useEffect(() => {
+  //   fetchData()
+  // },[])
 
   return (
     <div>
       <div>읽는곳곳</div>
       <div onClick={fetchData}>on</div>
-      <Link href={'http://localhost:8081/oauth2/authorization/kakao'}>로그인로그인로그인</Link>
       <h1>누구나 볼 수 있는 페이지</h1>
       {session.data ? (
         <div>

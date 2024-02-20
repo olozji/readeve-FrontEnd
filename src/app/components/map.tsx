@@ -76,7 +76,6 @@ const AddPlace: React.FC<AddPlaceProps> = ({ onClose, onMarkerClickParent, selec
                 <input
                   type="text"
                   size={50}
-                  defaultValue=""
                   placeholder="장소를 검색하세요"
                   onChange={onChange}
                   value={InputText}
