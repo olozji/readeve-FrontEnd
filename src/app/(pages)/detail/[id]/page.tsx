@@ -9,8 +9,7 @@ export interface PropType {
 
 const Detail  = (props:PropType) => {
   return (
-    <BookLayoutItem props={params}>
-      {props}
+    <BookLayoutItem id={props.params.id}>
     </BookLayoutItem>
   )
 }

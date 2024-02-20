@@ -11,14 +11,14 @@ export interface PropType {
   }
 }
 
-const BookLayoutItem = (props: PropType) => {
+const BookLayoutItem = (props: any) => {
   const [bookData, setBookData] = useState<any>(null)
   const [detailOpen, setDetailOpen] = useState<boolean[]>([false,false,false]);
 
   function isBook(element: any) {
     if (element.book && element.book.isbn) {
       let bookId = element.book.isbn.replace(' ', '')
-      if (bookId === props.params.id) {
+      if (bookId === props.id) {
         return true
       }
     }
@@ -48,7 +48,7 @@ const BookLayoutItem = (props: PropType) => {
       result.forEach(() => {arr.push(false)})
       setDetailOpen(arr)
     }
-  }, [props.params.id])
+  }, [props.id])
 
   console.log(bookData)
 
