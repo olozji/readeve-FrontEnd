@@ -97,7 +97,7 @@ const MyPageComponent = (props: PropType) => {
     <>
   <div>
     <Image
-      src={session.data.user?.image}
+      src={session.data.user?.image!}
       width={100}
       height={100}
       alt="Picture of the author"

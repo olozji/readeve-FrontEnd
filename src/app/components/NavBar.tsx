@@ -15,7 +15,7 @@ const NavBar = () => {
 
   let session = useSession()
   if (session) {
-    console.log(session)
+    // console.log(session)
   }
 
   const openLoginModal = () => {
