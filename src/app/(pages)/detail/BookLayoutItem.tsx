@@ -1,6 +1,7 @@
 'use client'
 import Button from '@/app/components/buttons/button'
 import CustomModal from '@/app/components/modal'
+import Link from 'next/link';
 import { useRouter } from 'next/router'
 import { useEffect, useState } from 'react'
 
@@ -150,7 +151,7 @@ const BookLayoutItem = (props: any) => {
                   </div>
                 </div>
                 <div className='flex relative left-[35rem] w-[10rem] gap-4'>
-                    <Button label='수정' outline={true}/>
+                    <Link href={'/edit/1'}><Button label='수정' outline={true}/></Link>
                     <Button label='삭제' outline={false}/>
                   </div>
                 <div className='h-[30rem] border border-slate-200 rounded-md bg-slate-200'>

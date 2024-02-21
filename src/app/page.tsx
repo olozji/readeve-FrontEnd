@@ -9,13 +9,13 @@ import ReviewPage from './(pages)/reviews/page'
 import { useRecoilState, useRecoilValue } from 'recoil'
 import { allReviewSelector, selectedReviewState } from '@/store/writeAtoms'
 import axios from 'axios';
+import { sessionState } from '@/store/AuthAtoms';
 
 export default function Home() {
 
   let session = useSession()
-  if (session) {
-    console.log(session)
-  }
+  console.log(session)
+  
 
   const [map, setMap] = useState(false);
   const [selectedReview, setSelectedReview] = useRecoilState(selectedReviewState);
@@ -38,14 +38,12 @@ export default function Home() {
       console.error('Error fetching data:', error);
     }
   };
-  useEffect(()=> {
+  useEffect(() => {
+    fetchData()
     setMap(true);
   }, [])
 
-  // useEffect(() => {
-  //   fetchData()
-  // },[])
-
+  
   return (
     <div>
       <div>읽는곳곳</div>

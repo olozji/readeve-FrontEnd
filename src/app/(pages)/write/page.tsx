@@ -5,6 +5,7 @@ import AddPlace from '@/app/components/map'
 import CustomModal from '@/app/components/modal'
 import { Tag } from '@/app/components/tags'
 import { allDataState, bookState, placeState, tagState, titleState } from '@/store/writeAtoms'
+import { useSession } from 'next-auth/react';
 import { useCallback, useEffect, useState } from 'react'
 import { useRecoilState } from 'recoil'
 
@@ -20,7 +21,7 @@ const Editor = () => {
   const [tagInfo] = useRecoilState<any>(tagState)
   const [placeInfo, setPlaceInfo] = useRecoilState<any>(placeState)
   const [allDataInfo,setAllDataInfo] = useRecoilState<any>(allDataState)
-  
+  let session:any = useSession();
 
   useEffect(() => {
     console.log(isPrivatePlace)
@@ -89,6 +90,11 @@ const Editor = () => {
     // 로컬 스토리지에 저장
     localStorage.setItem('allDataInfo', JSON.stringify(newData));
     setAllDataInfo(data);
+    // Router 인스턴스 가져오기
+  
+  
+  // 페이지 리다이렉트
+  window.location.href = `/mypage/${session.data?.user.id}`; // 이동할 경로
     console.log(allDataInfo)
   }
   return (
