@@ -43,10 +43,14 @@ const confirmPlace = (place:any) => {
     setSelected(place);
 }
 
+const handleInsideClick = (e: React.MouseEvent<HTMLDivElement>) => {
+  e.stopPropagation();
+};
+
 
   return (
     <Modal open={open} onClose={handleClose}>
-      <div onClick={handleOutsideClick}>
+      <div onClick={handleInsideClick}>
         <Paper
           elevation={2}
           sx={{

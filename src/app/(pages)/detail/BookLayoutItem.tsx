@@ -110,7 +110,6 @@ const BookLayoutItem = (props: any) => {
                 </div>
               </div>
             </div>
-           
             {bookData &&
               bookData.map((data: any, i: number) => ( 
           <div
