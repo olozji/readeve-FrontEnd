@@ -10,8 +10,9 @@ import LogoutBtn from './buttons/LogoutButton'
 const NavBar = () => {
   const [isLogin, setIsLogin] = useState(false)
   const [isLoginOpen, setIsLoginOpen] = useState(false)
-
+ 
   let session = useSession()
+  let user:any = session.data?.user
   if (session) {
     // console.log(session)
   }
@@ -67,7 +68,7 @@ const NavBar = () => {
             )}
           </ul>
           <li>
-            <Link href="/mypage/:[id]">장소 보기</Link>
+            <Link href={`/mypage/${user?.id}`}>장소 보기</Link>
           </li>
           <li>
             <div>
@@ -92,7 +93,7 @@ const NavBar = () => {
                 <Link href="/write">기록하기</Link>
               </div>
               <div className="block py-2 pl-3 pr-4 font-bold text-white-900 rounded hover:bg-gray-100 md:hover:bg-transparent dark:border-gray-700 mx-8 text-lg">
-                <Link href="/mypage/:[id]">내 서재</Link>
+                <Link href={`/mypage/${user?.id}`}>내 서재</Link>
               </div>
             </>
           )}

@@ -1,16 +1,10 @@
-import axios from 'axios'
-import MyPageComponent from './MyPage'
+import { PropType } from "../../detail/[id]/page";
+import MyPageComponent from "./MyPage";
 
-const MyPage = () => {
+const MyPage = (props:PropType) => {
   return (
-    <div>
-      <MyPageComponent
-        params={{
-          id: '',
-        }}
-      ></MyPageComponent>
-    </div>
+    <MyPageComponent id={props.params.id}></MyPageComponent>
   )
-}
+};
 
-export default MyPage
+export default MyPage;

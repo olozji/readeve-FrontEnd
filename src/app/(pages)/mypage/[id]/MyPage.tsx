@@ -6,25 +6,21 @@ import { useSession } from 'next-auth/react';
 import Image from 'next/image'
 import { useEffect, useRef, useState } from 'react'
 import { useRecoilState, useRecoilValue } from 'recoil'
+import { PropType } from '../../detail/[id]/page';
 
 declare global {
   interface Window {
     kakao: any
   }
 }
+interface ParamType{
+  id:string
+}
 
-export interface PropType {
-    params: {
-      id: string;
-    }
 
-  }
-
-const MyPageComponent = (props: PropType) => {
+const MyPageComponent= (props: ParamType) => {
   let session = useSession()
-  if (session) {
-    console.log(session)
-  }
+  console.log(props.id)
   const [map,setMap] = useState<any>()
 
   const [marker, setMarker] = useState<any>()
@@ -38,7 +34,6 @@ const MyPageComponent = (props: PropType) => {
   
   function displayMarker(place: any,map:any) {
     // 마커를 생성하고 지도에 표시합니다
-    console.log(place.y,place.x)
     let marker = new window.kakao.maps.Marker({
         map: map,
         position: new window.kakao.maps.LatLng(place.y, place.x) 
@@ -111,7 +106,16 @@ const MyPageComponent = (props: PropType) => {
   }
   </section>
     <div>
-      <div id="map" style={{ width: '100%', height: '400px' }}></div>
+    <div>
+  {documents.length !== 0 ? (
+    <div id="map" style={{ width: '100%', height: '400px' }}></div>
+          ) : (
+              <div>
+              <div id='map' style={{display:'none'}}></div>
+    <div>독서 기록을 남기고 지도를 확인하세요</div>
+    </div>
+  )}
+</div>
       <div>{address}</div>
       {selectBook}
       <BookLayout></BookLayout>
