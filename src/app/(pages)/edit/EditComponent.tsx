@@ -30,9 +30,7 @@ const EditorComponent = (props: PropType) => {
   const [allDataInfo,setAllDataInfo] = useRecoilState<any>(allDataState)
   
 
-  useEffect(() => {
-    console.log(isPrivatePlace)
-  }, [isPrivatePlace])
+
   const handleSearchMap = useCallback((e: any) => {
     e.preventDefault()
     setShowMap(true)
