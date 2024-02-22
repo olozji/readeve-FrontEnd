@@ -34,4 +34,7 @@ export const totalVisitedSelect = selector({
         return visitedPlace.length;
     }
 })
-
+export const mapState = atom({
+    key: 'mapState',
+    default:null
+})
