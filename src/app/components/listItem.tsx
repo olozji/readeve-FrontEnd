@@ -1,54 +1,30 @@
-import React from 'react';
-
+import { mapState } from '@/store/mapAtoms';
+import Link from 'next/link';
+import React from 'react'
+import { useRecoilState } from 'recoil';
 
 interface listItemProps {
-    label:string;
-    onClick?:( e:React.MouseEvent) => void;
-    disabled?:boolean;
-    outline?:boolean;
-    small?:boolean;
+  data: any
+
 }
 
-const Button: React.FC<listItemProps> = ({
-    label,
-    onClick,
-    disabled,
-    outline,
-    small
-}) => {
-    return (
-        <div
-          disabled={disabled}
-          onClick={onClick}
-          className={`
-            flex-col
-            disabled:opacity-70
-            disabled:cursor-not-allowed
-            rounded-lg
-            hover:opacity-80
-            transition
-            w-full
-            ${outline ? 'bg-white' : 'bg-indigo-500'}
-            ${outline ? 'border-black' : 'border-rose-500'}
-            ${outline ? 'text-black' : 'text-white'}
-            ${small ? 'text-sm' : 'text-md'}          
-            ${small ? 'py-1' : 'py-3'}          
-            ${small ? 'font-lignt' : 'font-semibold'}          
-            ${small ? 'border-[1px]' : 'border-2'}          
-          `}
-        >
-            <div 
-              className={`
-                float-start
-                border-slate-200
-                bg-slate-200
-              `}
-              >
-                {label}
-            </div>
-           
-        </div>
-    )
+const ListItem = ({ data }: listItemProps) => {
+  const [recoilMap] = useRecoilState<any>(mapState)
+
+  
+  return (
+    <div
+      className="block max-w-sm p-6 bg-white border border-gray-200 rounded-lg shadow hover:bg-gray-100 dark:bg-gray-800 dark:border-gray-700 dark:hover:bg-gray-700"
+     
+    >
+      <h5 className="mb-2 text-2xl font-bold tracking-tight text-gray-900 dark:text-white">
+        {data.place.place_name?data.place.place_name:data.place.address}
+      </h5>
+      <p className="font-normal text-gray-700 dark:text-gray-400">
+        {data.content}
+      </p>
+    </div>
+  )
 }
 
-export default Button;
+export default ListItem
