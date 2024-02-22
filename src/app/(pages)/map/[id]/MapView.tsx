@@ -37,29 +37,55 @@ const MapView = ({ myMapData }: MapDataType) => {
       content: `<div style="padding:5px;font-size:12px;">${place.place_name}</div>`,
       zIndex: 1,
     });
+
+    
   
     // 마커 클릭 이벤트 설정
     window.kakao.maps.event.addListener(newMarker, 'click', () => {
       console.log('Marker clicked:', place);
       setSelectedPlace(place);
-      clickListItem(place,i); // 마커 클릭 시 리스트 아이템 처리
+      mapRef.current.setLevel(2);
+      mapRef.current.panTo(new window.kakao.maps.LatLng(place.y, place.x));
+      
+      // 전체 독후감 데이터
+      console.log(myMapData);
+      
+     
+     // 필터링된 독후감 가져오기
+     // place.id 값으로 필터링
+     // TODO: 핀으로 검색하기(null) 인 경우 나중에 상태관리 필요함
+      const filteredReviews = myMapData.filter((data) => data.place.id === place.id);
+    
+      // 독후감을 상태에 업데이트
+      setFilteredReviews(filteredReviews);
+      
+      // 필터된 독후감 데이터
+      console.log(filteredReviews);
+
+
+      // Infowindow 열기
+      infowindow.setContent(
+        `<div style="padding:5px;font-size:12px;">${place.place_name}</div>`
+      );
       infowindow.open(mapRef.current, newMarker);
     });
   
-    // 생성된 마커를 state에 저장
-    setMarkers([...markers, newMarker]);
-    setInfoWindows([...infoWindows,infowindow])
+    // // 생성된 마커를 state에 저장
+    // setMarkers([...markers, newMarker]);
+    // setInfoWindows([...infoWindows,infowindow])
+
+    // 생성된 마커와 infowindow를 state에 업데이트
+    setMarkers((prevMarkers) => [...prevMarkers, newMarker])
+    setInfoWindows((prevInfoWindows) => [...prevInfoWindows, infowindow])
+
   };
 
 
-  const openReviewForMarker = (markerId: string) => {
+
+
+  const openReviewForMarker = (place: string) => {
     // markerId를 이용하여 독후감을 찾고 열기
-    const reviewData = myMapData.find((data) => data.id === markerId);
-    if (reviewData) {
-      // reviewData를 사용하여 독후감 열기 로직을 추가
-      console.log('Open review for markers:', reviewData);
-      // 이 부분에 독후감을 열기 위한 로직을 추가하면 됩니다.
-    }
+   
   };
 
 
@@ -82,6 +108,12 @@ const MapView = ({ myMapData }: MapDataType) => {
         '</div>'
     );
     infoWindows[i].open(mapRef.current, markers[i]);
+  };
+
+  const clickMarker = (place: any) => {
+    // 마커 클릭 시 해당 마커의 독후감 목록을 filteredReviews에 업데이트
+    const reviewsForMarker = myMapData.filter((data) => data.place.id === place.id);
+    setFilteredReviews(reviewsForMarker);
   };
 
 
@@ -137,28 +169,35 @@ const MapView = ({ myMapData }: MapDataType) => {
       {myMapData.length !== 0 ? (
         <div>
           <div id="map" style={{ width: '100%', height: '400px' }}>
-          {myMapData.map((data: any, i: number) => (
-            <div key={i}>
-              {/* TODO::리스트 아이템에 온클릭 이벤트를 달아서 지도랑 리스트랑 상호작용하게 해야하는데 
-              id='map' 인 div가 여기 있어서 컴포넌트로 분리가 안되네요 ㅜㅜ
-              그래서 ListItem만 빼놨고,ListItem을 감싸고 있는 div에 온클릭이나 마우스 이벤트를 달아야 될거 같아요
-              그리고 가능하시면 지도 위에 피그마처럼 띄워서 올리는거도 부탁드려요!
-              PS. 정 안되면 저희 mapSearch에 있는 리스트 코드 잘 가져와서 쓰는게 나을거 같기도 합니다 */}
-              <ListItem 
-                key={i}
-              index={i}  
-              data={data}  
-              onListItemClick={() => {
-                //  console.log('리스트 아이템 클릭됨', data.place); 
-                 clickListItem(data.place,i); 
-                }} 
-              />
-              </div>
-          ))}
-        </div>
-        <div>
-            
+            {filteredReviews.length === 0
+              ? myMapData.map((data: any, i: number) => (
+                  <div key={i}>
+                    <ListItem
+                      key={i}
+                      index={i}
+                      data={data}
+                      onListItemClick={() => {
+                        //  console.log('리스트 아이템 클릭됨', data.place);
+                        clickListItem(data.place, i)
+                      }}
+                    />
+                  </div>
+                ))
+              : filteredReviews.map((data: any, i: number) => (
+                  <div key={i}>
+                    <ListItem
+                      key={i}
+                      index={i}
+                      data={data}
+                      onListItemClick={() => {
+                        //  console.log('리스트 아이템 클릭됨', data.place);
+                        clickListItem(data.place, i)
+                      }}
+                    />
+                  </div>
+                ))}
           </div>
+          <div></div>
         </div>
       ) : (
         <div>
