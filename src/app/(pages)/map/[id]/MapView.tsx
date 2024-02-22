@@ -16,14 +16,15 @@ const MapView = ({ myMapData }: MapDataType) => {
   const [map, setMap] = useState<any>();
   const [myPins, setMyPins] = useState([])
   const [selectedPlace, setSelectedPlace] = useState<any>(null);
-  const [marker, setMarker] = useState<any>(null);
+  const [markers, setMarkers] = useState<any[]>([]);
+  const [infoWindows, setInfoWindows] = useState<any[]>([]);
 
   const [filteredReviews, setFilteredReviews] = useState<any>([]);
 
-  const displayMarker = (place: any) => {
+  const displayMarker = (place: any,i:number) => {
     // 이미 생성된 마커가 있다면 해당 마커를 반환
-    if (marker) {
-      marker.setMap(null); // 기존 마커를 지도에서 제거
+    if (markers[i]) {
+      markers[i].setMap(null); // 기존 마커를 지도에서 제거
     }
   
     // 새로운 마커 생성
@@ -31,16 +32,23 @@ const MapView = ({ myMapData }: MapDataType) => {
       map: mapRef.current,
       position: new window.kakao.maps.LatLng(place.y, place.x),
     });
+
+    const infowindow = new window.kakao.maps.InfoWindow({
+      content: `<div style="padding:5px;font-size:12px;">${place.place_name}</div>`,
+      zIndex: 1,
+    });
   
     // 마커 클릭 이벤트 설정
     window.kakao.maps.event.addListener(newMarker, 'click', () => {
       console.log('Marker clicked:', place);
       setSelectedPlace(place);
-      clickListItem(place); // 마커 클릭 시 리스트 아이템 처리
+      clickListItem(place,i); // 마커 클릭 시 리스트 아이템 처리
+      infowindow.open(mapRef.current, newMarker);
     });
   
     // 생성된 마커를 state에 저장
-    setMarker(newMarker);
+    setMarkers([...markers, newMarker]);
+    setInfoWindows([...infoWindows,infowindow])
   };
 
 
@@ -49,46 +57,46 @@ const MapView = ({ myMapData }: MapDataType) => {
     const reviewData = myMapData.find((data) => data.id === markerId);
     if (reviewData) {
       // reviewData를 사용하여 독후감 열기 로직을 추가
-      console.log('Open review for marker:', reviewData);
+      console.log('Open review for markers:', reviewData);
       // 이 부분에 독후감을 열기 위한 로직을 추가하면 됩니다.
     }
   };
 
 
-  const clickListItem = (place: any) => {
+  const clickListItem = (place: any,i:number) => {
     console.log(clickListItem)
     // useRef로 저장한 map을 참조하여 지도 이동 및 확대
     if (mapRef.current) {
-      mapRef.current.panTo(new window.kakao.maps.LatLng(place.y, place.x));
       mapRef.current.setLevel(2);
-      openInfoWindow(place);
+      mapRef.current.panTo(new window.kakao.maps.LatLng(place.y, place.x));
+      openInfoWindow(place,i);
     }
   };
 
 
-  const openInfoWindow = (place: any) => {
+  const openInfoWindow = (place: any,i:number) => {
     let infowindow = new window.kakao.maps.InfoWindow({ zIndex: 1 });
     infowindow.setContent(
       '<div style="padding:5px;font-size:12px;">' +
         place.place_name +
         '</div>'
     );
-    infowindow.open(mapRef.current, new window.kakao.maps.LatLng(place.y, place.x));
+    infoWindows[i].open(mapRef.current, markers[i]);
   };
 
 
-  useEffect(() => {
-    console.log(myMapData)
-  }, [])
+  // useEffect(() => {
+  //   console.log(myMapData)
+  // }, [])
 
-  useEffect(() => {
-    setRecoilMap(map)
-    console.log(recoilMap)
-  }, [map])
+  // useEffect(() => {
+  //   setRecoilMap(map)
+  //   console.log(recoilMap)
+  // }, [map])
 
-  useEffect(() => {
-    console.log(recoilMap)
-  },[recoilMap])
+  // useEffect(() => {
+  //   console.log(recoilMap)
+  // },[recoilMap])
 
   useEffect(() => {
     window.kakao.maps.load(() => {
@@ -108,14 +116,13 @@ const MapView = ({ myMapData }: MapDataType) => {
       const markerList: Record<string, any> = {};
       
       // myMapData에 있는 데이터로 마커를 생성하여 지도에 추가
-      myMapData.forEach((d: any) => {
+      myMapData.forEach((d: any,i:number) => {
         console.log(1)
-        displayMarker(d.place);
+        displayMarker(d.place,i);
         bounds.extend(new window.kakao.maps.LatLng(d.place.y, d.place.x))
         mapRef.current.panTo(new window.kakao.maps.LatLng(d.place.y, d.place.x));
      
       mapInstance.setBounds(bounds)
-      mapRef.current.panTo(new window.kakao.maps.LatLng(d.place.y, d.place.x));
 
     
       //setMap(mapInstance)
@@ -138,28 +145,19 @@ const MapView = ({ myMapData }: MapDataType) => {
               그리고 가능하시면 지도 위에 피그마처럼 띄워서 올리는거도 부탁드려요!
               PS. 정 안되면 저희 mapSearch에 있는 리스트 코드 잘 가져와서 쓰는게 나을거 같기도 합니다 */}
               <ListItem 
-              key={i} 
+                key={i}
+              index={i}  
               data={data}  
               onListItemClick={() => {
-                 console.log('리스트 아이템 클릭됨', data.place); 
-                 clickListItem(data.place); 
+                //  console.log('리스트 아이템 클릭됨', data.place); 
+                 clickListItem(data.place,i); 
                 }} 
               />
               </div>
           ))}
         </div>
         <div>
-            {filteredReviews.map((data: any, i: number) => (
-              <div key={i}>
-              <ListItem 
-                data={data}  
-                onListItemClick={() => {
-                  console.log('리스트 아이템 클릭됨', data.place); 
-                  clickListItem(data.place); 
-                }} 
-              />
-              </div>
-            ))}
+            
           </div>
         </div>
       ) : (
