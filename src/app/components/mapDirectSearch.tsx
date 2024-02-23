@@ -13,9 +13,10 @@ export const MapDirectSearch = ({ onMarkerClick }: any) => {
   const [map, setMap] = useState<any>()
   const [marker, setMarker] = useState<any>()
   const [address, setAddress] = useState('')
+  const [markerName, setMarkerName] = useState('')
 
   const [markers, setMarkers] = useRecoilState(markersState)
-  const [placeInfo, setPlaceInfo] = useRecoilState(placeState)
+  const [placeInfo, setPlaceInfo] = useRecoilState<any>(placeState)
 
   //초기값이 false 여서 처음 마운트될때는 실행 안 되는 useEffect인 커스텀 훅 이에요
   const useDidMountEffect = (func: any, deps: any) => {
@@ -112,6 +113,22 @@ export const MapDirectSearch = ({ onMarkerClick }: any) => {
     }
   }, [map])
 
+  useEffect(() => {
+    if (placeInfo) {
+        let newPlace = {
+            place_name: markerName,
+            id: placeInfo.id,
+            y: placeInfo.y,
+            x: placeInfo.x,
+            road_address_name: placeInfo.road_address_name,
+            place_url: placeInfo.place_url,
+        }
+        setPlaceInfo(newPlace)
+    }
+    console.log(placeInfo)
+}, [markerName])
+
+
   //---------------------현재 위치 가져오기---------------------------//
 
   const getPosSuccess = (pos: GeolocationPosition) => {
@@ -163,6 +180,14 @@ export const MapDirectSearch = ({ onMarkerClick }: any) => {
   return (
     <div>
       <div id="map" style={{ width: '50%', height: '400px' }}></div>
+      <input
+        type="text"
+        placeholder="이 장소의 이름을 입력해주세요!"
+        value={markerName}
+        onChange={(e) => {
+          setMarkerName(e.target.value)
+        }}
+      />
       <div onClick={getCurrentPosBtn}>현재 위치</div>
       <div>{address}</div>
     </div>
