@@ -4,6 +4,7 @@ import MapView from './[id]/MapView'
 
 const SharedMapPage = () => {
   const [documents, setDocuments] = useState<any[]>([])
+  const [isShared, setIsShared] = useState(true);
   useEffect(() => {
     const storedData = localStorage.getItem('allDataInfo')
 
@@ -17,7 +18,7 @@ const SharedMapPage = () => {
   return (
     <div>
       {documents.length !== 0 ? (
-        <MapView myMapData={documents}></MapView>
+        <MapView myMapData={documents} isShared={true} isFull={'100%'}></MapView>
       ) : (
         <div>
           <div id="map" style={{ display: 'none' }}></div>

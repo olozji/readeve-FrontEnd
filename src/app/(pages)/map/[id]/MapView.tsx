@@ -7,9 +7,11 @@ import { useRecoilState } from 'recoil';
 
 interface MapDataType {
   myMapData: any[]
+  isShared: boolean
+  isFull:string
 }
 
-const MapView = ({ myMapData }: MapDataType) => {
+const MapView = ({ myMapData,isShared,isFull}: MapDataType) => {
 
   const mapRef = useRef<any>(null)
   const [recoilMap, setRecoilMap] = useRecoilState<any>(mapState)
@@ -135,32 +137,31 @@ const MapView = ({ myMapData }: MapDataType) => {
     <div>
       {myMapData.length !== 0 ? (
         <div>
-          <div id="map" style={{ width: '100%', height: '400px' }}>
+          <div id="map" style={{ width: '100%', height: `${isFull}` }}>
             {filteredReviews.length === 0
               ? myMapData.map((data: any, i: number) => (
                   <div key={i}>
                     <ListItem
-                      key={i}
-                      index={i}
-                      data={data}
-                      onListItemClick={() => {
-                        //  console.log('리스트 아이템 클릭됨', data.place);
-                        clickListItem(data.place, i)
-                      }}
-                    />
+                    key={i}
+                    index={i}
+                    data={data}
+
+                    onListItemClick={() => {
+                      //  console.log('리스트 아이템 클릭됨', data.place);
+                      clickListItem(data.place, i);
+                    } } isShared={isShared}                    />
                   </div>
                 ))
               : filteredReviews.map((data: any, i: number) => (
                   <div key={i}>
                     <ListItem
-                      key={i}
-                      index={i}
-                      data={data}
-                      onListItemClick={() => {
-                        //  console.log('리스트 아이템 클릭됨', data.place);
-                        clickListItem(data.place, i)
-                      }}
-                    />
+                    key={i}
+                    index={i}
+                    data={data}
+                    onListItemClick={() => {
+                      //  console.log('리스트 아이템 클릭됨', data.place);
+                      clickListItem(data.place, i);
+                    } } isShared={isShared}                    />
                   </div>
                 ))}
           </div>

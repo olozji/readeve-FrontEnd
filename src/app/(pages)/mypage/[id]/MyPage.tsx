@@ -67,7 +67,7 @@ const MyPageComponent = (props: ParamType) => {
           {documents.length !== 0 ? (
             <div>
               <Link href={`/map/${props.id}`}>내 지도 크게보기</Link>
-              <MapView myMapData={documents}></MapView>
+              <MapView myMapData={documents} isShared={false} isFull={'400px'}></MapView>
             </div>
           ) : (
             <div>
