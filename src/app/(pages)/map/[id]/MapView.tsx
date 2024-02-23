@@ -13,8 +13,6 @@ const MapView = ({ myMapData }: MapDataType) => {
 
   const mapRef = useRef<any>(null)
   const [recoilMap, setRecoilMap] = useRecoilState<any>(mapState)
-  const [map, setMap] = useState<any>();
-  const [myPins, setMyPins] = useState([])
   const [selectedPlace, setSelectedPlace] = useState<any>(null);
   const [markers, setMarkers] = useState<any[]>([]);
   const [infoWindows, setInfoWindows] = useState<any[]>([]);
@@ -70,22 +68,9 @@ const MapView = ({ myMapData }: MapDataType) => {
       infowindow.open(mapRef.current, newMarker);
     });
   
-    // // 생성된 마커를 state에 저장
-    // setMarkers([...markers, newMarker]);
-    // setInfoWindows([...infoWindows,infowindow])
-
-    // 생성된 마커와 infowindow를 state에 업데이트
     setMarkers((prevMarkers) => [...prevMarkers, newMarker])
     setInfoWindows((prevInfoWindows) => [...prevInfoWindows, infowindow])
 
-  };
-
-
-
-
-  const openReviewForMarker = (place: string) => {
-    // markerId를 이용하여 독후감을 찾고 열기
-   
   };
 
 
@@ -110,25 +95,7 @@ const MapView = ({ myMapData }: MapDataType) => {
     infoWindows[i].open(mapRef.current, markers[i]);
   };
 
-  const clickMarker = (place: any) => {
-    // 마커 클릭 시 해당 마커의 독후감 목록을 filteredReviews에 업데이트
-    const reviewsForMarker = myMapData.filter((data) => data.place.id === place.id);
-    setFilteredReviews(reviewsForMarker);
-  };
 
-
-  // useEffect(() => {
-  //   console.log(myMapData)
-  // }, [])
-
-  // useEffect(() => {
-  //   setRecoilMap(map)
-  //   console.log(recoilMap)
-  // }, [map])
-
-  // useEffect(() => {
-  //   console.log(recoilMap)
-  // },[recoilMap])
 
   useEffect(() => {
     window.kakao.maps.load(() => {
