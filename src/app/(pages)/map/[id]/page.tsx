@@ -16,7 +16,7 @@ const MyMapPage = () => {
     return (
         <div>
             {documents.length !== 0 ? (
-            <MapView myMapData={documents} isShared={false} isFull={'100%'}></MapView>
+            <MapView myMapData={documents} isShared={false} isFull={`calc(100vh - 44px)`}></MapView>
           ) : (
             <div>
               <div id="map" style={{ display: 'none' }}></div>

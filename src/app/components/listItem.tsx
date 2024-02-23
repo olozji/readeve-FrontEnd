@@ -25,14 +25,14 @@ const ListItem = ({
     <div>
       {isShared ? (
         <div
-          className={`relative left-5 top-5 block max-w-sm p-6 bg-white border border-gray-200 rounded-lg shadow z-50 ${
+          className={`relative left-5 block max-w-xs p-6 my-2 bg-white border border-gray-200 rounded-lg shadow z-50${
             isHovered
               ? 'hover:bg-gray-100 dark:bg-gray-800 dark:border-gray-700 dark:hover:bg-gray-700'
               : ''
           }`}
           onClick={() => onListItemClick(data.place, index)}
         >
-          <h5 className="mb-2 text-2xl font-bold tracking-tight text-gray-900 ">
+          <h5 className="mb-2 text-xl font-bold tracking-tight text-gray-900 ">
             {data.place.place_name ? data.place.place_name : data.place.address}
           </h5>
           {data && data.tags.map((tag: any, i: number) => (
@@ -42,14 +42,14 @@ const ListItem = ({
         </div>
       ) : (
         <div
-          className={`relative left-5 top-5 block max-w-sm p-6 bg-white border border-gray-200 rounded-lg shadow z-50 ${
+          className={`relative left-5 block max-w-xs p-6 my-2 bg-white border border-gray-200 rounded-lg shadow z-50 ${
             isHovered
               ? 'hover:bg-gray-100 dark:bg-gray-800 dark:border-gray-700 dark:hover:bg-gray-700'
               : ''
           }`}
           onClick={() => onListItemClick(data.place, index)}
         >
-          <h5 className="mb-2 text-2xl font-bold tracking-tight text-gray-900 ">
+          <h5 className="mb-2 text-xl font-bold tracking-tight text-gray-900 ">
             {data.place.place_name ? data.place.place_name : data.place.address}
           </h5>
           <p className="font-normal text-gray-700 dark:text-gray-400">

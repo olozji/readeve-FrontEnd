@@ -10,6 +10,7 @@ import { useRecoilState, useRecoilValue } from 'recoil'
 import { allReviewSelector, selectedReviewState } from '@/store/writeAtoms'
 import axios from 'axios';
 import { sessionState } from '@/store/AuthAtoms';
+import LogoutButton from './components/buttons/LogoutButton';
 
 export default function Home() {
 
@@ -49,6 +50,7 @@ export default function Home() {
       <div>읽는곳곳</div>
       <div onClick={fetchData}>on</div>
       <h1>누구나 볼 수 있는 페이지</h1>
+      <LogoutButton></LogoutButton>
       {session.data ? (
         <div>
           {session.data.user?.name}
