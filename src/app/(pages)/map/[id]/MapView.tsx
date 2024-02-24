@@ -2,6 +2,8 @@
 
 import ListItem from '@/app/components/listItem'
 import { mapState } from '@/store/mapAtoms'
+import { tagState } from '@/store/writeAtoms'
+import { dividerClasses } from '@mui/material'
 import { useEffect, useRef, useState } from 'react'
 import { useRecoilState } from 'recoil'
 
@@ -16,22 +18,44 @@ const MapView = ({ myMapData, isShared, isFull }: MapDataType) => {
   const [selectedPlace, setSelectedPlace] = useState<any>(null)
   const [markers, setMarkers] = useState<any[]>([])
   const [infoWindows, setInfoWindows] = useState<any[]>([])
+  const [tagInfo] = useRecoilState(tagState)
+  const [isSelectedTags, setIsSelectedTags] = useState<boolean[]>(
+    new Array(tagInfo.length).fill(false),
+  )
+  const [startIdx, setStartIdx] = useState(0)
+  const numVisibleTags = 3 // 표시할 최대 태그 개수
 
   const [filteredReviews, setFilteredReviews] = useState<any>([])
   const [windowHeight, setWindowHeight] = useState(window.innerHeight)
 
   useEffect(() => {
-    const handleResize = () => {
-      setWindowHeight(window.innerHeight)
-    }
+    if (isShared) {
+      console.log(3)
+      // 선택된 태그의 이름을 배열로 모읍니다.
+      const tagFilteredReviews = myMapData.filter((data) => {
+        const selectedTagsIndexes = isSelectedTags
+          .map((selected, index) => (selected ? index : -1))
+          .filter((index) => index !== -1)
 
-    window.addEventListener('resize', handleResize)
+        return selectedTagsIndexes.every((selectedIndex) =>
+          data.tags.some(
+            (tag: any) =>
+              tag.selected && tag.name === tagInfo[selectedIndex].name,
+          ),
+        )
+      })
 
-    // 컴포넌트가 언마운트될 때 리스너 제거
-    return () => {
-      window.removeEventListener('resize', handleResize)
+      setFilteredReviews(tagFilteredReviews)
+      console.log(filteredReviews)
     }
-  }, []) // 한 번만 실행
+  }, [isSelectedTags]) // 한 번만 실행
+  const handleClickPrev = () => {
+    setStartIdx(Math.max(startIdx - numVisibleTags, 0))
+  }
+
+  const handleClickNext = () => {
+    setStartIdx(Math.min(startIdx + numVisibleTags, tagInfo.length - 1))
+  }
 
   const displayMarker = (place: any, i: number) => {
     // 이미 생성된 마커가 있다면 해당 마커를 반환
@@ -57,18 +81,19 @@ const MapView = ({ myMapData, isShared, isFull }: MapDataType) => {
       mapRef.current.setLevel(2)
       mapRef.current.panTo(new window.kakao.maps.LatLng(place.y, place.x))
 
-
       // 전체 독후감 데이터
       console.log(myMapData)
 
       // 필터링된 독후감 가져오기
       // place.id 값으로 필터링
       // TODO: 핀으로 검색하기(null) 인 경우 나중에 상태관리 필요함
-      const filteredReviews = myMapData.filter(
-        (data) => data.place.id === place.id,
-      )
-      // 독후감을 상태에 업데이트
-      setFilteredReviews(filteredReviews)
+      if (!isShared) {
+        const filteredReviews = myMapData.filter(
+          (data) => data.place.id === place.id,
+        )
+        // 독후감을 상태에 업데이트
+        setFilteredReviews(filteredReviews)
+      }
 
       // 필터된 독후감 데이터
       console.log(filteredReviews)
@@ -83,6 +108,12 @@ const MapView = ({ myMapData, isShared, isFull }: MapDataType) => {
     setMarkers((prevMarkers) => [...prevMarkers, newMarker])
     setInfoWindows((prevInfoWindows) => [...prevInfoWindows, infowindow])
   }
+  const searchTag = (i: number) => {
+    let copy = [...isSelectedTags] // 이전 배열의 복사본을 만듦
+    copy[i] = !copy[i] // 복사본을 변경
+    setIsSelectedTags(copy) // 변경된 복사본을 상태로 설정
+    console.log(isSelectedTags) // 변경된 상태를 확인
+  }
 
   const clickListItem = (place: any, i: number) => {
     console.log(place)
@@ -94,11 +125,9 @@ const MapView = ({ myMapData, isShared, isFull }: MapDataType) => {
   }
 
   const openInfoWindow = (place: any, i: number) => {
-    
     if (infoWindows[i]) {
-    infoWindows[i].open(mapRef.current, markers[i])
-    mapRef.current.panTo(new window.kakao.maps.LatLng(place.y, place.x))
-      
+      infoWindows[i].open(mapRef.current, markers[i])
+      mapRef.current.panTo(new window.kakao.maps.LatLng(place.y, place.x))
     }
   }
 
@@ -119,12 +148,10 @@ const MapView = ({ myMapData, isShared, isFull }: MapDataType) => {
 
       // myMapData에 있는 데이터로 마커를 생성하여 지도에 추가
       myMapData.forEach((d: any, i: number) => {
-        console.log(1)
         displayMarker(d.place, i)
         bounds.extend(new window.kakao.maps.LatLng(d.place.y, d.place.x))
 
         mapInstance.setBounds(bounds)
-
       })
     })
   }, [myMapData])
@@ -137,13 +164,25 @@ const MapView = ({ myMapData, isShared, isFull }: MapDataType) => {
         <div>
           <div
             id="map"
-            className=''
+            className=""
             style={{ width: '100%', height: `${isFull}`, position: 'relative' }}
           >
             {/* 스크롤 구현 TODO:스크롤바 스타일링 or 없애기*/}
-            <div className='p-10  overflow-y-auto no-scrollbar' style={{ position: 'absolute', height: `${mapHeight}px`, zIndex: 10 }}>
-              {filteredReviews.length === 0
-                ? myMapData.map((data: any, i: number) => (
+            <div
+              className="p-10  overflow-y-auto no-scrollbar"
+              style={{
+                position: 'absolute',
+                height: `${mapHeight}px`,
+                zIndex: 10,
+              }}
+            >
+              {filteredReviews.length === 0 ? (
+                isShared ? (
+                  <div className="ml-16">
+                    선택된 태그에 해당하는 장소가 없습니다
+                  </div>
+                ) : (
+                  myMapData.map((data: any, i: number) => (
                     <div key={i}>
                       <ListItem
                         key={i}
@@ -156,22 +195,70 @@ const MapView = ({ myMapData, isShared, isFull }: MapDataType) => {
                       />
                     </div>
                   ))
-                : filteredReviews.map((data: any, i: number) => (
-                    <div key={i}>
-                      <ListItem
-                        key={i}
-                        index={i}
-                        data={data}
-                        onListItemClick={() => {
-                          clickListItem(data.place, i)
-                        }}
-                        isShared={isShared}
-                      />
-                    </div>
-                  ))}
+                )
+              ) : (
+                filteredReviews.map((data: any, i: number) => (
+                  <div key={i}>
+                    <ListItem
+                      key={i}
+                      index={i}
+                      data={data}
+                      onListItemClick={() => {
+                        clickListItem(data.place, i)
+                      }}
+                      isShared={isShared}
+                    />
+                  </div>
+                ))
+              )}
             </div>
             {/* 뒤에 흰 배경*/}
-            <div style={{ position: 'absolute', top: 0, left: 30, width: '32%', height: '100%', background: 'rgba(255, 0, 255, 0.8)', zIndex: 2 }}></div> 
+            {isShared && (
+              <div className="absolute top-0 left-20 z-40 flex flex-row rounded-lg">
+                <div className="p-2 cursor-pointer" onClick={handleClickPrev}>
+                  &lt;
+                </div>
+                {tagInfo
+                  .slice(startIdx, startIdx + numVisibleTags)
+                  .map((tag: any, i: number) => (
+                    <div
+                      key={i}
+                      className={`p-2 mx-2 rounded-lg bg-yellow-200 ${isSelectedTags[startIdx + i] && 'bg-emerald-200'}`}
+                      onClick={() => searchTag(startIdx + i)}
+                    >
+                      {tag.name}
+                    </div>
+                  ))}
+                <div className="p-2 cursor-pointer" onClick={handleClickNext}>
+                  &gt;
+                </div>
+                
+                {/* TODO:선택된 태그 보여줄 때 버그 수정 */}
+                {tagInfo.map(
+                  (tag: any, i: number) =>
+                    isSelectedTags[i] && (
+                      <div
+                        key={i}
+                        className={`p-2 mx-2 rounded-lg bg-emerald-200`}
+                        onClick={() => searchTag(startIdx + i)}
+                      >
+                        {tag.name}
+                      </div>
+                    ),
+                )}
+              </div>
+            )}
+            <div
+              style={{
+                position: 'absolute',
+                top: 0,
+                left: 30,
+                width: '32%',
+                height: '100%',
+                background: 'rgba(255, 0, 255, 0.8)',
+                zIndex: 2,
+              }}
+            ></div>
           </div>
         </div>
       ) : (
@@ -182,6 +269,5 @@ const MapView = ({ myMapData, isShared, isFull }: MapDataType) => {
       )}
     </div>
   )
-  
 }
 export default MapView

@@ -32,7 +32,7 @@ export const bookState = atom({
 })
 export const tagState = atom({
     key: 'tagState',
-    default: []
+    default: [{name:'1',selected:false},{name:'2',selected:false},{name:'3',selected:false},{name:'4',selected:false},{name:'5',selected:false}]
 })
 export const titleState = atom({
   key: 'titleState',
