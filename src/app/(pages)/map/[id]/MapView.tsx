@@ -4,6 +4,7 @@ import ListItem from '@/app/components/listItem'
 import { mapState } from '@/store/mapAtoms'
 import { tagState } from '@/store/writeAtoms'
 import { dividerClasses } from '@mui/material'
+import { StaticImageData } from 'next/image'
 import { useEffect, useRef, useState } from 'react'
 import { useRecoilState } from 'recoil'
 
@@ -11,9 +12,11 @@ interface MapDataType {
   myMapData: any[]
   isShared: boolean
   isFull: string
+  markerImage:StaticImageData;
+  markerImageOpacity:StaticImageData;
 }
 
-const MapView = ({ myMapData, isShared, isFull }: MapDataType) => {
+const MapView = ({ myMapData, isShared, isFull, markerImage, markerImageOpacity }: MapDataType) => {
   const mapRef = useRef<any>(null)
   const [selectedPlace, setSelectedPlace] = useState<any>(null)
   const [markers, setMarkers] = useState<any[]>([])
@@ -63,10 +66,16 @@ const MapView = ({ myMapData, isShared, isFull }: MapDataType) => {
       markers[i].setMap(null) // 기존 마커를 지도에서 제거
     }
 
+    let markerImageProps = new window.kakao.maps.MarkerImage(
+      markerImage?.src || '', // Use optional chaining to safely access src
+      new window.kakao.maps.Size(30, 30),
+    );
+
     // 새로운 마커 생성
     let newMarker = new window.kakao.maps.Marker({
       map: mapRef.current,
       position: new window.kakao.maps.LatLng(place.y, place.x),
+      image:markerImageProps,
     })
 
     const infowindow = new window.kakao.maps.InfoWindow({
@@ -108,6 +117,8 @@ const MapView = ({ myMapData, isShared, isFull }: MapDataType) => {
     setMarkers((prevMarkers) => [...prevMarkers, newMarker])
     setInfoWindows((prevInfoWindows) => [...prevInfoWindows, infowindow])
   }
+
+
   const searchTag = (i: number) => {
     let copy = [...isSelectedTags] // 이전 배열의 복사본을 만듦
     copy[i] = !copy[i] // 복사본을 변경
@@ -116,13 +127,35 @@ const MapView = ({ myMapData, isShared, isFull }: MapDataType) => {
   }
 
   const clickListItem = (place: any, i: number) => {
+
     console.log(place)
+
     // useRef로 저장한 map을 참조하여 지도 이동 및 확대
     if (mapRef.current) {
       mapRef.current.setLevel(2)
       openInfoWindow(place, i)
     }
   }
+
+  //TODO:리스트를 클릭했을 때 마커의 이미지를 바뀌게 할지? 모르겠어서 주석처리 했습니다
+  // const clickListItem = (place: any, i: number) => {
+  //   if (mapRef.current) {
+  //     mapRef.current.setLevel(2)
+  //      openInfoWindow(place, i)
+  //     // 이전에 선택된 마커가 있다면 기존 마커의 이미지를 markerImageOpacity로 변경
+  //     if (selectedPlace) {
+  //       const selectedMarkerIndex = myMapData.findIndex((data) => data.place.id === selectedPlace.id);
+  //       if (selectedMarkerIndex !== -1 && markers[selectedMarkerIndex]) {
+  //         markers[selectedMarkerIndex].setImage(new window.kakao.maps.MarkerImage(
+  //           markerImage.src,
+  //           new window.kakao.maps.Size(30, 30),
+  //         ));
+  //       }
+  //     }
+  //     displayMarker(place, i);
+
+  //   }
+  // }
 
   const openInfoWindow = (place: any, i: number) => {
     if (infoWindows[i]) {

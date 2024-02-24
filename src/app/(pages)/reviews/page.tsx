@@ -1,40 +1,64 @@
 'use client';
 
-import React, { useState } from 'react';
+import React, { useEffect, useState } from 'react';
 import Link from 'next/link';
 import { useRecoilState, useRecoilValue } from 'recoil';
-import { allReviewSelector, filterReviewState, getReviewData, reviewState, selectedReviewState } from '@/store/writeAtoms';
+import { allDataState, bookState, filterReviewState, getReviewData, reviewState, selectedReviewState } from '@/store/writeAtoms';
 
 export interface ReviewData {
+    [x: string]: any;
     id?:number;
     date?:string;
     title?:string;
     place?:string;
     category?:string;
     description?:string;
-    isFavorite:boolean;
-    image:string;
+    isFavorite?:boolean;
+    image?:string;
     tag?: {
         rate?: number;
         count?: number;
       };
     private?:boolean;
+    book?: {
+      isbn: string;
+      title: string;
+      thumbnail: string;
+      content: string;
+      isPrivate: boolean;
+  };
 }
 
 const ReviewPage = () => {
 
     const [categoryName, setCategoryName] = useState('');
+    const [publicReviews, setPublicReviews] = useState<ReviewData[]>([]);
     const allReviews = useRecoilValue(getReviewData)
     const reviewItems = allReviews.filter((item:ReviewData) => item.category === "reviews");
   
     const [selectedReview, setSelectedReview] = useRecoilState(selectedReviewState);
     const [reviewFilter, setReviewFilter] = useRecoilState(filterReviewState);
+    const [bookInfo] = useRecoilState<any>(bookState)
+    const [allDataInfo,setAllDataInfo] = useRecoilState<any>(allDataState)
    
     const filteredReviews = reviewItems.filter((item: ReviewData) => {
         if (reviewFilter === '전체') {
           return true; // 전체 범위 선택 시 모든 리뷰 반환
         }
     });
+   
+
+    useEffect(() => {
+      const storedData = localStorage.getItem('allDataInfo');
+    
+      if (storedData) {
+        const parsedData: ReviewData[] = JSON.parse(storedData);
+        const PublicReviewData = parsedData.filter((item: ReviewData) => !item.isPrivate);
+        console.log(PublicReviewData);
+        setPublicReviews(PublicReviewData);
+      }
+    }, [allDataInfo]);
+
  
   return (
         <section className="main">
@@ -75,33 +99,29 @@ const ReviewPage = () => {
     </div>
         </div> 
     <div className='grid gap-6 md:grid-cols-2 lg:grid-cols-2 item_list lg:pt-20'>
-    {filteredReviews.length === 0 ? (
+    {publicReviews.length === 0 ? (
+  <div className="pt-4 lg:pt-5 pb-4 lg:pb-8 px-4 xl:px-2 xl:container mx-auto">
+    <section className='pt-16'>
       <div className="pt-4 lg:pt-5 pb-4 lg:pb-8 px-4 xl:px-2 xl:container mx-auto">
-      <section className='pt-16'>
-         <div className="pt-4 lg:pt-5 pb-4 lg:pb-8 px-4 xl:px-2 xl:container mx-auto">
-           <h1 className='text-4xl'>등록된 리뷰가 없습니다</h1>
-         </div>
-       </section>
-     </div>
-        ) : (
-            filteredReviews.map((item: ReviewData) => (
-            <Link
-              href={`/review/${item.id}`}
-              key={item.id}
-              onClick={() => setSelectedReview(item)}>
-              <h1>모든 기록</h1>
-              <div className="w-80 h-80 border border-slate-200 bg-slate-200 relative">
-              <div className="absolute transform -translate-y-1/2 md:left-20 top-1/2 mx-8">
-                <div className="text-white text-left">
-                  <h1 className="text-3xl md:text-5xl font-bold"></h1>
-                  <p className="py-4 md:text-2xl"></p>
-                  <div>책 이미지</div>
-                </div>
-              </div>
+        <h1 className='text-4xl'>등록된 리뷰가 없습니다</h1>
+      </div>
+    </section>
+  </div>
+) : (
+  <div className='grid gap-6 md:grid-cols-3 lg:grid-cols-3 item_list lg:pt-20'>
+    {publicReviews.map((item: ReviewData) => (
+      <Link href={`/review/${item.id}`} key={item.id} onClick={() => setSelectedReview(item)}>
+        <div className="w-80 h-80 border border-slate-200 bg-slate-200 relative">
+          <div className="absolute transform -translate-y-1/2 md:left-20 top-1/2 mx-8">
+            <div className="text-white text-left">
+              <img src={item.book?.thumbnail} alt={item.title} className="w-full h-auto" />
             </div>
-            </Link>
-          ))
-        )}
+          </div>
+        </div>
+      </Link>
+    ))}
+  </div>
+)}
     </div>
         </section>
         </section>
