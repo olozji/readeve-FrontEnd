@@ -81,24 +81,23 @@ const ReviewPage = () => {
         <svg className="w-3 h-3 text-gray-400 mx-1" aria-hidden="true" xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 6 10">
           <path stroke="currentColor" stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="m1 9 4-4-4-4"/>
         </svg>
-        <a href="#" className="ml-1 text-sm font-medium">{categoryName}</a>
+        <a href="#" className="ml-1 text-sm font-medium">모든 공유기록 보기</a>
       </div>
     </li>
   </ol>
 </nav>
-    <div className='md-pt-10 relative'>
-        <div className='absolute right-10 sm-pt-0'>
-    <div className="flex items-center justify-center py-4 md:py-8 flex-wrap">
-        <select id="filter" value={reviewFilter} onChange={(e) => setReviewFilter(e.target.value)} className="bg-gray-50 border border-gray-300 text-gray-900 text-sm rounded-lg focus:ring-blue-500 focus:border-blue-500 block w-full p-2.5 dark:bg-gray-700 dark:border-gray-600 dark:placeholder-gray-400 dark:text-white dark:focus:ring-blue-500 dark:focus:border-blue-500">
-        <option value="전체">전체</option>
-        <option value="최신등록순">최신등록순</option>
-        <option value="오래된순">오래된순</option>
-        <option value="즐겨찾기순">즐겨찾기순</option>
-    </select>
+    <div className='lg-pt-10 md-pt-10 relative'>
+        <div className='absolute left-0'>
+    <div className="flex py-4 md:py-8">
+        <div id="filter" className=" flex gap-3 text-gray-900 text-sm rounded-lg w-full p-2.5">
+        <div>최신등록순</div>
+        <div>오래된순</div>
+        <div>즐겨찾기순</div>
+    </div>
     </div>
     </div>
         </div> 
-    <div className='grid gap-6 md:grid-cols-2 lg:grid-cols-2 item_list lg:pt-20'>
+    <div className='grid gap-6 md:grid-cols-1 lg:grid-cols-1 lg:pt-20'>
     {publicReviews.length === 0 ? (
   <div className="pt-4 lg:pt-5 pb-4 lg:pb-8 px-4 xl:px-2 xl:container mx-auto">
     <section className='pt-16'>
@@ -108,16 +107,14 @@ const ReviewPage = () => {
     </section>
   </div>
 ) : (
-  <div className='grid gap-6 md:grid-cols-3 lg:grid-cols-3 item_list lg:pt-20'>
+  <div className='grid gap-6 md:grid-cols-3 lg:grid-cols-3 lg:pt-20 md:pt-20'>
     {publicReviews.map((item: ReviewData) => (
       <Link href={`/review/${item.id}`} key={item.id} onClick={() => setSelectedReview(item)}>
-        <div className="w-80 h-80 border border-slate-200 bg-slate-200 relative">
-          <div className="absolute transform -translate-y-1/2 md:left-20 top-1/2 mx-8">
-            <div className="text-white text-left">
-              <img src={item.book?.thumbnail} alt={item.title} className="w-full h-auto" />
+        <div className="relative w-90 h-80 border rounded-md border-slate-200">
+            <div className="mb-4 h-full w-full border-4 rounded-md">
+              <img src={item.book?.thumbnail} alt={item.title} className="h-full w-full object-fill" />       
             </div>
           </div>
-        </div>
       </Link>
     ))}
   </div>
