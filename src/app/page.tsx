@@ -65,7 +65,7 @@ export default function Home() {
   return (
     <div>
       <div
-        className="relative w-full py-24 px-10 grid grid-cols-1 sm:px-56 sm:grid-cols-2 "
+        className="relative w-full py-24 px-10 grid grid-cols-1 sm:px-[25%] sm:grid-cols-2 "
         style={{
           width: '100%',
           height: '100%',
