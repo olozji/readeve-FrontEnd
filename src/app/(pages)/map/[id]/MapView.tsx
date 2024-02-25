@@ -26,10 +26,11 @@ const MapView = ({ myMapData, isShared, isFull, markerImage, markerImageOpacity 
     new Array(tagInfo.length).fill(false),
   )
   const [startIdx, setStartIdx] = useState(0)
-  const numVisibleTags = 3 // 표시할 최대 태그 개수
+  const numVisibleTags = 4 // 표시할 최대 태그 개수
 
   const [filteredReviews, setFilteredReviews] = useState<any>([])
   const [windowHeight, setWindowHeight] = useState(window.innerHeight)
+
 
   useEffect(() => {
     if (isShared) {
@@ -197,7 +198,7 @@ const MapView = ({ myMapData, isShared, isFull, markerImage, markerImageOpacity 
         <div>
           <div
             id="map"
-            className=""
+            className={`${isFull!==`calc(100vh - 44px)`?'rounded-lg':''}`}
             style={{ width: '100%', height: `${isFull}`, position: 'relative' }}
           >
             {/* 스크롤 구현 TODO:스크롤바 스타일링 or 없애기*/}
@@ -247,7 +248,7 @@ const MapView = ({ myMapData, isShared, isFull, markerImage, markerImageOpacity 
             </div>
             {/* 뒤에 흰 배경*/}
             {isShared && (
-              <div className="absolute top-0 left-20 z-40 flex flex-row rounded-lg">
+              <div className="absolute top-6 left-1/2 transform -translate-x-1/2 z-40 flex flex-row rounded-lg">
                 <div className="p-2 cursor-pointer" onClick={handleClickPrev}>
                   &lt;
                 </div>
@@ -256,7 +257,7 @@ const MapView = ({ myMapData, isShared, isFull, markerImage, markerImageOpacity 
                   .map((tag: any, i: number) => (
                     <div
                       key={i}
-                      className={`p-2 mx-2 rounded-lg bg-yellow-200 ${isSelectedTags[startIdx + i] && 'bg-emerald-200'}`}
+                      className={`p-2 mx-2 rounded-lg  ${isSelectedTags[startIdx + i] ? 'bg-emerald-200':'bg-[#ffb987]'}`}
                       onClick={() => searchTag(startIdx + i)}
                     >
                       {tag.name}
@@ -286,7 +287,7 @@ const MapView = ({ myMapData, isShared, isFull, markerImage, markerImageOpacity 
                 position: 'absolute',
                 top: 0,
                 left: 30,
-                width: '32%',
+                width: '37%',
                 height: '100%',
                 background: 'rgba(255, 0, 255, 0.8)',
                 zIndex: 2,

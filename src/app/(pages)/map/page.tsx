@@ -8,7 +8,6 @@ import markerImageOpacity from '/public/images/marker2.png'
 
 const SharedMapPage = () => {
   const [documents, setDocuments] = useState<any[]>([])
-  const [isShared, setIsShared] = useState(true);
   useEffect(() => {
     const storedData = localStorage.getItem('allDataInfo')
 
