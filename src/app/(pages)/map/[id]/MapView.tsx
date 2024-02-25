@@ -193,8 +193,16 @@ const MapView = ({ myMapData, isShared, isFull, markerImage, markerImageOpacity 
   //TODO:여기서 44 는 NavBar 높이인데 브라우져나 해상도에 따라 다르게 나올거 같아서 수정해야해요
   const mapHeight = isFull === `calc(100vh - 44px)` ? windowHeight - 44 : 400
   return (
-    <div style={{ position: 'relative' }}>
+    <div style={{ position: 'relative'}}>
       {myMapData.length !== 0 ? (
+        <div className='
+        relative
+       '
+         style={{
+           background: '#f9f9f9',
+           zIndex: 2,
+         }}
+       >
         <div>
           <div
             id="map"
@@ -202,14 +210,15 @@ const MapView = ({ myMapData, isShared, isFull, markerImage, markerImageOpacity 
             style={{ width: '100%', height: `${isFull}`, position: 'relative' }}
           >
             {/* 스크롤 구현 TODO:스크롤바 스타일링 or 없애기*/}
-            <div
-              className="p-10  overflow-y-auto no-scrollbar"
+            <div className=''
               style={{
                 position: 'absolute',
                 height: `${mapHeight}px`,
                 zIndex: 10,
               }}
             >
+              {/* TODO: 스크롤 내용 수정 */}
+              <div className="absolute top-10 left-10 w-[30rem] h-full px-[4rem] py-[5rem] overflow-y-auto no-scrollbar" style={{background:'#f9f9f9', zIndex:2}}>
               {filteredReviews.length === 0 ? (
                 isShared ? (
                   <div className="ml-16">
@@ -245,6 +254,7 @@ const MapView = ({ myMapData, isShared, isFull, markerImage, markerImageOpacity 
                   </div>
                 ))
               )}
+            </div>
             </div>
             {/* 뒤에 흰 배경*/}
             {isShared && (
@@ -282,19 +292,9 @@ const MapView = ({ myMapData, isShared, isFull, markerImage, markerImageOpacity 
                 )}
               </div>
             )}
-            <div
-              style={{
-                position: 'absolute',
-                top: 0,
-                left: 30,
-                width: '37%',
-                height: '100%',
-                background: 'rgba(255, 0, 255, 0.8)',
-                zIndex: 2,
-              }}
-            ></div>
+            </div>
           </div>
-        </div>
+          </div>
       ) : (
         <div>
           <div id="map" style={{ display: 'none' }}></div>
