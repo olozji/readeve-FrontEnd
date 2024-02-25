@@ -62,6 +62,12 @@ export default function Home() {
     setMap(true)
   }, [])
 
+<<<<<<< HEAD
+  
+
+  
+=======
+>>>>>>> 538c0a3d42d5bab709276b0be9d6ab8e9dc8a096
   return (
     <div>
       <div
