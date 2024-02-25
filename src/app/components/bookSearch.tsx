@@ -115,7 +115,7 @@ export const BookSearch = () => {
             <div className="grid grid-rows-2 grid-flow-col">
             {documents.map((d: any, i: number) => (
               <div
-                className={`justify-items-center${selectedBook && selectedBook.title === d.title ? 'rounded-lg border-4 border-blue-500' : 'rounded-lg border-4 border-transparent'}`}
+                className={`justify-items-center${selectedBook && selectedBook.isbn=== d.isbn ? 'rounded-lg border-4 border-blue-500' : 'rounded-lg border-4 border-transparent'}`}
                 key={i}
                 onClick={() => handleBookClick(d)}
                 style={{ display: 'flex', flexDirection: 'column', alignItems: 'center' }}
