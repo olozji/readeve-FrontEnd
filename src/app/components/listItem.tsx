@@ -25,7 +25,7 @@ const ListItem = ({
     <div>
       {isShared ? (
         <div
-          className={`relative left-5 block max-w-xs p-6 my-2 bg-white border border-gray-200 rounded-lg shadow z-50${
+          className={`relative text-left left-5 block max-w-xs p-6 my-2 bg-white border border-gray-200 rounded-lg shadow z-50${
             isHovered
               ? 'hover:bg-gray-100 dark:bg-gray-800 dark:border-gray-700 dark:hover:bg-gray-700'
               : ''
@@ -42,7 +42,7 @@ const ListItem = ({
         </div>
       ) : (
         <div
-          className={`relative left-5 block max-w-xs p-6 my-2 bg-white border border-gray-200 rounded-lg shadow z-50 ${
+          className={`relative text-left left-5 block max-w-xs p-6 my-2 bg-white border border-gray-200 rounded-lg shadow z-50 ${
             isHovered
               ? 'hover:bg-gray-100 dark:bg-gray-800 dark:border-gray-700 dark:hover:bg-gray-700'
               : ''

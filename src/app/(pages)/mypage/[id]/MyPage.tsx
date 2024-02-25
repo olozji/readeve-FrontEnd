@@ -86,7 +86,7 @@ const MyPageComponent = (props: ParamType) => {
         </div>
         <div>{address}</div>
         {selectBook}
-        <BookLayout></BookLayout>
+        <BookLayout isMain={false}></BookLayout>
       </div>
     </section>
   )
