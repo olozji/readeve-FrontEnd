@@ -5,6 +5,8 @@ import searchIcon from 'public/images/searchIcon.png';
 import Image from 'next/image';
 import { MapDirectSearch } from './mapDirectSearch';
 import CustomModal from '../components/modal';
+import markerImage from '/public/images/marker1.png';
+import markerImageOpacity from '/public/images/marker2.png';
 
 interface AddPlaceProps {
   onClose: () => void;
@@ -66,7 +68,7 @@ const AddPlace: React.FC<AddPlaceProps> = ({ onClose, onMarkerClickParent, selec
       </button>
       {directSearch ? (
         <div>
-         <MapDirectSearch onMarkerClick={onMarkerClick} selectedPlace={selectedPlace} />
+         <MapDirectSearch onMarkerClick={onMarkerClick} selectedPlace={selectedPlace} markerImage={markerImage}/>
         </div>
       ) : (
         <div>
@@ -88,7 +90,7 @@ const AddPlace: React.FC<AddPlaceProps> = ({ onClose, onMarkerClickParent, selec
               </div>
             </div>
           </form>
-          <MapSearch searchPlace={Place} onMarkerClick={onMarkerClick} />
+          <MapSearch searchPlace={Place} onMarkerClick={onMarkerClick} markerImage={markerImage} markerImageOpacity={markerImageOpacity} />
         </div>
       )}
       

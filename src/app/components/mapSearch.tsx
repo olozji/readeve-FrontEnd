@@ -1,8 +1,10 @@
 'use client'
 
 import { placeState } from '@/store/writeAtoms';
+import { StaticImageData } from 'next/image';
 import React, { useEffect, useState, useRef } from 'react'
 import { useRecoilState } from 'recoil';
+
 
 declare global {
   interface Window {
@@ -12,9 +14,12 @@ declare global {
 interface MapSearchProps {
   searchPlace: string
   onMarkerClick: (place: string) => void;
+  markerImage: StaticImageData;
+  markerImageOpacity: StaticImageData;
+
 }
 
-const MapSearch = ({ searchPlace, onMarkerClick }: MapSearchProps): React.ReactElement => {
+const MapSearch = ({ searchPlace, onMarkerClick, markerImage, markerImageOpacity  }: MapSearchProps): React.ReactElement => {
 
   const mapRef = useRef<any>(null)
   const listContainerRef = useRef<any>(null);
@@ -57,6 +62,12 @@ const MapSearch = ({ searchPlace, onMarkerClick }: MapSearchProps): React.ReactE
 
         mapRef.current = map;
 
+         // 이미지 마커 생성
+         const markerImageProps = new window.kakao.maps.MarkerImage(
+          markerImage.src,
+          new window.kakao.maps.Size(30,30),
+        )
+
         //장소 검색 라이브러리
         const ps = new window.kakao.maps.services.Places()
 
@@ -91,9 +102,29 @@ const MapSearch = ({ searchPlace, onMarkerClick }: MapSearchProps): React.ReactE
         
         //장소데이터를 마커로 지도위에 표시하는 함수
         function displayMarker(place: any, index:any) {
+
+          let markerImageProps;
+
+          if(place.id === selectedPlace?.id) {
+            // 선택된 장소 일 경우엔 markerImage 사용
+            markerImageProps = new window.kakao.maps.MarkerImage(
+              markerImage.src,
+              new window.kakao.maps.Size(30,30),
+            );
+          } else {
+            // 선택되지 않은 장소는 markerImageOpacity 사용
+            markerImageProps = new window.kakao.maps.MarkerImage(
+              markerImageOpacity.src,
+              new window.kakao.maps.Size(30, 30),
+            ); 
+          }
+
+
+
           let marker = new window.kakao.maps.Marker({
             map: map,
             position: new window.kakao.maps.LatLng(place.y, place.x),
+            image:markerImageProps,
           })
 
           // 마커를 클릭했을 때, input에 장소이름 반영되게 props로 받아온 콜백함수 호출
@@ -208,6 +239,10 @@ const MapSearch = ({ searchPlace, onMarkerClick }: MapSearchProps): React.ReactE
   const handleListItem = (place: any, index: number) => {
    
     if (selectedPlace && selectedPlace.infowindow) {
+      selectedPlace.marker.setImage(new window.kakao.maps.MarkerImage(
+        markerImageOpacity.src,
+        new window.kakao.maps.Size(30, 30),
+      ));
       selectedPlace.infowindow.close();
     }
 
@@ -217,9 +252,27 @@ const MapSearch = ({ searchPlace, onMarkerClick }: MapSearchProps): React.ReactE
       zIndex: 1,
     });
 
+    let markerImageProps;
+
+    if(place.id === selectedPlace?.id) {
+      // 선택된 장소 일 경우엔 markerImage 사용
+      markerImageProps = new window.kakao.maps.MarkerImage(
+        markerImage.src,
+        new window.kakao.maps.Size(30,30),
+      );
+    } else {
+      // 선택되지 않은 장소는 markerImageOpacity 사용
+      markerImageProps = new window.kakao.maps.MarkerImage(
+        markerImageOpacity.src,
+        new window.kakao.maps.Size(30, 30),
+      ); 
+    }
+
+
     const marker = new window.kakao.maps.Marker({
       map: mapRef.current,
       position: new window.kakao.maps.LatLng(place.y, place.x),
+      image:markerImageProps,
     });
 
      // 마커를 클릭했을 때, input에 장소이름 반영되게 props로 받아온 콜백함수 호출

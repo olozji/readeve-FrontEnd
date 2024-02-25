@@ -1,6 +1,10 @@
 'use client'
 import { useEffect, useState } from 'react'
 import MapView from './[id]/MapView'
+import markerImage from '/public/images/marker1.png'
+import markerImageOpacity from '/public/images/marker2.png'
+
+
 
 const SharedMapPage = () => {
   const [documents, setDocuments] = useState<any[]>([])
@@ -18,7 +22,7 @@ const SharedMapPage = () => {
   return (
     <div>
       {documents.length !== 0 ? (
-        <MapView myMapData={documents} isShared={true} isFull={`calc(100vh - 44px)`}></MapView>
+        <MapView myMapData={documents} isShared={true} isFull={`calc(100vh - 44px)`} markerImage={markerImage} markerImageOpacity={markerImageOpacity}></MapView>
       ) : (
         <div>
           <div id="map" style={{ display: 'none' }}></div>
