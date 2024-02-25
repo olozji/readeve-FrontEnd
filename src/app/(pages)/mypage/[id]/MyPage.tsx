@@ -3,7 +3,7 @@
 import { BookLayout } from '@/app/components/bookLayout'
 import { markersState } from '@/store/mapAtoms'
 import { useSession } from 'next-auth/react'
-import Image from 'next/image'
+import Image, { StaticImageData } from 'next/image'
 import { useEffect, useRef, useState } from 'react'
 import { useRecoilState, useRecoilValue } from 'recoil'
 import { PropType } from '../../detail/[id]/page'
@@ -17,6 +17,8 @@ declare global {
 }
 interface ParamType {
   id: string
+  markerImage:StaticImageData;
+  markerImageOpacity:StaticImageData;
 }
 
 const MyPageComponent = (props: ParamType) => {
@@ -67,7 +69,13 @@ const MyPageComponent = (props: ParamType) => {
           {documents.length !== 0 ? (
             <div>
               <Link href={`/map/${props.id}`}>내 지도 크게보기</Link>
-              <MapView myMapData={documents} isShared={false} isFull={'400px'}></MapView>
+              <MapView 
+                myMapData={documents} 
+                isShared={false} 
+                isFull={'400px'} 
+                markerImage={props.markerImage} 
+                markerImageOpacity={props.markerImageOpacity}
+                />
             </div>
           ) : (
             <div>

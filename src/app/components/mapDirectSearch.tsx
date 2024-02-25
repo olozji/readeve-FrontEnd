@@ -9,7 +9,7 @@ declare global {
   }
 }
 
-export const MapDirectSearch = ({ onMarkerClick }: any) => {
+export const MapDirectSearch = ({ onMarkerClick, markerImage }: any) => {
   const [map, setMap] = useState<any>()
   const [marker, setMarker] = useState<any>()
   const [address, setAddress] = useState('')
@@ -51,8 +51,13 @@ export const MapDirectSearch = ({ onMarkerClick }: any) => {
           setMarker(new window.kakao.maps.Marker())
           let currMarker = new window.kakao.maps.Marker({
             position: currentPosition,
+            image: new window.kakao.maps.MarkerImage(
+              markerImage.src,
+              new window.kakao.maps.Size(markerImage.width, markerImage.height),
+            ),
           })
           currMarker.setMap(map)
+          setMarker(currMarker);
         })
       },
       (error) => {
@@ -113,6 +118,9 @@ export const MapDirectSearch = ({ onMarkerClick }: any) => {
     }
   }, [map])
 
+
+
+
   useEffect(() => {
     if (placeInfo) {
         let newPlace = {
@@ -132,38 +140,45 @@ export const MapDirectSearch = ({ onMarkerClick }: any) => {
   //---------------------현재 위치 가져오기---------------------------//
 
   const getPosSuccess = (pos: GeolocationPosition) => {
-    // 현재 위치(위도, 경도) 가져온다.
-    let currentPos = new window.kakao.maps.LatLng(
-      pos.coords.latitude, // 위도
-      pos.coords.longitude, // 경도
-    )
-    console.log(currentPos)
+    let currentPos = new window.kakao.maps.LatLng(pos.coords.latitude, pos.coords.longitude);
 
-    // 지도를 이동 시킨다.
-    var geocoder = new window.kakao.maps.services.Geocoder()
+    var geocoder = new window.kakao.maps.services.Geocoder();
 
     geocoder.coord2Address(
-      currentPos.La, //현재위도
-      currentPos.Ma, //현재경도
+      currentPos.getLat(), // 수정된 부분
+      currentPos.getLng(), // 수정된 부분
       (result: any, status: any) => {
         if (status === window.kakao.maps.services.Status.OK) {
           let addr = !!result[0].road_address
             ? result[0].road_address.address_name
-            : result[0].address.address_name
+            : result[0].address.address_name;
 
-          // 클릭한 위치 주소를 가져온다.
-          setAddress(addr)
+          setAddress(addr);
+          map.panTo(currentPos);
 
-          // 기존 마커를 제거하고 새로운 마커를 넣는다.
-          marker.setMap(null)
-          map.panTo(currentPos)
-          // 마커를 클릭한 위치에 표시합니다
-          marker.setPosition(currentPos)
-          marker.setMap(map)
+          const newMarkerPosition = new window.kakao.maps.LatLng(
+            currentPos.getLat(), // 수정된 부분
+            currentPos.getLng(), // 수정된 부분
+          );
+
+          // 마커를 이동시킵니다.
+          if (marker) {
+            marker.setPosition(newMarkerPosition);
+          } else {
+            const newMarker = new window.kakao.maps.Marker({
+              position: newMarkerPosition,
+              image: new window.kakao.maps.MarkerImage(
+                markerImage.src,
+                new window.kakao.maps.Size(markerImage.width, markerImage.height),
+              ),
+            });
+            newMarker.setMap(map);
+            setMarker(newMarker);
+          }
         }
       },
-    )
-  }
+    );
+  };
 
   const getCurrentPosBtn = () => {
     navigator.geolocation.getCurrentPosition(
