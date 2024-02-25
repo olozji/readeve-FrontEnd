@@ -57,11 +57,11 @@ const ReviewPage = () => {
         console.log(PublicReviewData);
         setPublicReviews(PublicReviewData);
       }
-    }, [allDataInfo]);
+    }, []);
 
  
   return (
-        <section className="main">
+        <section className="main mx-auto max-w-6xl px-4">
           <section className='pt-20 lg:pt-5 pb-4 lg:pb-8 px-4 xl:px-2 xl:container mx-auto'>
             <h2 className='mb-5 lg:mb-8 text-3xl lg:text-4xl text-center font-bold'>
                 {categoryName}
@@ -112,7 +112,7 @@ const ReviewPage = () => {
       <Link href={`/review/${item.id}`} key={item.id} onClick={() => setSelectedReview(item)}>
         <div className="relative w-90 h-80 border rounded-md border-slate-200">
             <div className="mb-4 h-full w-full border-4 rounded-md">
-              <img src={item.book?.thumbnail} alt={item.title} className="h-full w-full object-fill" />       
+              <img src={item.book?.thumbnail} alt={item.title} className="h-full w-full object-fill rounded-md" />       
             </div>
           </div>
       </Link>
