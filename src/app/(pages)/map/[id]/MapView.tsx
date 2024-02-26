@@ -32,7 +32,6 @@ const MapView = ({ myMapData, isShared, isFull, markerImage, markerImageOpacity 
   const [windowHeight, setWindowHeight] = useState(window.innerHeight)
   const [isTitleActive, setIsTitleActive] = useState('최근기록');
 
-
   useEffect(() => {
     if (isShared) {
       console.log(3)
