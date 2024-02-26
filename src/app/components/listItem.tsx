@@ -21,6 +21,7 @@ const ListItem = ({
   const [recoilMap] = useRecoilState<any>(mapState)
   const [isHovered, setIsHovered] = useState(false)
   const [iscontentExpanded, setIsContentExpanded] = useState(false);
+  const [isSeeMoreVisible, setIsSeeMoreVisible] = useState(true);
 
   const toggleContentExpanded = () => {
     setIsContentExpanded(!iscontentExpanded);
@@ -62,8 +63,13 @@ const ListItem = ({
           <p className={`font-normal text-gray-700 dark:text-gray-400 ${iscontentExpanded ? 'whitespace-pre-line' : 'line-clamp-2'}`}>
             {data.content}
           </p>
-           {!iscontentExpanded && (
-            <button onClick={toggleContentExpanded} className='text-black'>더보기</button>
+           {isSeeMoreVisible && (
+            <button 
+            onClick={toggleContentExpanded} 
+            className='text-black'
+            >
+             {!iscontentExpanded ? '더 보기' : '접기'}
+              </button>
           )}
         </div>
       )}
