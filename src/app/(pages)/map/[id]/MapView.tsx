@@ -265,7 +265,10 @@ const MapView = ({ myMapData, isShared, isFull, markerImage,isMain, markerImageO
               }}
             >
               {/* TODO: 스크롤 내용 수정 */}
-              <div className="absolute w-[35rem] bg-[#f9f9f9] h-full px-[4rem] py-[2rem] bg-opacity-80 overflow-y-auto rounded-lg" style={{ zIndex:2}}><h1 className='font-bold'>{isTitleActive}</h1>
+
+              <div className="absolute scrollBar w-[35rem] bg-[#f9f9f9] h-full px-[4rem] py-[2rem] bg-opacity-80 overflow-y-auto rounded-lg" style={{ zIndex:2}}>
+                <h1 className='font-bold'>{isTitleActive}</h1>
+
               {filteredReviews.length === 0 ? (
                 isShared ? (
                   <div className="ml-16">
