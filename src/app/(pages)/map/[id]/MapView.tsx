@@ -30,6 +30,7 @@ const MapView = ({ myMapData, isShared, isFull, markerImage, markerImageOpacity 
 
   const [filteredReviews, setFilteredReviews] = useState<any>([])
   const [windowHeight, setWindowHeight] = useState(window.innerHeight)
+  const [isTitleActive, setIsTitleActive] = useState('최근기록');
 
 
   useEffect(() => {
@@ -93,6 +94,9 @@ const MapView = ({ myMapData, isShared, isFull, markerImage, markerImageOpacity 
 
       // 전체 독후감 데이터
       console.log(myMapData)
+
+      // 최근 기록에서 나의 기록으로 변경
+      setIsTitleActive('나의 기록');
 
       // 필터링된 독후감 가져오기
       // place.id 값으로 필터링
@@ -218,7 +222,8 @@ const MapView = ({ myMapData, isShared, isFull, markerImage, markerImageOpacity 
               }}
             >
               {/* TODO: 스크롤 내용 수정 */}
-              <div className="absolute top-10 left-10 w-[30rem] h-full px-[4rem] py-[5rem] overflow-y-auto no-scrollbar" style={{background:'#f9f9f9', zIndex:2}}>
+              <div className="absolute top-10 left-10 w-[30rem] h-full px-[4rem] py-[5rem] overflow-y-auto no-scrollbar rounded-lg" style={{background:'#f9f9f9', zIndex:2, opacity:0.8}}>
+             <h1 className='font-bold'>{isTitleActive === '최근기록' ? "최근기록" : "나의 기록"}</h1>
               {filteredReviews.length === 0 ? (
                 isShared ? (
                   <div className="ml-16">
