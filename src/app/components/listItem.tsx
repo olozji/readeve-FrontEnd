@@ -28,7 +28,7 @@ const ListItem = ({
   }
 
   return (
-    <div>
+    <div className='opacity-100'>
       {isShared ? (
         <div
           className={`relative text-left left-5 block max-w-xs p-6 my-2 border border-gray-200 rounded-lg shadow z-50${

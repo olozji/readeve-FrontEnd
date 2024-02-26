@@ -21,7 +21,7 @@ const SharedMapPage = () => {
   return (
     <div>
       {documents.length !== 0 ? (
-        <MapView myMapData={documents} isShared={true} isFull={`calc(100vh - 44px)`} markerImage={markerImage} markerImageOpacity={markerImageOpacity}></MapView>
+        <MapView myMapData={documents} isShared={true} isFull={`calc(100vh - 44px)`} markerImage={markerImage} markerImageOpacity={markerImageOpacity} isMain={false}></MapView>
       ) : (
         <div>
           <div id="map" style={{ display: 'none' }}></div>
