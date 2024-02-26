@@ -174,13 +174,13 @@ export default function Home() {
         ) : (
           <div className='grid gap-6 md:grid-cols-4 lg:grid-cols-4'>
           {mainReviews.map((item:any) => (
-            <Link href={`/review/${item.id}`} key={item.id} onClick={() => setSelectedReview(item)}>
+            <div key={item.id} onClick={() => setSelectedReview(item)}>
               <div className="relative w-90 h-80 border rounded-md border-slate-200">
                   <div className="mb-4 h-full w-full border-4 rounded-md">
                     <img src={item.book?.thumbnail} alt={item.title} className="h-full w-full object-fill rounded-md" />       
                   </div>
                 </div>
-            </Link>
+            </div>
           ))}
         </div>
         )}
