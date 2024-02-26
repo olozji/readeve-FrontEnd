@@ -50,11 +50,13 @@ const ReviewPage = () => {
     });
 
     
-    const openReviewModal = () => {
+    const openReviewModal = (item:ReviewData) => {
+      setSelectedReview(item)
       setIsReviewsModal(true)
     }
 
     const closeReviewModal = () => {
+      setSelectedReview(null);
       setIsReviewsModal(false)
     } 
    
@@ -126,7 +128,7 @@ const ReviewPage = () => {
         onClick={() => setSelectedReview(item)}
       >
         {/* TODO:모달을 한번 클릭하고 다른 아이템을 클릭해야 다시 재오픈되는 이슈 수정해야 함 */}
-        <CustomModal isOpen={selectedReview == item} onClose={closeReviewModal}>
+        <CustomModal isOpen={selectedReview === item} onClose={closeReviewModal}>
           <div className="grid grid-rows-2 grid-flow-col mb-4">
             
             <div className='row-span-3 mx-auto px-8 py-8' >
