@@ -20,17 +20,24 @@ const ListItem = ({
 }: listItemProps) => {
   const [recoilMap] = useRecoilState<any>(mapState)
   const [isHovered, setIsHovered] = useState(false)
+  const [iscontentExpanded, setIsContentExpanded] = useState(false);
+  const [isSeeMoreVisible, setIsSeeMoreVisible] = useState(true);
+
+  const toggleContentExpanded = () => {
+    setIsContentExpanded(!iscontentExpanded);
+  }
 
   return (
     <div>
       {isShared ? (
         <div
-          className={`relative text-left left-5 block max-w-xs p-6 my-2 bg-white border border-gray-200 rounded-lg shadow z-50${
+          className={`relative text-left left-5 block max-w-xs p-6 my-2 border border-gray-200 rounded-lg shadow z-50${
             isHovered
               ? 'hover:bg-gray-100 dark:bg-gray-800 dark:border-gray-700 dark:hover:bg-gray-700'
               : ''
           }`}
           onClick={() => onListItemClick(data.place, index)}
+          style={{background:'#c5c5c5'}}
         >
           <h5 className="mb-2 text-xl font-bold tracking-tight text-gray-900 ">
             {data.place.place_name ? data.place.place_name : data.place.address}
@@ -48,13 +55,22 @@ const ListItem = ({
               : ''
           }`}
           onClick={() => onListItemClick(data.place, index)}
+          style={{background:'#c5c5c5'}}
         >
           <h5 className="mb-2 text-xl font-bold tracking-tight text-gray-900 ">
             {data.place.place_name ? data.place.place_name : data.place.address}
           </h5>
-          <p className="font-normal text-gray-700 dark:text-gray-400">
+          <p className={`font-normal text-gray-700 dark:text-gray-400 ${iscontentExpanded ? 'whitespace-pre-line' : 'line-clamp-2'}`}>
             {data.content}
           </p>
+           {isSeeMoreVisible && (
+            <button 
+            onClick={toggleContentExpanded} 
+            className='text-black'
+            >
+             {!iscontentExpanded ? '더 보기' : '접기'}
+              </button>
+          )}
         </div>
       )}
     </div>

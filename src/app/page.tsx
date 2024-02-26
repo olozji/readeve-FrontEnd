@@ -22,11 +22,14 @@ export default function Home() {
   console.log(session)
 
   const [map, setMap] = useState(false)
+  const [publicReviews, setPublicReviews] = useState<any[]>([]);
   const [selectedReview, setSelectedReview] =
     useRecoilState(selectedReviewState)
   const allReviews = useRecoilValue(allReviewSelector)
   const [currentIndex, setCurrentIndex] = useState(0)
   const [documents, setDocuments] = useState<any[]>([])
+
+  
   useEffect(() => {
     const storedData = localStorage.getItem('allDataInfo')
 
@@ -43,11 +46,9 @@ export default function Home() {
     setCurrentIndex(index)
   }
 
-  const mainReviewToShow = 6 // 메인화면에서 보여질 갯수
+  
 
-  const mainReviews = Array.isArray(allReviews)
-    ? allReviews.slice(0, mainReviewToShow)
-    : []
+
   const fetchData = async () => {
     console.log(1)
     try {
@@ -62,12 +63,25 @@ export default function Home() {
     setMap(true)
   }, [])
 
-<<<<<<< HEAD
+  useEffect(() => {
+    const storedData = localStorage.getItem('allDataInfo');
   
+    if (storedData) {
+      const parsedData = JSON.parse(storedData);
+      const PublicReviewData = parsedData.filter((item:any) => !item.isPrivate);
+      console.log(PublicReviewData);
+      setPublicReviews(PublicReviewData);
+    }
+  }, []);
+
+  const mainReviews = publicReviews.slice(0,4) // 메인화면에서 보여질 모든기록 갯수
+
+  const scrollToTop = () => {
+    window.scrollTo({ top: 0, behavior: 'smooth' });
+  };
 
   
-=======
->>>>>>> 538c0a3d42d5bab709276b0be9d6ab8e9dc8a096
+
   return (
     <div>
       <div
@@ -147,7 +161,7 @@ export default function Home() {
       </div>
       <div className="">
         <div className="flex justify-between">
-          <span>모든 기록</span>
+          <h1 className='text-2xl font-display font-bold py-10'>모든 기록</h1>
           <span>
             <Link href={'/reviews'}>더 보기</Link>
           </span>
@@ -161,25 +175,21 @@ export default function Home() {
             </section>
           </div>
         ) : (
-          mainReviews.map((item: any) => (
-            <Link
-              href={`/review/${item.id}`}
-              key={item.id}
-              onClick={() => setSelectedReview(item)}
-            >
-              <h1>모든 기록</h1>
-              <div className="w-80 h-80 border border-slate-200 bg-slate-200 relative">
-                <div className="absolute transform -translate-y-1/2 md:left-20 top-1/2 mx-8">
-                  <div className="text-white text-left">
-                    <h1 className="text-3xl md:text-5xl font-bold"></h1>
-                    <p className="py-4 md:text-2xl"></p>
-                    <div>책 이미지</div>
+          <div className='grid gap-6 md:grid-cols-4 lg:grid-cols-4'>
+          {mainReviews.map((item:any) => (
+            <div key={item.id} onClick={() => setSelectedReview(item)}>
+              <div className="relative w-90 h-80 border rounded-md border-slate-200">
+                  <div className="mb-4 h-full w-full border-4 rounded-md">
+                    <img src={item.book?.thumbnail} alt={item.title} className="h-full w-full object-fill rounded-md" />       
                   </div>
                 </div>
-              </div>
-            </Link>
-          ))
+            </div>
+          ))}
+        </div>
         )}
+        </div>
+        <div className='py-[10rem] text-center'>
+          <h1 onClick={scrollToTop} className='cursor-pointer'>첫 화면으로 올라가기</h1>
         </div>
         </div>
     </div>

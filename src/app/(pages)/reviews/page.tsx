@@ -4,6 +4,7 @@ import React, { useEffect, useState } from 'react';
 import Link from 'next/link';
 import { useRecoilState, useRecoilValue } from 'recoil';
 import { allDataState, bookState, filterReviewState, getReviewData, reviewState, selectedReviewState } from '@/store/writeAtoms';
+import CustomModal from '@/app/components/modal';
 
 export interface ReviewData {
     [x: string]: any;
@@ -40,12 +41,24 @@ const ReviewPage = () => {
     const [reviewFilter, setReviewFilter] = useRecoilState(filterReviewState);
     const [bookInfo] = useRecoilState<any>(bookState)
     const [allDataInfo,setAllDataInfo] = useRecoilState<any>(allDataState)
-   
+    const [isReviewsModal, setIsReviewsModal] = useState(false);
+
     const filteredReviews = reviewItems.filter((item: ReviewData) => {
         if (reviewFilter === '전체') {
           return true; // 전체 범위 선택 시 모든 리뷰 반환
         }
     });
+
+    
+    const openReviewModal = (item:ReviewData) => {
+      setSelectedReview(item)
+      setIsReviewsModal(true)
+    }
+
+    const closeReviewModal = () => {
+      setSelectedReview(null);
+      setIsReviewsModal(false)
+    } 
    
 
     useEffect(() => {
@@ -57,11 +70,11 @@ const ReviewPage = () => {
         console.log(PublicReviewData);
         setPublicReviews(PublicReviewData);
       }
-    }, [allDataInfo]);
+    }, []);
 
  
   return (
-        <section className="main">
+        <section className="main mx-auto max-w-6xl px-4">
           <section className='pt-20 lg:pt-5 pb-4 lg:pb-8 px-4 xl:px-2 xl:container mx-auto'>
             <h2 className='mb-5 lg:mb-8 text-3xl lg:text-4xl text-center font-bold'>
                 {categoryName}
@@ -109,13 +122,52 @@ const ReviewPage = () => {
 ) : (
   <div className='grid gap-6 md:grid-cols-3 lg:grid-cols-3 lg:pt-20 md:pt-20'>
     {publicReviews.map((item: ReviewData) => (
-      <Link href={`/review/${item.id}`} key={item.id} onClick={() => setSelectedReview(item)}>
-        <div className="relative w-90 h-80 border rounded-md border-slate-200">
-            <div className="mb-4 h-full w-full border-4 rounded-md">
-              <img src={item.book?.thumbnail} alt={item.title} className="h-full w-full object-fill" />       
+        <div
+        key={item.id}
+        className="relative w-90 h-80 border rounded-md border-slate-200"
+        onClick={() => setSelectedReview(item)}
+      >
+        {/* TODO:모달을 한번 클릭하고 다른 아이템을 클릭해야 다시 재오픈되는 이슈 수정해야 함 */}
+        <CustomModal isOpen={selectedReview === item} onClose={closeReviewModal}>
+          <div className="grid grid-rows-2 grid-flow-col mb-4">
+            
+            <div className='row-span-3 mx-auto px-8 py-8' >
+            <img src={item.book?.thumbnail} alt={item.title} className="h-[20rem] w-[20rem]  object-fill rounded-md" />
             </div>
+            <div className='relative top-[5rem] left-0'>
+            <div className="row-span-2 px-4 py-4">
+            <div className='font-bold text-2xl'>{item.title}</div>
+            </div>
+            <div className="row-span-2">
+            <div>
+              <span className='font-bold'>where</span>
+              <span>{item.place?.place_name}</span>
+            </div>
+            <div>
+              <span className='font-bold'>where</span>
+              <span>{item.title}</span>
+            </div>
+            </div>
+            </div>
+            <div>
+          
+            </div>
+              
           </div>
-      </Link>
+          <section className="py-8 border border-t-0 border-slate-400 rounded-b-md">
+          <div className="px-5 py-8">
+            <textarea
+              className="border border-slate-200 rounded-md w-full h-80 bg-slate-200"
+              placeholder="오늘 나의 독서는..."
+              value={item.content}
+            />
+          </div>
+        </section>
+        </CustomModal>
+        <div className="mb-4 h-full w-full border-4 rounded-md">
+            <img src={item.book?.thumbnail} alt={item.title} className="h-full w-full object-fill rounded-md" />
+          </div>
+      </div>
     ))}
   </div>
 )}

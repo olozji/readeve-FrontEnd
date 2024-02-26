@@ -30,7 +30,7 @@ const MapView = ({ myMapData, isShared, isFull, markerImage, markerImageOpacity 
 
   const [filteredReviews, setFilteredReviews] = useState<any>([])
   const [windowHeight, setWindowHeight] = useState(window.innerHeight)
-
+  const [isTitleActive, setIsTitleActive] = useState('최근기록');
 
   useEffect(() => {
     if (isShared) {
@@ -94,6 +94,9 @@ const MapView = ({ myMapData, isShared, isFull, markerImage, markerImageOpacity 
       // 전체 독후감 데이터
       console.log(myMapData)
 
+      // 최근 기록에서 나의 기록으로 변경
+      setIsTitleActive(`${place.place_name}에서 읽은 독후감`);
+
       // 필터링된 독후감 가져오기
       // place.id 값으로 필터링
       // TODO: 핀으로 검색하기(null) 인 경우 나중에 상태관리 필요함
@@ -113,6 +116,7 @@ const MapView = ({ myMapData, isShared, isFull, markerImage, markerImageOpacity 
         `<div style="padding:5px;font-size:12px;">${place.place_name}</div>`,
       )
       infowindow.open(mapRef.current, newMarker)
+      setIsTitleActive(`${place.place_name}에서 읽은 독후감`);
     })
 
     setMarkers((prevMarkers) => [...prevMarkers, newMarker])
@@ -193,8 +197,16 @@ const MapView = ({ myMapData, isShared, isFull, markerImage, markerImageOpacity 
   //TODO:여기서 44 는 NavBar 높이인데 브라우져나 해상도에 따라 다르게 나올거 같아서 수정해야해요
   const mapHeight = isFull === `calc(100vh - 44px)` ? windowHeight - 44 : 400
   return (
-    <div style={{ position: 'relative' }}>
+    <div style={{ position: 'relative'}}>
       {myMapData.length !== 0 ? (
+        <div className='
+        relative
+       '
+         style={{
+           background: '#f9f9f9',
+           zIndex: 2,
+         }}
+       >
         <div>
           <div
             id="map"
@@ -202,14 +214,16 @@ const MapView = ({ myMapData, isShared, isFull, markerImage, markerImageOpacity 
             style={{ width: '100%', height: `${isFull}`, position: 'relative' }}
           >
             {/* 스크롤 구현 TODO:스크롤바 스타일링 or 없애기*/}
-            <div
-              className="p-10  overflow-y-auto no-scrollbar"
+            <div className=''
               style={{
                 position: 'absolute',
                 height: `${mapHeight}px`,
                 zIndex: 10,
               }}
             >
+              {/* TODO: 스크롤 내용 수정 */}
+            <div className="absolute top-10 left-10 w-[30rem] h-full px-[4rem] py-[2rem] overflow-y-auto no-scrollbar rounded-lg" style={{background:'#f9f9f9', zIndex:2, opacity:0.8}}>
+            <h1 className='font-bold'>{isTitleActive}</h1>
               {filteredReviews.length === 0 ? (
                 isShared ? (
                   <div className="ml-16">
@@ -245,6 +259,7 @@ const MapView = ({ myMapData, isShared, isFull, markerImage, markerImageOpacity 
                   </div>
                 ))
               )}
+            </div>
             </div>
             {/* 뒤에 흰 배경*/}
             {isShared && (
@@ -282,19 +297,9 @@ const MapView = ({ myMapData, isShared, isFull, markerImage, markerImageOpacity 
                 )}
               </div>
             )}
-            <div
-              style={{
-                position: 'absolute',
-                top: 0,
-                left: 30,
-                width: '37%',
-                height: '100%',
-                background: 'rgba(255, 0, 255, 0.8)',
-                zIndex: 2,
-              }}
-            ></div>
+            </div>
           </div>
-        </div>
+          </div>
       ) : (
         <div>
           <div id="map" style={{ display: 'none' }}></div>

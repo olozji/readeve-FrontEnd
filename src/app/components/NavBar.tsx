@@ -21,9 +21,9 @@ const NavBar = () => {
     setIsLoginOpen(true)
   }
 
-  const closeLoginModal = () => {
+ const closeLoginModal = () => {
     setIsLoginOpen(false)
-  }
+  } 
 
   const toggleLoginStatus = () => {
     setIsLogin((prevLogin) => !prevLogin)
