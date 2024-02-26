@@ -59,16 +59,11 @@ const ListItem = ({
           <h5 className="mb-2 text-xl font-bold tracking-tight text-gray-900 ">
             {data.place.place_name ? data.place.place_name : data.place.address}
           </h5>
-          <p className="font-normal text-gray-700 dark:text-gray-400 overflow-hidden overflow-ellipsis max-h-[3em]">
+          <p className={`font-normal text-gray-700 dark:text-gray-400 ${iscontentExpanded ? 'whitespace-pre-line' : 'line-clamp-2'}`}>
             {data.content}
           </p>
            {!iscontentExpanded && (
             <button onClick={toggleContentExpanded} className='text-black'>더보기</button>
-          )}
-          {iscontentExpanded && (
-            <div className="font-normal text-gray-700 dark:text-gray-400">
-              {data.content}
-            </div>
           )}
         </div>
       )}
