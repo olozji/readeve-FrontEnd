@@ -32,7 +32,11 @@ export const bookState = atom({
 })
 export const tagState = atom({
     key: 'tagState',
-    default: [{name:'1',selected:false},{name:'2',selected:false},{name:'3',selected:false},{name:'4',selected:false},{name:'5',selected:false}]
+    default: [{name:'잔잔한 음악이 흘러요',selected:false},{name:'날씨 좋은날 테라스가 좋아요',selected:false},{name:'카공하기 좋아요',selected:false},{name:'힙합BGM이 흘러나와요',selected:false},{name:'조용해서 좋아요',selected:false},{name:'한적해요',selected:false},{name:'자리가 많아요',selected:false},{name:'차마시기 좋아요',selected:false},{name:'귀여운 고양이가 있어요🐈',selected:false},{name:'책을 무료로 대여해줘요📚',selected:false}]
+})
+export const mainTagState = atom({
+  key: 'mainTagState',
+  default: [false,false,false,false,false,false,false,false,false,false],
 })
 export const titleState = atom({
   key: 'titleState',

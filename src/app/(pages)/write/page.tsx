@@ -206,19 +206,11 @@ const Editor = () => {
             <BookSearch></BookSearch>
           </div>
         </section>
-        <section className="py-8 flex border border-slate-400 gap-3">
+        <section className="py-8 flex border border-slate-400 ">
           <h4 className="px-5">tag</h4>
 
           <Tag></Tag>
-          {tagInfo.length != 0 && (
-            <div className="flex gap-4">
-              {tagInfo.map((ele: any, i: number) => {
-                if (ele.selected) {
-                  return <div key={i}>{ele.name}</div>
-                }
-              })}
-            </div>
-          )}
+          
         </section>
 
         <section className="py-8 border border-t-0 border-slate-400 rounded-b-md">

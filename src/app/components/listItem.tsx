@@ -35,7 +35,7 @@ const ListItem = ({
   }
 
   return (
-    <div>
+    <div className='opacity-100'>
       {isShared ? (
         <div
           className="relative text-left left-5 block p-6 my-2 

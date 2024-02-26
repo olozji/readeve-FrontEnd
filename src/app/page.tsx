@@ -7,7 +7,12 @@ import SlideCarousel from './components/carousel'
 import { useEffect, useState } from 'react'
 import ReviewPage from './(pages)/reviews/page'
 import { useRecoilState, useRecoilValue } from 'recoil'
-import { allReviewSelector, selectedReviewState } from '@/store/writeAtoms'
+import {
+  allReviewSelector,
+  mainTagState,
+  selectedReviewState,
+  tagState,
+} from '@/store/writeAtoms'
 import axios from 'axios'
 import { sessionState } from '@/store/AuthAtoms'
 import LogoutButton from './components/buttons/LogoutButton'
@@ -22,14 +27,17 @@ export default function Home() {
   console.log(session)
 
   const [map, setMap] = useState(false)
-  const [publicReviews, setPublicReviews] = useState<any[]>([]);
+  const [publicReviews, setPublicReviews] = useState<any[]>([])
   const [selectedReview, setSelectedReview] =
     useRecoilState(selectedReviewState)
   const allReviews = useRecoilValue(allReviewSelector)
   const [currentIndex, setCurrentIndex] = useState(0)
   const [documents, setDocuments] = useState<any[]>([])
+  const [tagInfo, setTagInfo] = useRecoilState(tagState)
+  const [isSelectedTags, setIsSelectedTags] = useRecoilState<boolean[]>(
+  mainTagState
+  )
 
-  
   useEffect(() => {
     const storedData = localStorage.getItem('allDataInfo')
 
@@ -46,9 +54,6 @@ export default function Home() {
     setCurrentIndex(index)
   }
 
-  
-
-
   const fetchData = async () => {
     console.log(1)
     try {
@@ -64,23 +69,26 @@ export default function Home() {
   }, [])
 
   useEffect(() => {
-    const storedData = localStorage.getItem('allDataInfo');
-  
-    if (storedData) {
-      const parsedData = JSON.parse(storedData);
-      const PublicReviewData = parsedData.filter((item:any) => !item.isPrivate);
-      console.log(PublicReviewData);
-      setPublicReviews(PublicReviewData);
-    }
-  }, []);
+    const storedData = localStorage.getItem('allDataInfo')
 
-  const mainReviews = publicReviews.slice(0,4) // 메인화면에서 보여질 모든기록 갯수
+    if (storedData) {
+      const parsedData = JSON.parse(storedData)
+      const PublicReviewData = parsedData.filter((item: any) => !item.isPrivate)
+      console.log(PublicReviewData)
+      setPublicReviews(PublicReviewData)
+    }
+  }, [])
+  const searchTag = (i: number) => {
+    let copy = [...isSelectedTags] // 이전 배열의 복사본을 만듦
+    copy[i] = !copy[i] // 복사본을 변경
+    setIsSelectedTags(copy) // 변경된 복사본을 상태로 설정
+  }
+
+  const mainReviews = publicReviews.slice(0, 4) // 메인화면에서 보여질 모든기록 갯수
 
   const scrollToTop = () => {
-    window.scrollTo({ top: 0, behavior: 'smooth' });
-  };
-
-  
+    window.scrollTo({ top: 0, behavior: 'smooth' })
+  }
 
   return (
     <div>
@@ -103,10 +111,26 @@ export default function Home() {
             독서장소를 공유하며 새로이 독서를 기억할 수 있습니다.
           </div>
           <div>
-          {session?(<Link href='/write' className=" bg-[#FFB988] text-white font-bold py-4 px-6 hover:bg-[#AF6C3E] rounded-lg shadow-md hover:shadow-lg">
-            독후감 기록하기
-          </Link>):(<div className=" bg-[#FFB988] text-white font-bold py-4 px-6 hover:bg-[#AF6C3E] rounded-lg shadow-md hover:shadow-lg" onClick={ async () => { await signIn('kakao',{callbackUrl:'http://localhost:8081/login/oauth2/code/kakao'})}}>독후감 기록하기</div>
-)}
+            {session ? (
+              <Link
+                href="/write"
+                className=" bg-[#FFB988] text-white font-bold py-4 px-6 hover:bg-[#AF6C3E] rounded-lg shadow-md hover:shadow-lg"
+              >
+                독후감 기록하기
+              </Link>
+            ) : (
+              <div
+                className=" bg-[#FFB988] text-white font-bold py-4 px-6 hover:bg-[#AF6C3E] rounded-lg shadow-md hover:shadow-lg"
+                onClick={async () => {
+                  await signIn('kakao', {
+                    callbackUrl:
+                      'http://localhost:8081/login/oauth2/code/kakao',
+                  })
+                }}
+              >
+                독후감 기록하기
+              </div>
+            )}
           </div>
         </div>
         <div className="flex justify-center">
@@ -133,65 +157,86 @@ export default function Home() {
           <div>로그인된 정보 X</div>
         </>
       )} */}
-      <div className='mx-auto max-w-5xl'>
-      <div className="text-center ">
-        <div className="text-2xl font-display font-bold py-10">
-          이런 장소는 어때요?
-        </div>
-        {documents.length !== 0 ? (
-          <MapView
-            myMapData={documents}
-            isShared={true}
-            isFull={`400px`}
-            markerImage={markerImage}
-            markerImageOpacity={markerImageOpacity}
-          ></MapView>
-        ) : (
-          <div>
-            <div id="map" style={{ display: 'none' }}></div>
-            <div>독서 기록을 남기고 지도를 확인하세요</div>
+      <div className="mx-auto max-w-5xl">
+        <div className="text-center ">
+          <div className="text-2xl font-display font-bold py-10">
+            이런 장소는 어때요?
           </div>
-        )}
-      </div>
-      {/* <SlideCarousel /> */}
-
-      <div className="mt-10">
-        <div className="text-2xl font-display font-bold py-10">내 서재</div>
-        <BookLayout isMain={true}></BookLayout>
-      </div>
-      <div className="">
-        <div className="flex justify-between">
-          <h1 className='text-2xl font-display font-bold py-10'>모든 기록</h1>
-          <span>
-            <Link href={'/reviews'}>더 보기</Link>
-          </span>
-        </div>
-        {mainReviews.length === 0 ? (
-          <div className="pt-4 lg:pt-5 pb-4 lg:pb-8 px-4 xl:px-2 xl:container mx-auto">
-            <section className="pt-16">
-              <div className="pt-4 lg:pt-5 pb-4 lg:pb-8 px-4 xl:px-2 xl:container mx-auto">
-                <h1 className="text-4xl">등록된 리뷰가 없습니다</h1>
+          <div className="flex flex-wrap justify-center mb-10 sm:px-40 ">
+            {tagInfo.map((tag: any, i: number) => (
+              <div
+                key={i}
+                className={`box-border flex justify-center items-center px-4 py-2 my-2 mx-2 border border-gray-300 rounded-full ${isSelectedTags[i] ? 'bg-[#E57C65] text-white' : 'bg-white hover:border-[#C05555] hover:text-[#C05555]'}`}
+                onClick={() => {
+                  searchTag(i)
+                }}
+              >
+                {tag.name}
               </div>
-            </section>
+            ))}
           </div>
-        ) : (
-          <div className='grid gap-6 md:grid-cols-4 lg:grid-cols-4'>
-          {mainReviews.map((item:any) => (
-            <div key={item.id} onClick={() => setSelectedReview(item)}>
-              <div className="relative w-90 h-80 border rounded-md border-slate-200">
-                  <div className="mb-4 h-full w-full border-4 rounded-md">
-                    <img src={item.book?.thumbnail} alt={item.title} className="h-full w-full object-fill rounded-md" />       
+
+          {documents.length !== 0 ? (
+            <MapView
+              myMapData={documents}
+              isShared={true}
+              isFull={`400px`}
+              isMain={true}
+              markerImage={markerImage}
+              markerImageOpacity={markerImageOpacity}
+            ></MapView>
+          ) : (
+            <div>
+              <div id="map" style={{ display: 'none' }}></div>
+              <div>독서 기록을 남기고 지도를 확인하세요</div>
+            </div>
+          )}
+        </div>
+        {/* <SlideCarousel /> */}
+
+        <div className="mt-10">
+          <div className="text-2xl font-display font-bold py-10">내 서재</div>
+          <BookLayout isMain={true}></BookLayout>
+        </div>
+        <div className="">
+          <div className="flex justify-between">
+            <h1 className="text-2xl font-display font-bold py-10">모든 기록</h1>
+            <span>
+              <Link href={'/reviews'}>더 보기</Link>
+            </span>
+          </div>
+          {mainReviews.length === 0 ? (
+            <div className="pt-4 lg:pt-5 pb-4 lg:pb-8 px-4 xl:px-2 xl:container mx-auto">
+              <section className="pt-16">
+                <div className="pt-4 lg:pt-5 pb-4 lg:pb-8 px-4 xl:px-2 xl:container mx-auto">
+                  <h1 className="text-4xl">등록된 리뷰가 없습니다</h1>
+                </div>
+              </section>
+            </div>
+          ) : (
+            <div className="grid gap-6 md:grid-cols-4 lg:grid-cols-4">
+              {mainReviews.map((item: any) => (
+                <div key={item.id} onClick={() => setSelectedReview(item)}>
+                  <div className="relative w-90 h-80 border rounded-md border-slate-200">
+                    <div className="mb-4 h-full w-full border-4 rounded-md">
+                      <img
+                        src={item.book?.thumbnail}
+                        alt={item.title}
+                        className="h-full w-full object-fill rounded-md"
+                      />
+                    </div>
                   </div>
                 </div>
+              ))}
             </div>
-          ))}
+          )}
         </div>
-        )}
+        <div className="py-[10rem] text-center">
+          <h1 onClick={scrollToTop} className="cursor-pointer">
+            첫 화면으로 올라가기
+          </h1>
         </div>
-        <div className='py-[10rem] text-center'>
-          <h1 onClick={scrollToTop} className='cursor-pointer'>첫 화면으로 올라가기</h1>
-        </div>
-        </div>
+      </div>
     </div>
   )
 }
