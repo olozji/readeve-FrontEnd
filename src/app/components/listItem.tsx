@@ -20,6 +20,11 @@ const ListItem = ({
 }: listItemProps) => {
   const [recoilMap] = useRecoilState<any>(mapState)
   const [isHovered, setIsHovered] = useState(false)
+  const [iscontentExpanded, setIsContentExpanded] = useState(false);
+
+  const toggleContentExpanded = () => {
+    setIsContentExpanded(!iscontentExpanded);
+  }
 
   return (
     <div>

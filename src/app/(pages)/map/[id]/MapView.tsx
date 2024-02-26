@@ -96,7 +96,7 @@ const MapView = ({ myMapData, isShared, isFull, markerImage, markerImageOpacity 
       console.log(myMapData)
 
       // 최근 기록에서 나의 기록으로 변경
-      setIsTitleActive('나의 기록');
+      setIsTitleActive(`${place.place_name}에서 읽은 독후감`);
 
       // 필터링된 독후감 가져오기
       // place.id 값으로 필터링
@@ -117,6 +117,7 @@ const MapView = ({ myMapData, isShared, isFull, markerImage, markerImageOpacity 
         `<div style="padding:5px;font-size:12px;">${place.place_name}</div>`,
       )
       infowindow.open(mapRef.current, newMarker)
+      setIsTitleActive(`${place.place_name}에서 읽은 독후감`);
     })
 
     setMarkers((prevMarkers) => [...prevMarkers, newMarker])
@@ -222,8 +223,8 @@ const MapView = ({ myMapData, isShared, isFull, markerImage, markerImageOpacity 
               }}
             >
               {/* TODO: 스크롤 내용 수정 */}
-              <div className="absolute top-10 left-10 w-[30rem] h-full px-[4rem] py-[5rem] overflow-y-auto no-scrollbar rounded-lg" style={{background:'#f9f9f9', zIndex:2, opacity:0.8}}>
-             <h1 className='font-bold'>{isTitleActive === '최근기록' ? "최근기록" : "나의 기록"}</h1>
+            <div className="absolute top-10 left-10 w-[30rem] h-full px-[4rem] py-[2rem] overflow-y-auto no-scrollbar rounded-lg" style={{background:'#f9f9f9', zIndex:2, opacity:0.8}}>
+            <h1 className='font-bold'>{isTitleActive}</h1>
               {filteredReviews.length === 0 ? (
                 isShared ? (
                   <div className="ml-16">
