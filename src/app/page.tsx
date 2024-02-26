@@ -76,6 +76,9 @@ export default function Home() {
 
   const mainReviews = publicReviews.slice(0,4) // 메인화면에서 보여질 모든기록 갯수
 
+  const scrollToTop = () => {
+    window.scrollTo({ top: 0, behavior: 'smooth' });
+  };
 
   
 
@@ -184,6 +187,9 @@ export default function Home() {
           ))}
         </div>
         )}
+        </div>
+        <div className='py-[10rem] text-center'>
+          <h1 onClick={scrollToTop} className='cursor-pointer'>첫 화면으로 올라가기</h1>
         </div>
         </div>
     </div>
