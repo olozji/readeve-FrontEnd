@@ -4,8 +4,14 @@ import { BookSearch } from '@/app/components/bookSearch'
 import AddPlace from '@/app/components/map'
 import CustomModal from '@/app/components/modal'
 import { Tag } from '@/app/components/tags'
-import { allDataState, bookState, placeState, tagState, titleState } from '@/store/writeAtoms'
-import { useSession } from 'next-auth/react';
+import {
+  allDataState,
+  bookState,
+  placeState,
+  tagState,
+  titleState,
+} from '@/store/writeAtoms'
+import { useSession } from 'next-auth/react'
 import { useCallback, useEffect, useState } from 'react'
 import { useRecoilState } from 'recoil'
 
@@ -20,8 +26,8 @@ const Editor = () => {
   const [bookInfo] = useRecoilState<any>(bookState)
   const [tagInfo] = useRecoilState<any>(tagState)
   const [placeInfo, setPlaceInfo] = useRecoilState<any>(placeState)
-  const [allDataInfo,setAllDataInfo] = useRecoilState<any>(allDataState)
-  let session:any = useSession();
+  const [allDataInfo, setAllDataInfo] = useRecoilState<any>(allDataState)
+  let session: any = useSession()
 
   useEffect(() => {
     console.log(isPrivatePlace)
@@ -56,45 +62,43 @@ const Editor = () => {
     setTitleInfo(e.target.value)
   }
 
-  const handleAllData = (e:any) => {
-    e.preventDefault();
+  const handleAllData = (e: any) => {
+    e.preventDefault()
     let data = {
       title: titleInfo,
-      isPrivate:isPrivate,
+      isPrivate: isPrivate,
       place: {
         place_name: placeInfo.place_name,
         id: placeInfo.id,
-        y:placeInfo.y,
+        y: placeInfo.y,
         x: placeInfo.x,
         address: placeInfo.road_address_name,
-       
+
         isPrivate: isPrivatePlace,
       },
       book: {
-        isbn:bookInfo.isbn,
+        isbn: bookInfo.isbn,
         title: bookInfo.title,
         thumbnail: bookInfo.thumbnail,
-        isComplete:bookInfo.isComplete,
-
+        isComplete: bookInfo.isComplete,
       },
       tags: tagInfo,
-      content:content
+      content: content,
     }
     // 이전 데이터 가져오기
-    const storedData = localStorage.getItem('allDataInfo');
-    const previousData = storedData ? JSON.parse(storedData) : [];
+    const storedData = localStorage.getItem('allDataInfo')
+    const previousData = storedData ? JSON.parse(storedData) : []
 
     // 새로운 데이터 추가
-    const newData = [...previousData, data];
+    const newData = [...previousData, data]
 
     // 로컬 스토리지에 저장
-    localStorage.setItem('allDataInfo', JSON.stringify(newData));
-    setAllDataInfo(data);
+    localStorage.setItem('allDataInfo', JSON.stringify(newData))
+    setAllDataInfo(data)
     // Router 인스턴스 가져오기
-  
-  
-  // 페이지 리다이렉트
-  window.location.href = `/mypage/${session.data?.user.id}`; // 이동할 경로
+
+    // 페이지 리다이렉트
+    window.location.href = `/mypage/${session.data?.user.id}` // 이동할 경로
     console.log(allDataInfo)
   }
   return (
@@ -111,7 +115,7 @@ const Editor = () => {
               value={titleInfo}
               onChange={handleTitle}
             />
-            <div className='ml-4'>
+            <div className="ml-4">
               <label className="inline-flex items-center cursor-pointer">
                 <input
                   type="checkbox"
@@ -210,7 +214,6 @@ const Editor = () => {
           <h4 className="px-5">tag</h4>
 
           <Tag></Tag>
-          
         </section>
 
         <section className="py-8 border border-t-0 border-slate-400 rounded-b-md">
@@ -227,7 +230,12 @@ const Editor = () => {
         <section>
           <div className="control_btn flex gap-5">
             <button className="bg-red-300 rounded-md">취소하기</button>
-            <button className="bg-indigo-400 rounded-md" onClick={handleAllData}>작성완료</button>
+            <button
+              className="bg-indigo-400 rounded-md"
+              onClick={handleAllData}
+            >
+              작성완료
+            </button>
           </div>
         </section>
       </div>
