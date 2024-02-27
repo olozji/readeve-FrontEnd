@@ -10,6 +10,8 @@ import { useEffect, useRef, useState } from 'react'
 import { useRecoilState } from 'recoil'
 
 import Rectangle from '/public/images/Rectangle.png';
+import sharedMarker from '/public/images/sharedMarker.png';
+
 import { Tag } from '@/app/components/tags'
 
 interface MapDataType {
@@ -73,10 +75,19 @@ const MapView = ({ myMapData, isShared, isFull, markerImage,isMain, markerImageO
       markers[i].setMap(null) // 기존 마커를 지도에서 제거
     }
 
-    let markerImageProps = new window.kakao.maps.MarkerImage(
-      markerImage?.src || '', 
-      new window.kakao.maps.Size(30, 30),
-    );
+      // 공유지도 일때와 개인지도 일때 마커 설정
+    let markerImageProps;
+    if (isShared) {
+      markerImageProps = new window.kakao.maps.MarkerImage(
+        sharedMarker.src || '',
+        new window.kakao.maps.Size(30, 30),
+      );
+    } else {
+      markerImageProps = new window.kakao.maps.MarkerImage(
+        markerImage?.src || '',
+        new window.kakao.maps.Size(30, 30),
+      );
+    }
 
     // 새로운 마커 생성
     let newMarker = new window.kakao.maps.Marker({
@@ -207,6 +218,9 @@ const MapView = ({ myMapData, isShared, isFull, markerImage,isMain, markerImageO
           center: new window.kakao.maps.LatLng(33.450701, 126.570667),
           level: 2,
         };
+
+      
+    
   
         const mapInstance = new window.kakao.maps.Map(container, options);
         mapRef.current = mapInstance;
