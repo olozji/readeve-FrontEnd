@@ -34,6 +34,13 @@
     background: rgba(33, 122, 244, .1);  /*스크롤바 뒷 배경 색상*/
 }
 
+.content-wrapper {
+  /* display:flex; */
+  justify-content: start;
+  text-align:center;
+  font-weight:bold;
+}
+
 /* :root {
   --foreground-rgb: 0, 0, 0;
   --background-start-rgb: 214, 219, 220;

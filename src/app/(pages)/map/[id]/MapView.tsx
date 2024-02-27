@@ -9,6 +9,9 @@ import Link from 'next/link';
 import { useEffect, useRef, useState } from 'react'
 import { useRecoilState } from 'recoil'
 
+import Rectangle from '/public/images/Rectangle.png';
+import { Tag } from '@/app/components/tags'
+
 interface MapDataType {
   myMapData: any[]
   isShared: boolean
@@ -22,7 +25,7 @@ const MapView = ({ myMapData, isShared, isFull, markerImage,isMain, markerImageO
   const mapRef = useRef<any>(null)
   const [selectedPlace, setSelectedPlace] = useState<any>(null)
   const [markers, setMarkers] = useState<any[]>([])
-  const [infoWindows, setInfoWindows] = useState<any[]>([])
+  const [overlay, setOverlay] = useState<any[]>([])
   const [tagInfo] = useRecoilState(tagState)
   const [isSelectedTags, setIsSelectedTags] = useRecoilState(mainTagState)
   const [startIdx, setStartIdx] = useState(0)
@@ -54,6 +57,8 @@ const MapView = ({ myMapData, isShared, isFull, markerImage,isMain, markerImageO
       console.log(filteredReviews)
     }
   }, [isSelectedTags]) // 한 번만 실행
+
+
   const handleClickPrev = () => {
     setStartIdx(Math.max(startIdx - numVisibleTags, 0))
   }
@@ -69,7 +74,7 @@ const MapView = ({ myMapData, isShared, isFull, markerImage,isMain, markerImageO
     }
 
     let markerImageProps = new window.kakao.maps.MarkerImage(
-      markerImage?.src || '', // Use optional chaining to safely access src
+      markerImage?.src || '', 
       new window.kakao.maps.Size(30, 30),
     );
 
@@ -80,10 +85,37 @@ const MapView = ({ myMapData, isShared, isFull, markerImage,isMain, markerImageO
       image:markerImageProps,
     })
 
-    const infowindow = new window.kakao.maps.InfoWindow({
-      content: `<div style="padding:5px;font-size:12px;">${place.place_name}</div>`,
-      zIndex: 1,
-    })
+  //   const content = document.createElement('div');
+  // content.innerHTML = `<div style="padding:5px;font-size:12px;">${place.place_name}</div>`;
+
+    const content = document.createElement('div');
+    content.style.backgroundImage = `url('${Rectangle.src}')`; // 이미지 URL로 변경
+    content.style.width = '300px'; // 이미지의 가로 크기
+    content.style.height = '200px'; // 이미지의 세로 크기
+    content.style.position = 'absolute';
+    content.style.top = '-210px'; // 상단에서의 위치
+    content.style.left = '-160px'; // 왼쪽에서의 위치
+ 
+    // 텍스트를 표시할 부분
+    const textContainer = document.createElement('div');
+    textContainer.style.position = 'relative';
+    textContainer.style.top = '30px'; // 텍스트의 상단에서의 위치
+    textContainer.className = 'content-wrapper'
+    textContainer.innerHTML = `
+      ${place.address}
+      <br/>
+      ${place.place_name}
+    `; // 텍스트 내용
+
+    // 이미지를 표시하는 부분에 텍스트를 포함시키기
+    content.appendChild(textContainer);
+
+
+    const customOverlay = new window.kakao.maps.CustomOverlay({
+    position: new window.kakao.maps.LatLng(place.y, place.x),
+    content: content,
+    zIndex: 2,
+  });
 
     // 마커 클릭 이벤트 설정
     window.kakao.maps.event.addListener(newMarker, 'click', () => {
@@ -112,16 +144,13 @@ const MapView = ({ myMapData, isShared, isFull, markerImage,isMain, markerImageO
       // 필터된 독후감 데이터
       console.log(filteredReviews)
 
-      // Infowindow 열기
-      infowindow.setContent(
-        `<div style="padding:5px;font-size:12px;">${place.place_name}</div>`,
-      )
-      infowindow.open(mapRef.current, newMarker)
+
+      customOverlay.setMap(mapRef.current, newMarker)
       setIsTitleActive(`${place.place_name}에서 읽은 독후감`);
     })
 
     setMarkers((prevMarkers) => [...prevMarkers, newMarker])
-    setInfoWindows((prevInfoWindows) => [...prevInfoWindows, infowindow])
+    setOverlay((prevOverlay) => [...prevOverlay, customOverlay])
   }
 
 
@@ -138,7 +167,7 @@ const MapView = ({ myMapData, isShared, isFull, markerImage,isMain, markerImageO
     // useRef로 저장한 map을 참조하여 지도 이동 및 확대
     if (mapRef.current) {
       mapRef.current.setLevel(2)
-      openInfoWindow(place, i)
+      openCustomOverlay(place, i)
     }
   }
 
@@ -162,9 +191,9 @@ const MapView = ({ myMapData, isShared, isFull, markerImage,isMain, markerImageO
   //   }
   // }
 
-  const openInfoWindow = (place: any, i: number) => {
-    if (infoWindows[i]) {
-      infoWindows[i].open(mapRef.current, markers[i])
+  const openCustomOverlay = (place: any, i: number) => {
+    if (overlay[i]) {
+      overlay[i].setMap(mapRef.current, markers[i])
       mapRef.current.panTo(new window.kakao.maps.LatLng(place.y, place.x))
     }
   }
