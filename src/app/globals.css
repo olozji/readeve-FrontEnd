@@ -37,8 +37,10 @@
 .content-wrapper {
   /* display:flex; */
   justify-content: start;
-  text-align:center;
+  /* text-align:center; */
+  left:10%;
   font-weight:bold;
+
 }
 
 /* :root {
