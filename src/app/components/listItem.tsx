@@ -10,7 +10,7 @@ import linkArrow from '/public/images/linkArrow.png'
 import blackLinkArrow from '/public/images/blackLinkArrow.png'
 import unLock from '/public/images/unLock.png'
 import hoverPrivateMarker from '/public/images/hoverPrivateMarker.png'
-import privateMarker from '/public/images/PrivateMarker.png'
+import privateMarker from '/public/images/privateMarker.png'
 
 interface listItemProps {
   data: any
@@ -39,14 +39,63 @@ const ListItem = ({
       {isShared ? (
         <div
           className="relative text-left left-5 block p-6 my-2 
-          border bg-white border-gray-200 rounded-lg shadow z-50 hover:bg-[#E57C65]"
+          border bg-white border-gray-200 rounded-lg shadow z-50 hover:bg-[#E57C65] hover:text-white"
           onClick={() => onListItemClick(data.place, index)}
+          onMouseEnter={() => setIsHovered(true)}
+          onMouseLeave={() => setIsHovered(false)}
         >
-          <h5 className="mb-2 text-xl font-bold tracking-tight text-gray-900 ">
+             {isHovered ? (
+              <Link href={`/detail/${data.book && data.book.isbn ? data.book.isbn.replace(' ', '') : ''}`}>
+               <Image
+               src={linkArrow}
+               alt='linkArrow'
+               className='absolute right-10'
+               width={16}
+               height={10}
+             />
+             </Link>
+            ) : (
+              <Link href={`/detail/${data.book && data.book.isbn ? data.book.isbn.replace(' ', '') : ''}`}>
+            <Image
+              src={blackLinkArrow}
+              alt='linkArrow'
+              className='absolute right-10'
+              width={16}
+              height={10}
+            />
+            </Link>
+            )}
+          <h5 className="mb-2 text-xl font-bold tracking-tight">
             {data.place.place_name ? data.place.place_name : data.place.address}
           </h5>
+          
+          {isHovered ? (
+                <Image
+                src={hoverPrivateMarker}
+                alt='hoverPrivateMarker'
+                className='absolute left-2'
+                width={16}
+                height={10}
+              />
+            ) : (
+              <Image
+              src={privateMarker}
+              alt='privateMarker'
+              className='absolute left-2'
+              width={16}
+              height={10}
+              />
+            )}
+          <p>{data.place.address}</p>
           {data && data.tags.map((tag: any, i: number) => (
-            tag.selected && <div>{tag.name}</div>
+            tag.selected &&
+              <div
+              className={`box-border flex justify-center items-center px-4 py-2 my-2 mx-2 border border-gray-300 rounded-full 
+              ${tag.selected ?
+                'bg-white text-black' : 'bg-[#E57C65] hover:border-[#C05555] hover:text-[#C05555]'}`}
+                >
+                  {tag.name}
+                  </div>
             ))}
         </div>
       ) : (
@@ -63,17 +112,15 @@ const ListItem = ({
           <h5 className='mb-2 text-lg font-bold tracking-tight'>{data.book?.title}</h5>
           {data.isPrivate ? (
              <Image 
-             src={Private} 
+             src={Private}
              alt='private' 
-             width={30}
-             height={30}
+             style={{ width:'25px', height:'25px'}}
              />
           ) : (
             <Image 
             src={unLock} 
             alt='private' 
-            width={30}
-            height={30}
+            style={{ width:'25px', height:'25px'}}
             />
           )}
             </div>
