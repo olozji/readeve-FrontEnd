@@ -63,17 +63,15 @@ const ListItem = ({
           <h5 className='mb-2 text-lg font-bold tracking-tight'>{data.book?.title}</h5>
           {data.isPrivate ? (
              <Image 
-             src={Private} 
+             src={Private}
              alt='private' 
-             width={30}
-             height={30}
+             style={{ width:'25px', height:'25px'}}
              />
           ) : (
             <Image 
             src={unLock} 
             alt='private' 
-            width={30}
-            height={30}
+            style={{ width:'25px', height:'25px'}}
             />
           )}
             </div>
