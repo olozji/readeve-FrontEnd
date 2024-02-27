@@ -17,6 +17,108 @@
 .scrollBar {
   overflow-y: scroll;
 }
+.marker_overlay {
+  text-align: center;
+  padding: 10px 20px;
+  min-width: 100px;
+  background-color: #FEFEFE;
+  border-radius: 18px;
+  position: relative;
+  white-space: normal;
+  word-break: keep-all;
+  width: max-content;
+  top:-100px;
+  max-width: 80vw
+}
+.tag{
+  font-size: small;
+}
+
+.marker_overlay.mytheme {
+  max-width: 300px;
+  padding: 14px 20px
+}
+
+.marker_overlay.mytheme.plus_info {
+  width: 90vw
+}
+
+.marker_overlay.mytheme hr {
+  margin: 5px 0 10px
+}
+
+.marker_overlay::after {
+  border-bottom: 0px solid transparent;
+  border-left: 10px solid transparent;
+  border-right: 10px solid transparent;
+  border-top: 10px solid #FEFEFE;
+  content: "";
+  position: absolute;
+  bottom: -10px;
+  left: calc(50% - 10px)
+}
+
+.marker_overlay a:hover {
+  text-decoration: underline
+}
+
+.marker_overlay hr {
+  margin: 3px 0 10px
+}
+
+.marker_overlay .place_name {
+  font-weight: 600;
+  font-size: 15px;
+  line-height: 1.4;
+  word-break: keep-all
+}
+
+.marker_overlay .place_address {
+  font-size: 13px
+}
+
+.marker_overlay .avatar {
+  display: inline-block;
+  position: absolute;
+  top: -16px;
+  right: 5px;
+  font-size: 25px
+}
+
+.marker_overlay .avatar a:hover {
+  text-decoration: none
+}
+
+.marker_overlay .avatar .profile_emozi:hover {
+  font-size: 30px
+}
+
+.marker_overlay .avatar .profile_pic {
+  width: 30px;
+  border-radius: 30px;
+  line-height: 1;
+  overflow: hidden
+}
+
+.marker_overlay .avatar .profile_pic img {
+  width: 100%;
+  height: auto
+}
+
+.marker_overlay .avatar .profile_pic:hover {
+  width: 33px;
+  border-radius: 33px
+}
+
+.marker_overlay .theme_name {
+  color: #545454;
+  font-weight: 200;
+  font-size: 12px;
+  max-width: 300px;
+  line-height: 1.65;
+  margin-top: 3px;
+  white-space: pre-wrap
+}
 
 /* 아래의 모든 코드는 영역::코드로 사용 */
 .scrollBar::-webkit-scrollbar {
