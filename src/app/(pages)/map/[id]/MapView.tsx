@@ -32,6 +32,7 @@ const MapView = ({
   markerImageOpacity,
 }: MapDataType) => {
   const mapRef = useRef<any>(null)
+  const listContainerRef = useRef<any>(null);
   const [selectedPlace, setSelectedPlace] = useState<any>(null)
   const [markers, setMarkers] = useState<any[]>([])
   const [overlay, setOverlay] = useState<any[]>([])
@@ -43,6 +44,8 @@ const MapView = ({
   const [filteredReviews, setFilteredReviews] = useState<any>([])
   const [windowHeight, setWindowHeight] = useState(window.innerHeight)
   const [isTitleActive, setIsTitleActive] = useState('최근기록')
+  const [selectedMarkerIndex, setSelectedMarkerIndex] = useState<string>('');
+
 
   useEffect(() => {
     if (isShared) {
@@ -184,8 +187,27 @@ const MapView = ({
       // 필터된 독후감 데이터
       console.log(filteredReviews)
 
+
+     
       setIsTitleActive(`${place.place_name}에서 읽은 독후감`)
+
     })
+
+    const handleMarkerClick = (id:string) => {
+      const listItem = document.getElementById(`list-item-${id}`)
+      console.log(id);
+      if(listItem && listContainerRef.current){
+        const offsetTop = listItem.offsetTop - listContainerRef.current.offsetTop;
+        listContainerRef.current.scrollTo({top: offsetTop, behavior: 'smooth'})
+      }
+      setSelectedMarkerIndex(id)
+    }
+
+    window.kakao.maps.event.addListener(newMarker, 'click', () => {
+      handleMarkerClick(place.id)
+    })
+
+
 
     window.kakao.maps.event.addListener(newMarker, 'mouseover', () => {
       customOverlay.setMap(mapRef.current, newMarker)
@@ -381,6 +403,7 @@ const MapView = ({
                   {/* TODO: 스크롤 내용 수정 */}
 
                   <div
+                    ref={listContainerRef}
                     className="absolute scrollBar w-[35rem] bg-[#f9f9f9] h-full px-[4rem] py-[2rem] bg-opacity-80 overflow-y-auto rounded-lg"
                     style={{ zIndex: 2 }}
                   >
@@ -393,11 +416,15 @@ const MapView = ({
                         </div>
                       ) : (
                         myMapData.map((data: any, i: number) => (
-                          <div key={i}>
+                          <div 
+                            key={i}
+                            id={`list-item-${data.place.id}`} 
+                            >
                             <ListItem
                               key={i}
                               index={i}
                               data={data}
+                              selectedMarkerIndex={selectedMarkerIndex}
                               onListItemClick={() => {
                                 clickListItem(data.place, i)
                               }}
@@ -408,11 +435,15 @@ const MapView = ({
                       )
                     ) : (
                       filteredReviews.map((data: any, i: number) => (
-                        <div key={i}>
+                        <div 
+                        key={i}
+                        id={`list-item-${data.place.id}`} 
+                        >
                           <ListItem
                             key={i}
                             index={i}
                             data={data}
+                            selectedMarkerIndex={selectedMarkerIndex}
                             onListItemClick={() => {
                               clickListItem(data.place, i)
                             }}
