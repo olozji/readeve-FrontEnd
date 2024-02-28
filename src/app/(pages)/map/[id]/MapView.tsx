@@ -109,20 +109,47 @@ const MapView = ({
     // content.innerHTML = `<div style="padding:5px;font-size:12px;">${place.place_name}</div>`;
 
     var content = document.createElement('div')
-    content.innerHTML = `<div class="marker_overlay shadow">
+    if (isShared) {
+      if (isMain) {
+        //공유지도 메인화면 인포윈도우
+        content.innerHTML = `<div class="marker_overlay shadow">
+    <div class="place_name text-primary">${place.place_name}</div>
+    <div class="place_address">${place.address}</div>
+</div>`
+      } else {
+        //공유지도 큰화면 인포윈도우
+        content.innerHTML = `<div class="marker_overlay shadow">
     <div class="place_name text-primary">${place.place_name}</div>
     <div class="place_address">${place.address}</div>
     <hr>
     ${data && data.map((tag: any, i: number) => tag.selected && `<div class="tag">${tag.name}</div>`).filter(Boolean).join(``)}
     <div class="theme_name"></div>
 </div>`
+      }
+    } else {
+      //개인지도 인포윈도우
+      content.innerHTML = `<div class="marker_overlay_isPrivate shadow">
+      <div class="place_address">${place.address}</div>
+    <div class="place_name text-primary">${place.place_name}</div>
     
-
+    <hr>
+    <div class="theme_name"></div>
+</div>`
+    }
+    
+    
+    let yAnchor;
+    if (isMain) {
+        yAnchor = 1.7;
+    } else {
+        yAnchor = 1.4;
+    }
+    
     const customOverlay = new window.kakao.maps.CustomOverlay({
       position: new window.kakao.maps.LatLng(place.y, place.x),
       content: content,
       zIndex: 2,
-      yAnchor: 1.4
+      yAnchor: yAnchor
     })
 
     // 마커 클릭 이벤트 설정

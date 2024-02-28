@@ -29,6 +29,18 @@
   width: max-content;
   max-width: 80vw
 }
+.marker_overlay_isPrivate {
+  text-align: left;
+  padding: 10px 20px;
+  min-width: 100px;
+  background-color: #FEFEFE;
+  border-radius: 18px;
+  position: relative;
+  white-space: normal;
+  word-break: keep-all;
+  width: max-content;
+  max-width: 80vw
+}
 .tag{
   font-size: small;
 }
@@ -72,8 +84,18 @@
   word-break: keep-all
 }
 
+.marker_overlay_isPrivate .place_address {
+  font-size: 9px
+}
+.marker_overlay_isPrivate .place_name {
+  font-weight: 600;
+  font-size: 15px;
+  line-height: 1.4;
+  word-break: keep-all
+}
+
 .marker_overlay .place_address {
-  font-size: 13px
+  font-size: 9px
 }
 
 .marker_overlay .avatar {
