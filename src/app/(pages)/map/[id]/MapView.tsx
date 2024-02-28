@@ -19,7 +19,7 @@ interface MapDataType {
   isShared: boolean
   isFull: string
   markerImage: StaticImageData
-  isMain: boolean
+  isMain?: boolean
   markerImageOpacity: StaticImageData
 }
 
@@ -46,7 +46,6 @@ const MapView = ({
 
   useEffect(() => {
     if (isShared) {
-     
       // 선택된 태그의 이름을 배열로 모읍니다.
       const tagFilteredReviews = myMapData.filter((data) => {
         const selectedTagsIndexes = isSelectedTags
@@ -75,15 +74,15 @@ const MapView = ({
   }
 
   const displayMarker = (place: any, i: number, data?: any) => {
-    function closeOverlay(i:number) {
-      overlay[i].setMap(null);     
-  }
+    function closeOverlay(i: number) {
+      overlay[i].setMap(null)
+    }
     // 이미 생성된 마커가 있다면 해당 마커를 반환
     if (markers[i]) {
-      markers[i].setMap(null); // 기존 마커를 지도에서 제거
+      markers[i].setMap(null) // 기존 마커를 지도에서 제거
       closeOverlay(i)
     }
-    
+
     // 공유지도 일때와 개인지도 일때 마커 설정
     let markerImageProps
     if (isShared) {
@@ -122,7 +121,16 @@ const MapView = ({
     <div class="place_name text-primary">${place.place_name}</div>
     <div class="place_address">${place.address}</div>
     <hr>
-    ${data && data.map((tag: any, i: number) => tag.selected && `<div class="tag">${tag.name}</div>`).filter(Boolean).join(``)}
+    ${
+      data &&
+      data
+        .map(
+          (tag: any, i: number) =>
+            tag.selected && `<div class="tag">${tag.name}</div>`,
+        )
+        .filter(Boolean)
+        .join(``)
+    }
     <div class="theme_name"></div>
 </div>`
       }
@@ -136,27 +144,26 @@ const MapView = ({
     <div class="theme_name"></div>
 </div>`
     }
-    
-    
-    let yAnchor;
+
+    let yAnchor
     if (isMain) {
-        yAnchor = 1.7;
+      yAnchor = 1.7
     } else {
-        yAnchor = 1.4;
+      yAnchor = 1.4
     }
-    
+
     const customOverlay = new window.kakao.maps.CustomOverlay({
       position: new window.kakao.maps.LatLng(place.y, place.x),
       content: content,
       zIndex: 2,
-      yAnchor: yAnchor
+      yAnchor: yAnchor,
     })
 
     // 마커 클릭 이벤트 설정
     window.kakao.maps.event.addListener(newMarker, 'click', () => {
       if (overlay.length !== 0) {
         console.log(1)
-        overlay.forEach((o:any) => {
+        overlay.forEach((o: any) => {
           o.setMap(null)
         })
       }
@@ -189,11 +196,9 @@ const MapView = ({
 
     window.kakao.maps.event.addListener(newMarker, 'mouseover', () => {
       customOverlay.setMap(mapRef.current, newMarker)
-
     })
     window.kakao.maps.event.addListener(newMarker, 'mouseout', () => {
       customOverlay.setMap(null)
-
     })
 
     setMarkers((prevMarkers) => [...prevMarkers, newMarker])
@@ -246,28 +251,26 @@ const MapView = ({
     // 현재 위치(위도, 경도) 가져온다.
     var currentPos = new window.kakao.maps.LatLng(
       pos.coords.latitude, // 위도
-      pos.coords.longitude // 경도
-    );
+      pos.coords.longitude, // 경도
+    )
     // 지도를 이동 시킨다.
 
-    mapRef.current.panTo(currentPos);
-    
-  };
+    mapRef.current.panTo(currentPos)
+  }
   const getCurrentPosBtn = () => {
     navigator.geolocation.getCurrentPosition(
       getPosSuccess,
-      () => alert("위치 정보를 가져오는데 실패했습니다."),
+      () => alert('위치 정보를 가져오는데 실패했습니다.'),
       {
         enableHighAccuracy: true,
         maximumAge: 30000,
         timeout: 27000,
-      }
-    );
+      },
+    )
   }
   useEffect(() => {
     if (isShared) {
       window.kakao.maps.load(() => {
-        
         navigator.geolocation.getCurrentPosition((position) => {
           const { latitude, longitude } = position.coords
           const currentPosition = new window.kakao.maps.LatLng(
@@ -279,32 +282,31 @@ const MapView = ({
             center: currentPosition,
             level: 8,
           }
-  
+
           const mapInstance = new window.kakao.maps.Map(container, options)
           mapRef.current = mapInstance
-  
+
           let bounds = new window.kakao.maps.LatLngBounds()
-  
+
           const markerList: Record<string, any> = {}
-  
+
           // myMapData에 있는 데이터로 마커를 생성하여 지도에 추가
           if (filteredReviews.length === 0) {
             myMapData.forEach((d: any, i: number) => {
               displayMarker(d.place, i, d.tags)
               // bounds.extend(new window.kakao.maps.LatLng(d.place.y, d.place.x))
-  
+
               // mapInstance.setBounds(bounds)
             })
           } else {
             filteredReviews.forEach((d: any, i: number) => {
               displayMarker(d.place, i, d.tags)
               bounds.extend(new window.kakao.maps.LatLng(d.place.y, d.place.x))
-  
+
               mapInstance.setBounds(bounds)
             })
           }
-
-         })
+        })
         // const getPosSuccess = (pos: GeolocationPosition) => {
         //   // 현재 위치(위도, 경도) 가져온다.
         //   var currentPos = new window.kakao.maps.LatLng(
@@ -312,9 +314,9 @@ const MapView = ({
         //     pos.coords.longitude // 경도
         //   );
         //   // 지도를 이동 시킨다.
-    
+
         //   mapRef.current.panTo(currentPos);
-          
+
         // };
         // const getCurrentPosBtn = () => {
         //   navigator.geolocation.getCurrentPosition(
@@ -327,7 +329,6 @@ const MapView = ({
         //     }
         //   );
         // }
-        
       })
     }
   }, [filteredReviews])
@@ -335,29 +336,30 @@ const MapView = ({
   useEffect(() => {
     window.kakao.maps.load(() => {
       if (!isShared) {
-      const container = document.getElementById('map')
-      const options = {
-        center: new window.kakao.maps.LatLng(33.450701, 126.570667),
-        level: 2,
-      }
+        const container = document.getElementById('map')
+        const options = {
+          center: new window.kakao.maps.LatLng(33.450701, 126.570667),
+          level: 2,
+        }
 
-      const mapInstance = new window.kakao.maps.Map(container, options)
-      mapRef.current = mapInstance
+        const mapInstance = new window.kakao.maps.Map(container, options)
+        mapRef.current = mapInstance
 
-      // let bounds = new window.kakao.maps.LatLngBounds()
+        // let bounds = new window.kakao.maps.LatLngBounds()
 
-      const markerList: Record<string, any> = {}
+        const markerList: Record<string, any> = {}
 
-      // myMapData에 있는 데이터로 마커를 생성하여 지도에 추가
-     
+        // myMapData에 있는 데이터로 마커를 생성하여 지도에 추가
+
         myMapData.forEach((d: any, i: number) => {
           displayMarker(d.place, i)
           // bounds.extend(new window.kakao.maps.LatLng(d.place.y, d.place.x))
           if (i == myMapData.length - 1) {
             mapRef.current.setLevel(6)
-            mapRef.current.panTo(new window.kakao.maps.LatLng(d.place.y, d.place.x))
+            mapRef.current.panTo(
+              new window.kakao.maps.LatLng(d.place.y, d.place.x),
+            )
           }
-        
 
           // mapInstance.setBounds(bounds)
         })
@@ -366,7 +368,7 @@ const MapView = ({
   }, [myMapData])
 
   //TODO:여기서 44 는 NavBar 높이인데 브라우져나 해상도에 따라 다르게 나올거 같아서 수정해야해요
-  const mapHeight = isFull === `calc(100vh - 44px)` ? windowHeight - 44 : 400
+  const mapHeight = isFull === `100vh` ? windowHeight  : 400
   return (
     <div style={{ position: 'relative' }}>
       {myMapData.length !== 0 ? (
@@ -393,31 +395,50 @@ const MapView = ({
 
               {!isMain && (
                 <div>
-                                    <button  className="absolute bg-[#F66464] py-2 px-8 rounded-xl bottom-10 transform -translate-x-1/2 left-1/2 text-white hover:text-[#F66464] hover:bg-white font-bold z-20"onClick={getCurrentPosBtn}>현재 위치</button>
-
-                <div
-                  className=""
-                  style={{
-                    position: 'absolute',
-                    height: `${mapHeight}px`,
-                    zIndex: 10,
-                  }}
-                >
-                  {/* TODO: 스크롤 내용 수정 */}
-
+                  <button
+                    className="absolute bg-[#F66464] py-2 px-8 rounded-xl bottom-10 transform -translate-x-1/2 left-1/2 text-white hover:text-[#F66464] hover:bg-white font-bold z-20"
+                    onClick={getCurrentPosBtn}
+                  >
+                    현재 위치
+                  </button>
 
                   <div
-                    className="absolute scrollBar w-[35rem] bg-[#f9f9f9] h-full px-[4rem] py-[2rem] bg-opacity-80 overflow-y-auto rounded-lg"
-                    style={{ zIndex: 2 }}
+                    className=""
+                    style={{
+                      position: 'absolute',
+                      height: `${mapHeight}px`,
+                      zIndex: 10,
+                    }}
                   >
-                    <h1 className="font-bold">{isTitleActive}</h1>
-                    {filteredReviews.length === 0 ? (
-                      isShared ? (
-                        <div className="ml-16">
-                          선택된 태그에 해당하는 장소가 없습니다
-                        </div>
+                    {/* TODO: 스크롤 내용 수정 */}
+
+                    <div
+                      className="absolute scrollBar w-[35rem] bg-[#f9f9f9] h-full px-[4rem] py-[2rem] bg-opacity-80 overflow-y-auto rounded-lg"
+                      style={{ zIndex: 2 }}
+                    >
+                      <h1 className="font-bold">{isTitleActive}</h1>
+                      {filteredReviews.length === 0 ? (
+                        isShared ? (
+                          <div className="ml-16">
+                            선택된 태그에 해당하는 장소가 없습니다
+                          </div>
+                        ) : (
+                          myMapData.map((data: any, i: number) => (
+                            <div key={i}>
+                              <ListItem
+                                key={i}
+                                index={i}
+                                data={data}
+                                onListItemClick={() => {
+                                  clickListItem(data.place, i)
+                                }}
+                                isShared={isShared}
+                              />
+                            </div>
+                          ))
+                        )
                       ) : (
-                        myMapData.map((data: any, i: number) => (
+                        filteredReviews.map((data: any, i: number) => (
                           <div key={i}>
                             <ListItem
                               key={i}
@@ -430,24 +451,9 @@ const MapView = ({
                             />
                           </div>
                         ))
-                      )
-                    ) : (
-                      filteredReviews.map((data: any, i: number) => (
-                        <div key={i}>
-                          <ListItem
-                            key={i}
-                            index={i}
-                            data={data}
-                            onListItemClick={() => {
-                              clickListItem(data.place, i)
-                            }}
-                            isShared={isShared}
-                          />
-                        </div>
-                      ))
-                    )}
+                      )}
+                    </div>
                   </div>
-</div>
                 </div>
               )}
               {isMain && (

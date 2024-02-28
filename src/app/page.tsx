@@ -21,6 +21,7 @@ import MapView from './(pages)/map/[id]/MapView'
 import markerImage from '/public/images/marker1.png'
 import markerImageOpacity from '/public/images/marker2.png'
 import { BookLayout } from './components/bookLayout'
+import NavBar from './components/NavBar';
 
 export default function Home() {
   let session = useSession()
@@ -34,9 +35,8 @@ export default function Home() {
   const [currentIndex, setCurrentIndex] = useState(0)
   const [documents, setDocuments] = useState<any[]>([])
   const [tagInfo, setTagInfo] = useRecoilState(tagState)
-  const [isSelectedTags, setIsSelectedTags] = useRecoilState<boolean[]>(
-  mainTagState
-  )
+  const [isSelectedTags, setIsSelectedTags] =
+    useRecoilState<boolean[]>(mainTagState)
 
   useEffect(() => {
     const storedData = localStorage.getItem('allDataInfo')
@@ -92,6 +92,7 @@ export default function Home() {
 
   return (
     <div>
+      <NavBar/>
       <div
         className="relative w-full py-24 px-10 grid grid-cols-1 sm:px-[25%] sm:grid-cols-2 "
         style={{
@@ -137,26 +138,7 @@ export default function Home() {
           <Image src={mainLogo} alt="메인 로고" style={{ width: '200px' }} />
         </div>
       </div>
-      {/* <div>읽는곳곳</div>
-      <div onClick={fetchData}>on</div>
-      <h1>누구나 볼 수 있는 페이지</h1>
-      <LogoutButton></LogoutButton>
-      {session.data ? (
-        <div>
-          {session.data.user?.name}
-          <Image
-            src={session.data.user?.image!}
-            width={100}
-            height={100}
-            alt="Picture of the author"
-          />
-          <div></div>
-        </div>
-      ) : (
-        <>
-          <div>로그인된 정보 X</div>
-        </>
-      )} */}
+      
       <div className="mx-auto max-w-5xl">
         <div className="text-center ">
           <div className="text-2xl font-display font-bold py-10">
@@ -192,11 +174,14 @@ export default function Home() {
             </div>
           )}
         </div>
-        {/* <SlideCarousel /> */}
 
         <div className="mt-10">
           <div className="text-2xl font-display font-bold py-10">내 서재</div>
-          <BookLayout isMain={true}></BookLayout>
+          {session.data ? (
+            <BookLayout isMain={true}></BookLayout>
+          ) : (
+            <div>로그인 하고 내 서재 를 확인하세요</div>
+          )}
         </div>
         <div className="">
           <div className="flex justify-between">

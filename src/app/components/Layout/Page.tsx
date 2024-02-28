@@ -6,7 +6,7 @@ import Footer from "../footer";
 const LayOut = (props:any) => {
     return (
         <div className="min-h-full">
-        <NavBar/>
+        
         <div className="mx-auto">
             <main>{props.children}</main>
         <Footer/>
