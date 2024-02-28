@@ -11,15 +11,15 @@ export const GoBackButton = () => {
     const handleGoBack = () => {
       router.back()
     }
-
-    document.addEventListener('click', handleGoBack) // 이벤트 리스너 추가
+const gobackbtn =document.getElementById('gobackBtn')
+    gobackbtn!.addEventListener('click', handleGoBack) // 이벤트 리스너 추가
 
     return () => {
-      document.removeEventListener('click', handleGoBack) // 이벤트 리스너 제거
+      gobackbtn!.removeEventListener('click', handleGoBack) // 이벤트 리스너 제거
     }
   }, [router])
 
-    return <button className='absolute top-2 left-2 z-30'>
+    return <button id='gobackBtn' className='absolute top-2 left-2 z-30'>
         <Image src={prevArrow} alt='뒤로가기'/>
         </button>;
 }
