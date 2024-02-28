@@ -6,6 +6,7 @@ import { useRecoilState, useRecoilValue } from 'recoil';
 import { allDataState, bookState, filterReviewState, getReviewData, reviewState, selectedReviewState } from '@/store/writeAtoms';
 import CustomModal from '@/app/components/modal';
 import NavBar from '@/app/components/NavBar';
+import Button from '@/app/components/buttons/button';
 
 export interface ReviewData {
     [x: string]: any;
@@ -37,8 +38,17 @@ const AllReviewPage = () => {
     const [publicReviews, setPublicReviews] = useState<ReviewData[]>([]);
     const [selectedReview, setSelectedReview] = useRecoilState(selectedReviewState);
     const [isReviewsModal, setIsReviewsModal] = useState(false);
-   
+    const [detailOpen, setDetailOpen] = useState<boolean[]>(Array(publicReviews.length).fill(false));
+
     
+    const handleModal = (idx: number) => {
+      setDetailOpen(prevState => {
+        const copy = [...prevState];
+        copy[idx] = !copy[idx];
+        return copy;
+      });
+    };
+
     const closeReviewModal = () => {
       setSelectedReview(null);
       setIsReviewsModal(false)
@@ -105,49 +115,55 @@ const AllReviewPage = () => {
   </div>
 ) : (
   <div className='grid gap-6 md:grid-cols-1 lg:grid-cols-1 lg:pt-20 md:pt-20'>
-    {publicReviews.map((item: ReviewData) => (
+    {publicReviews && publicReviews.map((item: any, i:number) => (
         <div
-        key={item.id}
+        key={i}
         className="relative w-90 h-80 border rounded-md border-slate-200"
-        onClick={() => setSelectedReview(item)}
+        onClick={() => handleModal(i)}
       >
-        {/* TODO:모달을 한번 클릭하고 다른 아이템을 클릭해야 다시 재오픈되는 이슈 수정해야 함 */}
-        <CustomModal isOpen={selectedReview === item} onClose={closeReviewModal}>
-          <div className="grid grid-rows-2 grid-flow-col mb-4">
-            
-            <div className='row-span-3 px-8 py-8' >
-            <img src={item.book?.thumbnail} alt={item.title} className="rounded-md" />
-            </div>
-            <div className='relative top-[5rem] left-0'>
-            <div className="row-span-2 px-4 py-4">
-            <div className='font-bold text-2xl'>{item.title}</div>
-            </div>
-            <div className="row-span-2">
-            <div>
-              <span className='font-bold'>where</span>
-              <span>{item.place?.place_name}</span>
-            </div>
-            <div>
-              <span className='font-bold'>where</span>
-              <span>{item.title}</span>
-            </div>
-            </div>
-            </div>
-            <div>
-          
-            </div>
-              
-          </div>
-          <section className="py-8 border border-t-0 border-slate-400 rounded-b-md">
-          <div className="px-5 py-8">
-            <textarea
-              className="border border-slate-200 rounded-md w-full h-80 bg-slate-200"
-              placeholder="오늘 나의 독서는..."
-              value={item.content}
-            />
-          </div>
-        </section>
-        </CustomModal>
+        {detailOpen && 
+            <CustomModal isOpen={detailOpen[i]}>
+              <div className='h-[50rem]'>
+                <div className='px-8 py-8'>
+                <div className='flex'>
+                <img
+                  src={
+                    publicReviews[i].book?.thumbnail
+                      ? publicReviews[i].book?.thumbnail
+                      : 'http://via.placeholder.com/120X150'
+                  }
+                    alt="책 표지"
+                    className="w-[14rem] mb-2 rounded object-fll"
+                  />
+                  <div>
+                  <h1 className='text-lg font-extrabold'>{item.title}</h1>
+                  <div className='flex gap-4'>
+                    <span>where</span>
+                   <div>{item.place.place_name}</div>
+                    </div>
+                    <div className='flex gap-4'>
+                    <span>when</span>
+                   <div>{item.place.place_name}</div>
+                    </div>
+                    <div className='flex gap-4'>
+                    <span>tags</span>
+                    {item.tags.map((data:any) => (
+                        data.selected && <div>{data.name}</div>
+                          )
+                    )}
+                    </div>
+                  </div>
+                </div>
+                <div className='flex relative left-[35rem] w-[10rem] gap-4'>
+                    <Link href={'/edit/1'}><Button label='수정' outline={true}/></Link>
+                    <Button label='삭제' outline={false}/>
+                  </div>
+                <div className='h-[30rem] border border-slate-200 rounded-md bg-slate-200'>
+                  {item.content}
+                  </div>
+                </div>
+              </div>
+              </CustomModal>}
         <div className="mb-4 h-full w-full border-4 rounded-md flex">
           <img src={item.book?.thumbnail} alt={item.title} className="px-5 py-5 w-[15rem] h-[19rem] rounded-md" />
           <div className='flex flex-col justify-between ml-4'>
