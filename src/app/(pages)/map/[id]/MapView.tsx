@@ -46,7 +46,7 @@ const MapView = ({
 
   useEffect(() => {
     if (isShared) {
-      console.log(3)
+     
       // 선택된 태그의 이름을 배열로 모읍니다.
       const tagFilteredReviews = myMapData.filter((data) => {
         const selectedTagsIndexes = isSelectedTags
@@ -75,17 +75,21 @@ const MapView = ({
   }
 
   const displayMarker = (place: any, i: number, data?: any) => {
+    function closeOverlay(i:number) {
+      overlay[i].setMap(null);     
+  }
     // 이미 생성된 마커가 있다면 해당 마커를 반환
     if (markers[i]) {
-      markers[i].setMap(null) // 기존 마커를 지도에서 제거
+      markers[i].setMap(null); // 기존 마커를 지도에서 제거
+      closeOverlay(i)
     }
-
+    
     // 공유지도 일때와 개인지도 일때 마커 설정
     let markerImageProps
     if (isShared) {
       markerImageProps = new window.kakao.maps.MarkerImage(
         sharedMarker.src || '',
-        new window.kakao.maps.Size(30, 30),
+        new window.kakao.maps.Size(40, 40),
       )
     } else {
       markerImageProps = new window.kakao.maps.MarkerImage(
@@ -105,27 +109,59 @@ const MapView = ({
     // content.innerHTML = `<div style="padding:5px;font-size:12px;">${place.place_name}</div>`;
 
     var content = document.createElement('div')
-    content.innerHTML = `<div class="marker_overlay shadow">
+    if (isShared) {
+      if (isMain) {
+        //공유지도 메인화면 인포윈도우
+        content.innerHTML = `<div class="marker_overlay shadow">
+    <div class="place_name text-primary">${place.place_name}</div>
+    <div class="place_address">${place.address}</div>
+</div>`
+      } else {
+        //공유지도 큰화면 인포윈도우
+        content.innerHTML = `<div class="marker_overlay shadow">
     <div class="place_name text-primary">${place.place_name}</div>
     <div class="place_address">${place.address}</div>
     <hr>
-    
     ${data && data.map((tag: any, i: number) => tag.selected && `<div class="tag">${tag.name}</div>`).filter(Boolean).join(``)}
     <div class="theme_name"></div>
 </div>`
+      }
+    } else {
+      //개인지도 인포윈도우
+      content.innerHTML = `<div class="marker_overlay_isPrivate shadow">
+      <div class="place_address">${place.address}</div>
+    <div class="place_name text-primary">${place.place_name}</div>
     
-
+    <hr>
+    <div class="theme_name"></div>
+</div>`
+    }
+    
+    
+    let yAnchor;
+    if (isMain) {
+        yAnchor = 1.7;
+    } else {
+        yAnchor = 1.4;
+    }
+    
     const customOverlay = new window.kakao.maps.CustomOverlay({
       position: new window.kakao.maps.LatLng(place.y, place.x),
       content: content,
       zIndex: 2,
+      yAnchor: yAnchor
     })
 
     // 마커 클릭 이벤트 설정
     window.kakao.maps.event.addListener(newMarker, 'click', () => {
+      if (overlay.length !== 0) {
+        console.log(1)
+        overlay.forEach((o:any) => {
+          o.setMap(null)
+        })
+      }
       console.log('Marker clicked:', place)
       setSelectedPlace(place)
-      mapRef.current.setLevel(2)
       mapRef.current.panTo(new window.kakao.maps.LatLng(place.y, place.x))
 
       // 전체 독후감 데이터
@@ -148,8 +184,16 @@ const MapView = ({
       // 필터된 독후감 데이터
       console.log(filteredReviews)
 
-      customOverlay.setMap(mapRef.current, newMarker)
       setIsTitleActive(`${place.place_name}에서 읽은 독후감`)
+    })
+
+    window.kakao.maps.event.addListener(newMarker, 'mouseover', () => {
+      customOverlay.setMap(mapRef.current, newMarker)
+
+    })
+    window.kakao.maps.event.addListener(newMarker, 'mouseout', () => {
+      customOverlay.setMap(null)
+
     })
 
     setMarkers((prevMarkers) => [...prevMarkers, newMarker])
@@ -202,41 +246,73 @@ const MapView = ({
   useEffect(() => {
     if (isShared) {
       window.kakao.maps.load(() => {
-        const container = document.getElementById('map')
-        const options = {
-          center: new window.kakao.maps.LatLng(33.450701, 126.570667),
-          level: 2,
-        }
+        navigator.geolocation.getCurrentPosition((position) => {
+          const { latitude, longitude } = position.coords
+          const currentPosition = new window.kakao.maps.LatLng(
+            latitude,
+            longitude,
+          )
+          const container = document.getElementById('map')
+          const options = {
+            center: currentPosition,
+            level: 8,
+          }
+  
+          const mapInstance = new window.kakao.maps.Map(container, options)
+          mapRef.current = mapInstance
+  
+          let bounds = new window.kakao.maps.LatLngBounds()
+  
+          const markerList: Record<string, any> = {}
+  
+          // myMapData에 있는 데이터로 마커를 생성하여 지도에 추가
+          if (filteredReviews.length === 0) {
+            myMapData.forEach((d: any, i: number) => {
+              displayMarker(d.place, i, d.tags)
+              // bounds.extend(new window.kakao.maps.LatLng(d.place.y, d.place.x))
+  
+              // mapInstance.setBounds(bounds)
+            })
+          } else {
+            filteredReviews.forEach((d: any, i: number) => {
+              displayMarker(d.place, i, d.tags)
+              bounds.extend(new window.kakao.maps.LatLng(d.place.y, d.place.x))
+  
+              mapInstance.setBounds(bounds)
+            })
+          }
 
-        const mapInstance = new window.kakao.maps.Map(container, options)
-        mapRef.current = mapInstance
-
-        let bounds = new window.kakao.maps.LatLngBounds()
-
-        const markerList: Record<string, any> = {}
-
-        // myMapData에 있는 데이터로 마커를 생성하여 지도에 추가
-        if (filteredReviews.length === 0) {
-          myMapData.forEach((d: any, i: number) => {
-            displayMarker(d.place, i, d.tags)
-            bounds.extend(new window.kakao.maps.LatLng(d.place.y, d.place.x))
-
-            mapInstance.setBounds(bounds)
-          })
-        } else {
-          filteredReviews.forEach((d: any, i: number) => {
-            displayMarker(d.place, i, d.tags)
-            bounds.extend(new window.kakao.maps.LatLng(d.place.y, d.place.x))
-
-            mapInstance.setBounds(bounds)
-          })
-        }
+         })
+        // const getPosSuccess = (pos: GeolocationPosition) => {
+        //   // 현재 위치(위도, 경도) 가져온다.
+        //   var currentPos = new window.kakao.maps.LatLng(
+        //     pos.coords.latitude, // 위도
+        //     pos.coords.longitude // 경도
+        //   );
+        //   // 지도를 이동 시킨다.
+    
+        //   mapRef.current.panTo(currentPos);
+          
+        // };
+        // const getCurrentPosBtn = () => {
+        //   navigator.geolocation.getCurrentPosition(
+        //     getPosSuccess,
+        //     () => alert("위치 정보를 가져오는데 실패했습니다."),
+        //     {
+        //       enableHighAccuracy: true,
+        //       maximumAge: 30000,
+        //       timeout: 27000,
+        //     }
+        //   );
+        // }
+        
       })
     }
   }, [filteredReviews])
 
   useEffect(() => {
     window.kakao.maps.load(() => {
+      if (!isShared) {
       const container = document.getElementById('map')
       const options = {
         center: new window.kakao.maps.LatLng(33.450701, 126.570667),
@@ -246,17 +322,22 @@ const MapView = ({
       const mapInstance = new window.kakao.maps.Map(container, options)
       mapRef.current = mapInstance
 
-      let bounds = new window.kakao.maps.LatLngBounds()
+      // let bounds = new window.kakao.maps.LatLngBounds()
 
       const markerList: Record<string, any> = {}
 
       // myMapData에 있는 데이터로 마커를 생성하여 지도에 추가
-      if (!isShared) {
+     
         myMapData.forEach((d: any, i: number) => {
           displayMarker(d.place, i)
-          bounds.extend(new window.kakao.maps.LatLng(d.place.y, d.place.x))
+          // bounds.extend(new window.kakao.maps.LatLng(d.place.y, d.place.x))
+          if (i == myMapData.length - 1) {
+            mapRef.current.setLevel(6)
+            mapRef.current.panTo(new window.kakao.maps.LatLng(d.place.y, d.place.x))
+          }
+        
 
-          mapInstance.setBounds(bounds)
+          // mapInstance.setBounds(bounds)
         })
       }
     })
