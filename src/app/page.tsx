@@ -185,7 +185,7 @@ export default function Home() {
           <div className="flex justify-between">
             <h1 className="text-2xl font-display font-bold py-10">모든 기록</h1>
             <span>
-              <Link href={'/reviews'}>더 보기</Link>
+              <Link href={'/allreview'}>더 보기</Link>
             </span>
           </div>
           {mainReviews.length === 0 ? (
