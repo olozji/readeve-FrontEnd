@@ -42,7 +42,7 @@ export const BookLayout = ({ isMain }: bookLayoutProps) => {
           <div className="p-2 cursor-pointer" onClick={handleClickPrev}>
               &lt;
             </div>
-          <div className="grid grid-cols-5 gap-4 justify-center items-center">
+          <div className="grid grid-cols-5 gap-4 justify-center items-center w-[80rem]">
             {documents
               .slice(startIdx, startIdx + numVisibleBooks)
               .map((d: any, i: number) => (
@@ -58,9 +58,9 @@ export const BookLayout = ({ isMain }: bookLayoutProps) => {
                           : 'http://via.placeholder.com/120X150'
                       }
                       alt="책 표지"
-                      className="mb-2 rounded"
+                      className="mb-2 rounded-lg w-[10rem]"
                     />
-                    <div className="text-center">{d.book.title}</div>
+                    <div className="text-center hidden">{d.book.title}</div>
                   </div>
                 </Link>
               ))}

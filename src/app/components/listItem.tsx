@@ -17,6 +17,7 @@ interface listItemProps {
   onListItemClick: (place: any, i: number) => void
   index: number
   isShared: boolean
+  selectedMarkerIndex:string;
 }
 
 const ListItem = ({
@@ -24,6 +25,7 @@ const ListItem = ({
   onListItemClick,
   index,
   isShared,
+  selectedMarkerIndex,
 }: listItemProps) => {
   const [recoilMap] = useRecoilState<any>(mapState)
   const [isHovered, setIsHovered] = useState(false)
@@ -38,8 +40,8 @@ const ListItem = ({
     <div className='opacity-100'>
       {isShared ? (
         <div
-          className="relative text-left left-5 block p-6 my-2 
-          border bg-white border-gray-200 rounded-lg shadow z-50 hover:bg-[#E57C65] hover:text-white"
+          className={`relative text-left left-5 block p-6 my-2 
+          border border-gray-200 rounded-lg shadow z-50 hover:bg-[#E57C65] hover:text-white  ${selectedMarkerIndex === data.place.id ? 'bg-[#E57C65]' : 'bg-white'}`}
           onClick={() => onListItemClick(data.place, index)}
           onMouseEnter={() => setIsHovered(true)}
           onMouseLeave={() => setIsHovered(false)}
