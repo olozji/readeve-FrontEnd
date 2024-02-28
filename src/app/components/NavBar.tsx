@@ -6,13 +6,15 @@ import React, { useState } from 'react'
 import CustomModal from './modal'
 import LoginBtn from './buttons/LoginButton'
 import LogoutBtn from './buttons/LogoutButton'
+import NavLogo from '/public/images/NavLogo.png'
+import Image from 'next/image'
 
 const NavBar = () => {
   const [isLogin, setIsLogin] = useState(false)
   const [isLoginOpen, setIsLoginOpen] = useState(false)
- 
+
   let session = useSession()
-  let user:any = session.data?.user
+  let user: any = session.data?.user
   if (session) {
     // console.log(session)
   }
@@ -21,17 +23,18 @@ const NavBar = () => {
     setIsLoginOpen(true)
   }
 
- const closeLoginModal = () => {
+  const closeLoginModal = () => {
     setIsLoginOpen(false)
-  } 
+  }
 
   const toggleLoginStatus = () => {
     setIsLogin((prevLogin) => !prevLogin)
   }
 
   return (
-    <nav className="navbar sticky top-0 z-10 bg-slate-200">
-      <div className="dropdown md:hidden" id="category_drop-down">
+    <nav className="navbar sticky top-0 z-20 bg-white">
+      {/*반응형 NavBar 일단 주석 처리*/}
+      {/* <div className="dropdown md:hidden" id="category_drop-down">
         <label tabIndex={0} className="btn btn-ghost btn-circle">
           <svg
             xmlns="http://www.w3.org/2000/svg"
@@ -80,29 +83,41 @@ const NavBar = () => {
             </div>
           </li>
         </ul>
-      </div>
+      </div> */}
 
-      <div className="flex-none hidden md:block">
-        <ul className="flex justify-end w-full right-0 menu menu-horizontal p-0">
-          <h1 className="self-center text-2xl font-semibold whitespace-nowrap dark:text-white mx-8">
-            <Link href="/">읽는곳곳</Link>
-          </h1>
+      {/* <div className="flex-none hidden md:block"> */}
+      {/* <ul className='flex justify-start'>
+        <div>
+         읽는곳곳
+        </div>
+      </ul> */}
+      <div className="flex justify-between mx-auto max-w-5xl right-0 menu menu-horizontal p-0">
+        <h1 className="self-center justify-start whitespace-nowrap mx-8">
+          <Link href="/">
+            <Image src={NavLogo} alt="Logo" />
+          </Link>
+        </h1>
+
+        <div className="flex justify-end">
           {session.data && (
             <>
-              <div className="block py-2 pl-3 pr-4 font-bold text-white-900 rounded hover:bg-gray-100 md:hover:bg-transparent dark:border-gray-700 mx-8 text-lg">
+              <div className=" py-2  font-bold text-white-900 rounded hover:bg-gray-100 md:hover:bg-transparent dark:border-gray-700 mx-8 text-lg">
                 <Link href="/write">기록하기</Link>
               </div>
-              <div className="block py-2 pl-3 pr-4 font-bold text-white-900 rounded hover:bg-gray-100 md:hover:bg-transparent dark:border-gray-700 mx-8 text-lg">
+              <div className=" py-2 font-bold text-white-900 rounded hover:bg-gray-100 md:hover:bg-transparent dark:border-gray-700 mx-8 text-lg">
                 <Link href={`/mypage/${user?.id}`}>내 서재</Link>
               </div>
             </>
           )}
-          <div className="block py-2 pl-3 pr-4 font-bold text-white-900 rounded hover:bg-gray-100 md:hover:bg-transparent dark:border-gray-700 mx-8 text-lg">
-            <Link href="/">장소 보기</Link>
+          <div className=" py-2 font-bold text-white-900 rounded hover:bg-gray-100 md:hover:bg-transparent dark:border-gray-700 mx-8 text-lg">
+            <Link href="/">지도 보기</Link>
           </div>
-          <div className="block py-2 pl-3 pr-4 font-bold text-white-900 rounded hover:bg-gray-100 md:hover:bg-transparent dark:border-gray-700 mx-8 text-lg">
+          <div className=" py-2  font-bold text-white-900 rounded hover:bg-gray-100 md:hover:bg-transparent dark:border-gray-700 mx-8 text-lg">
             {session.data ? (
-              <div>{session.data.user?.name}</div>
+              <div className="flex ">
+                <div className="mr-10">{session.data.user?.name}</div>
+                <LogoutBtn></LogoutBtn>
+              </div>
             ) : (
               <>
                 <div>
@@ -111,8 +126,9 @@ const NavBar = () => {
               </>
             )}
           </div>
-        </ul>
+        </div>
       </div>
+      {/* </div> */}
       {isLoginOpen && (
         <CustomModal onClose={closeLoginModal} isOpen={true}>
           <div>
