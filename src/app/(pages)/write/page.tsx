@@ -12,6 +12,7 @@ import {
   tagState,
   titleState,
 } from '@/store/writeAtoms'
+import axios from 'axios';
 import { useSession } from 'next-auth/react'
 import { useCallback, useEffect, useState } from 'react'
 import { useRecoilState } from 'recoil'
@@ -86,6 +87,13 @@ const Editor = () => {
       tags: tagInfo,
       content: content,
     }
+    axios.post('http://ec2-3-34-225-212.ap-northeast-2.compute.amazonaws.com:8081/api/write', data)
+  .then(response => {
+    console.log('Success:', response.data);
+  })
+  .catch(error => {
+    console.error('Error:', error);
+  });
     // 이전 데이터 가져오기
     const storedData = localStorage.getItem('allDataInfo')
     const previousData = storedData ? JSON.parse(storedData) : []
