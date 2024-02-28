@@ -46,7 +46,7 @@ const MapView = ({
 
   const [filteredReviews, setFilteredReviews] = useState<any>([])
   const [windowHeight, setWindowHeight] = useState(window.innerHeight)
-  const [isTitleActive, setIsTitleActive] = useState('최근기록')
+  const [isTitleActive, setIsTitleActive] = useState(`${isShared?'태그별 목록':'최근 기록'}`)
   
   useEffect(() => {
     if (isShared) {
@@ -179,12 +179,13 @@ const MapView = ({
       console.log(myMapData)
 
       // 최근 기록에서 나의 기록으로 변경
-      setIsTitleActive(`${place.place_name}에서 읽은 독후감`)
+      
 
       // 필터링된 독후감 가져오기
       // place.id 값으로 필터링
       // TODO: 핀으로 검색하기(null) 인 경우 나중에 상태관리 필요함
       if (!isShared) {
+        setIsTitleActive(`${place.place_name}에서 읽은 독후감`)
         const filteredReviews = myMapData.filter(
           (data) => data.place.id === place.id,
         )
@@ -195,7 +196,7 @@ const MapView = ({
       // 필터된 독후감 데이터
       console.log(filteredReviews)
 
-      setIsTitleActive(`${place.place_name}에서 읽은 독후감`)
+      // setIsTitleActive(`${place.place_name}에서 읽은 독후감`)
     })
 
     window.kakao.maps.event.addListener(newMarker, 'mouseover', () => {
@@ -373,7 +374,6 @@ const MapView = ({
 
   
 
-  //TODO:여기서 44 는 NavBar 높이인데 브라우져나 해상도에 따라 다르게 나올거 같아서 수정해야해요
   const mapHeight = isFull === `100vh` ? windowHeight  : 400
   return (
     <div style={{ position: 'relative' }}>
@@ -407,7 +407,6 @@ const MapView = ({
                   >
                     현재 위치
                   </button>
-                  {isFull=='100vh' && <GoBackButton/> }
                   <div
                     className=""
                     style={{
@@ -419,13 +418,20 @@ const MapView = ({
                     {/* TODO: 스크롤 내용 수정 */}
 
                     <div
-                      className="absolute scrollBar w-[35rem] bg-[#f9f9f9] h-full px-[4rem] py-[2rem] bg-opacity-80 overflow-y-auto rounded-lg"
+                      className="absolute scrollBar w-[25rem] bg-[#f9f9f9] h-full px-[2rem] py-[1rem] bg-opacity-80 overflow-y-auto rounded-lg"
                       style={{ zIndex: 2 }}
                     >
+                      <div className='flex py-2 w-full  justify-between text-center font-bold border-b-[1px] border-gray-600 mb-4'>
+                    
+                          {isFull=='100vh' && <GoBackButton/> }
+
+                          <div className=' mr-[8rem] '>{isShared ? '공유 지도' : '개인 지도'}</div>
+                          
+                      </div>
                       <h1 className="font-bold">{isTitleActive}</h1>
                       {filteredReviews.length === 0 ? (
                         isShared ? (
-                          <div className="ml-16">
+                          <div className="ml-12">
                             선택된 태그에 해당하는 장소가 없습니다
                           </div>
                         ) : (

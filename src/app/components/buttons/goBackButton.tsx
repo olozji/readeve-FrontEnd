@@ -19,7 +19,7 @@ const gobackbtn =document.getElementById('gobackBtn')
     }
   }, [router])
 
-    return <button id='gobackBtn' className='absolute top-2 left-2 z-30'>
+    return <button id='gobackBtn' className=' z-30'>
         <Image src={prevArrow} alt='뒤로가기'/>
         </button>;
 }
