@@ -46,7 +46,7 @@ const MapView = ({
 
   useEffect(() => {
     if (isShared) {
-      console.log(3)
+     
       // 선택된 태그의 이름을 배열로 모읍니다.
       const tagFilteredReviews = myMapData.filter((data) => {
         const selectedTagsIndexes = isSelectedTags
@@ -219,41 +219,73 @@ const MapView = ({
   useEffect(() => {
     if (isShared) {
       window.kakao.maps.load(() => {
-        const container = document.getElementById('map')
-        const options = {
-          center: new window.kakao.maps.LatLng(33.450701, 126.570667),
-          level: 2,
-        }
+        navigator.geolocation.getCurrentPosition((position) => {
+          const { latitude, longitude } = position.coords
+          const currentPosition = new window.kakao.maps.LatLng(
+            latitude,
+            longitude,
+          )
+          const container = document.getElementById('map')
+          const options = {
+            center: currentPosition,
+            level: 8,
+          }
+  
+          const mapInstance = new window.kakao.maps.Map(container, options)
+          mapRef.current = mapInstance
+  
+          let bounds = new window.kakao.maps.LatLngBounds()
+  
+          const markerList: Record<string, any> = {}
+  
+          // myMapData에 있는 데이터로 마커를 생성하여 지도에 추가
+          if (filteredReviews.length === 0) {
+            myMapData.forEach((d: any, i: number) => {
+              displayMarker(d.place, i, d.tags)
+              // bounds.extend(new window.kakao.maps.LatLng(d.place.y, d.place.x))
+  
+              // mapInstance.setBounds(bounds)
+            })
+          } else {
+            filteredReviews.forEach((d: any, i: number) => {
+              displayMarker(d.place, i, d.tags)
+              bounds.extend(new window.kakao.maps.LatLng(d.place.y, d.place.x))
+  
+              mapInstance.setBounds(bounds)
+            })
+          }
 
-        const mapInstance = new window.kakao.maps.Map(container, options)
-        mapRef.current = mapInstance
-
-        let bounds = new window.kakao.maps.LatLngBounds()
-
-        const markerList: Record<string, any> = {}
-
-        // myMapData에 있는 데이터로 마커를 생성하여 지도에 추가
-        if (filteredReviews.length === 0) {
-          myMapData.forEach((d: any, i: number) => {
-            displayMarker(d.place, i, d.tags)
-            bounds.extend(new window.kakao.maps.LatLng(d.place.y, d.place.x))
-
-            mapInstance.setBounds(bounds)
-          })
-        } else {
-          filteredReviews.forEach((d: any, i: number) => {
-            displayMarker(d.place, i, d.tags)
-            bounds.extend(new window.kakao.maps.LatLng(d.place.y, d.place.x))
-
-            mapInstance.setBounds(bounds)
-          })
-        }
+         })
+        // const getPosSuccess = (pos: GeolocationPosition) => {
+        //   // 현재 위치(위도, 경도) 가져온다.
+        //   var currentPos = new window.kakao.maps.LatLng(
+        //     pos.coords.latitude, // 위도
+        //     pos.coords.longitude // 경도
+        //   );
+        //   // 지도를 이동 시킨다.
+    
+        //   mapRef.current.panTo(currentPos);
+          
+        // };
+        // const getCurrentPosBtn = () => {
+        //   navigator.geolocation.getCurrentPosition(
+        //     getPosSuccess,
+        //     () => alert("위치 정보를 가져오는데 실패했습니다."),
+        //     {
+        //       enableHighAccuracy: true,
+        //       maximumAge: 30000,
+        //       timeout: 27000,
+        //     }
+        //   );
+        // }
+        
       })
     }
   }, [filteredReviews])
 
   useEffect(() => {
     window.kakao.maps.load(() => {
+      if (!isShared) {
       const container = document.getElementById('map')
       const options = {
         center: new window.kakao.maps.LatLng(33.450701, 126.570667),
@@ -263,17 +295,22 @@ const MapView = ({
       const mapInstance = new window.kakao.maps.Map(container, options)
       mapRef.current = mapInstance
 
-      let bounds = new window.kakao.maps.LatLngBounds()
+      // let bounds = new window.kakao.maps.LatLngBounds()
 
       const markerList: Record<string, any> = {}
 
       // myMapData에 있는 데이터로 마커를 생성하여 지도에 추가
-      if (!isShared) {
+     
         myMapData.forEach((d: any, i: number) => {
           displayMarker(d.place, i)
-          bounds.extend(new window.kakao.maps.LatLng(d.place.y, d.place.x))
+          // bounds.extend(new window.kakao.maps.LatLng(d.place.y, d.place.x))
+          if (i == myMapData.length - 1) {
+            mapRef.current.setLevel(6)
+            mapRef.current.panTo(new window.kakao.maps.LatLng(d.place.y, d.place.x))
+          }
+        
 
-          mapInstance.setBounds(bounds)
+          // mapInstance.setBounds(bounds)
         })
       }
     })
