@@ -2,7 +2,7 @@
 
 import { mapState } from '@/store/mapAtoms'
 import Link from 'next/link'
-import React, { useState } from 'react'
+import React, { useEffect, useState } from 'react'
 import { useRecoilState } from 'recoil'
 import Image from 'next/image'
 import Private from '/public/images/private.png'
@@ -30,20 +30,21 @@ const ListItem = ({
   const [recoilMap] = useRecoilState<any>(mapState)
   const [isHovered, setIsHovered] = useState(false)
   const [iscontentExpanded, setIsContentExpanded] = useState(false)
-  const [isSeeMoreVisible, setIsSeeMoreVisible] = useState(true)
 
-  const toggleContentExpanded = () => {
-    setIsContentExpanded(!iscontentExpanded)
-  }
-
+  useEffect(() => {
+    if (selectedMarkerIndex === data.place.id) {
+      setIsHovered(true);
+    } else {
+      setIsHovered(false)
+    }
+  },[selectedMarkerIndex])
   return (
     <div className="opacity-100">
       {isShared ? (
+        
         <div
-
-          className={`relative text-left left-5 block pt-6 my-2 
-          border border-gray-200 rounded-2xl shadow z-50 hover:bg-[#E57C65] hover:text-white  ${selectedMarkerIndex === data.place.id ? 'bg-[#E57C65] border-[#E57C65] border-2 text-white' : 'bg-white'}`}
-
+          className={`relative text-left block pt-6 my-2 
+          border  rounded-2xl shadow z-50 hover:bg-[#E57C65] hover:border-[#e57c65] hover:border-2 hover:text-white  ${isHovered? 'bg-[#E57C65] border-[#E57C65] border-2 text-white' : 'bg-white border-gray-200'}`}
           onClick={() => onListItemClick(data.place, index)}
           onMouseEnter={() => setIsHovered(true)}
           onMouseLeave={() => setIsHovered(false)}
@@ -53,13 +54,6 @@ const ListItem = ({
             {data.place.place_name ? data.place.place_name : data.place.address}
             </h5>
           <Link href={data.place.url ? data.place.url : ''}>
-            {/* <Image
-              src={isHovered ? linkArrow : blackLinkArrow}
-              alt="linkArrow"
-              className="absolute right-10"
-              width={16}
-              height={10}
-            /> */}
             <div
               className={`text-xs underline decoration-solid ${isHovered ? 'text-white' : 'text-gray'}`}
             >
