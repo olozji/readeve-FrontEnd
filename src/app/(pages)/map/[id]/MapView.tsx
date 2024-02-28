@@ -242,10 +242,32 @@ const MapView = ({
       mapRef.current.panTo(new window.kakao.maps.LatLng(place.y, place.x))
     }
   }
+  const getPosSuccess = (pos: GeolocationPosition) => {
+    // 현재 위치(위도, 경도) 가져온다.
+    var currentPos = new window.kakao.maps.LatLng(
+      pos.coords.latitude, // 위도
+      pos.coords.longitude // 경도
+    );
+    // 지도를 이동 시킨다.
 
+    mapRef.current.panTo(currentPos);
+    
+  };
+  const getCurrentPosBtn = () => {
+    navigator.geolocation.getCurrentPosition(
+      getPosSuccess,
+      () => alert("위치 정보를 가져오는데 실패했습니다."),
+      {
+        enableHighAccuracy: true,
+        maximumAge: 30000,
+        timeout: 27000,
+      }
+    );
+  }
   useEffect(() => {
     if (isShared) {
       window.kakao.maps.load(() => {
+        
         navigator.geolocation.getCurrentPosition((position) => {
           const { latitude, longitude } = position.coords
           const currentPosition = new window.kakao.maps.LatLng(
@@ -370,6 +392,9 @@ const MapView = ({
               {/* 스크롤 구현 TODO:스크롤바 스타일링 or 없애기*/}
 
               {!isMain && (
+                <div>
+                                    <button  className="absolute bg-[#F66464] py-2 px-8 rounded-xl bottom-10 transform -translate-x-1/2 left-1/2 text-white hover:text-[#F66464] hover:bg-white font-bold z-20"onClick={getCurrentPosBtn}>현재 위치</button>
+
                 <div
                   className=""
                   style={{
@@ -380,12 +405,12 @@ const MapView = ({
                 >
                   {/* TODO: 스크롤 내용 수정 */}
 
+
                   <div
                     className="absolute scrollBar w-[35rem] bg-[#f9f9f9] h-full px-[4rem] py-[2rem] bg-opacity-80 overflow-y-auto rounded-lg"
                     style={{ zIndex: 2 }}
                   >
                     <h1 className="font-bold">{isTitleActive}</h1>
-
                     {filteredReviews.length === 0 ? (
                       isShared ? (
                         <div className="ml-16">
@@ -422,6 +447,7 @@ const MapView = ({
                       ))
                     )}
                   </div>
+</div>
                 </div>
               )}
               {isMain && (
