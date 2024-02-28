@@ -39,7 +39,7 @@ const MapSearch = ({ searchPlace, onMarkerClick, markerImage, markerImageOpacity
   useEffect(() => {
     const kakaoMapScript = document.createElement('script')
     kakaoMapScript.async = false
-    kakaoMapScript.src = `//dapi.kakao.com/v2/maps/sdk.js?appkey=6d8ac2fb0740657f1e67a9163c8b331b&autoload=false&libraries=services`
+    kakaoMapScript.src = `//dapi.kakao.com/v2/maps/sdk.js?appkey=ed0400bf5dc9c6b6a4e99d63d27799a4&autoload=false&libraries=services`
     document.head.appendChild(kakaoMapScript)
 
     

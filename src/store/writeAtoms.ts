@@ -40,7 +40,7 @@ export const mainTagState = atom({
 })
 export const titleState = atom({
   key: 'titleState',
-  default: []
+  default: ''
 })
 export const placeState = atom({
   key: 'placaeState',
