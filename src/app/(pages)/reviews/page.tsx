@@ -43,6 +43,7 @@ const ReviewPage = () => {
     const [bookInfo] = useRecoilState<any>(bookState)
     const [allDataInfo,setAllDataInfo] = useRecoilState<any>(allDataState)
     const [isReviewsModal, setIsReviewsModal] = useState(false);
+    const [isContent, setIsContent] = useState(false);
 
     const filteredReviews = reviewItems.filter((item: ReviewData) => {
         if (reviewFilter === '전체') {
@@ -107,7 +108,6 @@ const ReviewPage = () => {
         <div id="filter" className=" flex gap-3 text-gray-900 text-sm rounded-lg w-full p-2.5">
         <div>최신등록순</div>
         <div>오래된순</div>
-        <div>즐겨찾기순</div>
     </div>
     </div>
     </div>
@@ -122,7 +122,7 @@ const ReviewPage = () => {
     </section>
   </div>
 ) : (
-  <div className='grid gap-6 md:grid-cols-3 lg:grid-cols-3 lg:pt-20 md:pt-20'>
+  <div className='grid gap-6 md:grid-cols-1 lg:grid-cols-1 lg:pt-20 md:pt-20'>
     {publicReviews.map((item: ReviewData) => (
         <div
         key={item.id}
@@ -133,8 +133,8 @@ const ReviewPage = () => {
         <CustomModal isOpen={selectedReview === item} onClose={closeReviewModal}>
           <div className="grid grid-rows-2 grid-flow-col mb-4">
             
-            <div className='row-span-3 mx-auto px-8 py-8' >
-            <img src={item.book?.thumbnail} alt={item.title} className="h-[20rem] w-[20rem]  object-fill rounded-md" />
+            <div className='row-span-3 px-8 py-8' >
+            <img src={item.book?.thumbnail} alt={item.title} className="rounded-md" />
             </div>
             <div className='relative top-[5rem] left-0'>
             <div className="row-span-2 px-4 py-4">
@@ -166,9 +166,24 @@ const ReviewPage = () => {
           </div>
         </section>
         </CustomModal>
-        <div className="mb-4 h-full w-full border-4 rounded-md">
-            <img src={item.book?.thumbnail} alt={item.title} className="h-full w-full object-fill rounded-md" />
+        <div className="mb-4 h-full w-full border-4 rounded-md flex">
+          <img src={item.book?.thumbnail} alt={item.title} className="px-5 py-5 w-[15rem] h-[19rem] rounded-md" />
+          <div className='flex flex-col justify-between ml-4'>
+            <div className="px-4 py-4 md:pt-20 lg:pt-20">
+              <h1 className='font-bold text-2xl'>{item.title}</h1>
+            </div>
+            <div className='px-4 py-4'>
+            {item.content.length === 0? (
+              <div>등록된 내용이 없습니다</div>
+            ): (
+              <div>{item.content.length > 100 ? `${item.content.slice(0, 100)}...` : item.content}</div>
+            )} 
+            </div>
+            <div className="px-4 py-4">
+              <div className=''>{item.place?.place_name}</div>
+            </div>
           </div>
+        </div>
       </div>
     ))}
   </div>

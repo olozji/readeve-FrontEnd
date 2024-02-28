@@ -36,6 +36,7 @@ const MapView = ({
  
 
   const mapRef = useRef<any>(null)
+  const listContainerRef = useRef<any>(null);
   const [selectedPlace, setSelectedPlace] = useState<any>(null)
   const [markers, setMarkers] = useState<any[]>([])
   const [overlay, setOverlay] = useState<any[]>([])
@@ -46,8 +47,14 @@ const MapView = ({
 
   const [filteredReviews, setFilteredReviews] = useState<any>([])
   const [windowHeight, setWindowHeight] = useState(window.innerHeight)
+
   const [isTitleActive, setIsTitleActive] = useState(`${isShared?'태그별 목록':'최근 기록'}`)
   
+
+  const [selectedMarkerIndex, setSelectedMarkerIndex] = useState<string>('');
+
+
+
   useEffect(() => {
     if (isShared) {
       // 선택된 태그의 이름을 배열로 모읍니다.
@@ -196,8 +203,24 @@ const MapView = ({
       // 필터된 독후감 데이터
       console.log(filteredReviews)
 
-      // setIsTitleActive(`${place.place_name}에서 읽은 독후감`)
+
     })
+
+    const handleMarkerClick = (id:string) => {
+      const listItem = document.getElementById(`list-item-${id}`)
+      console.log(id);
+      if(listItem && listContainerRef.current){
+        const offsetTop = listItem.offsetTop - listContainerRef.current.offsetTop;
+        listContainerRef.current.scrollTo({top: offsetTop, behavior: 'smooth'})
+      }
+      setSelectedMarkerIndex(id)
+    }
+
+    window.kakao.maps.event.addListener(newMarker, 'click', () => {
+      handleMarkerClick(place.id)
+    })
+
+
 
     window.kakao.maps.event.addListener(newMarker, 'mouseover', () => {
       customOverlay.setMap(mapRef.current, newMarker)
@@ -408,12 +431,11 @@ const MapView = ({
                     현재 위치
                   </button>
                   <div
-                    className=""
-                    style={{
-                      position: 'absolute',
-                      height: `${mapHeight}px`,
-                      zIndex: 10,
-                    }}
+
+                    ref={listContainerRef}
+                    className="absolute scrollBar w-[35rem] bg-[#f9f9f9] h-full px-[4rem] py-[2rem] bg-opacity-80 overflow-y-auto rounded-lg"
+                    style={{ zIndex: 2 }}
+
                   >
                     {/* TODO: 스크롤 내용 수정 */}
 
@@ -450,12 +472,19 @@ const MapView = ({
                           ))
                         )
                       ) : (
+
                         filteredReviews.map((data: any, i: number) => (
-                          <div key={i}>
+
+                          <div 
+                            key={i}
+                            id={`list-item-${data.place.id}`} 
+                            >
+
                             <ListItem
                               key={i}
                               index={i}
                               data={data}
+                              selectedMarkerIndex={selectedMarkerIndex}
                               onListItemClick={() => {
                                 clickListItem(data.place, i)
                               }}
@@ -463,8 +492,28 @@ const MapView = ({
                             />
                           </div>
                         ))
-                      )}
-                    </div>
+
+                      )
+                    ) : (
+                      filteredReviews.map((data: any, i: number) => (
+                        <div 
+                        key={i}
+                        id={`list-item-${data.place.id}`} 
+                        >
+                          <ListItem
+                            key={i}
+                            index={i}
+                            data={data}
+                            selectedMarkerIndex={selectedMarkerIndex}
+                            onListItemClick={() => {
+                              clickListItem(data.place, i)
+                            }}
+                            isShared={isShared}
+                          />
+                        </div>
+                      ))
+                    )}
+
                   </div>
                 </div>
               )}

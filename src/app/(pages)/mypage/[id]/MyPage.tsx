@@ -10,6 +10,10 @@ import { PropType } from '../../detail/[id]/page'
 import MapView from '../../map/[id]/MapView'
 import Link from 'next/link';
 
+import lampIcon from '/public/images/lampicon.png';
+import tableImage from '/public/images/tableImg.png';
+import { table } from 'console'
+
 declare global {
   interface Window {
     kakao: any
@@ -43,36 +47,40 @@ const MyPageComponent = (props: ParamType) => {
  
 
   return (
-    <section className="">
-      <h1 className="text-center font-bold text-lg">내 서재</h1>
-      <section>
-        {session?.data && (
-          <div className="flex border border-b-8">
-            <>
-              <div>
-                <Image
-                  src={session.data.user?.image!}
-                  width={100}
-                  height={100}
-                  alt="Picture of the author"
-                />
-              </div>
-              <div className="">
-                <h2>이름 {session.data.user?.name}</h2>
-              </div>
-            </>
-          </div>
-        )}
-      </section>
-      <div>
+    <section className="bg-[#F1E5CF] mx-auto">
+      <div className='mx-auto justify-center text-center'>
+        <Image
+          src={lampIcon.src}
+          className='inline-block text-center'
+          alt={lampIcon.src}
+          width={200}
+          height={100}
+        />
         <div>
-          {documents.length !== 0 ? (
+        <h1 className='myCustomText'>내 서재</h1>
+        </div>
+      </div>
+      <section>
+        <div className='relative mx-auto justify-center text-center'>
+            <Image
+              src={tableImage.src}
+              className='inline-block text-center'
+              alt={tableImage.src}
+              width={1500}
+              height={1500}
+            />
+            <div className='absolute top-20 left-1/2 transform -translate-x-1/2 z-10'>
+            <BookLayout isMain={true}></BookLayout>
+            </div>
             <div>
+            {documents.length !== 0 ? (
+            <div className='absolute left-0 bottom-20 right-0 px-[20rem]'>
               <Link href={`/map/${props.id}`}>내 지도 크게보기</Link>
               <MapView 
+                isMain={true}
                 myMapData={documents} 
                 isShared={false} 
-                isFull={'400px'} 
+                isFull={'600px'} 
                 markerImage={props.markerImage} 
                 markerImageOpacity={props.markerImageOpacity}
                 />
@@ -83,11 +91,12 @@ const MyPageComponent = (props: ParamType) => {
               <div>독서 기록을 남기고 지도를 확인하세요</div>
             </div>
           )}
+            </div>
         </div>
         <div>{address}</div>
         {selectBook}
-        <BookLayout isMain={false}></BookLayout>
-      </div>
+       
+      </section>
     </section>
   )
 }
