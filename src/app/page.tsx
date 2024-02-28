@@ -3,9 +3,7 @@ import { signIn, useSession } from 'next-auth/react'
 import Image from 'next/image'
 import AddPlace from './components/map'
 import Link from 'next/link'
-import SlideCarousel from './components/carousel'
 import { useEffect, useState } from 'react'
-import ReviewPage from './(pages)/reviews/page'
 import { useRecoilState, useRecoilValue } from 'recoil'
 import {
   allReviewSelector,
