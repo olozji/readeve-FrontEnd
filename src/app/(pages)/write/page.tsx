@@ -74,8 +74,8 @@ const Editor = () => {
         y: placeInfo.y,
         x: placeInfo.x,
         address: placeInfo.road_address_name,
-
         isPrivate: isPrivatePlace,
+        url:placeInfo.place_url
       },
       book: {
         isbn: bookInfo.isbn,
