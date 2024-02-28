@@ -20,7 +20,7 @@ const MyMapPage = () => {
     return (
         <div>
             {documents.length !== 0 ? (
-            <MapView myMapData={documents} isShared={false} isFull={`calc(100vh - 44px)`} markerImage={markerImage} markerImageOpacity={markerImageOpacity}></MapView>
+            <MapView myMapData={documents} isShared={false} isFull={`100vh`} markerImage={markerImage} markerImageOpacity={markerImageOpacity}></MapView>
           ) : (
             <div>
               <div id="map" style={{ display: 'none' }}></div>

@@ -5,6 +5,7 @@ import Link from 'next/link';
 import { useRecoilState, useRecoilValue } from 'recoil';
 import { allDataState, bookState, filterReviewState, getReviewData, reviewState, selectedReviewState } from '@/store/writeAtoms';
 import CustomModal from '@/app/components/modal';
+import NavBar from '@/app/components/NavBar';
 
 export interface ReviewData {
     [x: string]: any;
@@ -75,6 +76,7 @@ const ReviewPage = () => {
 
  
   return (
+    <><NavBar/>
         <section className="main mx-auto max-w-6xl px-4">
           <section className='pt-20 lg:pt-5 pb-4 lg:pb-8 px-4 xl:px-2 xl:container mx-auto'>
             <h2 className='mb-5 lg:mb-8 text-3xl lg:text-4xl text-center font-bold'>
@@ -188,7 +190,8 @@ const ReviewPage = () => {
 )}
     </div>
         </section>
-        </section>
+      </section>
+      </>
   );
 };
 

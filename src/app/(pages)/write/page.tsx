@@ -1,5 +1,6 @@
 'use client'
 
+import NavBar from '@/app/components/NavBar';
 import { BookSearch } from '@/app/components/bookSearch'
 import AddPlace from '@/app/components/map'
 import CustomModal from '@/app/components/modal'
@@ -73,8 +74,8 @@ const Editor = () => {
         y: placeInfo.y,
         x: placeInfo.x,
         address: placeInfo.road_address_name,
-
         isPrivate: isPrivatePlace,
+        url:placeInfo.place_url
       },
       book: {
         isbn: bookInfo.isbn,
@@ -102,6 +103,7 @@ const Editor = () => {
     console.log(allDataInfo)
   }
   return (
+    <><NavBar/>
     <div className="flex justify-center mx-auto box-border min-h-full">
       <div className="w-full px-5 py-10 sm:px-10 md:px-20 lg:px-40 xl:px-80 border border-slate-400 rounded-md">
         <header className="h-10">
@@ -239,7 +241,8 @@ const Editor = () => {
           </div>
         </section>
       </div>
-    </div>
+      </div>
+      </>
   )
 }
 

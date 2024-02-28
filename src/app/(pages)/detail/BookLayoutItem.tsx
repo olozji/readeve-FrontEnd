@@ -55,7 +55,6 @@ const BookLayoutItem = (props: any) => {
 
   return (
     <div>
-      <div>내 서재</div>
       {bookData && bookData[0] && (
         <div
           className={`justify-items-center rounded-lg border-4 border-transparent`}

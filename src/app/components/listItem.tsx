@@ -29,153 +29,154 @@ const ListItem = ({
 }: listItemProps) => {
   const [recoilMap] = useRecoilState<any>(mapState)
   const [isHovered, setIsHovered] = useState(false)
-  const [iscontentExpanded, setIsContentExpanded] = useState(false);
-  const [isSeeMoreVisible, setIsSeeMoreVisible] = useState(true);
+  const [iscontentExpanded, setIsContentExpanded] = useState(false)
+  const [isSeeMoreVisible, setIsSeeMoreVisible] = useState(true)
 
   const toggleContentExpanded = () => {
-    setIsContentExpanded(!iscontentExpanded);
+    setIsContentExpanded(!iscontentExpanded)
   }
 
   return (
-    <div className='opacity-100'>
+    <div className="opacity-100">
       {isShared ? (
         <div
-          className={`relative text-left left-5 block p-6 my-2 
-          border border-gray-200 rounded-lg shadow z-50 hover:bg-[#E57C65] hover:text-white  ${selectedMarkerIndex === data.place.id ? 'bg-[#E57C65]' : 'bg-white'}`}
+
+          className={`relative text-left left-5 block pt-6 my-2 
+          border border-gray-200 rounded-2xl shadow z-50 hover:bg-[#E57C65] hover:text-white  ${selectedMarkerIndex === data.place.id ? 'bg-[#E57C65] border-[#E57C65] border-2 text-white' : 'bg-white'}`}
+
           onClick={() => onListItemClick(data.place, index)}
           onMouseEnter={() => setIsHovered(true)}
           onMouseLeave={() => setIsHovered(false)}
         >
-             {isHovered ? (
-              <Link href={`/detail/${data.book && data.book.isbn ? data.book.isbn.replace(' ', '') : ''}`}>
-               <Image
-               src={linkArrow}
-               alt='linkArrow'
-               className='absolute right-10'
-               width={16}
-               height={10}
-             />
-             </Link>
-            ) : (
-              <Link href={`/detail/${data.book && data.book.isbn ? data.book.isbn.replace(' ', '') : ''}`}>
+          <div className='flex justify-between px-6'>
+          <h5 className="mb-2 text-xl font-bold tracking-tight">
+            {data.place.place_name ? data.place.place_name : data.place.address}
+            </h5>
+          <Link href={data.place.url ? data.place.url : ''}>
+            {/* <Image
+              src={isHovered ? linkArrow : blackLinkArrow}
+              alt="linkArrow"
+              className="absolute right-10"
+              width={16}
+              height={10}
+            /> */}
+            <div
+              className={`text-xs underline decoration-solid ${isHovered ? 'text-white' : 'text-gray'}`}
+            >
+              카카오맵으로 자세히보기
+            </div>
+          </Link>
+          
+          </div>
+          <div>
+          <div className="flex my-2 px-6">
             <Image
-              src={blackLinkArrow}
-              alt='linkArrow'
-              className='absolute right-10'
+              src={isHovered ? hoverPrivateMarker : privateMarker}
+              alt="hoverPrivateMarker"
+              className="mr-2"
               width={16}
               height={10}
             />
-            </Link>
-            )}
-          <h5 className="mb-2 text-xl font-bold tracking-tight">
-            {data.place.place_name ? data.place.place_name : data.place.address}
-          </h5>
+            <p className="text-sm">{data.place.address}</p>
+            
+            </div>
+            {!isHovered && <div className="px-6">
+            <hr />
+            </div>}
           
-          {isHovered ? (
-                <Image
-                src={hoverPrivateMarker}
-                alt='hoverPrivateMarker'
-                className='absolute left-2'
-                width={16}
-                height={10}
-              />
-            ) : (
-              <Image
-              src={privateMarker}
-              alt='privateMarker'
-              className='absolute left-2'
-              width={16}
-              height={10}
-              />
-            )}
-          <p>{data.place.address}</p>
-          {data && data.tags.map((tag: any, i: number) => (
-            tag.selected &&
-              <div
-              className={`box-border flex justify-center items-center px-4 py-2 my-2 mx-2 border border-gray-300 rounded-full 
-              ${tag.selected ?
-                'bg-white text-black' : 'bg-[#E57C65] hover:border-[#C05555] hover:text-[#C05555]'}`}
-                >
-                  {tag.name}
-                  </div>
-            ))}
+            </div>
+          <div className={`pt-2 pb-6 grid grid-cols-2 rounded-b-2xl px-6 ${isHovered?'bg-white text-black':''}`}>
+            {data &&
+              data.tags.map(
+                (tag: any, i: number) => tag.selected && <div className='text-gray-600 py-1 text-xs'>#{tag.name}</div>,
+              )}
+          </div>
         </div>
       ) : (
         <div
           className="relative text-left left-5 block p-6 my-2
             border bg-white border-gray-200 rounded-lg shadow z-50 hover:bg-[#E57C65] hover:text-white"
-           onClick={() => onListItemClick(data.place, index)}
+          onClick={() => onListItemClick(data.place, index)}
           onMouseEnter={() => setIsHovered(true)}
           onMouseLeave={() => setIsHovered(false)}
-        >  
-          <div className='gap-3'>
-          <div className='flex gap-3'>
-            <div className='flex'>
-          <h5 className='mb-2 text-lg font-bold tracking-tight'>{data.book?.title}</h5>
-          {data.isPrivate ? (
-             <Image 
-             src={Private}
-             alt='private' 
-             style={{ width:'25px', height:'25px'}}
-             />
-          ) : (
-            <Image 
-            src={unLock} 
-            alt='private' 
-            style={{ width:'25px', height:'25px'}}
-            />
-          )}
+        >
+          <div className="gap-3">
+            <div className="flex gap-3">
+              <div className="flex">
+                <h5 className="mb-2 text-lg font-bold tracking-tight">
+                  {data.book?.title}
+                </h5>
+                {data.isPrivate ? (
+                  <Image
+                    src={Private}
+                    alt="private"
+                    style={{ width: '25px', height: '25px' }}
+                  />
+                ) : (
+                  <Image
+                    src={unLock}
+                    alt="private"
+                    style={{ width: '25px', height: '25px' }}
+                  />
+                )}
+              </div>
+              {isHovered ? (
+                <Link
+                  href={`/detail/${data.book && data.book.isbn ? data.book.isbn.replace(' ', '') : ''}`}
+                >
+                  <Image
+                    src={linkArrow}
+                    alt="linkArrow"
+                    className="absolute right-10"
+                    width={16}
+                    height={10}
+                  />
+                </Link>
+              ) : (
+                <Link
+                  href={`/detail/${data.book && data.book.isbn ? data.book.isbn.replace(' ', '') : ''}`}
+                >
+                  <Image
+                    src={blackLinkArrow}
+                    alt="linkArrow"
+                    className="absolute right-10"
+                    width={16}
+                    height={10}
+                  />
+                </Link>
+              )}
             </div>
-            {isHovered ? (
-              <Link href={`/detail/${data.book && data.book.isbn ? data.book.isbn.replace(' ', '') : ''}`}>
-               <Image
-               src={linkArrow}
-               alt='linkArrow'
-               className='absolute right-10'
-               width={16}
-               height={10}
-             />
-             </Link>
-            ) : (
-              <Link href={`/detail/${data.book && data.book.isbn ? data.book.isbn.replace(' ', '') : ''}`}>
-            <Image
-              src={blackLinkArrow}
-              alt='linkArrow'
-              className='absolute right-10'
-              width={16}
-              height={10}
-            />
-            </Link>
-            )}
-          </div>
-          <div className='flex gap-3'>
-            {isHovered ? (
+            <div className="flex gap-3">
+              {isHovered ? (
                 <Image
-                src={hoverPrivateMarker}
-                alt='hoverPrivateMarker'
-                className='absolute left-2'
-                width={16}
-                height={10}
-              />
-            ) : (
-              <Image
-              src={privateMarker}
-              alt='privateMarker'
-              className='absolute left-2'
-              width={16}
-              height={10}
-              />
-            )}
-          <h5 className="mb-2 text-sm font-bold tracking-tight">
-            {data.place.place_name ? data.place.place_name : data.place.address}
-          </h5>
-          <p className='text-sm'>{data.place.address}</p>
-          </div>
+                  src={hoverPrivateMarker}
+                  alt="hoverPrivateMarker"
+                  className="absolute left-2"
+                  width={16}
+                  height={10}
+                />
+              ) : (
+                <Image
+                  src={privateMarker}
+                  alt="privateMarker"
+                  className="absolute left-2"
+                  width={16}
+                  height={10}
+                />
+              )}
+              <h5 className="mb-2 text-sm font-bold tracking-tight">
+                {data.place.place_name
+                  ? data.place.place_name
+                  : data.place.address}
+              </h5>
+              <p className="text-sm">{data.place.address}</p>
             </div>
-          <p className={`font-normal ${iscontentExpanded ? 'whitespace-pre-line' : 'line-clamp-2'}`}>
+          </div>
+          <p
+            className={`font-normal ${iscontentExpanded ? 'whitespace-pre-line' : 'line-clamp-2'}`}
+          >
             {data.content}
           </p>
-           
         </div>
       )}
     </div>
