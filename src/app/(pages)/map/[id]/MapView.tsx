@@ -13,6 +13,8 @@ import Rectangle from '/public/images/Rectangle.png'
 import sharedMarker from '/public/images/sharedMarker.png'
 
 import { Tag } from '@/app/components/tags'
+import { useRouter } from 'next/router';
+import { GoBackButton } from '@/app/components/buttons/goBackButton';
 
 interface MapDataType {
   myMapData: any[]
@@ -31,6 +33,8 @@ const MapView = ({
   isMain,
   markerImageOpacity,
 }: MapDataType) => {
+ 
+
   const mapRef = useRef<any>(null)
   const [selectedPlace, setSelectedPlace] = useState<any>(null)
   const [markers, setMarkers] = useState<any[]>([])
@@ -43,7 +47,7 @@ const MapView = ({
   const [filteredReviews, setFilteredReviews] = useState<any>([])
   const [windowHeight, setWindowHeight] = useState(window.innerHeight)
   const [isTitleActive, setIsTitleActive] = useState('최근기록')
-
+  
   useEffect(() => {
     if (isShared) {
       // 선택된 태그의 이름을 배열로 모읍니다.
@@ -367,6 +371,8 @@ const MapView = ({
     })
   }, [myMapData])
 
+  
+
   //TODO:여기서 44 는 NavBar 높이인데 브라우져나 해상도에 따라 다르게 나올거 같아서 수정해야해요
   const mapHeight = isFull === `100vh` ? windowHeight  : 400
   return (
@@ -384,7 +390,7 @@ const MapView = ({
           <div>
             <div
               id="map"
-              className={`${isFull !== `calc(100vh - 44px)` ? 'rounded-lg' : ''}`}
+              className={`${isFull !== `100vh` ? 'rounded-lg' : ''}`}
               style={{
                 width: '100%',
                 height: `${isFull}`,
@@ -401,7 +407,7 @@ const MapView = ({
                   >
                     현재 위치
                   </button>
-
+                  {isFull=='100vh' && <GoBackButton/> }
                   <div
                     className=""
                     style={{
