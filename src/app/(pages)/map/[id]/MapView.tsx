@@ -75,17 +75,21 @@ const MapView = ({
   }
 
   const displayMarker = (place: any, i: number, data?: any) => {
+    function closeOverlay(i:number) {
+      overlay[i].setMap(null);     
+  }
     // 이미 생성된 마커가 있다면 해당 마커를 반환
     if (markers[i]) {
-      markers[i].setMap(null) // 기존 마커를 지도에서 제거
+      markers[i].setMap(null); // 기존 마커를 지도에서 제거
+      closeOverlay(i)
     }
-
+    
     // 공유지도 일때와 개인지도 일때 마커 설정
     let markerImageProps
     if (isShared) {
       markerImageProps = new window.kakao.maps.MarkerImage(
         sharedMarker.src || '',
-        new window.kakao.maps.Size(30, 30),
+        new window.kakao.maps.Size(40, 40),
       )
     } else {
       markerImageProps = new window.kakao.maps.MarkerImage(
@@ -109,7 +113,6 @@ const MapView = ({
     <div class="place_name text-primary">${place.place_name}</div>
     <div class="place_address">${place.address}</div>
     <hr>
-    
     ${data && data.map((tag: any, i: number) => tag.selected && `<div class="tag">${tag.name}</div>`).filter(Boolean).join(``)}
     <div class="theme_name"></div>
 </div>`
@@ -119,13 +122,19 @@ const MapView = ({
       position: new window.kakao.maps.LatLng(place.y, place.x),
       content: content,
       zIndex: 2,
+      yAnchor: 1.4
     })
 
     // 마커 클릭 이벤트 설정
     window.kakao.maps.event.addListener(newMarker, 'click', () => {
+      if (overlay.length !== 0) {
+        console.log(1)
+        overlay.forEach((o:any) => {
+          o.setMap(null)
+        })
+      }
       console.log('Marker clicked:', place)
       setSelectedPlace(place)
-      mapRef.current.setLevel(2)
       mapRef.current.panTo(new window.kakao.maps.LatLng(place.y, place.x))
 
       // 전체 독후감 데이터
@@ -148,8 +157,16 @@ const MapView = ({
       // 필터된 독후감 데이터
       console.log(filteredReviews)
 
-      customOverlay.setMap(mapRef.current, newMarker)
       setIsTitleActive(`${place.place_name}에서 읽은 독후감`)
+    })
+
+    window.kakao.maps.event.addListener(newMarker, 'mouseover', () => {
+      customOverlay.setMap(mapRef.current, newMarker)
+
+    })
+    window.kakao.maps.event.addListener(newMarker, 'mouseout', () => {
+      customOverlay.setMap(null)
+
     })
 
     setMarkers((prevMarkers) => [...prevMarkers, newMarker])
