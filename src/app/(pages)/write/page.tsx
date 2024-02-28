@@ -106,8 +106,8 @@ const Editor = () => {
     // Router 인스턴스 가져오기
 
     // 페이지 리다이렉트
-    window.location.href = `/mypage/${session.data?.user.id}` // 이동할 경로
-    console.log(allDataInfo)
+    // window.location.href = `/mypage/${session.data?.user.id}` // 이동할 경로
+    // console.log(allDataInfo)
   }
   return (
     <>
