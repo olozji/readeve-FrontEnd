@@ -9,6 +9,7 @@ import { useRecoilState } from 'recoil'
 import sharedMarker from '/public/images/sharedMarker.png'
 
 import { GoBackButton } from '@/app/components/buttons/goBackButton'
+import { useSession } from 'next-auth/react';
 
 interface MapDataType {
   myMapData: any[]
@@ -46,6 +47,9 @@ const MapView = ({
 
   const [selectedMarkerIndex, setSelectedMarkerIndex] = useState<string>('')
 
+  let session = useSession()
+  let user: any = session.data?.user
+
   useEffect(() => {
     if (isShared) {
       // 선택된 태그의 이름을 배열로 모읍니다.
@@ -74,11 +78,11 @@ const MapView = ({
   const handleClickNext = () => {
     setStartIdx(Math.min(startIdx + numVisibleTags, tagInfo.length - startIdx))
   }
-
+  function closeOverlay(i: number) {
+    overlay[i].setMap(null)
+  }
   const displayMarker = (place: any, i: number, data?: any) => {
-    function closeOverlay(i: number) {
-      overlay[i].setMap(null)
-    }
+    
     // 이미 생성된 마커가 있다면 해당 마커를 반환
     if (markers[i]) {
       markers[i].setMap(null) // 기존 마커를 지도에서 제거
@@ -229,6 +233,12 @@ const MapView = ({
     if (mapRef.current) {
       mapRef.current.setLevel(2)
       openCustomOverlay(place, i)
+    }
+  }
+  const mouseLeaveListItem = ( i: number) => {
+    // useRef로 저장한 map을 참조하여 지도 이동 및 확대
+    if (mapRef.current) {
+      closeOverlay(i)
     }
   }
 
@@ -385,6 +395,9 @@ const MapView = ({
                               onListItemClick={() => {
                                 clickListItem(data.place, i)
                               }}
+                              onListMouseLeave={() => {
+                                mouseLeaveListItem(i)
+                              }}
                               isShared={isShared}
                               selectedMarkerIndex={selectedMarkerIndex}
                             />
@@ -402,6 +415,9 @@ const MapView = ({
                             onListItemClick={() => {
                               clickListItem(data.place, i)
                             }}
+                            onListMouseLeave={() =>
+                            mouseLeaveListItem(i)
+                            }
                             isShared={isShared}
                           />
                         </div>
@@ -412,7 +428,7 @@ const MapView = ({
               )}
               {isMain && (
                 <Link
-                  href={'/map'}
+                  href={isShared?'/map':`/map/${user?.id}`}
                   className="absolute text-2xl font-bold top-2 right-2  z-40  bg-white p-4 rounded-full"
                 >
                   <div className="absolute top-0 right-2">+</div>
