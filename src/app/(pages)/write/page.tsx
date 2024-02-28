@@ -26,7 +26,7 @@ const Editor = () => {
   const [isPrivatePlace, setIsPrivatePlace] = useState(true)
   const [titleInfo, setTitleInfo] = useRecoilState(titleState)
   const [bookInfo] = useRecoilState<any>(bookState)
-  const [tagInfo] = useRecoilState<any>(tagState)
+  const [tagInfo,setTagInfo] = useRecoilState<any>(tagState)
   const [placeInfo, setPlaceInfo] = useRecoilState<any>(placeState)
   const [allDataInfo, setAllDataInfo] = useRecoilState<any>(allDataState)
   let session: any = useSession()
@@ -64,7 +64,7 @@ const Editor = () => {
     setTitleInfo(e.target.value)
   }
 
-  const handleAllData = async(e: any) => {
+  const handleAllData = async (e: any) => {
     e.preventDefault()
     let data = {
       title: titleInfo,
@@ -87,11 +87,21 @@ const Editor = () => {
       tags: tagInfo,
       content: content,
     }
+    // try {
+    //   const response = await axios.post('http://ec2-54-180-159-247.ap-northeast-2.compute.amazonaws.com/api/write', data);
+    //   console.log('Success:', response.data);
+    // } catch (error) {
+    //   console.error('Error:', error);
+    // }
+    const url =
+      'http://ec2-54-180-159-247.ap-northeast-2.compute.amazonaws.com/map'
+
+    // GET 요청 보내기
     try {
-      const response = await axios.post('http://ec2-3-34-225-212.ap-northeast-2.compute.amazonaws.com:8081/api/write', data);
-      console.log('Success:', response.data);
+      const response = await axios.get(url);
+      console.log('응답 데이터:', response.data);
     } catch (error) {
-      console.error('Error:', error);
+      console.error('에러 발생:', error);
     }
     // 이전 데이터 가져오기
     const storedData = localStorage.getItem('allDataInfo')
@@ -102,12 +112,15 @@ const Editor = () => {
 
     // 로컬 스토리지에 저장
     localStorage.setItem('allDataInfo', JSON.stringify(newData))
-    setAllDataInfo(data)
+    setAllDataInfo({})
+    setTitleInfo('')
+    setPlaceInfo({})
+    setTagInfo([{name:'잔잔한 음악이 흘러요',selected:false},{name:'날씨 좋은날 테라스가 좋아요',selected:false},{name:'카공하기 좋아요',selected:false},{name:'힙합BGM이 흘러나와요',selected:false},{name:'조용해서 좋아요',selected:false},{name:'한적해요',selected:false},{name:'자리가 많아요',selected:false},{name:'차마시기 좋아요',selected:false},{name:'귀여운 고양이가 있어요🐈',selected:false},{name:'책을 무료로 대여해줘요📚',selected:false}])
     // Router 인스턴스 가져오기
 
     // 페이지 리다이렉트
-    // window.location.href = `/mypage/${session.data?.user.id}` // 이동할 경로
-    // console.log(allDataInfo)
+    window.location.href = `/mypage/${session.data?.user.id}` // 이동할 경로
+    console.log(allDataInfo)
   }
   return (
     <>
