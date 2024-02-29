@@ -14,6 +14,9 @@ export const authOptions: any = {
   },
 
   callbacks: {
+    // async redirect(url:any, baseUrl:any) {
+    //   return Promise.resolve('http://www.bookeverywhere.site/api/oauth2/code/kakao');
+    // },
     jwt: async ({ token, user }: any) => {
       if (user) {
         token.user = {
