@@ -59,7 +59,7 @@ const handleInsideClick = (e: React.MouseEvent<HTMLDivElement>) => {
             top: "50%",
             left: "50%",
             transform: "translate(-50%, -50%)",
-            width: `${isLogin?400:800}`,
+            width: isLogin ? "400px" : "800px",
             maxWidth: "100%",
             maxHeight: "90%",
             overflowY: "auto",
