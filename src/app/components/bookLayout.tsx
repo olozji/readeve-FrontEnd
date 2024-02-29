@@ -65,22 +65,20 @@ export const BookLayout = ({ isMain }: bookLayoutProps) => {
                       alt="책 표지"
                       className="mb-2 rounded-lg w-[10rem]"
                     />
-                    <div className='flex gap-2'>
-                    <div className='border bg-[#E1E1E1] text-[#5F5F5F] px-1 py-1 rounded-md gap-4'>
-                    <div className='inline-block'>
+                    <div className='flex gap-2 w-[9rem] items-center'>
+                    <span className="inline-flex items-center justify-center max-h-10 rounded-lg gap-1 bg-[#E1E1E1] px-3 py-1 text-xs font-medium text-[#5F5F5F]">
                     <Image
                       src={NotesImg}
                       alt={'NotesImg'}
                       width={10}
                       height={10} 
-                    />
-                    </div>
+                    />  
                     {parsedData.filter(
-                    (data: any) =>
-                      data.book.isbn === d.book.isbn
-                  ).length}{' '}
-                    </div>
-                    <div className="px-1 py-1 text-[#5F5F5F]">{d.book.title}</div>
+                      (data: any) =>
+                        data.book.isbn === d.book.isbn
+                    ).length}{' '}
+                  </span>
+                    <div className="px-1 py-1 text-[#5F5F5F] text-sm">{d.book.title}</div>
                   </div>
                   </div>
                 </Link>

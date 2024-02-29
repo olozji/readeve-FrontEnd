@@ -93,9 +93,42 @@ const MyPageComponent = (props: ParamType) => {
           )}
             </div>
         </div>
-        <div>{address}</div>
-        {selectBook}
-       
+        <div className='mt-10 mx-auto max-w-7xl'>
+          <h1 className='text-xl font-display font-bold'>최근 기록순</h1>
+        {documents.length === 0 ? (
+            <div className="pt-4 lg:pt-5 pb-4 lg:pb-8 px-4 xl:px-2 xl:container mx-auto">
+              <section className="pt-16">
+                <div className="pt-4 lg:pt-5 pb-4 lg:pb-8 px-4 xl:px-2 xl:container mx-auto">
+                  <h1 className="text-4xl">등록된 리뷰가 없어요. 리뷰를 등록해보세요!</h1>
+                </div>
+              </section>
+            </div>
+          ) : (
+          <div className="flex justify-between items-center">
+          <div className="grid grid-cols-3 justify-center items-center w-[80rem]">
+            {documents
+              .slice(0,3)
+              .map((d: any, i: number) => (
+                <Link
+                  key={i}
+                  href={`/detail/${d.book && d.book.isbn ? d.book.isbn.replace(' ', '') : ''}`}
+                >
+                  <div className="flex flex-col items-center rounded-lg border-4 border-transparent p-4 cursor-pointer">
+                  <div className="relative w-[25rem] h-[8.5rem] rounded-2xl">
+                   <div className="mx-auto h-full border rounded-2xl shadow-xl bg-[#fcfcfc]">
+                     <div className='text-left'>
+                     <div className='text-xl font-display font-bold px-5 py-5'>{d.book?.title}</div>
+                     <div className='px-5'>{d.content.length > 20 ? `${d.content.slice(0, 20)}...` : d.content}</div>
+                     </div>
+                   </div>
+                 </div>
+                  </div>
+                </Link>
+              ))}
+          </div>
+        </div>
+          )}  
+          </div> 
       </section>
     </section>
   )

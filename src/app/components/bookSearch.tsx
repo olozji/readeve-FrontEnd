@@ -79,7 +79,8 @@ export const BookSearch = () => {
       let selectedBookInfo = {
         isbn:selectedBook.isbn,
         title: selectedBook.title,
-        thumbnail:selectedBook.thumbnail
+        thumbnail:selectedBook.thumbnail,
+        authors:selectedBook.authors,
       }
       setBookInfo(selectedBookInfo)
       console.log(bookInfo)

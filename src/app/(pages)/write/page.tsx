@@ -86,6 +86,7 @@ const Editor = () => {
         title: bookInfo.title,
         thumbnail: bookInfo.thumbnail,
         isComplete: bookInfo.isComplete,
+        authors:bookInfo.authors,
       },
       tags: tagInfo,
       content: content,
