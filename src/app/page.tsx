@@ -16,6 +16,7 @@ import { sessionState } from '@/store/AuthAtoms'
 import LogoutButton from './components/buttons/LogoutButton'
 import mainLogo from '/public/images/mainLogo.png'
 import MapView from './(pages)/map/[id]/MapView'
+import moreIcon from '/public/images/moreIcon.png';
 import markerImage from '/public/images/marker1.png'
 import markerImageOpacity from '/public/images/marker2.png'
 import { BookLayout } from './components/bookLayout'
@@ -36,6 +37,10 @@ export default function Home() {
   const [isSelectedTags, setIsSelectedTags] =
     useRecoilState<boolean[]>(mainTagState)
 
+    const [startIdx, setStartIdx] = useState(0)
+    
+    const numVisibleBooks = 4;
+
   useEffect(() => {
     const storedData = localStorage.getItem('allDataInfo')
 
@@ -47,6 +52,17 @@ export default function Home() {
       setDocuments(filteredData)
     }
   }, [])
+
+  
+  const handleClickPrev = () => {
+    setStartIdx(Math.max(0, startIdx - numVisibleBooks))
+  }
+
+  const handleClickNext = () => {
+    setStartIdx(
+      Math.min(documents.length - numVisibleBooks, startIdx + numVisibleBooks),
+    )
+  }
 
   const handleChange = (index: any) => {
     setCurrentIndex(index)
@@ -76,13 +92,14 @@ export default function Home() {
       setPublicReviews(PublicReviewData)
     }
   }, [])
+
+
+  
   const searchTag = (i: number) => {
     let copy = [...isSelectedTags] // 이전 배열의 복사본을 만듦
     copy[i] = !copy[i] // 복사본을 변경
     setIsSelectedTags(copy) // 변경된 복사본을 상태로 설정
   }
-
-  const mainReviews = publicReviews.slice(0, 4) // 메인화면에서 보여질 모든기록 갯수
 
   const scrollToTop = () => {
     window.scrollTo({ top: 0, behavior: 'smooth' })
@@ -181,7 +198,7 @@ export default function Home() {
             <div>로그인 하고 내 서재 를 확인하세요</div>
           )}
         </div>
-        <div className="">
+        <div className="mt-10">
              <h1 className='text-2xl font-display font-bold py-10'>콘텐츠</h1>
             <div className=''>
             <div className='my-3 w-[60rem] h-[5rem] bg-[#D9D9D9] rounded-lg'>
@@ -195,14 +212,21 @@ export default function Home() {
             </div>
                 </div>
                 </div>
-        <div className="">
-          <div className="flex justify-between">
+        <div className="mt-10">
+          <div className="flex justify-between items-center">
             <h1 className="text-2xl font-display font-bold py-10">모든 기록</h1>
-            <span>
-              <Link href={'/allreview'}>더 보기</Link>
+            <span className='inline-block align-middle'>
+              <Link href={'/allreview'}>
+                <Image
+                  src={moreIcon}
+                  alt={'moreIcon'}
+                  width={22}
+                  height={30}
+                />
+              </Link>
             </span>
           </div>
-          {mainReviews.length === 0 ? (
+          {documents.length === 0 ? (
             <div className="pt-4 lg:pt-5 pb-4 lg:pb-8 px-4 xl:px-2 xl:container mx-auto">
               <section className="pt-16">
                 <div className="pt-4 lg:pt-5 pb-4 lg:pb-8 px-4 xl:px-2 xl:container mx-auto">
@@ -211,26 +235,39 @@ export default function Home() {
               </section>
             </div>
           ) : (
-            <div className="grid gap-6 md:grid-cols-4 lg:grid-cols-4">
-              {mainReviews.map((item: any) => (
-                <div key={item.id} onClick={() => setSelectedReview(item)}>
-                  <div className="relative w-90 h-60 border rounded-md border-slate-200">
-                    <div className="mb-4 h-full w-full border-4 rounded-md bg-[#fcfcfc]">
-                      {/* <img
-                        src={item.book?.thumbnail}
-                        alt={item.title}
-                        className="h-full w-full object-fill rounded-md"
-                      /> */}
-                      <div>{item.book?.title}</div>
-                      <div>{item.content}</div>
-                    </div>
-                  </div>
-                </div>
-              ))}
+          <div className="flex justify-between items-center">
+          <div className="p-2 cursor-pointer" onClick={handleClickPrev}>
+              &lt;
             </div>
+          <div className="grid grid-cols-4 justify-center items-center w-[80rem]">
+            {documents
+              .slice(startIdx, startIdx + numVisibleBooks)
+              .map((d: any, i: number) => (
+                <Link
+                  key={i}
+                  href={`/detail/${d.book && d.book.isbn ? d.book.isbn.replace(' ', '') : ''}`}
+                >
+                  <div className="flex flex-col items-center rounded-lg border-4 border-transparent p-4 cursor-pointer">
+                  <div className="relative w-[14rem] h-[12rem] rounded-2xl">
+                   <div className="mx-auto h-full border rounded-2xl shadow-xl bg-[#fcfcfc]">
+                     <div className='text-left'>
+                     <div className='text-xl font-display font-bold px-5 py-5'>{d.book?.title}</div>
+                     <div className='px-3'>{d.content.length > 20 ? `${d.content.slice(0, 20)}...` : d.content}</div>
+                     </div>
+                   </div>
+                 </div>
+                  </div>
+                </Link>
+              ))}
+          </div>
+          <div className="flex items-center justify-center">
+            <div className="p-2 cursor-pointer" onClick={handleClickNext}>
+              &gt;
+            </div>
+          </div>
+        </div>
           )}
         </div>
-       
         <div className="py-[10rem] text-center">
           <h1 onClick={scrollToTop} className="cursor-pointer">
             첫 화면으로 올라가기

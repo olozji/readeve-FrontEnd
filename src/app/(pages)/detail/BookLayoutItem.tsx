@@ -1,15 +1,17 @@
 'use client'
 import Button from '@/app/components/buttons/button'
 import CustomModal from '@/app/components/modal'
-import { editReivewState, removeReivewState } from '@/store/writeAtoms';
+import { bookState, editReivewState, removeReivewState } from '@/store/writeAtoms';
 import Link from 'next/link';
 import Image from 'next/image';
 import { useSession } from 'next-auth/react'
 import { useRouter } from 'next/navigation'
-import { useEffect, useState } from 'react'
-import { useRecoilState } from 'recoil';
+import { use, useEffect, useState } from 'react'
+import { useRecoilState, useRecoilValue } from 'recoil';
+
 import Private from '/public/images/private.png';
 import unLock from '/public/images/unLock.png';
+import lampIcon from '/public/images/lampicon.png';
 
 export interface PropType {
   params: {
@@ -26,6 +28,7 @@ const BookLayoutItem = (props: any) => {
   const [editReviewId, setEditReviewId] = useRecoilState(editReivewState)
   const [removeReviewId, setRemoveReviewId] = useRecoilState(removeReivewState)
 
+  
   let session: any = useSession()
   const router = useRouter();
 
@@ -48,6 +51,8 @@ const BookLayoutItem = (props: any) => {
         }
       }
       setDetailOpen(copy)
+     
+    
   }
 
 
@@ -71,9 +76,17 @@ const BookLayoutItem = (props: any) => {
     }
   };
 
+   // 선택된 독후감의 저자 정보 가져오기
+   const selectedReviewAuthors = bookData && bookData[0]?.book?.authors;
+    
+   // 하나의 저자를 선택해서 출력 (첫 번째 저자 선택)
+   const firstAuthor = selectedReviewAuthors && selectedReviewAuthors[0];
 
+   // 모든 저자를 합쳐서 출력
+   const allAuthors = selectedReviewAuthors && selectedReviewAuthors.join(', ');
 
-
+   console.log('선택된 독후감의 첫 번째 저자:', firstAuthor);
+   console.log('선택된 독후감의 모든 저자:', allAuthors);
   
 
   useEffect(() => {
@@ -89,18 +102,27 @@ const BookLayoutItem = (props: any) => {
       setDetailOpen(arr)
     }
   }, [props.id, removeReviewId])
-
   console.log(bookData)
-
-
 
   
 
   return (
-    <div>
+    <div className='bg-[#F1E5CF] mx-auto'>
+        <div className='mx-auto justify-center text-center'>
+        <Image
+          src={lampIcon.src}
+          className='inline-block text-center'
+          alt={lampIcon.src}
+          width={200}
+          height={100}
+        />
+        <div>
+        <h1 className='myCustomText'>내 서재</h1>
+        </div>
+      </div>
       {bookData && bookData[0] && (
         <div
-          className={`justify-items-center rounded-lg border-4 border-transparent`}
+          className={`mx-auto w-[80rem] max-w-[80rem] text-center p-4 border border-b-black`}
           style={{
             display: 'flex',
             flexDirection: 'column',
@@ -116,54 +138,37 @@ const BookLayoutItem = (props: any) => {
             alt="책 표지"
             className="mb-2 rounded"
           />
-          <div className="p-4">{bookData[0].book.title}</div>
-          <div className="">
-            {bookData &&
-              bookData.map((data: any, i: number) => (
-                <div key={i}>
-                  <h1>
-                    독서한 장소:{' '}
-                    {data.place.place_name
-                      ? data.place.place_name
-                      : data.place.address}
-                  </h1>
-                </div>
-              ))}
-            <h1>년월일</h1>
-          </div>
+        <div className="p-4 text-xl font-display font-bold">
+          {bookData[0].book.title} | {selectedReviewAuthors} 작가</div>
         </div>
       )}
       <>
-        <div className="flex justify-center mx-auto box-border min-h-full"></div>
         <section className="main">
           <section className="pt-20 lg:pt-5 pb-4 lg:pb-8 px-4 xl:px-2 xl:container mx-auto">
             <div className="md-pt-10 relative">
-              <div className="absolute right-10 sm-pt-0">
-                <div className="flex items-center justify-center py-4 md:py-8 flex-wrap">
-                  <select
-                    id="filter"
-                    className="bg-gray-50 border border-gray-300 text-gray-900 text-sm rounded-lg focus:ring-blue-500 focus:border-blue-500 block w-full p-2.5 dark:bg-gray-700 dark:border-gray-600 dark:placeholder-gray-400 dark:text-white dark:focus:ring-blue-500 dark:focus:border-blue-500"
-                  >
-                    <option value="전체">전체</option>
-                    <option value="최신등록순">최신등록순</option>
-                    <option value="오래된순">오래된순</option>
-                    <option value="즐겨찾기순">즐겨찾기순</option>
-                  </select>
+                <div className='lg-pt-10 md-pt-10 relative'>
+                  <div className='absolute left-0'>
+              <div className="flex py-4 md:py-8">
+                  <div id="filter" className=" flex gap-3 text-gray-900 text-sm rounded-lg w-full p-2.5">
+                  <div>최신등록순</div>                  
+                  <div>오래된순</div>
+                      </div>
+                      </div>
+                      </div>
+                  </div> 
                 </div>
-              </div>
-            </div>
             {bookData &&
               bookData.map((data: any, i: number) => ( 
           <div
-          key={i} 
-          onClick={() => {handleModal(i)}}
-          className="max-w-3xl my-4 mx-auto bg-slate-200 bg-opacity-80 rounded-lg overflow-hidden shadow-lg p-8">
-          {detailOpen && 
-            <CustomModal isOpen={detailOpen[i]}>
-              <div className='h-[50rem]'>
-                <div className='px-8 py-8'>
-                <div className='flex'>
-                <img
+            key={i} 
+            onClick={() => {handleModal(i)}}
+            className="max-w-3xl my-4 mx-auto bg-slate-200 bg-opacity-80 rounded-lg overflow-hidden shadow-lg p-8">
+            {detailOpen && 
+              <CustomModal isOpen={detailOpen[i]}>
+                <div className='h-[50rem]'>
+                  <div className='px-8 py-8'>
+                  <div className='flex'>
+                  <img
                   src={
                     bookData[0].book.thumbnail
                       ? bookData[0].book.thumbnail
@@ -206,8 +211,6 @@ const BookLayoutItem = (props: any) => {
                 </div>
               </div>
               </CustomModal>}
-          <div className="flex justify-center mb-8">              
-          </div>
           <div className="text-center">
             <h1 className="text-3xl font-bold mb-4">{data.title}</h1>
                 <Image
@@ -215,6 +218,15 @@ const BookLayoutItem = (props: any) => {
                 alt="private"
                 style={{ width: '25px', height: '25px' }}
                 />
+                <div className="">
+                  <h1>
+                    독서한 장소:{' '}
+                    {data.place.place_name
+                      ? data.place.place_name
+                      : data.place.address}
+                  </h1>
+                  <h1>{data.place.address}</h1>
+          </div>
             <p className="text-lg">{data.content}</p>
           </div>
         </div>
