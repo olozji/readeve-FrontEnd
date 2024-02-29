@@ -182,6 +182,20 @@ export default function Home() {
           )}
         </div>
         <div className="">
+             <h1 className='text-2xl font-display font-bold py-10'>콘텐츠</h1>
+            <div className=''>
+            <div className='my-3 w-[60rem] h-[5rem] bg-[#D9D9D9] rounded-lg'>
+              <p>오늘 제일 많이 읽은 장소</p>
+            </div>
+            <div className='my-3 w-[60rem] h-[5rem] bg-[#D9D9D9] rounded-lg'>
+              <p>베스트셀러를 읽은 장소</p>
+            </div>
+            <div className='my-3 w-[60rem] h-[5rem] bg-[#D9D9D9] rounded-lg'>
+              <p>오늘 가장 많이 읽은 책</p>
+            </div>
+                </div>
+                </div>
+        <div className="">
           <div className="flex justify-between">
             <h1 className="text-2xl font-display font-bold py-10">모든 기록</h1>
             <span>
@@ -200,13 +214,15 @@ export default function Home() {
             <div className="grid gap-6 md:grid-cols-4 lg:grid-cols-4">
               {mainReviews.map((item: any) => (
                 <div key={item.id} onClick={() => setSelectedReview(item)}>
-                  <div className="relative w-90 h-80 border rounded-md border-slate-200">
-                    <div className="mb-4 h-full w-full border-4 rounded-md">
-                      <img
+                  <div className="relative w-90 h-60 border rounded-md border-slate-200">
+                    <div className="mb-4 h-full w-full border-4 rounded-md bg-[#fcfcfc]">
+                      {/* <img
                         src={item.book?.thumbnail}
                         alt={item.title}
                         className="h-full w-full object-fill rounded-md"
-                      />
+                      /> */}
+                      <div>{item.book?.title}</div>
+                      <div>{item.content}</div>
                     </div>
                   </div>
                 </div>
@@ -214,6 +230,7 @@ export default function Home() {
             </div>
           )}
         </div>
+       
         <div className="py-[10rem] text-center">
           <h1 onClick={scrollToTop} className="cursor-pointer">
             첫 화면으로 올라가기

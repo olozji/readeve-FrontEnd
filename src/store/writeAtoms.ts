@@ -56,6 +56,18 @@ export const filterReviewState = atom({
     default:'전체'
 })
 
+// 리뷰 수정 아톰
+export const editReivewState = atom<number | null>({
+    key:'editReivewState',
+    default:null,
+})
+
+// 리뷰 삭제 아톰
+export const removeReivewState = atom<number | null>({
+  key:'removeReivewState',
+  default:null,
+})
+
 // 모든 공유리뷰 호출
 export const allReviewSelector = selector({
     key:'allReviewSelector',
@@ -98,7 +110,9 @@ export const getReviewData = selector({
         const data = await res.json();
         return data;
     }
-}) ;  
+}) ;
+
+
 
 
 export const deleteReview = async (reviewId: any) => {

@@ -1,12 +1,15 @@
 import { dividerClasses } from '@mui/material'
 import Link from 'next/link'
 import { useEffect, useState } from 'react'
+import Image from 'next/image';
+import NotesImg from '/public/images/notesImg.png';
 
 interface bookLayoutProps {
   isMain: boolean
 }
 export const BookLayout = ({ isMain }: bookLayoutProps) => {
   const [documents, setDocuments] = useState<any[]>([])
+  const [parsedData, setParsedData] = useState<any[]>([]) 
   const [startIdx, setStartIdx] = useState(0)
   const numVisibleBooks = 5
 
@@ -22,8 +25,10 @@ export const BookLayout = ({ isMain }: bookLayoutProps) => {
         )
       })
       setDocuments(onlyBookData)
+      setParsedData(parsedData);
     }
   }, [])
+
 
   const handleClickPrev = () => {
     setStartIdx(Math.max(0, startIdx - numVisibleBooks))
@@ -60,13 +65,28 @@ export const BookLayout = ({ isMain }: bookLayoutProps) => {
                       alt="책 표지"
                       className="mb-2 rounded-lg w-[10rem]"
                     />
-                    <div className="text-center hidden">{d.book.title}</div>
+                    <div className='flex gap-2'>
+                    <div className='border bg-[#E1E1E1] text-[#5F5F5F] px-1 py-1 rounded-md gap-4'>
+                    <div className='inline-block'>
+                    <Image
+                      src={NotesImg}
+                      alt={'NotesImg'}
+                      width={10}
+                      height={10} 
+                    />
+                    </div>
+                    {parsedData.filter(
+                    (data: any) =>
+                      data.book.isbn === d.book.isbn
+                  ).length}{' '}
+                    </div>
+                    <div className="px-1 py-1 text-[#5F5F5F]">{d.book.title}</div>
+                  </div>
                   </div>
                 </Link>
               ))}
           </div>
           <div className="flex items-center justify-center">
-            
             <div className="p-2 cursor-pointer" onClick={handleClickNext}>
               &gt;
             </div>
