@@ -2,7 +2,7 @@
 
 import { signIn } from 'next-auth/react'
 import Image from 'next/image'
-import kakaologin from '/public/images/kakao_login_medium_narrow.png'
+import kakaologin from '/public/images/kakaoLogin.png'
 
 
 export default function LoginBtn({onLogin} : {onLogin?: () => void}) {

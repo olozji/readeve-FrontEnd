@@ -31,6 +31,8 @@ const Editor = () => {
   const [allDataInfo, setAllDataInfo] = useRecoilState<any>(allDataState)
   let session: any = useSession()
 
+  let user: any = session.data?.user
+
   useEffect(() => {
     console.log(isPrivatePlace)
   }, [isPrivatePlace])
@@ -69,6 +71,7 @@ const Editor = () => {
     let data = {
       title: titleInfo,
       isPrivate: isPrivate,
+      writer:session.data.user.name,
       place: {
         place_name: placeInfo.place_name,
         id: placeInfo.id,
@@ -94,16 +97,17 @@ const Editor = () => {
     // } catch (error) {
     //   console.error('Error:', error);
     // }
-    const url =
-      'http://ec2-54-180-159-247.ap-northeast-2.compute.amazonaws.com/map'
+    
+    // const url =
+    //   'http://ec2-54-180-159-247.ap-northeast-2.compute.amazonaws.com/map'
 
-    // GET 요청 보내기
-    try {
-      const response = await axios.get(url);
-      console.log('응답 데이터:', response.data);
-    } catch (error) {
-      console.error('에러 발생:', error);
-    }
+    // // GET 요청 보내기
+    // try {
+    //   const response = await axios.get(url);
+    //   console.log('응답 데이터:', response.data);
+    // } catch (error) {
+    //   console.error('에러 발생:', error);
+    // }
     // 이전 데이터 가져오기
     const storedData = localStorage.getItem('allDataInfo')
     const previousData = storedData ? JSON.parse(storedData) : []
@@ -165,7 +169,7 @@ const Editor = () => {
                 onClick={handleSearchMap}
               />
               {showMap && (
-                <CustomModal isOpen={true} onClose={handleCloseMap}>
+                <CustomModal isOpen={true} isLogin={false} onClose={handleCloseMap}>
                   <AddPlace
                     onClose={handleCloseMap}
                     onMarkerClickParent={setSelectedPlace}
