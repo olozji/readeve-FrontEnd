@@ -3,10 +3,13 @@ import Button from '@/app/components/buttons/button'
 import CustomModal from '@/app/components/modal'
 import { editReivewState, removeReivewState } from '@/store/writeAtoms';
 import Link from 'next/link';
+import Image from 'next/image';
 import { useSession } from 'next-auth/react'
 import { useRouter } from 'next/navigation'
 import { useEffect, useState } from 'react'
 import { useRecoilState } from 'recoil';
+import Private from '/public/images/private.png';
+import unLock from '/public/images/unLock.png';
 
 export interface PropType {
   params: {
@@ -171,6 +174,11 @@ const BookLayoutItem = (props: any) => {
                   />
                   <div>
                   <h1 className='text-lg font-extrabold'>{data.title}</h1>
+                  <Image
+                    src={data.isPrivate ? Private : unLock}
+                    alt="private"
+                    style={{ width: '25px', height: '25px' }}
+                    />
                   <div className='flex gap-4'>
                     <span>where</span>
                    <div>{data.place.place_name}</div>
@@ -202,6 +210,11 @@ const BookLayoutItem = (props: any) => {
           </div>
           <div className="text-center">
             <h1 className="text-3xl font-bold mb-4">{data.title}</h1>
+                <Image
+                src={data.isPrivate ? Private : unLock}
+                alt="private"
+                style={{ width: '25px', height: '25px' }}
+                />
             <p className="text-lg">{data.content}</p>
           </div>
         </div>
