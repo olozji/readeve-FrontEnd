@@ -226,8 +226,8 @@ const BookLayoutItem = (props: any) => {
                               onClick={() => handleRemove(data.isbn)}
                             />
                           </div>
-                          <div className="h-[30rem] border border-slate-200 rounded-md bg-slate-200">
-                            {data.content}
+                          {/* 내용 엔터키 적용 */}
+                            <div className="h-[30rem] border border-slate-200 rounded-md bg-slate-200" dangerouslySetInnerHTML={{ __html: data.content.replace(/\n/g, '<br>') }}>
                           </div>
                         </div>
                       </div>
