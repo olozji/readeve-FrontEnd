@@ -60,7 +60,7 @@ export default function Home() {
 
   const handleClickNext = () => {
     setStartIdx(
-      Math.min(documents.length - numVisibleBooks, startIdx + numVisibleBooks),
+      Math.min(publicReviews.length - numVisibleBooks, startIdx + numVisibleBooks),
     )
   }
 
@@ -69,9 +69,8 @@ export default function Home() {
   }
 
   const fetchData = async () => {
-    console.log(1)
     try {
-      const response = await axios.get('http://localhost:8081/api/pin')
+      const response = await axios.get('https://api.bookeverywhere.site/api/tags')
       console.log(response.data) // 서버에서 받은 데이터 출력
     } catch (error) {
       console.error('Error fetching data:', error)
@@ -240,7 +239,7 @@ export default function Home() {
               &lt;
             </div>
           <div className="grid grid-cols-4 justify-center items-center w-[80rem]">
-            {documents
+            {publicReviews
               .slice(startIdx, startIdx + numVisibleBooks)
               .map((d: any, i: number) => (
                 <Link
