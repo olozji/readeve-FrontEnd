@@ -3,12 +3,12 @@
 @tailwind utilities;
 
 @font-face {
-  font-famaily: "Gugi";
-  src:url("/public/fonts/Gugi-Regular.ttf") format("truetype");
+  font-family: 'Gugi';
+  src: url('/fonts/Gugi-Regular.ttf') format('truetype');
+  font-weight: normal;
+  font-style: normal;
 }
 
-
-// 폰트 스타일 적용
 .myCustomText {
   font-family: "Gugi", sans-serif;
 }
