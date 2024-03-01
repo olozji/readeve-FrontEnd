@@ -48,16 +48,17 @@ const MyPageComponent = (props: ParamType) => {
 
   return (
     <section className="bg-[#F1E5CF] mx-auto">
-      <div className='mx-auto justify-center text-center'>
+      <div className="grid relative mx-auto justify-center text-center mb-10">
         <Image
           src={lampIcon.src}
-          className='inline-block text-center'
+          className="inline-block text-center"
           alt={lampIcon.src}
-          width={200}
+          width={150}
           height={100}
         />
         <div>
-        <h1 className='myCustomText'>내 서재</h1>
+        <div className="absolute bottom-8 left-0 right-0 mx-auto myCustomText text-3xl text-white">내 서재</div>
+
         </div>
       </div>
       <section>

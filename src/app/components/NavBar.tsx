@@ -110,7 +110,7 @@ const NavBar = () => {
             </>
           )}
           <div className=" py-2 font-bold text-white-900 rounded hover:bg-gray-100 md:hover:bg-transparent dark:border-gray-700 mx-8 text-lg">
-            <Link href="/">지도 보기</Link>
+            <Link href="/map">지도 보기</Link>
           </div>
           <div className=" py-2  font-bold text-white-900 rounded hover:bg-gray-100 md:hover:bg-transparent dark:border-gray-700 mx-8 text-lg">
             {session.data ? (
