@@ -76,6 +76,8 @@ export default function Home() {
       console.error('Error fetching data:', error)
     }
   }
+
+  
   useEffect(() => {
     fetchData()
     setMap(true)
