@@ -193,7 +193,7 @@ const Editor = () => {
           </div>
           <div className="px-8 py-3 flex gap-5 items-center">
             <h4 className="px-5 font-extrabold">장소</h4>
-            <div className="input_box">
+            <div>
               <input
                 placeholder='독서한 장소를 입력해주세요'
                 ref={inputRef}
@@ -202,32 +202,37 @@ const Editor = () => {
                 onClick={handleSearchMap}
               />
               {showMap && (
-                <CustomModal isOpen={true} modalheight={'60rem'} size={'45rem'} onClose={handleCloseMap}>
+                <CustomModal isOpen={true} modalheight={'50rem'} size={'60rem'} onClose={handleCloseMap}>
                   <AddPlace
                     onClose={handleCloseMap}
                     onMarkerClickParent={setSelectedPlace}
                     selectedPlace={selectedPlace}
                   />
-                  <div className="mt-4 text-center">
-                    <p>선택된 장소: {placeInfo.place_name}</p>
-                    <p>선택된 장소가 맞습니까?</p>
-                    <button
-                      onClick={() => handleConfirmation(true)}
-                      className="px-4 py-2 bg-blue-500 text-white rounded"
-                    >
-                      예
-                    </button>
-                    <button
-                      onClick={() => handleConfirmation(false)}
-                      className="px-4 py-2 bg-red-500 text-white rounded"
-                    >
-                      아니오
-                    </button>
-                  </div>
+                  <div className="py-3 px-16">
+                <label className="inline-flex gap-3 items-center cursor-pointer">
+                <span className="ms-3 text-[#828282] text-sm font-medium">나만보기</span>
+                  <input
+                    type="checkbox"
+                    value=""
+                    className="sr-only peer"
+                    onClick={() => {
+                      setIsPrivate(!isPrivate)
+                    }}
+                    checked={isPrivate}
+                  />
+                  <div className="relative w-11 h-6 bg-[#D1D1D1] peer-focus:outline-none peer-focus:ring-4 peer-focus:ring-blue-300 dark:peer-focus:ring-blue-800 rounded-full peer dark:bg-gray-700 peer-checked:after:translate-x-full rtl:peer-checked:after:-translate-x-full peer-checked:after:border-white after:content-[''] after:absolute after:top-[2px] after:start-[2px] after:bg-white after:border-gray-300 after:border after:rounded-full after:h-5 after:w-5 after:transition-all dark:border-gray-600 peer-checked:bg-[#E57C65]"></div>
+                </label>
+                <p className='py-3 px-3 text-sm text-[#979797]'>나만보기를 선택할 경우, 다른 사람들이 회원님의 장소를 확인할 수 없습니다</p>
+                <div className='flex mx-auto w-[8rem]'>
+              <Button
+                label='확인'
+                outline={true}
+                onClick={() => handleConfirmation(true)}      
+              />
+              </div>
+              </div>
                 </CustomModal>
               )}
-            </div>
-            <div>
             </div>
           </div>
           <div className="px-8 py-3 flex gap-5 items-center">
