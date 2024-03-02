@@ -132,7 +132,7 @@ const EditorComponent = (props: PropType) => {
               onClick={handleSearchMap}
             />
             {showMap && (
-              <CustomModal isOpen={true} onClose={handleCloseMap}>
+              <CustomModal size={'45rem'} modalheight={'60rem'} isOpen={true} onClose={handleCloseMap}>
                 <AddPlace
                   onClose={handleCloseMap}
                   onMarkerClickParent={setSelectedPlace}

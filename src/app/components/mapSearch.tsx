@@ -16,10 +16,11 @@ interface MapSearchProps {
   onMarkerClick: (place: string) => void;
   markerImage: StaticImageData;
   markerImageOpacity: StaticImageData;
+  mapHeight?:string
 
 }
 
-const MapSearch = ({ searchPlace, onMarkerClick, markerImage, markerImageOpacity  }: MapSearchProps): React.ReactElement => {
+const MapSearch = ({ searchPlace, onMarkerClick, markerImage, markerImageOpacity,mapHeight  }: MapSearchProps): React.ReactElement => {
 
   const mapRef = useRef<any>(null)
   const listContainerRef = useRef<any>(null);
@@ -341,8 +342,10 @@ const MapSearch = ({ searchPlace, onMarkerClick, markerImage, markerImageOpacity
     <div className='pb-10 border-b-2'>
       {/* 페이지 컨텐츠 및 지도를 표시할 컨테이너 */}
       <div id="map" 
-           className='relative rounded-md'    
-           style={{ width: '34rem', height: '30rem' }}>
+
+           className='relative'    
+      style={{ width: '100%', height: mapHeight}}>
+
       {/* 다른 페이지 컨텐츠 */}
       </div>
       <div

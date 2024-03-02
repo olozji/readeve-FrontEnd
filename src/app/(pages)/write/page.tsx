@@ -30,7 +30,7 @@ const Editor = () => {
   const [InputText, setInputText] = useState('')
   const [isPrivate, setIsPrivate] = useState(true)
   const [isPrivatePlace, setIsPrivatePlace] = useState(true)
-  const [titleInfo, setTitleInfo] = useRecoilState(titleState)
+  const [titleInfo, setTitleInfo] = useRecoilState<string>(titleState)
   const [bookInfo] = useRecoilState<any>(bookState)
   const [tagInfo,setTagInfo] = useRecoilState<any>(tagState)
   const [placeInfo, setPlaceInfo] = useRecoilState<any>(placeState)
@@ -109,36 +109,84 @@ const Editor = () => {
   };
 
   const handleAllData = async (e: any) => {
+
     e.preventDefault()
     let data = {
+      socialId:session.data.user!.id,
       title: titleInfo,
       isPrivate: isPrivate,
-      writer:session.data.user.name,
-      place: {
-        place_name: placeInfo.place_name,
-        id: placeInfo.id,
+      writer:session.data.user!.name,
+      pinRespDto: {
+        name: placeInfo.place_name,
+        placeId: placeInfo.id,
         y: placeInfo.y,
         x: placeInfo.x,
         address: placeInfo.road_address_name,
         isPrivate: isPrivatePlace,
         url: placeInfo.place_url,
       },
-      book: {
+      bookRespDto: {
         isbn: bookInfo.isbn,
         title: bookInfo.title,
         thumbnail: bookInfo.thumbnail,
         isComplete: bookInfo.isComplete,
-        author:bookInfo.authors[0],
+        // author:bookInfo.authors[0],
       },
       tags: tagInfo,
       content: content,
     }
-    // try {
-    //   const response = await axios.post('http://ec2-54-180-159-247.ap-northeast-2.compute.amazonaws.com/api/write', data);
-    //   console.log('Success:', response.data);
-    // } catch (error) {
-    //   console.error('Error:', error);
+    // let sample={
+    //   "socialId" : 3345007591,
+    //   "title": titleInfo,
+    //   "writer": "이름",
+    //   "isPrivate": true,
+    //   "pinRespDto": {
+    //       "name": "placeInfo.place_name",
+    //       "placeId" : 118,
+    //       "y": 488532.02,
+    //       "x": 100809.02,
+    //       "address": "placeInfo.road_address_name",
+    //       "isPrivate": false,
+    //       "url" : "Stirngksladja"
+    //   },
+    //   "bookRespDto": {
+    //       "isbn":"bookInfo.isb32n",
+    //       "title": "bookInfo.title",
+    //       "thumbnail": "bookInfo.thumbnail",
+    //       "isComplete": false
+    //   },
+    //   "tags":[
+    //       {
+    //           "content" : "tag0",
+    //           "isSelected" : false
+    //       },
+    //       {
+    //           "content" : "tag1",
+    //           "isSelected" : true
+    //       },
+    //       {
+    //           "content" : "tag2",
+    //           "isSelected" : true
+    //       }
+    //       ]
+    //   ,
+    //   "content":"conte2323t"
+  
     // }
+    
+    const postData = async() => {
+      try {
+        const response = await axios.post('https://api.bookeverywhere.site/api/write',data);
+        // console.log(data)
+        console.log('Success:', response.data);
+      } catch (error) {
+        console.log(data)
+        console.error('Error:', error);
+      }
+    }
+
+    postData()
+    
     
     // const url =
     //   'http://ec2-54-180-159-247.ap-northeast-2.compute.amazonaws.com/map'
@@ -151,23 +199,23 @@ const Editor = () => {
     //   console.error('에러 발생:', error);
     // }
     // 이전 데이터 가져오기
-    const storedData = localStorage.getItem('allDataInfo')
-    const previousData = storedData ? JSON.parse(storedData) : []
+    // const storedData = localStorage.getItem('allDataInfo')
+    // const previousData = storedData ? JSON.parse(storedData) : []
 
-    // 새로운 데이터 추가
-    const newData = [...previousData, data]
+    // // 새로운 데이터 추가
+    // const newData = [...previousData, data]
 
-    // 로컬 스토리지에 저장
-    localStorage.setItem('allDataInfo', JSON.stringify(newData))
-    setAllDataInfo({})
-    setTitleInfo('')
-    setPlaceInfo({})
-    setTagInfo([{name:'잔잔한 음악이 흘러요',selected:false},{name:'날씨 좋은날 테라스가 좋아요',selected:false},{name:'카공하기 좋아요',selected:false},{name:'힙합BGM이 흘러나와요',selected:false},{name:'조용해서 좋아요',selected:false},{name:'한적해요',selected:false},{name:'자리가 많아요',selected:false},{name:'차마시기 좋아요',selected:false},{name:'귀여운 고양이가 있어요🐈',selected:false},{name:'책을 무료로 대여해줘요📚',selected:false}])
+    // // 로컬 스토리지에 저장
+    // localStorage.setItem('allDataInfo', JSON.stringify(newData))
+    // setAllDataInfo({})
+    // setTitleInfo('')
+    // setPlaceInfo({})
+    // setTagInfo([{content:'잔잔한 음악이 흘러요',selected:false},{content:'날씨 좋은날 테라스가 좋아요',selected:false},{content:'카공하기 좋아요',selected:false},{content:'힙합BGM이 흘러나와요',selected:false},{content:'조용해서 좋아요',selected:false},{content:'한적해요',selected:false},{content:'자리가 많아요',selected:false},{content:'차마시기 좋아요',selected:false},{content:'귀여운 고양이가 있어요🐈',selected:false},{content:'책을 무료로 대여해줘요📚',selected:false}])
     // Router 인스턴스 가져오기
 
     // 페이지 리다이렉트
-    window.location.href = `/mypage/${session.data?.user.id}` // 이동할 경로
-    console.log(allDataInfo)
+    // window.location.href = `/mypage/${session.data?.user.id}` // 이동할 경로
+    // console.log(allDataInfo)
   }
 
 
@@ -202,7 +250,9 @@ const Editor = () => {
                 onClick={handleSearchMap}
               />
               {showMap && (
-                <CustomModal isOpen={true} modalheight={'50rem'} size={'60rem'} onClose={handleCloseMap}>
+
+                <CustomModal isOpen={true} modalheight={'85vh'} size={'45rem'} onClose={handleCloseMap}>
+
                   <AddPlace
                     onClose={handleCloseMap}
                     onMarkerClickParent={setSelectedPlace}

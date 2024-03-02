@@ -61,7 +61,7 @@ const MapView = ({
         return selectedTagsIndexes.every((selectedIndex) =>
           data.tags.some(
             (tag: any) =>
-              tag.selected && tag.name === tagInfo[selectedIndex].name,
+              tag.selected && tag.content === tagInfo[selectedIndex].content,
           ),
         )
       })
@@ -128,7 +128,7 @@ const MapView = ({
       data
         .map(
           (tag: any, i: number) =>
-            tag.selected && `<div class="tag">${tag.name}</div>`,
+            tag.selected && `<div class="tag">${tag.content}</div>`,
         )
         .filter(Boolean)
         .join(``)
@@ -454,7 +454,7 @@ const MapView = ({
                           className={`box-border flex flex-row justify-center text-sm items-center px-4 py-2 mx-2 border border-gray-300 rounded-full  ${isSelectedTags[startIdx + i] ? 'bg-[#E57C65] text-white' : 'bg-white hover:border-[#C05555] hover:text-[#C05555]'}`}
                           onClick={() => searchTag(startIdx + i)}
                         >
-                          {tag.name}
+                          {tag.content}
                         </div>
                       ))}
                   {!isMain && (

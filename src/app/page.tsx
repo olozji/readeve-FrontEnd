@@ -70,11 +70,12 @@ export default function Home() {
 
   const fetchData = async () => {
     try {
-      const response = await axios.get('https://api.bookeverywhere.site/api/tags')
+      const response = await axios.get('https://api.bookeverywhere.site/api/reviews')
       console.log(response.data) // 서버에서 받은 데이터 출력
     } catch (error) {
       console.error('Error fetching data:', error)
     }
+    
   }
 
   
@@ -84,14 +85,29 @@ export default function Home() {
   }, [])
 
   useEffect(() => {
-    const storedData = localStorage.getItem('allDataInfo')
+    const fetchData = async () => {
+      try {
+        const response = await axios.get('https://api.bookeverywhere.site/api/reviews'); 
+        const data = response.data; // 응답으로 받은 데이터
+      //   if (data.length !== 0) {
+      //     const PublicReviewData = data.filter((item: any) => !item.isPrivate)
+      //     setPublicReviews(PublicReviewData)
+        //  }
+        console.log(data)
+       
+      } catch (error) {
+        console.error('Error fetching data:', error);
+      }
+    };
 
-    if (storedData) {
-      const parsedData = JSON.parse(storedData)
-      const PublicReviewData = parsedData.filter((item: any) => !item.isPrivate)
-      console.log(PublicReviewData)
-      setPublicReviews(PublicReviewData)
-    }
+    fetchData(); // 데이터를 가져오는 함수 호출
+
+    // if (storedData) {
+    //   const parsedData = JSON.parse(storedData)
+    //   const PublicReviewData = parsedData.filter((item: any) => !item.isPrivate)
+    //   console.log(PublicReviewData)
+    //   setPublicReviews(PublicReviewData)
+    // }
   }, [])
 
 
@@ -169,7 +185,7 @@ export default function Home() {
                   searchTag(i)
                 }}
               >
-                {tag.name}
+                {tag.content}
               </div>
             ))}
           </div>

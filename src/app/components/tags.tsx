@@ -22,7 +22,7 @@ export const Tag = ({tags, limit = tags.length, showModal = false} : TagProps) =
         // 선택된 태그의 상태를 변경
         const updatedTags = tagInfo.map((tag: any, index: number) => {
             if (index === i) {
-                return { ...tag, selected: !tag.selected };
+                return { ...tag, isSelected: !tag.isSelected };
             }
             return tag;
         });
@@ -33,6 +33,7 @@ export const Tag = ({tags, limit = tags.length, showModal = false} : TagProps) =
 
     return (
         <div className="flex flex-wrap justify-center sm:px-10 ">
+
             {renderTags.map((d: any, i: number) => (
                 <div 
                     key={i}
@@ -41,9 +42,10 @@ export const Tag = ({tags, limit = tags.length, showModal = false} : TagProps) =
                           ? 'bg-[#E57C65] text-white'
                           : 'bg-white hover:border-[#C05555] hover:text-[#C05555]'
                       }`}
+
                     onClick={() => handleTagClick(i)}
                 >
-                    #{d.name}
+                    #{d.content}
                 </div>
             ))}
         </div>
