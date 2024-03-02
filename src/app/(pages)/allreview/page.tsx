@@ -84,8 +84,8 @@ const AllReviewPage = () => {
       try {
         const response = await axios.get('https://api.bookeverywhere.site/api/reviews'); 
         const data = response.data; // 응답으로 받은 데이터
-        const parsedData = JSON.parse(data)
-        const PublicReviewData = parsedData.filter((item: any) => !item.isPrivate)
+      
+        const PublicReviewData = data.filter((item: any) => !item.isPrivate)
         setPublicReviews(PublicReviewData)
       } catch (error) {
         console.error('Error fetching data:', error);
