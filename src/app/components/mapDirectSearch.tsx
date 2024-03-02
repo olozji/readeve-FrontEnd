@@ -141,43 +141,7 @@ export const MapDirectSearch = ({ onMarkerClick, markerImage }: any) => {
 
   const getPosSuccess = (pos: GeolocationPosition) => {
     let currentPos = new window.kakao.maps.LatLng(pos.coords.latitude, pos.coords.longitude);
-
-    var geocoder = new window.kakao.maps.services.Geocoder();
-
-    geocoder.coord2Address(
-      currentPos.getLat(), // 수정된 부분
-      currentPos.getLng(), // 수정된 부분
-      (result: any, status: any) => {
-        if (status === window.kakao.maps.services.Status.OK) {
-          let addr = !!result[0].road_address
-            ? result[0].road_address.address_name
-            : result[0].address.address_name;
-
-          setAddress(addr);
-          map.panTo(currentPos);
-
-          const newMarkerPosition = new window.kakao.maps.LatLng(
-            currentPos.getLat(), // 수정된 부분
-            currentPos.getLng(), // 수정된 부분
-          );
-
-          // 마커를 이동시킵니다.
-          if (marker) {
-            marker.setPosition(newMarkerPosition);
-          } else {
-            const newMarker = new window.kakao.maps.Marker({
-              position: newMarkerPosition,
-              image: new window.kakao.maps.MarkerImage(
-                markerImage.src,
-                new window.kakao.maps.Size(markerImage.width, markerImage.height),
-              ),
-            });
-            newMarker.setMap(map);
-            setMarker(newMarker);
-          }
-        }
-      },
-    );
+    map.panTo(currentPos);
   };
 
   const getCurrentPosBtn = () => {

@@ -1,14 +1,14 @@
 /*global kakao */
 
-import React, { useEffect, useState } from 'react';
-import MapSearch from './mapSearch';
-import searchIcon from 'public/images/searchIcon.png';
-import Image from 'next/image';
-import { MapDirectSearch } from './mapDirectSearch';
-import CustomModal from '../components/modal';
-import markerImage from '/public/images/marker1.png';
-import markerImageOpacity from '/public/images/marker2.png';
-import mapSearchIcon from '/public/images/mapSearchIcon.png';
+import React, { useEffect, useState } from 'react'
+import MapSearch from './mapSearch'
+import searchIcon from 'public/images/searchIcon.png'
+import Image from 'next/image'
+import { MapDirectSearch } from './mapDirectSearch'
+import CustomModal from '../components/modal'
+import markerImage from '/public/images/marker1.png'
+import markerImageOpacity from '/public/images/marker2.png'
+import mapSearchIcon from '/public/images/mapSearchIcon.png'
 
 interface AddPlaceProps {
   onClose: () => void
@@ -88,9 +88,10 @@ const AddPlace: React.FC<AddPlaceProps> = ({
           />
         </div>
       ) : (
-
-          <div>
-            <div className='pt-4 text-3xl font-extrabold'>장소를 검색해주세요</div>
+        <div>
+          <div className="pt-4 text-3xl font-extrabold">
+            도서명을 검색해주세요
+          </div>
           <form className="py-5">
             <div className="flex items-center gap-4">
               <div className="searchInputDiv">
@@ -98,7 +99,7 @@ const AddPlace: React.FC<AddPlaceProps> = ({
                   type="text"
                   size={50}
                   placeholder="장소명, 도로명, 지번, 건물명 검색"
-                  className='w-[35rem] h-[2.5rem] px-3 border border-black rounded-2xl bg-white'
+                  className="w-[35rem] h-[2.5rem] px-3 border border-black rounded-2xl bg-white"
                   onChange={onChange}
                   value={InputText}
                 />
@@ -107,17 +108,16 @@ const AddPlace: React.FC<AddPlaceProps> = ({
                 <button id="searchBtn" onClick={handleSubmit}>
                   <Image
                     src={mapSearchIcon}
-                    alt='mapSearchIcon'
+                    alt="mapSearchIcon"
                     width={20}
                     height={20}
                   />
                 </button>
               </div>
             </div>
-
           </form>
-            <MapSearch
-              mapHeight={'40vh'}
+          <MapSearch
+            mapHeight={'40vh'}
             searchPlace={Place}
             onMarkerClick={onMarkerClick}
             markerImage={markerImage}

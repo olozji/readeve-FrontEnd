@@ -344,14 +344,14 @@ const MapSearch = ({ searchPlace, onMarkerClick, markerImage, markerImageOpacity
       <div id="map" 
 
            className='relative'    
-      style={{ width: '100%', height: mapHeight}}>
+      style={{ width: '58vh', height: mapHeight}}>
 
       {/* 다른 페이지 컨텐츠 */}
       </div>
       <div
         ref={listContainerRef}
         id="result-list"
-        className='absolute top-[15rem] right-10 scrollBar w-[18rem] bg-white h-full max-h-[30rem] bg-opacity-80 overflow-y-auto rounded-lg'
+        className='absolute top-[15rem] right-10 scrollBar w-[17rem] bg-white h-full max-h-[40vh] bg-opacity-80 overflow-y-auto rounded-lg'
       >
         {Place.length === 0? (
           <div className="p-4 text-center text-[#B6B6B6]">
