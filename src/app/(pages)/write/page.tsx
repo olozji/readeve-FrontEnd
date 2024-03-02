@@ -70,7 +70,7 @@ const Editor = () => {
     e.preventDefault()
     let data = {
       socialId:session.data.user.id,
-      title: titleInfo,
+      "title": titleInfo,
       isPrivate: isPrivate,
       writer:session.data.user.name,
       pinRespDto: {
@@ -92,6 +92,7 @@ const Editor = () => {
       tags: tagInfo,
       content: content,
     }
+
     try {
       const response = await axios.post('https://api.bookeverywhere.site/api/write', data);
       console.log('Success:', response.data);
