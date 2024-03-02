@@ -203,7 +203,7 @@ const EditorComponent = (props: PropType) => {
         <section className="py-8 flex border border-slate-400 gap-3">
           <h4 className="px-5">tag</h4>
 
-          <Tag></Tag>
+          <Tag tags={[]}></Tag>
           {tagInfo.length != 0 && (
             <div className="flex gap-4">
               {tagInfo.map((ele: any, i: number) => {
