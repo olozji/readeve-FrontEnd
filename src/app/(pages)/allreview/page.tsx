@@ -139,7 +139,7 @@ const AllReviewPage = () => {
                         onClick={() => handleModal(i)}
                       >
                         {detailOpen && (
-                          <CustomModal isOpen={detailOpen[i]}>
+                          <CustomModal isOpen={detailOpen[i]} size={'60rem'}>
                             <div className="h-[50rem]">
                               <div className="px-8 py-8">
                                 <div className="flex">
