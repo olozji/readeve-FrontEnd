@@ -66,7 +66,7 @@ const Editor = () => {
     setTitleInfo(e.target.value)
   }
 
-  const handleAllData = async (e: any) => {
+  const handleAllData = (e: any) => {
     e.preventDefault()
     let data = {
       socialId:session.data.user.id,
@@ -112,7 +112,7 @@ const Editor = () => {
   //         "thumbnail": "bookInfo.thumbnail",
   //         "isComplete": false
   //     },
-  //     "tags":[ 
+  //     "tags":[
   //         {
   //             "content" : "tag0",
   //             "isSelected" : false
@@ -129,14 +129,19 @@ const Editor = () => {
   //     ,
   //     "content":"conte2323t"
   
-  // }
-    try {
-      const response = await axios.post('https://api.bookeverywhere.site/api/write',data);
-      console.log(data)
-      console.log('Success:', response.data);
-    } catch (error) {
-      console.error('Error:', error);
+    // }
+    
+    const postData = async() => {
+      try {
+        const response = await axios.post('https://api.bookeverywhere.site/api/write',data);
+        console.log(data)
+        console.log('Success:', response.data);
+      } catch (error) {
+        console.error('Error:', error);
+      }
     }
+    postData()
+    
     
     // const url =
     //   'http://ec2-54-180-159-247.ap-northeast-2.compute.amazonaws.com/map'
