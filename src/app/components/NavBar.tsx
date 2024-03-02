@@ -130,7 +130,7 @@ const NavBar = () => {
       </div>
       {/* </div> */}
       {isLoginOpen && (
-        <CustomModal onClose={closeLoginModal} isOpen={true} isLogin={true}>
+        <CustomModal onClose={closeLoginModal} isOpen={true} size={'30rem'}>
           <div className="p-[2rem]">
             <div className="font-bold text-2xl">로그인</div>
             <div className="text-xs text-[#E57C65] py-2">

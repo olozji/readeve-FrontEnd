@@ -169,7 +169,7 @@ const Editor = () => {
                 onClick={handleSearchMap}
               />
               {showMap && (
-                <CustomModal isOpen={true} isLogin={false} onClose={handleCloseMap}>
+                <CustomModal isOpen={true} modalheight={'60rem'} size={'45rem'} onClose={handleCloseMap}>
                   <AddPlace
                     onClose={handleCloseMap}
                     onMarkerClickParent={setSelectedPlace}

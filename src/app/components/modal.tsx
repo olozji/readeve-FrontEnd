@@ -6,10 +6,11 @@ interface ModalType {
   isOpen: boolean;
   onClose?: () => void; // 모달을 닫을 때 호출할 함수
   children: React.ReactNode;
-  isLogin?:boolean
+  size: string
+  modalheight?:string
 }
 
-const CustomModal = ({ isOpen, onClose, children,isLogin }: ModalType) => {
+const CustomModal = ({ isOpen, onClose, children,size,modalheight }: ModalType) => {
   
   const [open, setOpen] = useState(false);
   const [selected, setSelected] = useState('');
@@ -59,7 +60,8 @@ const handleInsideClick = (e: React.MouseEvent<HTMLDivElement>) => {
             top: "50%",
             left: "50%",
             transform: "translate(-50%, -50%)",
-            width: isLogin ? "400px" : "800px",
+            width: size,
+            height:modalheight,
             maxWidth: "100%",
             maxHeight: "90%",
             overflowY: "auto",

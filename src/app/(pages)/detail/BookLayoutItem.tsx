@@ -177,7 +177,7 @@ const BookLayoutItem = (props: any) => {
                 >
                   {/* 모달 */}
                   {detailOpen && (
-                    <CustomModal isOpen={detailOpen[i]}>
+                    <CustomModal size={'60rem'} isOpen={detailOpen[i]}>
                       <div className="h-[50rem]">
                         <div className="px-8 py-8">
                           <div className="flex">

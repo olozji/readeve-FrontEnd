@@ -62,16 +62,18 @@ const AddPlace: React.FC<AddPlaceProps> = ({ onClose, onMarkerClickParent, selec
 
 
   return (
-    <div className="bg-white p-8 rounded-lg">
-      <button onClick={changeSearchType}>
-        {directSearch ? `직접 핀으로 검색` : `이름으로 검색`}
-      </button>
+    <div className="bg-white py-8 px-16 rounded-lg">
+      <div className='pt-8 pb-4 flex gap-x-8 text-[#9f9f9f] border-b-2 font-semibold'>
+        <button onClick={()=>setDirectSearch(false)} className={`${!directSearch&&'text-[#e57C65]'}`}>검색창으로 장소 검색</button>
+        <button onClick={()=>setDirectSearch(true)} className={`${directSearch&&'text-[#e57C65]'}`}>지도에서 직접 선택</button>
+      </div>
       {directSearch ? (
         <div>
          <MapDirectSearch onMarkerClick={onMarkerClick} selectedPlace={selectedPlace} markerImage={markerImage}/>
         </div>
       ) : (
-        <div>
+          <div>
+            <div className='pt-4 text-3xl font-extrabold'>장소를 검색해주세요</div>
           <form className="inputForm">
             <div className="addSearchDiv">
               <div className="searchInputDiv">
