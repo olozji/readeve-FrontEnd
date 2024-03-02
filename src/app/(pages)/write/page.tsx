@@ -96,7 +96,7 @@ const Editor = () => {
     try {
       const response = await axios.post('https://api.bookeverywhere.site/api/write', {
         socialId:session.data.user.id,
-        title: '테스트타이틀',
+        "title": "테스트타이틀",
         isPrivate: isPrivate,
         writer:session.data.user.name,
         pinRespDto: {
