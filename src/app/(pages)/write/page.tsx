@@ -69,10 +69,10 @@ const Editor = () => {
   const handleAllData = (e: any) => {
     e.preventDefault()
     let data = {
-      socialId:session.data.user.id,
-      title: String(titleInfo),
+      socialId:session.data.user!.id,
+      title: titleInfo,
       isPrivate: isPrivate,
-      writer:session.data.user.name,
+      writer:session.data.user!.name,
       pinRespDto: {
         content: placeInfo.place_name,
         placeId: placeInfo.id,
@@ -87,7 +87,7 @@ const Editor = () => {
         title: bookInfo.title,
         thumbnail: bookInfo.thumbnail,
         isComplete: bookInfo.isComplete,
-        author:bookInfo.authors[0],
+        // author:bookInfo.authors[0],
       },
       tags: tagInfo,
       content: content,
@@ -137,9 +137,11 @@ const Editor = () => {
         console.log(data)
         console.log('Success:', response.data);
       } catch (error) {
+        console.log(data)
         console.error('Error:', error);
       }
     }
+
     postData()
     
     
