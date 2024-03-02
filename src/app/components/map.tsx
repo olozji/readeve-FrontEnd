@@ -7,6 +7,7 @@ import { MapDirectSearch } from './mapDirectSearch';
 import CustomModal from '../components/modal';
 import markerImage from '/public/images/marker1.png';
 import markerImageOpacity from '/public/images/marker2.png';
+import mapSearchIcon from '/public/images/mapSearchIcon.png';
 
 interface AddPlaceProps {
   onClose: () => void;
@@ -74,20 +75,26 @@ const AddPlace: React.FC<AddPlaceProps> = ({ onClose, onMarkerClickParent, selec
       ) : (
           <div>
             <div className='pt-4 text-3xl font-extrabold'>장소를 검색해주세요</div>
-          <form className="inputForm">
-            <div className="addSearchDiv">
+          <form className="py-5">
+            <div className="flex items-center gap-4">
               <div className="searchInputDiv">
                 <input
                   type="text"
                   size={50}
-                  placeholder="장소를 검색하세요"
+                  placeholder="장소명, 도로명, 지번, 건물명 검색"
+                  className='w-[35rem] h-[2.5rem] px-3 border border-black rounded-2xl bg-white'
                   onChange={onChange}
                   value={InputText}
                 />
               </div>
-              <div className="buttonDiv">
+              <div className="bg-[#E57C65] border-4 border-white px-2 py-1 rounded-3xl shadow-xl justify-center">
                 <button id="searchBtn" onClick={handleSubmit}>
-                  검색
+                  <Image
+                    src={mapSearchIcon}
+                    alt='mapSearchIcon'
+                    width={20}
+                    height={20}
+                  />
                 </button>
               </div>
             </div>

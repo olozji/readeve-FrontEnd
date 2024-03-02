@@ -2,6 +2,7 @@
 
 import NavBar from '@/app/components/NavBar'
 import { BookSearch } from '@/app/components/bookSearch'
+import Button from '@/app/components/buttons/button'
 import AddPlace from '@/app/components/map'
 import CustomModal from '@/app/components/modal'
 import { Tag } from '@/app/components/tags'
@@ -14,8 +15,13 @@ import {
 } from '@/store/writeAtoms'
 import axios from 'axios'
 import { useSession } from 'next-auth/react'
-import { useCallback, useEffect, useState } from 'react'
+import { useCallback, useEffect, useRef, useState } from 'react'
 import { useRecoilState } from 'recoil'
+
+import Image from 'next/image'
+import pen from 'public/images/Pen.png';
+import isPrivated from '/public/images/isPrivated.png';
+import isShareded from '/public/images/isShareded.png';
 
 const Editor = () => {
   const [content, setContent] = useState('')
@@ -29,6 +35,9 @@ const Editor = () => {
   const [tagInfo,setTagInfo] = useRecoilState<any>(tagState)
   const [placeInfo, setPlaceInfo] = useRecoilState<any>(placeState)
   const [allDataInfo, setAllDataInfo] = useRecoilState<any>(allDataState)
+  const [showTagModal, setShowTagModal] = useState(false);
+  
+  
   let session: any = useSession()
 
   let user: any = session.data?.user
@@ -40,6 +49,16 @@ const Editor = () => {
     e.preventDefault()
     setShowMap(true)
   }, [])
+
+  useEffect(() => {
+    console.log(isPrivatePlace);
+    if (inputRef.current) {
+      inputRef.current.focus(); // Input에 focus() 호출
+    }
+  }, [isPrivatePlace]);
+
+  const numTag = tagInfo.slice(0,3);
+  const inputRef = useRef<HTMLInputElement | null>(null);
 
   const handleCloseMap = useCallback(() => {
     setShowMap(false)
@@ -64,7 +83,30 @@ const Editor = () => {
   const handleTitle = (e: any) => {
     e.preventDefault()
     setTitleInfo(e.target.value)
+    console.log(titleInfo);
   }
+
+  const handleIsPrivateClick = () => {
+    setIsPrivate((prevIsPrivate) => !prevIsPrivate);
+  };
+
+  const handlePublicClick = () => {
+    setIsPrivate((prevIsPrivate) => !prevIsPrivate);
+  };
+
+
+
+  const handleTagClick = (index: number) => {
+    if (index >= 0 && index < tagInfo.length) {
+      // 객체를 복사하여 새로운 객체를 생성
+      const updatedTags = tagInfo.map((tag:any, i:number) =>
+        i === index ? { ...tag, selected: !tag.selected } : tag
+      );
+  
+      // Recoil 상태를 갱신
+      setTagInfo(updatedTags);
+    }
+  };
 
   const handleAllData = async (e: any) => {
     e.preventDefault()
@@ -127,24 +169,48 @@ const Editor = () => {
     window.location.href = `/mypage/${session.data?.user.id}` // 이동할 경로
     console.log(allDataInfo)
   }
+
+
   return (
     <>
       <NavBar />
-      <div className="flex justify-center mx-auto box-border min-h-full">
-        <div className="w-full px-5 py-10 sm:px-10 md:px-20 lg:px-40 xl:px-80 border border-slate-400 rounded-md">
-          <header className="h-10">
-            <h1>기록하기</h1>
+      <div className="bg-[#F1E5CF] flex justify-center mx-auto box-border min-h-full">
+        <div className="w-full px-10 py-20 sm:px-10 md:px-20 lg:px-40 xl:px-80 border border-slate-400 rounded-md">
+          <header className="h-10 text-center">
+            <h1 className='myCustomText text-3xl text-white'>독후감 작성</h1>
           </header>
-          <section className="py-8 flex gap-10 border border-slate-400 rounded-t-md">
-            <h4 className="px-5">제목</h4>
-            <div className="flex">
+          <section className='py-10 px-10'>
+          <div className="px-5 py-8 flex rounded-t-md">
+            <div className="flex w-[70rem] max-w-[70rem] px-3">
               <input
-                className="border-slate-400 rounded-md bg-slate-200"
+                placeholder='제목'
+                ref={inputRef}
+                className="inline-block w-[60rem] h-[2.8rem] px-3 border-2 shadow-md rounded-md bg-white"
                 value={titleInfo}
                 onChange={handleTitle}
               />
-              <div className="ml-4">
-                <label className="inline-flex items-center cursor-pointer">
+            </div>
+          </div>
+          <div className="px-8 py-3 flex gap-5 items-center">
+            <h4 className="px-5 font-extrabold">장소</h4>
+            <div>
+              <input
+                placeholder='독서한 장소를 입력해주세요'
+                ref={inputRef}
+                className="inline-block w-[35rem] h-[2rem] px-3 border-2 shadow-md rounded-2xl bg-white"
+                value={placeInfo.place_name}
+                onClick={handleSearchMap}
+              />
+              {showMap && (
+                <CustomModal isOpen={true} modalheight={'50rem'} size={'60rem'} onClose={handleCloseMap}>
+                  <AddPlace
+                    onClose={handleCloseMap}
+                    onMarkerClickParent={setSelectedPlace}
+                    selectedPlace={selectedPlace}
+                  />
+                  <div className="py-3 px-16">
+                <label className="inline-flex gap-3 items-center cursor-pointer">
+                <span className="ms-3 text-[#828282] text-sm font-medium">나만보기</span>
                   <input
                     type="checkbox"
                     value=""
@@ -154,64 +220,23 @@ const Editor = () => {
                     }}
                     checked={isPrivate}
                   />
-                  <div className="relative w-11 h-6 bg-gray-200 peer-focus:outline-none peer-focus:ring-4 peer-focus:ring-blue-300 dark:peer-focus:ring-blue-800 rounded-full peer dark:bg-gray-700 peer-checked:after:translate-x-full rtl:peer-checked:after:-translate-x-full peer-checked:after:border-white after:content-[''] after:absolute after:top-[2px] after:start-[2px] after:bg-white after:border-gray-300 after:border after:rounded-full after:h-5 after:w-5 after:transition-all dark:border-gray-600 peer-checked:bg-blue-600"></div>
-                  <span className="ms-3 text-sm font-medium">나만보기</span>
+                  <div className="relative w-11 h-6 bg-[#D1D1D1] peer-focus:outline-none peer-focus:ring-4 peer-focus:ring-blue-300 dark:peer-focus:ring-blue-800 rounded-full peer dark:bg-gray-700 peer-checked:after:translate-x-full rtl:peer-checked:after:-translate-x-full peer-checked:after:border-white after:content-[''] after:absolute after:top-[2px] after:start-[2px] after:bg-white after:border-gray-300 after:border after:rounded-full after:h-5 after:w-5 after:transition-all dark:border-gray-600 peer-checked:bg-[#E57C65]"></div>
                 </label>
-              </div>
-            </div>
-          </section>
-          <section className="py-8 flex gap-10 border border-slate-400">
-            <h4 className="px-5">where</h4>
-            <div className="input_box ">
-              <input
-                className="border-slate-400 rounded-md bg-slate-200"
-                value={placeInfo.place_name}
-                onClick={handleSearchMap}
+                <p className='py-3 px-3 text-sm text-[#979797]'>나만보기를 선택할 경우, 다른 사람들이 회원님의 장소를 확인할 수 없습니다</p>
+                <div className='flex mx-auto w-[8rem]'>
+              <Button
+                label='확인'
+                outline={true}
+                onClick={() => handleConfirmation(true)}      
               />
-              {showMap && (
-                <CustomModal isOpen={true} modalheight={'60rem'} size={'45rem'} onClose={handleCloseMap}>
-                  <AddPlace
-                    onClose={handleCloseMap}
-                    onMarkerClickParent={setSelectedPlace}
-                    selectedPlace={selectedPlace}
-                  />
-                  <div className="mt-4 text-center">
-                    <p>선택된 장소: {placeInfo.place_name}</p>
-                    <p>선택된 장소가 맞습니까?</p>
-                    <button
-                      onClick={() => handleConfirmation(true)}
-                      className="px-4 py-2 bg-blue-500 text-white rounded"
-                    >
-                      예
-                    </button>
-                    <button
-                      onClick={() => handleConfirmation(false)}
-                      className="px-4 py-2 bg-red-500 text-white rounded"
-                    >
-                      아니오
-                    </button>
-                  </div>
+              </div>
+              </div>
                 </CustomModal>
               )}
             </div>
-            <div>
-              <label className="inline-flex items-center cursor-pointer">
-                <input
-                  type="checkbox"
-                  value=""
-                  className="sr-only peer"
-                  onClick={() => {
-                    setIsPrivatePlace(!isPrivatePlace)
-                  }}
-                  checked={isPrivatePlace}
-                />
-                <div className="relative w-11 h-6 bg-gray-200 peer-focus:outline-none peer-focus:ring-4 peer-focus:ring-blue-300 dark:peer-focus:ring-blue-800 rounded-full peer dark:bg-gray-700 peer-checked:after:translate-x-full rtl:peer-checked:after:-translate-x-full peer-checked:after:border-white after:content-[''] after:absolute after:top-[2px] after:start-[2px] after:bg-white after:border-gray-300 after:border after:rounded-full after:h-5 after:w-5 after:transition-all dark:border-gray-600 peer-checked:bg-blue-600"></div>
-                <span className="ms-3 text-sm font-medium">나만의 장소</span>
-              </label>
-            </div>
-          </section>
-          <section className="py-8 flex gap-10 border border-slate-400">
-            <h4 className="px-5">Book</h4>
+          </div>
+          <div className="px-8 py-3 flex gap-5 items-center">
+            <h4 className="px-5 font-extrabold">도서</h4>
             <div>
               {bookInfo.title && (
                 <div
@@ -232,39 +257,114 @@ const Editor = () => {
                     alt="책 표지"
                     className="mb-2 rounded"
                   />
-                  <div className="p-4">{bookInfo.title}</div>
+                  <div className="input_box">{bookInfo.title}</div>
                 </div>
               )}
               <BookSearch></BookSearch>
             </div>
-          </section>
-          <section className="py-8 flex border border-slate-400 ">
-            <h4 className="px-5">tag</h4>
+          </div>
+          <div className="px-8 py-3 flex items-center">
+            <h4 className="px-5 font-extrabold">장소 태그</h4>
+            <Tag tags={numTag}></Tag>
+            <button 
+              onClick={() => setShowTagModal(true)}
+              className='cursor-pointer text-[#7a7a7a] font-light text-4xl'>+</button>
+          </div>
+          <CustomModal isOpen={showTagModal} onClose={() => setShowTagModal(false)} size={'60rem'} modalheight={'40rem'}>
+          <div className="mt-10 px-10 py-10 text-center">
+            <div className='border-b-[2px]'>
+              <h1 className='font-bold text-2xl text-left py-3 border-b-[2px]'>
+              장소와 딱맞는 태그를 선택해 주세요
+                </h1>
+            {tagInfo.map((tag:any, i:number) => (
+              <div className='inline-block px-5 py-5'>
+              <div className=''>
+              <div
+                key={i}
+                className={`box-border flex justify-center items-center px-4 py-2
+                 my-2 mx-2 border border-gray-300 rounded-full w-[10rem]
+                 ${tag.selected ? 'bg-[#E57C65] text-white' :
+                  'bg-white hover:border-[#C05555] hover:text-[#C05555]'}`}
+                onClick={() => handleTagClick(i)}
+              >
+                #{tag.name}
+              </div>
+             
+              </div>
+              </div>
+            ))}
+          </div>
+          </div>
+          <div className='flex mx-auto w-[8rem]'>
+          <Button 
+              label='확인'
+              outline={true}
+            />
+            </div>
+        </CustomModal>
+        <div className="py-8 flex gap-4 justify-center">
+        <span
+        className={`inline-flex items-center rounded-lg px-3 py-3 text-xs font-medium ${
+          isPrivate ? 'bg-[#E57C65] text-white'  : 'bg-white text-black'
+        }`}
+        onClick={handleIsPrivateClick}
+      >
+       {/* <Image
+         src={isPrivated}
+         alt='pen'
+         style={{ width: '12px', height: '12px' }}
+       />
+        나만보기 */}
+        나만보기
+        </span>
+        <span
+        className={`inline-flex items-center rounded-lg px-3 py-3 text-xs font-medium ${
+          !isPrivate ? 'bg-[#E57C65] text-white'  : 'bg-white text-black'
+        }`}
+        onClick={handlePublicClick}
+      >
+       {/* <Image
+         src={isPrivated}
+         alt='pen'
+         width={10}
+         height={10}
+       /> */}
+        전체공개
+        </span>
+        </div>
 
-            <Tag></Tag>
-          </section>
-
-          <section className="py-8 border border-t-0 border-slate-400 rounded-b-md">
+          <div className="py-8 border-white border-t-2">
             <div className="px-5 py-8">
-              <div>내용</div>
+              <div className='flex gap-2 pb-5'>
+              <Image
+                src={pen}
+                alt='pen'
+                width={30}
+                height={30}
+              />
+              <h1 className='font-extrabold text-xl'>작성</h1>  
+              </div>
               <textarea
-                className="border border-slate-200 rounded-md w-full h-80 bg-slate-200"
-                placeholder="오늘 나의 독서는..."
+                className="border border-slate-200 rounded-2xl w-full h-80 bg-white px-3 py-3"
+                placeholder="(1500자 이내로 독후감을 작성해주세요)"
                 value={content}
                 onChange={(e) => setContent(e.target.value)}
               />
             </div>
-          </section>
-          <section>
-            <div className="control_btn flex gap-5">
-              <button className="bg-red-300 rounded-md">취소하기</button>
-              <button
-                className="bg-indigo-400 rounded-md"
+          </div>
+          <div>
+            <div className="control_btn flex mx-auto w-[18rem] gap-5">
+              <Button 
+                label='삭제하기'
+                outline={false}
+              />
+              <Button 
+                label='저장하기'
+                outline={true}
                 onClick={handleAllData}
-              >
-                작성완료
-              </button>
+              />
             </div>
+          </div>
           </section>
         </div>
       </div>
