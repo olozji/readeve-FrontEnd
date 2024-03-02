@@ -68,76 +68,76 @@ const Editor = () => {
 
   const handleAllData = (e: any) => {
     e.preventDefault()
-    // let data = {
-    //   socialId:session.data.user!.id,
-    //   title: titleInfo,
-    //   isPrivate: isPrivate,
-    //   writer:session.data.user!.name,
-    //   pinRespDto: {
-    //     content: placeInfo.place_name,
-    //     placeId: placeInfo.id,
-    //     y: placeInfo.y,
-    //     x: placeInfo.x,
-    //     address: placeInfo.road_address_name,
-    //     isPrivate: isPrivatePlace,
-    //     url: placeInfo.place_url,
-    //   },
-    //   book: {
-    //     isbn: bookInfo.isbn,
-    //     title: bookInfo.title,
-    //     thumbnail: bookInfo.thumbnail,
-    //     isComplete: bookInfo.isComplete,
-    //     // author:bookInfo.authors[0],
-    //   },
-    //   tags: tagInfo,
-    //   content: content,
-    // }
-    let sample={
-      "socialId" : 3345007591,
-      "title": titleInfo,
-      "writer": "이름",
-      "isPrivate": true,
-      "pinRespDto": {
-          "name": "placeInfo.place_name",
-          "placeId" : 118,
-          "y": 488532.02,
-          "x": 100809.02,
-          "address": "placeInfo.road_address_name",
-          "isPrivate": false,
-          "url" : "Stirngksladja"
+    let data = {
+      socialId:session.data.user!.id,
+      title: titleInfo,
+      isPrivate: isPrivate,
+      writer:session.data.user!.name,
+      pinRespDto: {
+        name: placeInfo.place_name,
+        placeId: placeInfo.id,
+        y: placeInfo.y,
+        x: placeInfo.x,
+        address: placeInfo.road_address_name,
+        isPrivate: isPrivatePlace,
+        url: placeInfo.place_url,
       },
-      "bookRespDto": {
-          "isbn":"bookInfo.isb32n",
-          "title": "bookInfo.title",
-          "thumbnail": "bookInfo.thumbnail",
-          "isComplete": false
+      bookRespDto: {
+        isbn: bookInfo.isbn,
+        title: bookInfo.title,
+        thumbnail: bookInfo.thumbnail,
+        isComplete: bookInfo.isComplete,
+        // author:bookInfo.authors[0],
       },
-      "tags":[
-          {
-              "content" : "tag0",
-              "isSelected" : false
-          },
-          {
-              "content" : "tag1",
-              "isSelected" : true
-          },
-          {
-              "content" : "tag2",
-              "isSelected" : true
-          }
-          ]
-      ,
-      "content":"conte2323t"
-  
+      tags: tagInfo,
+      content: content,
     }
+    // let sample={
+    //   "socialId" : 3345007591,
+    //   "title": titleInfo,
+    //   "writer": "이름",
+    //   "isPrivate": true,
+    //   "pinRespDto": {
+    //       "name": "placeInfo.place_name",
+    //       "placeId" : 118,
+    //       "y": 488532.02,
+    //       "x": 100809.02,
+    //       "address": "placeInfo.road_address_name",
+    //       "isPrivate": false,
+    //       "url" : "Stirngksladja"
+    //   },
+    //   "bookRespDto": {
+    //       "isbn":"bookInfo.isb32n",
+    //       "title": "bookInfo.title",
+    //       "thumbnail": "bookInfo.thumbnail",
+    //       "isComplete": false
+    //   },
+    //   "tags":[
+    //       {
+    //           "content" : "tag0",
+    //           "isSelected" : false
+    //       },
+    //       {
+    //           "content" : "tag1",
+    //           "isSelected" : true
+    //       },
+    //       {
+    //           "content" : "tag2",
+    //           "isSelected" : true
+    //       }
+    //       ]
+    //   ,
+    //   "content":"conte2323t"
+  
+    // }
     
     const postData = async() => {
       try {
-        const response = await axios.post('https://api.bookeverywhere.site/api/write',sample);
-        console.log(sample)
+        const response = await axios.post('https://api.bookeverywhere.site/api/write',data);
+        // console.log(data)
         console.log('Success:', response.data);
       } catch (error) {
-        console.log(sample)
+        console.log(data)
         console.error('Error:', error);
       }
     }
