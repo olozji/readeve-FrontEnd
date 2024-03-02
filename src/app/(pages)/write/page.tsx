@@ -212,12 +212,8 @@ const Editor = () => {
               />
               {showMap && (
 
-                <CustomModal isOpen={true} modalheight={'85vh'} size={'45rem'} onClose={handleCloseMap}>
+                <CustomModal isOpen={true} modalheight={'85vh'} size={'100vh'} onClose={handleCloseMap}>
 
-                  <AddPlace
-
-                    onClose={handleCloseMap}
-                  >
                     <AddPlace
                       onClose={handleCloseMap}
                       onMarkerClickParent={setSelectedPlace}
@@ -336,16 +332,6 @@ const Editor = () => {
                   }}
                 />
               </div>
-
-            ))}
-          </div>
-          </div>
-          <div className='flex mx-auto w-[8rem]'>
-          <Button 
-              label='확인'
-              outline={true}
-            />
-            </div>
         </CustomModal>
         <div className="py-8 flex gap-4 justify-center items-center">
         <span
@@ -385,12 +371,7 @@ const Editor = () => {
                   <Image src={pen} alt="pen" width={30} height={30} />
                   <h1 className="font-extrabold text-xl">작성</h1>
                 </div>
-                <textarea
-                  className="border border-slate-200 rounded-2xl w-full h-80 bg-white px-3 py-3"
-                  placeholder="(1500자 이내로 독후감을 작성해주세요)"
-                  value={content}
-                  onChange={(e) => setContent(e.target.value)}
-                />
+               
               </div>
 
               <textarea

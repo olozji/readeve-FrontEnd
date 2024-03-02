@@ -90,7 +90,7 @@ const AddPlace: React.FC<AddPlaceProps> = ({
       ) : (
         <div>
           <div className="pt-4 text-3xl font-extrabold">
-            도서명을 검색해주세요
+            장소를 검색해주세요
           </div>
           <form className="py-5">
             <div className="flex items-center gap-4">
