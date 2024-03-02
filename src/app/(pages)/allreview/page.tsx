@@ -186,7 +186,7 @@ const AllReviewPage = () => {
                                       <span>tags</span>
                                       {item.tags.map(
                                         (data: any) =>
-                                          data.selected && (
+                                          data.isSelected && (
                                             <div>{data.content}</div>
                                           ),
                                       )}

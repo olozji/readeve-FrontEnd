@@ -72,7 +72,7 @@ const Editor = () => {
       socialId:session.data.user.id,
       title: titleInfo,
       isPrivate: isPrivate,
-      writer:session.data.user.content,
+      writer:session.data.user.name,
       pinRespDto: {
         content: placeInfo.place_name,
         placeId: placeInfo.id,
