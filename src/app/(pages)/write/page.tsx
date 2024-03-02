@@ -94,7 +94,30 @@ const Editor = () => {
     }
 
     try {
-      const response = await axios.post('https://api.bookeverywhere.site/api/write', data);
+      const response = await axios.post('https://api.bookeverywhere.site/api/write', {
+        socialId:session.data.user.id,
+        title: '테스트타이틀',
+        isPrivate: isPrivate,
+        writer:session.data.user.name,
+        pinRespDto: {
+          content: placeInfo.place_name,
+          placeId: placeInfo.id,
+          y: placeInfo.y,
+          x: placeInfo.x,
+          address: placeInfo.road_address_name,
+          isPrivate: isPrivatePlace,
+          url: placeInfo.place_url,
+        },
+        book: {
+          isbn: bookInfo.isbn,
+          title: bookInfo.title,
+          thumbnail: bookInfo.thumbnail,
+          isComplete: bookInfo.isComplete,
+          author:bookInfo.authors[0],
+        },
+        tags: tagInfo,
+        content: content,
+      });
       console.log('Success:', response.data);
     } catch (error) {
       console.error('Error:', error);
