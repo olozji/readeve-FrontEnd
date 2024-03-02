@@ -68,70 +68,71 @@ const Editor = () => {
 
   const handleAllData = async (e: any) => {
     e.preventDefault()
-    let data = {
-      socialId:session.data.user.id,
-      title: titleInfo,
-      isPrivate: isPrivate,
-      writer:session.data.user.name,
-      pinRespDto: {
-        content: placeInfo.place_name,
-        placeId: placeInfo.id,
-        y: placeInfo.y,
-        x: placeInfo.x,
-        address: placeInfo.road_address_name,
-        isPrivate: isPrivatePlace,
-        url: placeInfo.place_url,
+    // let data = {
+    //   socialId:session.data.user.id,
+    //   title: titleInfo,
+    //   isPrivate: isPrivate,
+    //   writer:session.data.user.name,
+    //   pinRespDto: {
+    //     content: placeInfo.place_name,
+    //     placeId: placeInfo.id,
+    //     y: placeInfo.y,
+    //     x: placeInfo.x,
+    //     address: placeInfo.road_address_name,
+    //     isPrivate: isPrivatePlace,
+    //     url: placeInfo.place_url,
+    //   },
+    //   book: {
+    //     isbn: bookInfo.isbn,
+    //     title: bookInfo.title,
+    //     thumbnail: bookInfo.thumbnail,
+    //     isComplete: bookInfo.isComplete,
+    //     author:bookInfo.authors[0],
+    //   },
+    //   tags: tagInfo,
+    //   content: content,
+    // }
+    let sample={
+      "socialId" : 3345007591,
+      "title": "titleInfo",
+      "writer": "이름",
+      "isPrivate": true,
+      "pinRespDto": {
+          "name": "placeInfo.place_name",
+          "placeId" : 118,
+          "y": 488532.02,
+          "x": 100809.02,
+          "address": "placeInfo.road_address_name",
+          "isPrivate": false,
+          "url" : "Stirngksladja"
       },
-      book: {
-        isbn: bookInfo.isbn,
-        title: bookInfo.title,
-        thumbnail: bookInfo.thumbnail,
-        isComplete: bookInfo.isComplete,
-        author:bookInfo.authors[0],
+      "bookRespDto": {
+          "isbn":"bookInfo.isb32n",
+          "title": "bookInfo.title",
+          "thumbnail": "bookInfo.thumbnail",
+          "isComplete": false
       },
-      tags: tagInfo,
-      content: content,
-    }
-
+      "tags":[ 
+          {
+              "content" : "tag0",
+              "isSelected" : false
+          },
+          {
+              "content" : "tag1",
+              "isSelected" : true
+          },
+          {
+              "content" : "tag2",
+              "isSelected" : true
+          }
+          ]
+      ,
+      "content":"conte2323t"
+  
+  }
     try {
-      const response = await axios.post('https://api.bookeverywhere.site/api/write',{
-        "socialId" : 3345007591,
-        "title": "titleInfo",
-        "writer": "이름",
-        "isPrivate": true,
-        "pinRespDto": {
-            "name": "placeInfo.place_name",
-            "placeId" : 118,
-            "y": 488532.02,
-            "x": 100809.02,
-            "address": "placeInfo.road_address_name",
-            "isPrivate": false,
-            "url" : "Stirngksladja"
-        },
-        "bookRespDto": {
-            "isbn":"bookInfo.isb32n",
-            "title": "bookInfo.title",
-            "thumbnail": "bookInfo.thumbnail",
-            "isComplete": false
-        },
-        "tags":[ 
-            {
-                "content" : "tag0",
-                "isSelected" : false
-            },
-            {
-                "content" : "tag1",
-                "isSelected" : true
-            },
-            {
-                "content" : "tag2",
-                "isSelected" : true
-            }
-            ]
-        ,
-        "content":"conte2323t"
-    
-    });
+      const response = await axios.post('https://api.bookeverywhere.site/api/write', sample);
+      console.log(sample)
       console.log('Success:', response.data);
     } catch (error) {
       console.error('Error:', error);
@@ -148,14 +149,14 @@ const Editor = () => {
     //   console.error('에러 발생:', error);
     // }
     // 이전 데이터 가져오기
-    const storedData = localStorage.getItem('allDataInfo')
-    const previousData = storedData ? JSON.parse(storedData) : []
+    // const storedData = localStorage.getItem('allDataInfo')
+    // const previousData = storedData ? JSON.parse(storedData) : []
 
-    // 새로운 데이터 추가
-    const newData = [...previousData, data]
+    // // 새로운 데이터 추가
+    // const newData = [...previousData, data]
 
-    // 로컬 스토리지에 저장
-    localStorage.setItem('allDataInfo', JSON.stringify(newData))
+    // // 로컬 스토리지에 저장
+    // localStorage.setItem('allDataInfo', JSON.stringify(newData))
     // setAllDataInfo({})
     // setTitleInfo('')
     // setPlaceInfo({})
@@ -164,7 +165,7 @@ const Editor = () => {
 
     // 페이지 리다이렉트
     // window.location.href = `/mypage/${session.data?.user.id}` // 이동할 경로
-    console.log(allDataInfo)
+    // console.log(allDataInfo)
   }
   return (
     <>
