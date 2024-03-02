@@ -77,6 +77,8 @@ export default function Home() {
     }
     
   }
+
+  
   useEffect(() => {
     fetchData()
     setMap(true)

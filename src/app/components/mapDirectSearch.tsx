@@ -194,6 +194,7 @@ export const MapDirectSearch = ({ onMarkerClick, markerImage }: any) => {
 
   return (
     <div>
+      <div className='pt-4 text-3xl font-extrabold'>위치를 선택해주세요</div>
       <div id="map" style={{ width: '50%', height: '400px' }}></div>
       <input
         type="text"

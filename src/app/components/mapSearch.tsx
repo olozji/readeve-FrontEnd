@@ -339,55 +339,64 @@ const MapSearch = ({ searchPlace, onMarkerClick, markerImage, markerImageOpacity
 
 
   return (
-    <div>
+    <div className='pb-10 border-b-2'>
       {/* 페이지 컨텐츠 및 지도를 표시할 컨테이너 */}
       <div id="map" 
+
            className='relative'    
       style={{ width: '100%', height: mapHeight}}>
+
       {/* 다른 페이지 컨텐츠 */}
       </div>
       <div
         ref={listContainerRef}
         id="result-list"
-        className='absolute top-80 right-10 w-50 inline-block overflow-scroll overflow-y-auto max-h-[40rem] z-10 box-border rounded-md border-slate-300 hover:border-indigo-30'
+        className='absolute top-[15rem] right-10 scrollBar w-[18rem] bg-white h-full max-h-[30rem] bg-opacity-80 overflow-y-auto rounded-lg'
       >
+        {Place.length === 0? (
+          <div className="p-4 text-center text-[#B6B6B6]">
+              검색된 장소가 없습니다. 장소를 검색해보세요!
+          </div>
+        ) : (
+          <>
         {Place.map((item: any, i) => (
           <div 
             key={item.id}
             id={`list-item-${item.id}`} 
-            className={`p-2 rounded-md  bg-slate-200 hover:bg-slate-300 ${selectedMarkerIndex === i ? 'bg-slate-300' : ''}`}
+            className={`px-2 rounded-md  bg-white ${selectedMarkerIndex === i ? 'bg-[#E57C65]' : ''}`}
             style={{ marginTop: '5px', marginBottom: '20px', cursor:'pointer' }}
             onClick={() => clickListItem(item)}
             onMouseEnter={() => handleListItem(item, i)}
             onMouseLeave={() => handleListItem(item, i)}
           >
-            <span style={{ fontSize: 'x-small' }}>[ {i + 1} ]</span>
-            <div>
-              <div style={{ marginTop: '10px', marginBottom: '10px' }}>
+            <div className='border-b'>
+              <div className='text-[#E57C65] font-bold text-md' style={{ marginTop: '10px', marginBottom: '10px' }}>
                 {item.place_name}
               </div>
               {item.road_address_name ? (
                 <div
-                  style={{ padding: '0px 10px 0px 10px', fontSize: 'small' }}
+                  className='text-[#B6B6B6] text-xs'
                 >
-                  <div style={{ fontSize: 'small' }}>
-                    📍 {item.road_address_name}
+                  <div 
+                   className='text-[#B6B6B6] text-xs'
+                   >
+                    {item.road_address_name} |  {item.address_name}
                   </div>
-                  <span style={{ fontSize: 'small' }}>
-                    📍 {item.address_name}
-                  </span>
                 </div>
               ) : (
-                <span style={{ fontSize: 'small' }}>
-                  📍 {item.address_name}
+                <span 
+                  className='text-[#B6B6B6] text-xs'
+                  >
+                  {item.address_name}
                 </span>
               )}
-              <span style={{ fontSize: 'small' }}>📞 {item.phone}</span>
               <br></br>
             </div>
           </div>
         ))}
         <div id="pagination"></div>
+        </>
+        )}
       </div>
     </div>
   )

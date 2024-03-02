@@ -1,7 +1,8 @@
 import { bookState } from '@/store/writeAtoms';
 import axios from 'axios';
-import { useEffect, useState } from 'react';
+import { useEffect, useRef, useState } from 'react';
 import { useRecoilState } from 'recoil';
+import Button from './buttons/button';
 interface BookType{
   title: string,
   thumbnail:string
@@ -15,6 +16,8 @@ export const BookSearch = () => {
   const [modalOpen, setModalOpen] = useState(false);
   const [selectedBook, setSelectedBook] = useState<any>(null);
   const [bookInfo, setBookInfo] = useRecoilState(bookState);
+
+  const inputRef = useRef<HTMLInputElement | null>(null);
 
   useEffect(() => {
     if (!bookName) return; // 빈 검색어인 경우 API 호출하지 않음
@@ -94,16 +97,24 @@ export const BookSearch = () => {
   };
 
   return (
-    <div>
+    <div className='flex gap-3 items-center'>
       <input
-        className="border-slate-400 rounded-md bg-slate-200"
+        className="inline-block w-[35rem] h-[2rem] px-3 border-2 shadow-md rounded-2xl bg-white gap-4"
+        ref={inputRef}
         type="text"
-        placeholder=""
+        placeholder="책 제목을 입력해주세요"
         value={bookName}
         onChange={(e) => setBookName(e.target.value)}
         onKeyDown={handleKeyDown} 
       />
-      <button className='px-2 rounded-lg border-2 border-slate-400'onClick={onSubmit} >검색</button>
+      <div className='w-[3rem] max-w-[5rem]'>
+      <Button
+        label='검색'
+        outline={true}
+        small={true}
+        onClick={() => onsubmit}
+      />
+      </div>
       {modalOpen && (
         <div
           className="fixed inset-0 bg-black bg-opacity-50 z-50 flex items-center justify-center"
