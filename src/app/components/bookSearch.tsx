@@ -99,7 +99,7 @@ export const BookSearch = () => {
   return (
     <div className='flex gap-3 items-center'>
       <input
-        className="inline-block w-[35rem] h-[2rem] px-3 border-2 shadow-md rounded-2xl bg-white gap-4"
+        className="inline-block w-[35rem] h-[2rem] px-3 border-2 shadow-md rounded-2xl bg-[#FEF6E6] gap-4"
         ref={inputRef}
         type="text"
         placeholder="책 제목을 입력해주세요"
