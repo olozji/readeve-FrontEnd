@@ -16,6 +16,7 @@ import NavBar from '@/app/components/NavBar'
 import Button from '@/app/components/buttons/button'
 import Image from 'next/image'
 import privateMarker from '/public/images/privateMarker.png'
+import axios from 'axios';
 
 
 export interface ReviewData {
@@ -23,7 +24,7 @@ export interface ReviewData {
   id?: number
   date?: string
   title?: string
-  place?: any
+  pinRespDto?: any
   category?: string
   description?: string
   isFavorite?: boolean
@@ -65,17 +66,34 @@ const AllReviewPage = () => {
     setIsReviewsModal(false)
   }
 
-  useEffect(() => {
-    const storedData = localStorage.getItem('allDataInfo')
+  // useEffect(() => {
+  //   const storedData = localStorage.getItem('allDataInfo')
 
-    if (storedData) {
-      const parsedData: ReviewData[] = JSON.parse(storedData)
-      const PublicReviewData = parsedData.filter(
-        (item: ReviewData) => !item.isPrivate,
-      )
-      console.log(PublicReviewData)
-      setPublicReviews(PublicReviewData)
-    }
+  //   if (storedData) {
+  //     const parsedData: ReviewData[] = JSON.parse(storedData)
+  //     const PublicReviewData = parsedData.filter(
+  //       (item: ReviewData) => !item.isPrivate,
+  //     )
+  //     console.log(PublicReviewData)
+  //     setPublicReviews(PublicReviewData)
+  //   }
+  // }, [])
+
+  useEffect(() => {
+    const fetchData = async () => {
+      try {
+        const response = await axios.get('https://api.bookeverywhere.site/api/reviews'); 
+        const data = response.data; // 응답으로 받은 데이터
+        const parsedData = JSON.parse(data)
+        const PublicReviewData = parsedData.filter((item: any) => !item.isPrivate)
+        setPublicReviews(PublicReviewData)
+      } catch (error) {
+        console.error('Error fetching data:', error);
+      }
+    };
+
+    fetchData(); 
+
   }, [])
 
   return (
@@ -158,18 +176,18 @@ const AllReviewPage = () => {
                                     </h1>
                                     <div className="flex gap-4">
                                       <span>where</span>
-                                      <div>{item.place.place_name}</div>
+                                      <div>{item.pinRespDto.name}</div>
                                     </div>
                                     <div className="flex gap-4">
                                       <span>when</span>
-                                      <div>{item.place.place_name}</div>
+                                      <div>{item.pinRespDto.name}</div>
                                     </div>
                                     <div className="flex gap-4">
                                       <span>tags</span>
                                       {item.tags.map(
                                         (data: any) =>
                                           data.selected && (
-                                            <div>{data.name}</div>
+                                            <div>{data.content}</div>
                                           ),
                                       )}
                                     </div>
@@ -216,7 +234,7 @@ const AllReviewPage = () => {
                           <div className='flex justify-between'>
                             <div className="flex text-sm pb-2">
                               <Image src={privateMarker} alt='marker' className='mr-2' />
-                              {item.place.isPrivate ? <div>{item.writer}님만의 장소</div>:<div className="">독서장소: {item.place?.place_name} | {item.place?.address }</div>}
+                              {item.pinRespDto.isPrivate ? <div>{item.writer}님만의 장소</div>:<div className="">독서장소: {item.pinRespDto?.name} | {item.pinRespDto?.address }</div>}
                               
                               </div>
                               </div>
