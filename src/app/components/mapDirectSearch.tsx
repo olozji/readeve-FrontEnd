@@ -119,12 +119,10 @@ export const MapDirectSearch = ({ onMarkerClick, markerImage }: any) => {
   }, [map])
 
 
-
-
   useEffect(() => {
     if (placeInfo) {
         let newPlace = {
-            place_name: markerName,
+            place_name: markerName || address,
             id: placeInfo.id,
             y: placeInfo.y,
             x: placeInfo.x,
@@ -134,7 +132,7 @@ export const MapDirectSearch = ({ onMarkerClick, markerImage }: any) => {
         setPlaceInfo(newPlace)
     }
     console.log(placeInfo)
-}, [markerName])
+}, [markerName,address])
 
 
   //---------------------현재 위치 가져오기---------------------------//
@@ -156,20 +154,54 @@ export const MapDirectSearch = ({ onMarkerClick, markerImage }: any) => {
     )
   }
 
+  console.log('현재위치:', navigator.geolocation.getCurrentPosition);
+
   return (
     <div>
       <div className='pt-4 text-3xl font-extrabold'>위치를 선택해주세요</div>
-      <div id="map" style={{ width: '50%', height: '400px' }}></div>
-      <input
-        type="text"
-        placeholder="이 장소의 이름을 입력해주세요!"
-        value={markerName}
-        onChange={(e) => {
-          setMarkerName(e.target.value)
-        }}
-      />
-      <div onClick={getCurrentPosBtn}>현재 위치</div>
-      <div>{address}</div>
+      <div 
+        className='text-[#E57C65] text-md px-3 py-3 cursor-pointer'
+        onClick={getCurrentPosBtn}>
+          현재 위치설정
+          </div>
+      <div id="map" style={{ width: '30rem', height: '45vh' }}></div>
+      <div className='absolute top-[13rem] right-7 scrollBar w-[23rem] bg-white h-full max-h-[30rem] bg-opacity-80 overflow-y-auto rounded-lg'>
+        {address.length === 0 ? (
+          <div className="text-[#B6B6B6] mt-40">
+                핀을 직접 찾고 나만의 장소를 완성해보세요!
+            </div>
+        ) : (
+          <div className='px-3 py-5 text-left'>
+          <div className='border-b pb-5'>
+              <div className='text-[#E57C65] font-bold text-md' style={{ marginTop: '10px', marginBottom: '10px' }}>
+                {address}
+              </div>
+              {address ? (
+                  <div 
+                   className='text-[#B6B6B6] text-xs'
+                   >
+                    지번 | {address}
+                  </div>
+              ) : (
+                <></>
+              )}
+            </div>
+            <div className='pt-10'>
+              <h2 className='font-bold pb-3'>별칭</h2>
+            <input
+              type="text"
+              className='w-[20rem] max-w-[20rem] h-[2rem] px-3 border border-black rounded-lg bg-white'
+              placeholder="별칭을 입력해주세요"
+              value={markerName}
+              onChange={(e) => {
+                setMarkerName(e.target.value)
+              }}
+            />
+            <div className='pt-5 text-[#979797] text-sm'>별칭을 입력하지 않을경우 기본주소로 적용됩니다.</div>
+        </div>
+          </div>
+        )}
+     </div>
     </div>
   )
 }

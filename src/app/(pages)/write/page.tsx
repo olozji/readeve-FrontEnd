@@ -19,9 +19,11 @@ import { useCallback, useEffect, useRef, useState } from 'react'
 import { useRecoilState } from 'recoil'
 
 import Image from 'next/image'
-import pen from 'public/images/Pen.png'
-import isPrivated from '/public/images/isPrivated.png'
-import isShareded from '/public/images/isShareded.png'
+
+import pen from 'public/images/Pen.png';
+import isPrivatedIcon from '/public/images/isPrivatedIcon.png';
+import isSharededIcon from '/public/images/isSharedIcon.png';
+
 
 const Editor = () => {
   const [content, setContent] = useState('')
@@ -181,37 +183,39 @@ const Editor = () => {
     <>
       <NavBar />
       <div className="bg-[#F1E5CF] flex justify-center mx-auto box-border min-h-full">
-        <div className="w-full px-10 py-20 sm:px-10 md:px-20 lg:px-40 xl:px-80 border border-slate-400 rounded-md">
+        <div className="sm:pt-10 md:pt-20 xl:pt-20">
           <header className="h-10 text-center">
             <h1 className="myCustomText text-3xl text-white">독후감 작성</h1>
           </header>
-          <section className="py-10 px-10">
-            <div className="px-5 py-8 flex rounded-t-md">
-              <div className="flex w-[70rem] max-w-[70rem] px-3">
-                <input
-                  placeholder="제목"
-                  ref={inputRef}
-                  className="inline-block w-[60rem] h-[2.8rem] px-3 border-2 shadow-md rounded-md bg-white"
-                  value={titleInfo}
-                  onChange={handleTitle}
-                />
-              </div>
+
+          <section className='py-10 px-10'>
+          <div className="px-5 py-8 flex rounded-t-md">
+            <div className="flex max-w-[70rem] px-3">
+              <input
+                placeholder='제목'
+                ref={inputRef}
+                className="inline-block w-[60rem] h-[2.8rem] px-3 border-2 shadow-md rounded-md bg-[#FEF6E6]"
+                value={titleInfo}
+                onChange={handleTitle}
+              />
             </div>
-            <div className="px-8 py-3 flex gap-5 items-center">
-              <h4 className="px-5 font-extrabold">장소</h4>
-              <div>
-                <input
-                  placeholder="독서한 장소를 입력해주세요"
-                  ref={inputRef}
-                  className="inline-block w-[35rem] h-[2rem] px-3 border-2 shadow-md rounded-2xl bg-white"
-                  value={placeInfo.place_name}
-                  onClick={handleSearchMap}
-                />
-                {showMap && (
-                  <CustomModal
-                    isOpen={true}
-                    modalheight={'85vh'}
-                    size={'60rem'}
+          </div>
+          <div className="px-8 py-3 flex gap-5 items-center">
+            <h4 className="px-5 font-extrabold">장소</h4>
+            <div>
+              <input
+                placeholder='독서한 장소를 입력해주세요'
+                ref={inputRef}
+                className="inline-block w-[35rem] h-[2rem] px-3 border-2 shadow-md rounded-2xl bg-[#FEF6E6]"
+                value={placeInfo.place_name}
+                onClick={handleSearchMap}
+              />
+              {showMap && (
+
+                <CustomModal isOpen={true} modalheight={'85vh'} size={'45rem'} onClose={handleCloseMap}>
+
+                  <AddPlace
+
                     onClose={handleCloseMap}
                   >
                     <AddPlace
@@ -332,37 +336,48 @@ const Editor = () => {
                   }}
                 />
               </div>
-            </CustomModal>
-            <div className="py-8 flex gap-4 justify-center">
-              <span
-                className={`inline-flex items-center rounded-lg px-3 py-3 text-xs font-medium ${
-                  isPrivate ? 'bg-[#E57C65] text-white' : 'bg-white text-black'
-                }`}
-                onClick={handleIsPrivateClick}
-              >
-                {/* <Image
-         src={isPrivated}
-         alt='pen'
-         style={{ width: '12px', height: '12px' }}
-       />
-        나만보기 */}
-                나만보기
-              </span>
-              <span
-                className={`inline-flex items-center rounded-lg px-3 py-3 text-xs font-medium ${
-                  !isPrivate ? 'bg-[#E57C65] text-white' : 'bg-white text-black'
-                }`}
-                onClick={handlePublicClick}
-              >
-                {/* <Image
-         src={isPrivated}
-         alt='pen'
-         width={10}
-         height={10}
-       /> */}
-                전체공개
-              </span>
+
+            ))}
+          </div>
+          </div>
+          <div className='flex mx-auto w-[8rem]'>
+          <Button 
+              label='확인'
+              outline={true}
+            />
             </div>
+        </CustomModal>
+        <div className="py-8 flex gap-4 justify-center items-center">
+        <span
+        className={`inline-flex justify-center items-center gap-2 rounded-lg px-3 py-3 text-xs font-medium ${
+          isPrivate ? 'bg-[#E57C65] text-white'  : 'bg-white text-black'
+        }`}
+        onClick={handleIsPrivateClick}
+      >
+       <Image
+         src={isPrivatedIcon}
+         alt='isPrivatedIcon'
+         width={13}
+         height={13}
+       />
+        나만보기
+        </span>
+        <span
+        className={`inline-flex items-center rounded-lg gap-2 px-3 py-3 text-xs font-medium ${
+          !isPrivate ? 'bg-[#E57C65] text-white'  : 'bg-white text-black'
+        }`}
+        onClick={handlePublicClick}
+        >
+       <Image
+         src={isSharededIcon}
+         alt='isSharededIcon'
+         width={13}
+         height={13}
+       />
+        전체공개
+        </span>
+        </div>
+
 
             <div className="py-8 border-white border-t-2">
               <div className="px-5 py-8">
@@ -377,6 +392,14 @@ const Editor = () => {
                   onChange={(e) => setContent(e.target.value)}
                 />
               </div>
+
+              <textarea
+                className="border border-slate-200 rounded-2xl w-full h-80 bg-[#FEF6E6] px-3 py-3"
+                placeholder="(1500자 이내로 독후감을 작성해주세요)"
+                value={content}
+                onChange={(e) => setContent(e.target.value)}
+              />
+
             </div>
             <div>
               <div className="control_btn flex mx-auto w-[18rem] gap-5">
