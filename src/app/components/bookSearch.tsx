@@ -1,164 +1,230 @@
-import { bookState } from '@/store/writeAtoms';
-import axios from 'axios';
-import { useEffect, useRef, useState } from 'react';
-import { useRecoilState } from 'recoil';
-import Button from './buttons/button';
-interface BookType{
-  title: string,
-  thumbnail:string
+import { bookState } from '@/store/writeAtoms'
+import axios from 'axios'
+import { useEffect, useRef, useState } from 'react'
+import { useRecoilState } from 'recoil'
+import Button from './buttons/button'
+import mapSearchIcon from '/public/images/mapSearchIcon.png'
+import Image from 'next/image'
+
+interface BookType {
+  title: string
+  thumbnail: string
 }
 
 export const BookSearch = () => {
-  const [bookName, setBookName] = useState<string>('');
-  const [page, setPage] = useState(1);
-  const [last, setLast] = useState(1);
-  const [documents, setDocuments] = useState<any>([]);
-  const [modalOpen, setModalOpen] = useState(false);
-  const [selectedBook, setSelectedBook] = useState<any>(null);
-  const [bookInfo, setBookInfo] = useRecoilState(bookState);
+  const [bookName, setBookName] = useState<string>('')
+  const [page, setPage] = useState(1)
+  const [last, setLast] = useState(1)
+  const [documents, setDocuments] = useState<any>([])
+  const [modalOpen, setModalOpen] = useState(false)
+  const [selectedBook, setSelectedBook] = useState<any>(null)
+  const [bookInfo, setBookInfo] = useRecoilState(bookState)
 
-  const inputRef = useRef<HTMLInputElement | null>(null);
+  const inputRef = useRef<HTMLInputElement | null>(null)
 
   useEffect(() => {
-    if (!bookName) return; // 빈 검색어인 경우 API 호출하지 않음
-    callAPI();
-  }, [page]); // 페이지가 변경될 때마다 호출
+    if (!bookName) return // 빈 검색어인 경우 API 호출하지 않음
+    callAPI()
+  }, [page]) // 페이지가 변경될 때마다 호출
   useEffect(() => {
-    console.log(selectedBook);
-  },[selectedBook])
+    console.log(selectedBook)
+  }, [selectedBook])
 
   const callAPI = async () => {
-    const url = `https://dapi.kakao.com/v3/search/book?target=title&query=${bookName}&page=${page}&size=10`;
+    const url = `https://dapi.kakao.com/v3/search/book?target=title&query=${bookName}&page=${page}&size=10`
     const config = {
       headers: { Authorization: `KakaoAK 4a3294385b3e838f9f020a39fe8c04e3` },
-    };
+    }
     try {
-      setBookInfo({});
-      const result = await axios.get(url, config);
-      setDocuments(result.data.documents);
-      const total = result.data.meta.pageable_count;
-      setLast(Math.ceil(total / 10));
-      setModalOpen(true); // API 호출 후 모달 열기
+      setBookInfo({})
+      const result = await axios.get(url, config)
+      setDocuments(result.data.documents)
+      const total = result.data.meta.pageable_count
+      setLast(Math.ceil(total / 10))
+      setModalOpen(true) // API 호출 후 모달 열기
       console.log(documents)
     } catch (error) {
-      console.error('데이터 가져오기 오류:', error);
+      console.error('데이터 가져오기 오류:', error)
     }
-  };
+  }
   const handleKeyDown = (e: React.KeyboardEvent<HTMLInputElement>) => {
     if (e.key === 'Enter') {
-      e.preventDefault(); // Prevent default form submission behavior
-      onSubmit(e); // Trigger search when Enter key is pressed
+      e.preventDefault() // Prevent default form submission behavior
+      onSubmit(e) // Trigger search when Enter key is pressed
     }
-  };
+  }
+  const formatDate = (dateTimeString:any) => {
+    const date = new Date(dateTimeString);
+    const year = date.getFullYear();
+    const month = (date.getMonth() + 1).toString().padStart(2, '0');
+    const day = date.getDate().toString().padStart(2, '0');
+    return `${year}.${month}.${day}`;
+  }
+  
 
   const onSubmit = (e: React.FormEvent) => {
-    e.preventDefault(); // 기본 제출 이벤트 방지
-    setPage(1); // 새로운 검색을 위해 페이지를 1로 초기화
-    callAPI();
-  };
+    e.preventDefault() // 기본 제출 이벤트 방지
+    setPage(1) // 새로운 검색을 위해 페이지를 1로 초기화
+    callAPI()
+  }
 
-  const nextPage = (e:any) => {
-    e.preventDefault(); 
-    setPage((prevPage) => Math.min(last, prevPage + 1));
-  };
+  const nextPage = (e: any) => {
+    e.preventDefault()
+    const container = document.querySelector('.scrollBar'); // 상위 div 박스의 클래스명으로 선택
 
-  const prevPage = (e:any) => {
-    e.preventDefault(); 
-    setPage((prevPage) => Math.max(1, prevPage - 1));
-  };
+    if (container) {
+      container.scrollTop = 0; // 스크롤을 맨 위로 이동
+    }
+    setPage((prevPage) => Math.min(last, prevPage + 1))
+  }
+
+  const prevPage = (e: any) => {
+    e.preventDefault()
+    const container = document.querySelector('.scrollBar'); // 상위 div 박스의 클래스명으로 선택
+
+    if (container) {
+      container.scrollTop = 0; // 스크롤을 맨 위로 이동
+    }
+    setPage((prevPage) => Math.max(1, prevPage - 1))
+  }
 
   const closeModal = () => {
-    setModalOpen(false);
-  };
+    setModalOpen(false)
+  }
 
-  const closeOnOverlayClick = (e: React.MouseEvent<HTMLDivElement, MouseEvent>) => {
+  const closeOnOverlayClick = (
+    e: React.MouseEvent<HTMLDivElement, MouseEvent>,
+  ) => {
     if (e.target === e.currentTarget) {
-      e.preventDefault();
-      setModalOpen(false);
+      e.preventDefault()
+      setModalOpen(false)
     }
-  };
+  }
   const handleConfirmation = (confirmed: boolean) => {
     if (confirmed) {
       let selectedBookInfo = {
-        isbn:selectedBook.isbn,
+        isbn: selectedBook.isbn,
         title: selectedBook.title,
-        thumbnail:selectedBook.thumbnail,
-        authors:selectedBook.authors,
+        thumbnail: selectedBook.thumbnail,
+        authors: selectedBook.authors,
       }
       setBookInfo(selectedBookInfo)
       console.log(bookInfo)
-
     }
-    setModalOpen(false);
-  };
+    setModalOpen(false)
+  }
   const handleBookClick = (data: any) => {
-    let copy = data;
-    setSelectedBook(copy);
-  };
+    let copy = data
+    setSelectedBook(copy)
+  }
 
   return (
-    <div className='flex gap-3 items-center'>
+    <div className="flex gap-3 items-center">
       <input
         className="inline-block w-[35rem] h-[2rem] px-3 border-2 shadow-md rounded-2xl bg-[#FEF6E6] gap-4"
         ref={inputRef}
         type="text"
         placeholder="책 제목을 입력해주세요"
         value={bookName}
+        onClick={() => setModalOpen(true)}
         onChange={(e) => setBookName(e.target.value)}
-        onKeyDown={handleKeyDown} 
+        onKeyDown={handleKeyDown}
       />
-      <div className='w-[3rem] max-w-[5rem]'>
-      <Button
-        label='검색'
-        outline={true}
-        small={true}
-        onClick={() => onsubmit}
-      />
+      <div className="w-[3rem] max-w-[5rem]">
+       
       </div>
       {modalOpen && (
         <div
           className="fixed inset-0 bg-black bg-opacity-50 z-50 flex items-center justify-center"
           onClick={closeOnOverlayClick}
         >
-          <div className="bg-white p-8 rounded-lg">
-            <span className="absolute top-4 right-4 text-gray-600 cursor-pointer" onClick={closeModal}>
-              &times;
-            </span>
-            <div className="grid grid-rows-2 grid-flow-col">
-            {documents.map((d: any, i: number) => (
-              <div
-                className={`justify-items-center${selectedBook && selectedBook.isbn=== d.isbn ? 'rounded-lg border-4 border-blue-500' : 'rounded-lg border-4 border-transparent'}`}
-                key={i}
-                onClick={() => handleBookClick(d)}
-                style={{ display: 'flex', flexDirection: 'column', alignItems: 'center' }}
-              >
-                <img
-                  src={d.thumbnail ? d.thumbnail : 'http://via.placeholder.com/120X150'}
-                  alt="책 표지"
-                  className="mb-2 rounded"
-                />
-                <div className="p-4">{d.title}</div>
+         <div className="bg-white w-[60rem] max-h-[80vh] py-8 px-16 rounded-lg overflow-y-auto">
+            <div className="pt-4 text-3xl font-extrabold">
+              도서명을 검색해주세요
+            </div>
+            <div className="pt-8 pb-4 border-b-2 flex">
+              <input
+                type="text"
+                size={50}
+                placeholder="입력"
+                onChange={(e) => setBookName(e.target.value)}
+                className="w-[35rem] h-[2.5rem] px-3 border border-black rounded-2xl bg-white"
+              />
+              <div className="bg-[#E57C65] border-4 border-white px-2 py-1 rounded-3xl shadow-xl justify-center">
+                <button id="searchBtn" onClick={onSubmit} onSubmit={onSubmit}>
+                  <Image
+                    src={mapSearchIcon}
+                    alt="mapSearchIcon"
+                    width={20}
+                    height={20}
+                  />
+                </button>
               </div>
-            ))}
-          </div>
+            </div>
+           
+            <div className="grid grid-cols-1 overflow-y-auto max-h-[37vh] mt-4 justify-items-start scrollBar">
+              {documents.map((d: any, i: number) => (
+               <div  className={` w-[100%] block ${selectedBook && selectedBook.isbn === d.isbn ? 'rounded-lg border-4 border-[#E57c65]' : 'rounded-lg border-4 border-transparent'}`}>
+                <div
+                  className='flex align-center'
+                  key={i}
+                  onClick={() => handleBookClick(d)}
+                  
+                >
+                  <img
+                    src={
+                      d.thumbnail
+                        ? d.thumbnail
+                        : 'http://via.placeholder.com/120X150'
+                    }
+                    alt="책 표지"
+                    className="m-2 rounded-2xl"
+                    />
+                    <div className="p-4 mt-2">
+                      <div className='font-black text-xl'>{d.title}</div>
+                      <div className='font-semibold text-[#646464'>| 지은이 {d.authors[0]}</div>
+                      <div className='pt-8 font-bold'>출판사:{d.publisher}</div>
+                      <div className='font-bold'>출판일 : {formatDate(d.datetime)}</div>
+                  </div>
+                </div>
+               </div>
+              ))}
+            </div>
 
             <div className="flex justify-between mt-4">
-              <button onClick={prevPage} className="px-4 py-2 bg-blue-500 text-white rounded">이전</button>
+              <button
+                onClick={prevPage}
+                className="px-4 py-2 bg-[#e57c65] text-white rounded"
+              >
+                이전
+              </button>
               <span className="text-lg font-semibold">
                 {page}/{last}
               </span>
-              <button onClick={nextPage} className="px-4 py-2 bg-blue-500 text-white rounded">다음</button>
+              <button
+                onClick={nextPage}
+                className="px-4 py-2 bg-[#e57c65]  text-white rounded"
+              >
+                다음
+              </button>
             </div>
-            <div className="mt-4 text-center">
-              <p>선택된 책: {selectedBook&&selectedBook.title}</p>
-              <p>선택된 책이 맞습니까?</p>
-              <button onClick={() => handleConfirmation(true)} className="px-4 py-2 bg-blue-500 text-white rounded">예</button>
-              <button onClick={() => handleConfirmation(false)} className="px-4 py-2 bg-red-500 text-white rounded">아니오</button>
+            <div className="mt-4 text-center flex gap-4 justify-center">
+              <button
+                onClick={() => handleConfirmation(true)}
+                className="px-4 py-2 bg-blue-500 text-white rounded-full"
+              >
+              확인
+              </button>
+              <button
+                onClick={() => handleConfirmation(false)}
+                className="px-4 py-2 bg-red-500 text-white rounded-full"
+              >
+                취소
+              </button>
             </div>
           </div>
         </div>
       )}
     </div>
-  );
-};
-
+  )
+}

@@ -38,7 +38,7 @@ export const Tag = ({tags, limit = tags.length, showModal = false} : TagProps) =
                 <div 
                     key={i}
                     className={`box-border flex justify-center items-center px-4 py-2 my-2 mx-2 border border-gray-300 rounded-full ${
-                        tags[i].selected
+                        tags[i].isSelected
                           ? 'bg-[#E57C65] text-white'
                           : 'bg-white hover:border-[#C05555] hover:text-[#C05555]'
                       }`}
