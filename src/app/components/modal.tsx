@@ -8,13 +8,13 @@ interface ModalType {
   children: React.ReactNode;
   size: string
   modalheight?:string
+  modalColor:string;
 }
 
-const CustomModal = ({ isOpen, onClose, children,size,modalheight }: ModalType) => {
+const CustomModal = ({ isOpen, onClose, children,size,modalheight, modalColor }: ModalType) => {
   
   const [open, setOpen] = useState(false);
   const [selected, setSelected] = useState('');
-
 
   useEffect(() => {
     setOpen(isOpen);
@@ -41,6 +41,7 @@ const CustomModal = ({ isOpen, onClose, children,size,modalheight }: ModalType) 
 //     setOpen(false);
 // }
 
+
 const confirmPlace = (place:any) => {
     setSelected(place);
 }
@@ -48,6 +49,7 @@ const confirmPlace = (place:any) => {
 const handleInsideClick = (e: React.MouseEvent<HTMLDivElement>) => {
   e.stopPropagation();
 };
+
 
 
   return (
@@ -62,6 +64,7 @@ const handleInsideClick = (e: React.MouseEvent<HTMLDivElement>) => {
             transform: "translate(-50%, -50%)",
             width: size,
             height:modalheight,
+            backgroundColor: modalColor || "white",
             maxWidth: "100%",
             maxHeight: "90%",
             overflowY: "auto",
