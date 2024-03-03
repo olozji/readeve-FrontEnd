@@ -351,10 +351,10 @@ const MapSearch = ({ searchPlace, onMarkerClick, markerImage, markerImageOpacity
       <div
         ref={listContainerRef}
         id="result-list"
-        className='absolute top-[15rem] right-10 scrollBar w-[17rem] bg-white h-full max-h-[40vh] bg-opacity-80 overflow-y-auto rounded-lg'
+        className='absolute top-[15rem] right-5 scrollBar w-[17rem] bg-white h-full max-h-[40vh] bg-opacity-80 overflow-y-auto rounded-lg'
       >
         {Place.length === 0? (
-          <div className="p-4 text-center text-[#B6B6B6]">
+          <div className="p-4 text-center text-[#B6B6B6] mt-40">
               검색된 장소가 없습니다. 장소를 검색해보세요!
           </div>
         ) : (

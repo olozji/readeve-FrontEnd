@@ -164,11 +164,11 @@ export const MapDirectSearch = ({ onMarkerClick, markerImage }: any) => {
         onClick={getCurrentPosBtn}>
           현재 위치설정
           </div>
-      <div id="map" style={{ width: '30rem', height: '45vh' }}></div>
-      <div className='absolute top-[13rem] right-7 scrollBar w-[23rem] bg-white h-full max-h-[30rem] bg-opacity-80 overflow-y-auto rounded-lg'>
+      <div id="map" style={{ width: '54vh', height: '45vh' }}></div>
+      <div className='absolute top-[13rem] right-7 w-[18rem] bg-white bg-opacity-80 overflow-y-auto rounded-lg'>
         {address.length === 0 ? (
           <div className="text-[#B6B6B6] mt-40">
-                핀을 직접 찾고 나만의 장소를 완성해보세요!
+                핀을 직접 정하고 나만의 장소를 완성해보세요!
             </div>
         ) : (
           <div className='px-3 py-5 text-left'>
@@ -190,7 +190,7 @@ export const MapDirectSearch = ({ onMarkerClick, markerImage }: any) => {
               <h2 className='font-bold pb-3'>별칭</h2>
             <input
               type="text"
-              className='w-[20rem] max-w-[20rem] h-[2rem] px-3 border border-black rounded-lg bg-white'
+              className='w-[16rem] max-w-[20rem] h-[2rem] px-3 border border-black rounded-lg bg-white'
               placeholder="별칭을 입력해주세요"
               value={markerName}
               onChange={(e) => {
