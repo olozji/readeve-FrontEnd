@@ -373,7 +373,6 @@ const MapSearch = ({ searchPlace, onMarkerClick, markerImage ,mapHeight  }: MapS
         </div>
         </div>
     </div>
-    </div>
   )
 }
 
