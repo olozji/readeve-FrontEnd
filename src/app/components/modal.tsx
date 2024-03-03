@@ -8,7 +8,7 @@ interface ModalType {
   children: React.ReactNode;
   size: string
   modalheight?:string
-  modalColor:string;
+  modalColor?:string;
 }
 
 const CustomModal = ({ isOpen, onClose, children,size,modalheight, modalColor }: ModalType) => {

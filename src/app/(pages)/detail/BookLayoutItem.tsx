@@ -172,7 +172,7 @@ const BookLayoutItem = (props: any) => {
                     <CustomModal size={'70rem'} isOpen={detailOpen[i]} modalColor='#FEF6E6'>
                       <div className="">
                         <div className="px-8 py-8">
-                          <div className="flex w-[70vw] justify-center items-center">
+                          <div className="flex justify-center items-center">
                             <img
                               src={
                                 bookData[0].book.thumbnail
@@ -204,38 +204,42 @@ const BookLayoutItem = (props: any) => {
                               {data.isPrivate ? '나만보기' : '전체공개'}
                               </span>
                               </div>
-                             <div className='w-[16vw] py-5 pt-5 text-[#503526] text-sm'>
+                             <div className='py-5 pt-5 text-[#503526] text-sm'>
                               <div className="flex items-center gap-5">
                                 <span className='font-bold' style={{ verticalAlign: 'middle' }}>등록일</span>
                                 <div className=''>2024. 03. 03</div>
                               </div>
                               {/* TODO: 태그 부분 수정 필요함 컴포넌트를 직접 가져와서 해야할지? 아직 안해봤어요 */}
-                              <div className="flex items-center gap-5">
-                                <span className='font-bold' style={{ verticalAlign: 'middle' }}>태그</span>
+                              <div className="flex">
+                                <span className='font-bold mr-4' style={{ verticalAlign: 'middle' }}>태그</span>
+                                <div className='flex flex-wrap w-[16vw]'>
                                 {data.tags.map(
-                                  (data: any) =>
-                                    data.selected && <div className=''>{data.name}</div>,
+                                  (tag: any) =>
+                                    tag.selected && <div className='flex bg-[#E57C65] rounded-full m-1 p-2 text-white font-semibold text-xs'>#{tag.name}</div>,
                                 )}
                               </div>
+                              </div>
                               <div className="flex items-center gap-5">
-                              <span className='font-bold' style={{ verticalAlign: 'middle' }}>등록일</span>
-                                <div className='flex items-center'>
+                              <span className='font-bold' style={{ verticalAlign: 'middle' }}>장소</span>
+                                <Link href={`/map/${session.data?.user.id}`}>
+                                <div 
+                                  className='flex items-center'>
                                   <Image
                                     src={privateMarker}
                                     alt={'장소'}
                                   />
                                   {data.place.place_name}
                                   </div>
+                                  </Link>
                               </div>
                               </div>
                             </div>
                           </div>
                           {/* 내용 엔터키 적용 */}
-                          <div className='flex w-[72vw] justify-center items-center'>
+                          <div className='flex justify-center items-center'>
                           <div
                             key={i}
-                            className="w-[55vw] my-4 bg-cover bg-center rounded-lg overflow-hidden shadow-lg px-3 py-3 p-10"
-                            style={{ backgroundImage: `url(${whitePaper.src})` }}
+                            className="w-[50vw] my-4 rounded-lg overflow-hidden shadow-lg px-3 py-3 p-10 bg-[#FFFCF9]"
                           >
                             <div className="flex relative float-end items-center gap-4">
                             <Link href={'/edit/1'}>
@@ -245,7 +249,7 @@ const BookLayoutItem = (props: any) => {
                              className='text-[#828282] text-sm font-bold'
                              onClick={() => handleRemove(data.isbn)}>삭제</span>
                           </div>
-                          <div className='mt-20 px-5'>
+                          <div className='mt-10 px-5'>
                           <h2 className="text-2xl font-bold mb-4 border-black border-b pb-5 text-[#503526]">{data.title}</h2>
                             <div className="h-[45vh] mx-auto text-[#999999]" dangerouslySetInnerHTML={{ __html: data.content.replace(/\n/g, '<br>') }}>
                             </div>
