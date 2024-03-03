@@ -341,17 +341,18 @@ const MapSearch = ({ searchPlace, onMarkerClick, markerImage, markerImageOpacity
   return (
     <div className='pb-10 border-b-2'>
       {/* 페이지 컨텐츠 및 지도를 표시할 컨테이너 */}
+      <div className='flex'>
       <div id="map" 
 
-           className='relative'    
-      style={{ width: '58vh', height: mapHeight}}>
+              
+      style={{ width: '60%', height: mapHeight}}>
 
       {/* 다른 페이지 컨텐츠 */}
       </div>
       <div
         ref={listContainerRef}
-        id="result-list"
-        className='absolute top-[15rem] right-5 scrollBar w-[17rem] bg-white h-full max-h-[40vh] bg-opacity-80 overflow-y-auto rounded-lg'
+        
+        className='scrollBar w-[40%] bg-white h-full max-h-[40vh] bg-opacity-80 overflow-y-auto rounded-lg'
       >
         {Place.length === 0? (
           <div className="p-4 text-center text-[#B6B6B6] mt-40">
@@ -397,7 +398,8 @@ const MapSearch = ({ searchPlace, onMarkerClick, markerImage, markerImageOpacity
         <div id="pagination"></div>
         </>
         )}
-      </div>
+        </div>
+        </div>
     </div>
   )
 }

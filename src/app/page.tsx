@@ -92,7 +92,7 @@ export default function Home() {
       //   if (data.length !== 0) {
       //     const PublicReviewData = data.filter((item: any) => !item.isPrivate)
       //     setPublicReviews(PublicReviewData)
-        //  }
+      //  }
         console.log(data)
        
       } catch (error) {

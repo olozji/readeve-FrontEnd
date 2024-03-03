@@ -163,11 +163,12 @@ export const MapDirectSearch = ({ onMarkerClick, markerImage }: any) => {
         className='text-[#E57C65] text-md px-3 py-3 cursor-pointer'
         onClick={getCurrentPosBtn}>
           현재 위치설정
-          </div>
-      <div id="map" style={{ width: '54vh', height: '45vh' }}></div>
-      <div className='absolute top-[13rem] right-7 w-[18rem] bg-white bg-opacity-80 overflow-y-auto rounded-lg'>
+      </div>
+      <div className='flex'>
+      <div id="map" style={{ width: '55%', height: '45vh' }}></div>
+      <div className='w-[45%] bg-white bg-opacity-80 overflow-y-auto rounded-lg'>
         {address.length === 0 ? (
-          <div className="text-[#B6B6B6] mt-40">
+          <div className="text-[#B6B6B6] ml-2 mt-40">
                 핀을 직접 정하고 나만의 장소를 완성해보세요!
             </div>
         ) : (
@@ -201,7 +202,8 @@ export const MapDirectSearch = ({ onMarkerClick, markerImage }: any) => {
         </div>
           </div>
         )}
-     </div>
+        </div>
+        </div>
     </div>
   )
 }
