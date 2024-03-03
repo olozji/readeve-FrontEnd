@@ -18,6 +18,9 @@ import unLock from '/public/images/unLock.png'
 import lampIcon from '/public/images/lampicon.png'
 import detailPaper from '/public/images/detailPaper.png'
 import privateMarker from '/public/images/privateMarker.png'
+import isPrivatedIcon from '/public/images/isPrivatedIcon.png'
+import isSharedIcon from '/public/images/isSharedIcon.png'
+import whitePaper from '/public/images//whitePager.png';
 
 export interface PropType {
   params: {
@@ -166,10 +169,10 @@ const BookLayoutItem = (props: any) => {
                 >
                   {/* 모달 */}
                   {detailOpen && (
-                    <CustomModal size={'60rem'} isOpen={detailOpen[i]}>
-                      <div className="h-[50rem]">
+                    <CustomModal size={'70rem'} isOpen={detailOpen[i]} modalColor='#FEF6E6'>
+                      <div className="">
                         <div className="px-8 py-8">
-                          <div className="flex">
+                          <div className="flex w-[70vw] justify-center items-center">
                             <img
                               src={
                                 bookData[0].book.thumbnail
@@ -177,47 +180,78 @@ const BookLayoutItem = (props: any) => {
                                   : 'http://via.placeholder.com/120X150'
                               }
                               alt="책 표지"
-                              className="w-[14rem] mb-2 rounded object-fll"
+                              className="w-[10rem] mb-2 rounded object-fll"
                             />
-                            <div>
-                              <div className="text-lg font-extrabold">
+                            <div className='p-10'>
+                              <div className="text-xl font-extrabold text-[#6F5C52]">
                                 {data.title}
                               </div>
-                              <Image
-                                src={data.isPrivate ? Private : unLock}
-                                alt="private"
-                                style={{ width: '25px', height: '25px' }}
-                              />
-                              <div className="flex gap-4">
-                                <span>where</span>
-                                <div>{data.place.place_name}</div>
+                              <div className="text-sm font-bold text-[#9C8A80]">
+                                | {bookData[0].book.author} 저자
                               </div>
-                              <div className="flex gap-4">
-                                <span>when</span>
-                                <div>{data.place.place_name}</div>
+                              <div className="justify-center items-center py-2">
+                              <span
+                              className={`inline-flex justify-center items-center gap-2 rounded-lg px-2 py-2 text-xs ${
+                                data.isPrivate ? 'bg-[#E57C65] text-white'  : 'bg-white text-[#6F5C52]'
+                              }`}
+                            >
+                            <Image
+                              src={data.isPrivate ? isPrivatedIcon : isSharedIcon}
+                              alt='Icon'
+                              width={10}
+                              height={10}
+                            />
+                              {data.isPrivate ? '나만보기' : '전체공개'}
+                              </span>
                               </div>
-                              <div className="flex gap-4">
-                                <span>tags</span>
+                             <div className='w-[16vw] py-5 pt-5 text-[#503526] text-sm'>
+                              <div className="flex items-center gap-5">
+                                <span className='font-bold' style={{ verticalAlign: 'middle' }}>등록일</span>
+                                <div className=''>2024. 03. 03</div>
+                              </div>
+                              {/* TODO: 태그 부분 수정 필요함 컴포넌트를 직접 가져와서 해야할지? 아직 안해봤어요 */}
+                              <div className="flex items-center gap-5">
+                                <span className='font-bold' style={{ verticalAlign: 'middle' }}>태그</span>
                                 {data.tags.map(
                                   (data: any) =>
-                                    data.selected && <div>{data.name}</div>,
+                                    data.selected && <div className=''>{data.name}</div>,
                                 )}
+                              </div>
+                              <div className="flex items-center gap-5">
+                              <span className='font-bold' style={{ verticalAlign: 'middle' }}>등록일</span>
+                                <div className='flex items-center'>
+                                  <Image
+                                    src={privateMarker}
+                                    alt={'장소'}
+                                  />
+                                  {data.place.place_name}
+                                  </div>
+                              </div>
                               </div>
                             </div>
                           </div>
-                          <div className="flex relative left-[35rem] w-[10rem] gap-4">
-                            <Link href={'/edit/1'}>
-                              <Button label="수정" outline={true} />
-                            </Link>
-                            <Button
-                              label="삭제"
-                              outline={false}
-                              onClick={() => handleRemove(data.isbn)}
-                            />
-                          </div>
                           {/* 내용 엔터키 적용 */}
-                            <div className="h-[30rem] border border-slate-200 rounded-md bg-slate-200" dangerouslySetInnerHTML={{ __html: data.content.replace(/\n/g, '<br>') }}>
+                          <div className='flex w-[72vw] justify-center items-center'>
+                          <div
+                            key={i}
+                            className="w-[55vw] my-4 bg-cover bg-center rounded-lg overflow-hidden shadow-lg px-3 py-3 p-10"
+                            style={{ backgroundImage: `url(${whitePaper.src})` }}
+                          >
+                            <div className="flex relative float-end items-center gap-4">
+                            <Link href={'/edit/1'}>
+                              <span className='text-[#D37C7C] text-sm font-bold'>수정</span>
+                            </Link>
+                            <span 
+                             className='text-[#828282] text-sm font-bold'
+                             onClick={() => handleRemove(data.isbn)}>삭제</span>
                           </div>
+                          <div className='mt-20 px-5'>
+                          <h2 className="text-2xl font-bold mb-4 border-black border-b pb-5 text-[#503526]">{data.title}</h2>
+                            <div className="h-[45vh] mx-auto text-[#999999]" dangerouslySetInnerHTML={{ __html: data.content.replace(/\n/g, '<br>') }}>
+                            </div>
+                            </div>
+                        </div>
+                        </div>
                         </div>
                       </div>
                     </CustomModal>
