@@ -318,7 +318,6 @@ const MapSearch = ({ searchPlace, onMarkerClick, markerImage ,mapHeight  }: MapS
       {/* 페이지 컨텐츠 및 지도를 표시할 컨테이너 */}
       <div className='flex'>
       <div id="map" 
-           className='relative'    
       style={{ width: '60%', height: mapHeight}}>
 
       {/* 다른 페이지 컨텐츠 */}
@@ -371,7 +370,8 @@ const MapSearch = ({ searchPlace, onMarkerClick, markerImage ,mapHeight  }: MapS
         <div id="pagination"></div>
         </>
         )}
-      </div>
+        </div>
+        </div>
     </div>
     </div>
   )

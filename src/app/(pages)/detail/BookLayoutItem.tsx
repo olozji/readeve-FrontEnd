@@ -81,17 +81,6 @@ const BookLayoutItem = (props: any) => {
     }
   }
 
-  // // 선택된 독후감의 저자 정보 가져오기
-  // const selectedReviewAuthors = bookData && bookData[0]?.book?.authors
-
-  // // 하나의 저자를 선택해서 출력 (첫 번째 저자 선택)
-  // const firstAuthor = selectedReviewAuthors && selectedReviewAuthors[0]
-
-  // // 모든 저자를 합쳐서 출력
-  // const allAuthors = selectedReviewAuthors && selectedReviewAuthors.join(', ')
-
-  // console.log('선택된 독후감의 첫 번째 저자:', firstAuthor)
-  // console.log('선택된 독후감의 모든 저자:', allAuthors)
 
   useEffect(() => {
     const storedData = localStorage.getItem('allDataInfo')
