@@ -6,8 +6,7 @@ import searchIcon from 'public/images/searchIcon.png'
 import Image from 'next/image'
 import { MapDirectSearch } from './mapDirectSearch'
 import CustomModal from '../components/modal'
-import markerImage from '/public/images/marker1.png'
-import markerImageOpacity from '/public/images/marker2.png'
+import markerImage from '/public/images/sharedMarker.png'
 import mapSearchIcon from '/public/images/mapSearchIcon.png'
 
 interface AddPlaceProps {
@@ -121,7 +120,6 @@ const AddPlace: React.FC<AddPlaceProps> = ({
             searchPlace={Place}
             onMarkerClick={onMarkerClick}
             markerImage={markerImage}
-            markerImageOpacity={markerImageOpacity}
           />
         </div>
       )}

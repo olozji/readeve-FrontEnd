@@ -212,7 +212,7 @@ const Editor = () => {
               />
               {showMap && (
 
-                <CustomModal isOpen={true} modalheight={'85vh'} size={'100vh'} onClose={handleCloseMap}>
+                <CustomModal isOpen={true} modalheight={'85vh'} size={'100vh'} onClose={handleCloseMap} modalColor='#fff'>
 
                     <AddPlace
                       onClose={handleCloseMap}
@@ -294,6 +294,7 @@ const Editor = () => {
               onClose={() => setShowTagModal(false)}
               size={'60rem'}
               modalheight={'40rem'}
+              modalColor='#fff'
             >
               <div className="mt-10 px-10 py-10 text-center">
                 <div className="border-b-[2px]">

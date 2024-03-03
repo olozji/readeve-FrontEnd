@@ -15,12 +15,11 @@ interface MapSearchProps {
   searchPlace: string
   onMarkerClick: (place: string) => void;
   markerImage: StaticImageData;
-  markerImageOpacity: StaticImageData;
   mapHeight?:string
 
 }
 
-const MapSearch = ({ searchPlace, onMarkerClick, markerImage, markerImageOpacity,mapHeight  }: MapSearchProps): React.ReactElement => {
+const MapSearch = ({ searchPlace, onMarkerClick, markerImage ,mapHeight  }: MapSearchProps): React.ReactElement => {
 
   const mapRef = useRef<any>(null)
   const listContainerRef = useRef<any>(null);
@@ -64,10 +63,10 @@ const MapSearch = ({ searchPlace, onMarkerClick, markerImage, markerImageOpacity
         mapRef.current = map;
 
          // 이미지 마커 생성
-         const markerImageProps = new window.kakao.maps.MarkerImage(
-          markerImage.src,
-          new window.kakao.maps.Size(30,30),
-        )
+        //  const markerImageProps = new window.kakao.maps.MarkerImage(
+        //   markerImage.src,
+        //   new window.kakao.maps.Size(30,30),
+        // )
 
         //장소 검색 라이브러리
         const ps = new window.kakao.maps.services.Places()
@@ -106,22 +105,12 @@ const MapSearch = ({ searchPlace, onMarkerClick, markerImage, markerImageOpacity
 
           let markerImageProps;
 
-          if(place.id === selectedPlace?.id) {
-            // 선택된 장소 일 경우엔 markerImage 사용
+         
             markerImageProps = new window.kakao.maps.MarkerImage(
               markerImage.src,
               new window.kakao.maps.Size(30,30),
             );
-          } else {
-            // 선택되지 않은 장소는 markerImageOpacity 사용
-            markerImageProps = new window.kakao.maps.MarkerImage(
-              markerImageOpacity.src,
-              new window.kakao.maps.Size(30, 30),
-            ); 
-          }
-
-
-
+      
           let marker = new window.kakao.maps.Marker({
             map: map,
             position: new window.kakao.maps.LatLng(place.y, place.x),
@@ -239,15 +228,6 @@ const MapSearch = ({ searchPlace, onMarkerClick, markerImage, markerImageOpacity
 
   const handleListItem = (place: any, index: number) => {
    
-    if (selectedPlace && selectedPlace.infowindow) {
-      selectedPlace.marker.setImage(new window.kakao.maps.MarkerImage(
-        markerImageOpacity.src,
-        new window.kakao.maps.Size(30, 30),
-      ));
-      selectedPlace.infowindow.close();
-    }
-
-  
     const infowindow = new window.kakao.maps.InfoWindow({
       content: `<div style="padding:5px;font-size:12px;">${place.place_name}</div>`,
       zIndex: 1,
@@ -255,19 +235,14 @@ const MapSearch = ({ searchPlace, onMarkerClick, markerImage, markerImageOpacity
 
     let markerImageProps;
 
-    if(place.id === selectedPlace?.id) {
+   
       // 선택된 장소 일 경우엔 markerImage 사용
       markerImageProps = new window.kakao.maps.MarkerImage(
         markerImage.src,
         new window.kakao.maps.Size(30,30),
       );
-    } else {
-      // 선택되지 않은 장소는 markerImageOpacity 사용
-      markerImageProps = new window.kakao.maps.MarkerImage(
-        markerImageOpacity.src,
-        new window.kakao.maps.Size(30, 30),
-      ); 
-    }
+  
+    
 
 
     const marker = new window.kakao.maps.Marker({
@@ -341,17 +316,16 @@ const MapSearch = ({ searchPlace, onMarkerClick, markerImage, markerImageOpacity
   return (
     <div className='pb-10 border-b-2'>
       {/* 페이지 컨텐츠 및 지도를 표시할 컨테이너 */}
+      <div className='flex'>
       <div id="map" 
-
            className='relative'    
-      style={{ width: '58vh', height: mapHeight}}>
+      style={{ width: '60%', height: mapHeight}}>
 
       {/* 다른 페이지 컨텐츠 */}
       </div>
       <div
         ref={listContainerRef}
-        id="result-list"
-        className='absolute top-[15rem] right-5 scrollBar w-[17rem] bg-white h-full max-h-[40vh] bg-opacity-80 overflow-y-auto rounded-lg'
+        className='scrollBar w-[40%] bg-white h-full max-h-[40vh] bg-opacity-80 overflow-y-auto rounded-lg'
       >
         {Place.length === 0? (
           <div className="p-4 text-center text-[#B6B6B6] mt-40">
@@ -398,6 +372,7 @@ const MapSearch = ({ searchPlace, onMarkerClick, markerImage, markerImageOpacity
         </>
         )}
       </div>
+    </div>
     </div>
   )
 }
