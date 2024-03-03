@@ -20,7 +20,7 @@ export const BookLayout = ({ isMain }: bookLayoutProps) => {
       const onlyBookData = parsedData.filter((data: any, idx: number) => {
         return (
           parsedData.findIndex((data1: any) => {
-            return data.bookRespDto.isbn === data1.bookRespDto.isbn
+            return data.book.isbn === data1.book.isbn
           }) === idx
         )
       })
@@ -53,13 +53,13 @@ export const BookLayout = ({ isMain }: bookLayoutProps) => {
               .map((d: any, i: number) => (
                 <Link
                   key={i}
-                  href={`/detail/${d.bookRespDto && d.bookRespDto.isbn ? d.bookRespDto.isbn.replace(' ', '') : ''}`}
+                  href={`/detail/${d.book && d.book.isbn ? d.book.isbn.replace(' ', '') : ''}`}
                 >
                   <div className="flex flex-col items-center rounded-lg border-4 border-transparent p-4 cursor-pointer">
                     <img
                       src={
-                        d.bookRespDto.thumbnail
-                          ? d.bookRespDto.thumbnail
+                        d.book.thumbnail
+                          ? d.book.thumbnail
                           : 'http://via.placeholder.com/120X150'
                       }
                       alt="책 표지"
@@ -75,10 +75,10 @@ export const BookLayout = ({ isMain }: bookLayoutProps) => {
                     />  
                     {parsedData.filter(
                       (data: any) =>
-                        data.bookRespDto.isbn === d.bookRespDto.isbn
+                        data.book.isbn === d.book.isbn
                     ).length}{' '}
                   </span>
-                    <div className="px-1 py-1 text-[#5F5F5F] text-sm">{d.bookRespDto.title}</div>
+                    <div className="px-1 py-1 text-[#5F5F5F] text-sm">{d.book.title}</div>
                   </div>
                   </div>
                 </Link>
@@ -95,7 +95,7 @@ export const BookLayout = ({ isMain }: bookLayoutProps) => {
           {documents.map((d: any, i: number) => (
             <Link
               key={i}
-              href={`/detail/${d.bookRespDto && d.bookRespDto.isbn ? d.bookRespDto.isbn.replace(' ', '') : ''}`}
+              href={`/detail/${d.book && d.book.isbn ? d.book.isbn.replace(' ', '') : ''}`}
             >
               <div
                 className={`justify-items-center rounded-lg border-4 border-transparent`}
@@ -108,14 +108,14 @@ export const BookLayout = ({ isMain }: bookLayoutProps) => {
               >
                 <img
                   src={
-                    d.bookRespDto.thumbnail
-                      ? d.bookRespDto.thumbnail
+                    d.book.thumbnail
+                      ? d.book.thumbnail
                       : 'http://via.placeholder.com/120X150'
                   }
                   alt="책 표지"
                   className="mb-2 rounded"
                 />
-                <div className="p-4">{d.bookRespDto.title}</div>
+                <div className="p-4">{d.book.title}</div>
               </div>
             </Link>
           ))}
