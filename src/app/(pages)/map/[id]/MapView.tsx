@@ -55,13 +55,13 @@ const MapView = ({
       // 선택된 태그의 이름을 배열로 모읍니다.
       const tagFilteredReviews = myMapData.filter((data) => {
         const selectedTagsIndexes = isSelectedTags
-          .map((selected, index) => (selected ? index : -1))
+          .map((isSelected, index) => (isSelected ? index : -1))
           .filter((index) => index !== -1)
 
         return selectedTagsIndexes.every((selectedIndex) =>
           data.tags.some(
             (tag: any) =>
-              tag.selected && tag.content === tagInfo[selectedIndex].content,
+              tag.isSelected && tag.content === tagInfo[selectedIndex].content,
           ),
         )
       })
@@ -114,13 +114,13 @@ const MapView = ({
       if (isMain) {
         //공유지도 메인화면 인포윈도우
         content.innerHTML = `<div class="marker_overlay shadow">
-    <div class="place_name text-primary">${place.place_name}</div>
+    <div class="place_name text-primary">${place.name}</div>
     <div class="place_address">${place.address}</div>
 </div>`
       } else {
         //공유지도 큰화면 인포윈도우
         content.innerHTML = `<div class="marker_overlay shadow">
-    <div class="place_name text-primary">${place.place_name}</div>
+    <div class="place_name text-primary">${place.name}</div>
     <div class="place_address">${place.address}</div>
     <hr>
     ${
@@ -128,7 +128,7 @@ const MapView = ({
       data
         .map(
           (tag: any, i: number) =>
-            tag.selected && `<div class="tag">${tag.content}</div>`,
+            tag.isSelected && `<div class="tag">${tag.content}</div>`,
         )
         .filter(Boolean)
         .join(``)
@@ -140,7 +140,7 @@ const MapView = ({
       //개인지도 인포윈도우
       content.innerHTML = `<div class="marker_overlay_isPrivate shadow">
       <div class="place_address">${place.address}</div>
-    <div class="place_name text-primary">${place.place_name}</div>
+    <div class="place_name text-primary">${place.name}</div>
     
     <hr>
     <div class="theme_name"></div>
@@ -183,9 +183,9 @@ const MapView = ({
       // place.id 값으로 필터링
       // TODO: 핀으로 검색하기(null) 인 경우 나중에 상태관리 필요함
       if (!isShared) {
-        setIsTitleActive(`${place.place_name}에서 읽은 독후감`)
+        setIsTitleActive(`${place.name}에서 읽은 독후감`)
         const filteredReviews = myMapData.filter(
-          (data) => data.place.id === place.id,
+          (data) => data.place.placeId === place.placeId,
         )
         // 독후감을 상태에 업데이트
         setFilteredReviews(filteredReviews)
@@ -294,11 +294,11 @@ const MapView = ({
 
           if (filteredReviews.length === 0) {
             myMapData.forEach((d: any, i: number) => {
-              displayMarker(d.place, i, d.tags)
+              displayMarker(d.pinRespDto, i, d.tags)
             })
           } else {
             filteredReviews.forEach((d: any, i: number) => {
-              displayMarker(d.place, i, d.tags)
+              displayMarker(d.pinRespDto, i, d.tags)
               bounds.extend(new window.kakao.maps.LatLng(d.place.y, d.place.x))
 
               mapInstance.setBounds(bounds)
@@ -322,12 +322,12 @@ const MapView = ({
         mapRef.current = mapInstance
 
         myMapData.forEach((d: any, i: number) => {
-          displayMarker(d.place, i)
+          displayMarker(d.pinRespDto, i)
 
           if (i == myMapData.length - 1) {
             mapRef.current.setLevel(6)
             mapRef.current.panTo(
-              new window.kakao.maps.LatLng(d.place.y, d.place.x),
+              new window.kakao.maps.LatLng(d.pinRespDto.y, d.pinRespDto.x),
             )
           }
         })
@@ -336,6 +336,7 @@ const MapView = ({
   }, [myMapData])
 
   const mapHeight = isFull === `100vh` ? windowHeight : 400
+  
   return (
     <div style={{ position: 'relative' }}>
       {myMapData.length !== 0 ? (
