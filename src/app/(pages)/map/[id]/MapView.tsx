@@ -297,7 +297,7 @@ const MapView = ({
           } else {
             filteredReviews.forEach((d: any, i: number) => {
               displayMarker(d.pinRespDto, i, d.tags)
-              bounds.extend(new window.kakao.maps.LatLng(d.place.y, d.place.x))
+              bounds.extend(new window.kakao.maps.LatLng(d.pinRespDto.y, d.pinRespDto.x))
 
               mapInstance.setBounds(bounds)
             })
