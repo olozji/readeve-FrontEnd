@@ -56,7 +56,7 @@ const MyPageComponent = (props: ParamType) => {
   }
   useEffect(() => {
     fetchData()
-  }, [])
+  }, [props.id])
 
   useEffect(() => {
     if (myData) {
