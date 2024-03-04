@@ -74,7 +74,7 @@ export default function Home() {
     try {
       const response = await axios.get('https://api.bookeverywhere.site/api/data/all');
       console.log(response.data); // 서버에서 받은 데이터 출력
-      const data = response.data; // 응답으로 받은 데이터
+      const data = response.data.data; // 응답으로 받은 데이터
   
       // 원본 배열을 복사하여 수정
       const newData = [...data];
