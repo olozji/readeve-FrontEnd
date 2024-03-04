@@ -73,7 +73,6 @@ export default function Home() {
   const fetchData = async () => {
     try {
       const response = await axios.get('https://api.bookeverywhere.site/api/data/all');
-      console.log(response.data); // 서버에서 받은 데이터 출력
       const data = response.data.data; // 응답으로 받은 데이터
   
       // 원본 배열을 복사하여 수정
@@ -82,6 +81,7 @@ export default function Home() {
   
       // 수정된 데이터를 상태에 반영
       setAllReviewData(newData);
+      console.log(newData)
   
       // 상태 업데이트가 완료된 후에 데이터를 필터링하여 다른 상태에 반영
       if (newData.length !== 0) {
@@ -101,7 +101,7 @@ export default function Home() {
   useEffect(() => {
     fetchData()
     setMap(true)
-  }, [allReviewData])
+  }, [])
 
   // useEffect(() => {
   //   const fetchData = async () => {
