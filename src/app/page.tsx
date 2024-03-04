@@ -25,6 +25,7 @@ import NavBar from './components/NavBar';
 
 export default function Home() {
   let session = useSession()
+  let user: any = session.data?.user
   console.log(session)
 
   const [map, setMap] = useState(false)
@@ -228,7 +229,7 @@ export default function Home() {
         <div className="mt-10">
           <div className="text-2xl font-display font-bold py-10">내 서재</div>
           {session.data ? (
-            <BookLayout isMain={true}></BookLayout>
+            <BookLayout bookData={user.id} isMain={true}></BookLayout>
           ) : (
             <div>로그인 하고 내 서재 를 확인하세요</div>
           )}

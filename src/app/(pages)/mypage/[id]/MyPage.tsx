@@ -71,7 +71,7 @@ const MyPageComponent = (props: ParamType) => {
             height={1500}
           />
           <div className="absolute top-20 left-1/2 transform -translate-x-1/2 z-10">
-            <BookLayout isMain={true}></BookLayout>
+            <BookLayout bookData={props.id } isMain={true}></BookLayout>
           </div>
           <div>
             {documents.length !== 0 ? (

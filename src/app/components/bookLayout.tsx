@@ -8,8 +8,9 @@ import { allReviewDataState } from '@/store/writeAtoms';
 
 interface bookLayoutProps {
   isMain: boolean
+  bookData:any
 }
-export const BookLayout = ({ isMain }: bookLayoutProps) => {
+export const BookLayout = ({ isMain ,bookData}: bookLayoutProps) => {
   const [documents, setDocuments] = useState<any[]>([])
   const [parsedData, setParsedData] = useState<any[]>([]) 
   const [startIdx, setStartIdx] = useState(0)
@@ -20,8 +21,12 @@ export const BookLayout = ({ isMain }: bookLayoutProps) => {
   useEffect(() => {
  
     if (allReviewData) {
-
-      const onlyBookData = allReviewData.filter((data: any, idx: number) => {
+      
+        const filteredData = allReviewData.filter(
+          (data: any) => Number(bookData) === data.socialId,
+        )
+        
+      const onlyBookData = filteredData.filter((data: any, idx: number) => {
         return (
           allReviewData.findIndex((data1: any) => {
             return data.bookRespDto.isbn === data1.bookRespDto.isbn
