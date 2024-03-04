@@ -35,11 +35,12 @@ const MyPageComponent = (props: ParamType) => {
   const [selectBook, setSelectBook] = useState<any[]>([])
   const [allReviewData, setAllReviewData] = useRecoilState(allReviewDataState)
   const [documents, setDocuments] = useState<any[]>([])
+  const [userId,setUserId] = useState(props.id) 
 
   useEffect(() => {
     if (allReviewData) {
       const filteredData = allReviewData.filter(
-        (data: any) => Number(props.id) === data.socialId,
+        (data: any) => Number(userId) === data.socialId,
       )
       setDocuments(filteredData)
       console.log(documents)
@@ -72,7 +73,7 @@ const MyPageComponent = (props: ParamType) => {
             height={1500}
           />
           <div className="absolute top-20 left-1/2 transform -translate-x-1/2 z-10">
-            <BookLayout bookData={props.id} isMain={true}></BookLayout>
+            <BookLayout bookData={userId} isMain={true}></BookLayout>
           </div>
           <div>
             {documents.length !== 0 ? (
