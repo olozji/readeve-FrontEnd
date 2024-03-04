@@ -42,6 +42,7 @@ const MyPageComponent = (props: ParamType) => {
         (data: any) => Number(props.id) === data.socialId,
       )
       setDocuments(filteredData)
+      console.log(documents)
     }
   }, [allReviewData])
 

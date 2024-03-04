@@ -27,7 +27,7 @@ export const BookLayout = ({ isMain ,bookData}: bookLayoutProps) => {
       )
       const onlyBookData = filteredData.filter((data: any, idx: number) => {
         return (
-          allReviewData.findIndex((data1: any) => {
+          filteredData.findIndex((data1: any) => {
             return data.bookRespDto.isbn === data1.bookRespDto.isbn
           }) === idx
         )
