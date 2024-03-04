@@ -25,8 +25,11 @@ const MyMapPage = (props: PropType) => {
       )
       const data = response.data.data // 응답으로 받은 데이터
       setMyData(data)
+      
     } catch (error) {
       console.error('Error fetching data:', error)
+      console.log(myData)
+      console.log(props.params.id)
     }
 }
 useEffect(() => {
@@ -35,7 +38,7 @@ useEffect(() => {
     
     return (
         <div>
-            {myData.length !== 0 ? (
+            {myData&&myData.length !== 0 ? (
             <MapView myMapData={myData} isShared={false} isFull={`100vh`} markerImage={markerImage}></MapView>
           ) : (
             <div>
