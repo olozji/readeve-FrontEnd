@@ -29,7 +29,7 @@ export const Tag = ({tags, limit = tags.length, showModal = false} : TagProps) =
         setTagInfo(updatedTags)
     };
 
-    const renderTags = showModal ? tags : tags.slice(0, limit);
+    const renderTags =tags
 
     return (
         <div className="flex flex-wrap justify-center sm:px-10 ">

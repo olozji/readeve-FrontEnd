@@ -29,7 +29,7 @@ const MyMapPage = () => {
     return (
         <div>
             {allReviewData.length !== 0 ? (
-            <MapView myMapData={allReviewData} isShared={false} isFull={`100vh`} markerImage={markerImage}></MapView>
+            <MapView myMapData={documents} isShared={false} isFull={`100vh`} markerImage={markerImage}></MapView>
           ) : (
             <div>
               <div id="map" style={{ display: 'none' }}></div>

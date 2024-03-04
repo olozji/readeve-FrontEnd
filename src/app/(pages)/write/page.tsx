@@ -38,7 +38,8 @@ const Editor = () => {
   const [placeInfo, setPlaceInfo] = useRecoilState<any>(placeState)
   const [allDataInfo, setAllDataInfo] = useRecoilState<any>(allDataState)
   const [showTagModal, setShowTagModal] = useState(false)
-  const [allReviewData, setAllReviewData] = useRecoilState<any>(allReviewDataState)
+  const [allReviewData, setAllReviewData] =
+    useRecoilState<any>(allReviewDataState)
   let session: any = useSession()
 
   let user: any = session.data?.user
@@ -58,7 +59,14 @@ const Editor = () => {
     }
   }, [isPrivatePlace])
 
-  const numTag = tagInfo.slice(0, 3)
+  let numTag:any[]=[];
+  useEffect(() => {
+    console.log(1)
+    numTag = tagInfo.filter((tag: any) => {
+      tag.selected == true
+    })
+  }, [tagInfo])
+
   const inputRef = useRef<HTMLInputElement | null>(null)
 
   const handleCloseMap = useCallback(() => {
@@ -128,7 +136,7 @@ const Editor = () => {
         title: bookInfo.title,
         thumbnail: bookInfo.thumbnail,
         isComplete: bookInfo.isComplete,
-        author:bookInfo.authors[0],
+        author: bookInfo.authors[0],
       },
       tags: tagInfo,
       content: content,
@@ -150,20 +158,22 @@ const Editor = () => {
 
     const fetchData = async () => {
       try {
-        const response = await axios.get('https://api.bookeverywhere.site/api/data/all');
-        console.log(response.data); // 서버에서 받은 데이터 출력
-        const data = response.data.data; // 응답으로 받은 데이터
-    
+        const response = await axios.get(
+          'https://api.bookeverywhere.site/api/data/all',
+        )
+        console.log(response.data) // 서버에서 받은 데이터 출력
+        const data = response.data.data // 응답으로 받은 데이터
+
         // 원본 배열을 복사하여 수정
-        const newData = [...data];
-        newData.splice(-2, 2);
-    
+        const newData = [...data]
+        newData.splice(-2, 2)
+
         // 수정된 데이터를 상태에 반영
-        setAllReviewData(newData);
+        setAllReviewData(newData)
       } catch (error) {
-        console.error('Error fetching data:', error);
+        console.error('Error fetching data:', error)
       }
-    };
+    }
     postData()
     fetchData()
     //write 초기화
@@ -283,7 +293,10 @@ const Editor = () => {
             </div>
             <div className="px-8 py-3 flex items-center">
               <h4 className="px-5 font-extrabold">장소 태그</h4>
-              <Tag tags={numTag}></Tag>
+              {tagInfo.map((tag:any) => (
+                tag.selected && <div className='box-border flex justify-center items-center px-4 py-2
+                my-2 mx-2 border border-gray-300 rounded-full bg-[#E57C65] text-white'>#{tag.content }</div>
+              ))}
               <button
                 onClick={() => setShowTagModal(true)}
                 className="cursor-pointer text-[#7a7a7a] font-light text-4xl"
