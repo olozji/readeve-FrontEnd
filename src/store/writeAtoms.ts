@@ -55,6 +55,11 @@ export const filterReviewState = atom({
     key:'filterReviewState',
     default:'전체'
 })
+// 모든 리뷰데이터 호출
+export const allReviewDataState = atom({
+  key: 'allReviewDataState',
+  default:[]
+})
 
 // 리뷰 수정 아톰
 export const editReivewState = atom<number | null>({

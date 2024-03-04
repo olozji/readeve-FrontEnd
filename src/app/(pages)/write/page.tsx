@@ -8,6 +8,7 @@ import CustomModal from '@/app/components/modal'
 import { Tag } from '@/app/components/tags'
 import {
   allDataState,
+  allReviewDataState,
   bookState,
   placeState,
   tagState,
@@ -20,10 +21,9 @@ import { useRecoilState } from 'recoil'
 
 import Image from 'next/image'
 
-import pen from 'public/images/Pen.png';
-import isPrivatedIcon from '/public/images/isPrivatedIcon.png';
-import isSharededIcon from '/public/images/isSharedIcon.png';
-
+import pen from 'public/images/Pen.png'
+import isPrivatedIcon from '/public/images/isPrivatedIcon.png'
+import isSharededIcon from '/public/images/isSharedIcon.png'
 
 const Editor = () => {
   const [content, setContent] = useState('')
@@ -38,7 +38,7 @@ const Editor = () => {
   const [placeInfo, setPlaceInfo] = useRecoilState<any>(placeState)
   const [allDataInfo, setAllDataInfo] = useRecoilState<any>(allDataState)
   const [showTagModal, setShowTagModal] = useState(false)
-
+  const [allReviewData, setAllReviewData] = useRecoilState(allReviewDataState)
   let session: any = useSession()
 
   let user: any = session.data?.user
@@ -148,31 +148,30 @@ const Editor = () => {
       }
     }
 
+    const fetchData = async () => {
+      try {
+        const getData = await axios.get(
+          'https://api.bookeverywhere.site/api/data/all',
+        )
+        console.log(getData.data) // 서버에서 받은 데이터 출력
+        const newData = getData.data // 응답으로 받은 데이터
+        newData.pop()
+        newData.pop()
+        
+        setAllReviewData(newData)
+        console.log(allReviewData)
+      } catch (error) {
+        console.log(allReviewData)
+        console.error('Error:', error)
+      }
+    }
     postData()
-
-    // const url =
-    //   'http://ec2-54-180-159-247.ap-northeast-2.compute.amazonaws.com/map'
-
-    // // GET 요청 보내기
-    // try {
-    //   const response = await axios.get(url);
-    //   console.log('응답 데이터:', response.data);
-    // } catch (error) {
-    //   console.error('에러 발생:', error);
-    // }
-    const storedData = localStorage.getItem('allDataInfo')
-    const previousData = storedData ? JSON.parse(storedData) : []
-
-    // 새로운 데이터 추가
-    const newData = [...previousData, data]
-
-    // // 로컬 스토리지에 저장
-    localStorage.setItem('allDataInfo', JSON.stringify(newData))
+    fetchData()
+    //write 초기화
     // setAllDataInfo({})
     // setTitleInfo('')
     // setPlaceInfo({})
     // setTagInfo([{content:'잔잔한 음악이 흘러요',selected:false},{content:'날씨 좋은날 테라스가 좋아요',selected:false},{content:'카공하기 좋아요',selected:false},{content:'힙합BGM이 흘러나와요',selected:false},{content:'조용해서 좋아요',selected:false},{content:'한적해요',selected:false},{content:'자리가 많아요',selected:false},{content:'차마시기 좋아요',selected:false},{content:'귀여운 고양이가 있어요🐈',selected:false},{content:'책을 무료로 대여해줘요📚',selected:false}])
-    // Router 인스턴스 가져오기
 
     // 페이지 리다이렉트
     // window.location.href = `/mypage/${session.data?.user.id}` // 이동할 경로
@@ -188,32 +187,36 @@ const Editor = () => {
             <h1 className="myCustomText text-3xl text-white">독후감 작성</h1>
           </header>
 
-          <section className='py-10 px-10'>
-          <div className="px-5 py-8 flex rounded-t-md">
-            <div className="flex max-w-[70rem] px-3">
-              <input
-                placeholder='제목'
-                ref={inputRef}
-                className="inline-block w-[60rem] h-[2.8rem] px-3 border-2 shadow-md rounded-md bg-[#FEF6E6]"
-                value={titleInfo}
-                onChange={handleTitle}
-              />
+          <section className="py-10 px-10">
+            <div className="px-5 py-8 flex rounded-t-md">
+              <div className="flex max-w-[70rem] px-3">
+                <input
+                  placeholder="제목"
+                  ref={inputRef}
+                  className="inline-block w-[60rem] h-[2.8rem] px-3 border-2 shadow-md rounded-md bg-[#FEF6E6]"
+                  value={titleInfo}
+                  onChange={handleTitle}
+                />
+              </div>
             </div>
-          </div>
-          <div className="px-8 py-3 flex gap-5 items-center">
-            <h4 className="px-5 font-extrabold">장소</h4>
-            <div>
-              <input
-                placeholder='독서한 장소를 입력해주세요'
-                ref={inputRef}
-                className="inline-block w-[35rem] h-[2rem] px-3 border-2 shadow-md rounded-2xl bg-[#FEF6E6]"
-                value={placeInfo.place_name}
-                onClick={handleSearchMap}
-              />
-              {showMap && (
-
-                <CustomModal isOpen={true} modalheight={'85vh'} size={'100vh'} onClose={handleCloseMap} modalColor='#fff'>
-
+            <div className="px-8 py-3 flex gap-5 items-center">
+              <h4 className="px-5 font-extrabold">장소</h4>
+              <div>
+                <input
+                  placeholder="독서한 장소를 입력해주세요"
+                  ref={inputRef}
+                  className="inline-block w-[35rem] h-[2rem] px-3 border-2 shadow-md rounded-2xl bg-[#FEF6E6]"
+                  value={placeInfo.place_name}
+                  onClick={handleSearchMap}
+                />
+                {showMap && (
+                  <CustomModal
+                    isOpen={true}
+                    modalheight={'85vh'}
+                    size={'100vh'}
+                    onClose={handleCloseMap}
+                    modalColor="#fff"
+                  >
                     <AddPlace
                       onClose={handleCloseMap}
                       onMarkerClickParent={setSelectedPlace}
@@ -294,7 +297,7 @@ const Editor = () => {
               onClose={() => setShowTagModal(false)}
               size={'60rem'}
               modalheight={'40rem'}
-              modalColor='#fff'
+              modalColor="#fff"
             >
               <div className="mt-10 px-10 py-10 text-center">
                 <div className="border-b-[2px]">
@@ -302,9 +305,8 @@ const Editor = () => {
                     장소와 딱맞는 태그를 선택해 주세요
                   </h1>
                   <div className="flex flex-wrap justify-center my-10 sm:px-20 ">
-                  {tagInfo.map((tag: any, i: number) => (
-                    <div className="flex">
-                      
+                    {tagInfo.map((tag: any, i: number) => (
+                      <div className="flex">
                         <div
                           key={i}
                           className={`box-border flex justify-center items-center px-4 py-2
@@ -318,10 +320,9 @@ const Editor = () => {
                         >
                           #{tag.content}
                         </div>
-                     
-                    </div>
-                  ))}
-                    </div>
+                      </div>
+                    ))}
+                  </div>
                 </div>
               </div>
               <div className="flex mx-auto w-[8rem]">
@@ -333,38 +334,37 @@ const Editor = () => {
                   }}
                 />
               </div>
-        </CustomModal>
-        <div className="py-8 flex gap-4 justify-center items-center">
-        <span
-        className={`inline-flex justify-center items-center gap-2 rounded-lg px-3 py-3 text-xs font-medium ${
-          isPrivate ? 'bg-[#E57C65] text-white'  : 'bg-white text-black'
-        }`}
-        onClick={handleIsPrivateClick}
-      >
-       <Image
-         src={isPrivatedIcon}
-         alt='isPrivatedIcon'
-         width={13}
-         height={13}
-       />
-        나만보기
-        </span>
-        <span
-        className={`inline-flex items-center rounded-lg gap-2 px-3 py-3 text-xs font-medium ${
-          !isPrivate ? 'bg-[#E57C65] text-white'  : 'bg-white text-black'
-        }`}
-        onClick={handlePublicClick}
-        >
-       <Image
-         src={isSharededIcon}
-         alt='isSharededIcon'
-         width={13}
-         height={13}
-       />
-        전체공개
-        </span>
-        </div>
-
+            </CustomModal>
+            <div className="py-8 flex gap-4 justify-center items-center">
+              <span
+                className={`inline-flex justify-center items-center gap-2 rounded-lg px-3 py-3 text-xs font-medium ${
+                  isPrivate ? 'bg-[#E57C65] text-white' : 'bg-white text-black'
+                }`}
+                onClick={handleIsPrivateClick}
+              >
+                <Image
+                  src={isPrivatedIcon}
+                  alt="isPrivatedIcon"
+                  width={13}
+                  height={13}
+                />
+                나만보기
+              </span>
+              <span
+                className={`inline-flex items-center rounded-lg gap-2 px-3 py-3 text-xs font-medium ${
+                  !isPrivate ? 'bg-[#E57C65] text-white' : 'bg-white text-black'
+                }`}
+                onClick={handlePublicClick}
+              >
+                <Image
+                  src={isSharededIcon}
+                  alt="isSharededIcon"
+                  width={13}
+                  height={13}
+                />
+                전체공개
+              </span>
+            </div>
 
             <div className="py-8 border-white border-t-2">
               <div className="px-5 py-8">
@@ -372,7 +372,6 @@ const Editor = () => {
                   <Image src={pen} alt="pen" width={30} height={30} />
                   <h1 className="font-extrabold text-xl">작성</h1>
                 </div>
-               
               </div>
 
               <textarea
@@ -381,7 +380,6 @@ const Editor = () => {
                 value={content}
                 onChange={(e) => setContent(e.target.value)}
               />
-
             </div>
             <div>
               <div className="control_btn flex mx-auto w-[18rem] gap-5">

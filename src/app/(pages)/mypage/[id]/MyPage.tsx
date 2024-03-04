@@ -13,6 +13,7 @@ import Link from 'next/link';
 import lampIcon from '/public/images/lampicon.png';
 import tableImage from '/public/images/tableImg.png';
 import { table } from 'console'
+import { allReviewDataState } from '@/store/writeAtoms';
 
 declare global {
   interface Window {
@@ -22,7 +23,6 @@ declare global {
 interface ParamType {
   id: string
   markerImage:StaticImageData;
-  markerImageOpacity:StaticImageData;
 }
 
 const MyPageComponent = (props: ParamType) => {
@@ -32,19 +32,16 @@ const MyPageComponent = (props: ParamType) => {
 
   const [marker, setMarker] = useState<any>()
   const [address, setAddress] = useState('')
-  const [documents, setDocuments] = useState<any[]>([])
   const [selectBook, setSelectBook] = useState<any[]>([])
+  const [allReviewData, setAllReviewData] = useRecoilState(allReviewDataState);
+  const [documents,setDocuments]=useState<any[]>([])
 
-  
   useEffect(() => {
-    const storedData = localStorage.getItem('allDataInfo')
-
-    if (storedData) {
-      const parsedData = JSON.parse(storedData)
-      setDocuments(parsedData)
+    if (allReviewData) {
+      const filteredData = allReviewData.filter((data: any) => props.id===data.socialId)
+      setDocuments(filteredData)
     }
-  }, [])
- 
+  },[])
 
   return (
     <section className="bg-[#F1E5CF] mx-auto">
@@ -110,13 +107,13 @@ const MyPageComponent = (props: ParamType) => {
               .map((d: any, i: number) => (
                 <Link
                   key={i}
-                  href={`/detail/${d.book && d.book.isbn ? d.book.isbn.replace(' ', '') : ''}`}
+                  href={`/detail/${d.bookRespDto && d.bookRespDto.isbn ? d.bookRespDto.isbn.replace(' ', '') : ''}`}
                 >
                   <div className="flex flex-col items-center rounded-lg border-4 border-transparent p-4 cursor-pointer">
                   <div className="relative w-[25rem] h-[8.5rem] rounded-2xl">
                    <div className="mx-auto h-full border rounded-2xl shadow-xl bg-[#fcfcfc]">
                      <div className='text-left'>
-                     <div className='text-xl font-display font-bold px-5 py-5'>{d.book?.title}</div>
+                     <div className='text-xl font-display font-bold px-5 py-5'>{d.bookRespDto?.title}</div>
                      <div className='px-5'>{d.content.length > 20 ? `${d.content.slice(0, 20)}...` : d.content}</div>
                      </div>
                    </div>
