@@ -325,7 +325,7 @@ const MapView = ({
           if (i == myMapData.length - 1) {
             mapRef.current.setLevel(6)
             mapRef.current.panTo(
-              new window.kakao.maps.LatLng(d.place.y, d.place.x),
+              new window.kakao.maps.LatLng(d.pinRespDto.y, d.pinRespDto.x),
             )
           }
         })
