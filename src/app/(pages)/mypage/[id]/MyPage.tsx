@@ -38,11 +38,12 @@ const MyPageComponent = (props: ParamType) => {
   const [documents,setDocuments]=useState<any[]>([])
 
   useEffect(() => {
+    
     if (allReviewData) {
-      const filteredData = allReviewData.filter((data: any) => props.id===data.socialId)
+      const filteredData = allReviewData.filter((data: any) => Number(props.id)===data.socialId)
       setDocuments(filteredData)
     }
-  },[])
+  },[documents])
 
   return (
     <section className="bg-[#F1E5CF] mx-auto">

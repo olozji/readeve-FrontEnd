@@ -101,7 +101,7 @@ export default function Home() {
   useEffect(() => {
     fetchData()
     setMap(true)
-  }, [])
+  }, [allReviewData])
 
   // useEffect(() => {
   //   const fetchData = async () => {

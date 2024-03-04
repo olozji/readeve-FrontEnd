@@ -59,7 +59,7 @@ const MapView = ({
         return selectedTagsIndexes.every((selectedIndex) =>
           data.tags.some(
             (tag: any) =>
-              tag.selected && tag.name === tagInfo[selectedIndex].content,
+              tag.selected && tag.content === tagInfo[selectedIndex].content,
           ),
         )
       })
