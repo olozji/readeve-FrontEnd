@@ -14,6 +14,7 @@ import lampIcon from '/public/images/lampicon.png'
 import tableImage from '/public/images/tableImg.png'
 import { table } from 'console'
 import { allReviewDataState } from '@/store/writeAtoms'
+import axios from 'axios'
 
 declare global {
   interface Window {
@@ -26,31 +27,48 @@ interface ParamType {
 }
 
 const MyPageComponent = (props: ParamType) => {
-  const session = useSession()
+  const session: any = useSession()
 
   let user: any = session.data?.user
   console.log(props.id)
+
   const [map, setMap] = useState<any>()
 
   const [marker, setMarker] = useState<any>()
   const [address, setAddress] = useState('')
   const [selectBook, setSelectBook] = useState<any[]>([])
-  const [allReviewData, setAllReviewData] = useRecoilState(allReviewDataState)
+
+  const [myData, setMyData] = useState<any[]>([])
   const [documents, setDocuments] = useState<any[]>([])
 
+  const fetchData = async () => {
+  
+      try {
+        const response = await axios.get(
+          `https://api.bookeverywhere.site/api/data/all/${props.id}`,
+        )
+        const data = response.data.data // 응답으로 받은 데이터
+        setMyData(data)
+      } catch (error) {
+        console.error('Error fetching data:', error)
+      }
+    
+  }
+  useEffect(() => {
+    fetchData()
+  }, [props.id])
 
   useEffect(() => {
-    if (allReviewData) {
+    if (myData) {
       if (user) {
-        const filteredData = allReviewData.filter(
+        const filteredData = myData.filter(
           (data: any) => Number(user.id) === data.socialId,
         )
         setDocuments(filteredData)
         console.log(documents)
       }
-      
     }
-  }, [allReviewData])
+  }, [myData])
 
   return (
     <section className="bg-[#F1E5CF] mx-auto">
@@ -78,7 +96,7 @@ const MyPageComponent = (props: ParamType) => {
             height={1500}
           />
           <div className="absolute top-20 left-1/2 transform -translate-x-1/2 z-10">
-            <BookLayout bookData={user.id} isMain={true}></BookLayout>
+            <BookLayout bookData={user?.id} isMain={true}></BookLayout>
           </div>
           <div>
             {documents.length !== 0 ? (

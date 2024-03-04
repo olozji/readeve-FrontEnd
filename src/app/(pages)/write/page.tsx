@@ -136,7 +136,7 @@ const Editor = () => {
         title: bookInfo.title,
         thumbnail: bookInfo.thumbnail,
         isComplete: bookInfo.isComplete,
-        author: bookInfo.authors[0],
+        // author: bookInfo.authors[0],
       },
       tags: tagInfo,
       content: content,
@@ -159,17 +159,12 @@ const Editor = () => {
     const fetchData = async () => {
       try {
         const response = await axios.get(
-          'https://api.bookeverywhere.site/api/data/all',
+          'https://api.bookeverywhere.site/api/data/all?isPrivate=false',
         )
         console.log(response.data) // 서버에서 받은 데이터 출력
         const data = response.data.data // 응답으로 받은 데이터
 
-        // 원본 배열을 복사하여 수정
-        const newData = [...data]
-        newData.splice(-2, 2)
-
-        // 수정된 데이터를 상태에 반영
-        setAllReviewData(newData)
+        setAllReviewData(data)
       } catch (error) {
         console.error('Error fetching data:', error)
       }

@@ -73,62 +73,38 @@ export default function Home() {
 
   const fetchData = async () => {
     try {
-      const response = await axios.get('https://api.bookeverywhere.site/api/data/all');
-      const data = response.data.data; // 응답으로 받은 데이터
-  
-      // 원본 배열을 복사하여 수정
-      const newData = [...data];
-      newData.splice(-2, 2);
-  
-      // 수정된 데이터를 상태에 반영
-      setAllReviewData(newData);
-      console.log(newData)
-  
-      // 상태 업데이트가 완료된 후에 데이터를 필터링하여 다른 상태에 반영
-      if (newData.length !== 0) {
-        const publicReviewData = newData.filter((item: any) => !item.private);
-        setPublicReviews(publicReviewData);
-      }
-  
-      const filteredData = newData.filter((d: any) => !d.pinRespDto.private);
-      setDocuments(filteredData);
+        const response = await axios.get('https://api.bookeverywhere.site/api/data/all?isPrivate=false');
+        const data = response.data.data; // 응답으로 받은 데이터
+
+        // 원본 배열을 복사하여 수정
+        const newData = [...data];
+
+        // 수정된 데이터를 상태에 반영
+        setAllReviewData(newData);
     } catch (error) {
-      console.error('Error fetching data:', error);
+        console.error('Error fetching data:', error);
     }
-  };
-  
+};
 
-  
-  useEffect(() => {
-    fetchData()
-    setMap(true)
-  }, [])
+useEffect(() => {
+  fetchData();
+  setMap(true)
+}, []);
 
-  // useEffect(() => {
-  //   const fetchData = async () => {
-  //     try {
-  //       const response = await axios.get('https://api.bookeverywhere.site/api/reviews'); 
-  //       const data = response.data; // 응답으로 받은 데이터
-  //     //   if (data.length !== 0) {
-  //     //     const PublicReviewData = data.filter((item: any) => !item.isPrivate)
-  //     //     setPublicReviews(PublicReviewData)
-  //     //  }
-  //       console.log(data)
-       
-  //     } catch (error) {
-  //       console.error('Error fetching data:', error);
-  //     }
-  //   };
+useEffect(() => {
+    // allReviewData 상태가 업데이트되면서 새로운 데이터로 필터링하여 다른 상태에 반영
+    if (allReviewData.length !== 0) {
+        const publicReviewData = allReviewData.filter((item: any) => !item.private);
+        setPublicReviews(publicReviewData);
+    }
+}, [allReviewData]);
 
-  //   fetchData(); // 데이터를 가져오는 함수 호출
+useEffect(() => {
+    // allReviewData 상태가 업데이트되면서 새로운 데이터로 필터링하여 다른 상태에 반영
+    const filteredData = allReviewData.filter((d: any) => !d.pinRespDto.private);
+    setDocuments(filteredData);
+}, [allReviewData]);
 
-  //   // if (storedData) {
-  //   //   const parsedData = JSON.parse(storedData)
-  //   //   const PublicReviewData = parsedData.filter((item: any) => !item.isPrivate)
-  //   //   console.log(PublicReviewData)
-  //   //   setPublicReviews(PublicReviewData)
-  //   // }
-  // }, [])
 
 
   
