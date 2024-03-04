@@ -41,11 +41,14 @@ const MyPageComponent = (props: ParamType) => {
 
   useEffect(() => {
     if (allReviewData) {
-      const filteredData = allReviewData.filter(
-        (data: any) => Number(user.id) === data.socialId,
-      )
-      setDocuments(filteredData)
-      console.log(documents)
+      if (user) {
+        const filteredData = allReviewData.filter(
+          (data: any) => Number(user.id) === data.socialId,
+        )
+        setDocuments(filteredData)
+        console.log(documents)
+      }
+      
     }
   }, [allReviewData])
 
