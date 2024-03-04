@@ -5,6 +5,7 @@ import {
   bookState,
   editReivewState,
   removeReivewState,
+  sortOptionState,
 } from '@/store/writeAtoms'
 import Link from 'next/link'
 import Image from 'next/image'
@@ -36,6 +37,7 @@ const BookLayoutItem = (props: any) => {
   // TODO: 수정 삭제도 리코일로 관리할지? 논의 해봐용
   const [editReviewId, setEditReviewId] = useRecoilState(editReivewState)
   const [removeReviewId, setRemoveReviewId] = useRecoilState(removeReivewState)
+  const [sortOption, setSortOption] = useRecoilState(sortOptionState);
 
   let session: any = useSession()
   const router = useRouter()
@@ -48,6 +50,10 @@ const BookLayoutItem = (props: any) => {
       }
     }
   }
+
+  const handleSort = (option: 'latest' | 'oldest') => {
+    setSortOption(option);
+  };
 
   const handleModal = (idx: number) => {
     let copy = []
@@ -100,19 +106,18 @@ const BookLayoutItem = (props: any) => {
   console.log(bookData)
 
   return (
-    <div className="bg-[#F1E5CF] mx-auto">
+    <section className="bg-[#F1E5CF] mx-auto">
       {/* 램프&내 서재 */}
       <div className="grid relative mx-auto justify-center text-center mb-10">
         <Image
-          src={lampIcon.src}
+          src={lampIcon}
           className="inline-block text-center"
-          alt={lampIcon.src}
+          alt={'lampIcon'}
           width={150}
           height={100}
         />
         <div>
         <div className="absolute bottom-8 left-0 right-0 mx-auto myCustomText text-3xl text-white">내 서재</div>
-
         </div>
       </div>
       {bookData && bookData[0] && (
@@ -149,8 +154,8 @@ const BookLayoutItem = (props: any) => {
                       id="filter"
                       className=" flex gap-3 text-gray-900 text-sm rounded-lg w-full p-2.5"
                     >
-                      <div>최신등록순</div>
-                      <div>오래된순</div>
+                      <div onClick={() => handleSort('latest')}>최신등록순</div>
+                      <div onClick={() => handleSort('oldest')}>오래된순</div>
                     </div>
                   </div>
                 </div>
@@ -295,7 +300,7 @@ const BookLayoutItem = (props: any) => {
           </section>
         </section>
       </>
-    </div>
+    </section>
   )
 }
 

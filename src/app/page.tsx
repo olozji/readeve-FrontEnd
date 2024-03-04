@@ -197,7 +197,6 @@ export default function Home() {
               isFull={`400px`}
               isMain={true}
               markerImage={markerImage}
-              markerImageOpacity={markerImageOpacity}
             ></MapView>
           ) : (
             <div>

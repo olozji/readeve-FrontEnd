@@ -76,31 +76,27 @@ export const allReviewSelector = selector({
     }
 })
 
-export const filteredReviewsState = selector({
-    key: 'filteredProductsState',
-    get: ({ get }) => {
-      const filterReview = get(filterReviewState);
-      const allReviews = get(reviewState);
-  
-      return allReviews.filter((item:any) => {
-        if (filterReview === '전체') {
-          return true; // 전체 범위 선택 시 모든 리뷰 반환
-        }
-  
-        const curDate = new Date().getTime();
-        const reviewDate = new Date(item.date).getTime(); // 리뷰의 날짜 정보
+export const sortOptionState = atom({
+  key: 'sortOptionState',
+  default: 'latest', 
+});
 
-        if (filterReview === '최신등록순') {
-          return reviewDate >= curDate - 50 * 24 * 60 * 60 * 1000; // 최근 50일 이내
-        } else if (filterReview === '오래된 순') {
-            return reviewDate <= curDate - 50 * 24 * 60 * 60 * 1000 && reviewDate >= curDate - 100 * 24 * 60 * 60 * 1000; // 50일 전부터 100일 전까지
-        } else if (filterReview === '즐겨찾기 순') {
-          return item.isFavorite;
-        }
-        return false; // 범위에 해당하지 않는 상품 제외
-      });
-    },
-  });
+export const filteredReviewsState = selector({
+  key: 'filteredReviewsState',
+  get: ({ get }) => {
+    const filterReview = get(filterReviewState);
+    let allReviews = get(reviewState);
+
+  
+    if (filterReview === '최신등록순') {
+      return allReviews.slice().reverse(); 
+    } else if (filterReview === '오래된 순') {
+      return allReviews; 
+    }
+
+    return allReviews;
+  },
+});
   
 // 상품 API 가져오기
 export const getReviewData = selector({
