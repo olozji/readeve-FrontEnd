@@ -66,18 +66,10 @@ const AllReviewPage = () => {
     setIsReviewsModal(false)
   }
 
-  // useEffect(() => {
-  //   const storedData = localStorage.getItem('allDataInfo')
-
-  //   if (storedData) {
-  //     const parsedData: ReviewData[] = JSON.parse(storedData)
-  //     const PublicReviewData = parsedData.filter(
-  //       (item: ReviewData) => !item.isPrivate,
-  //     )
-  //     console.log(PublicReviewData)
-  //     setPublicReviews(PublicReviewData)
-  //   }
-  // }, [])
+  function formatDateToYYMMDD(isoDateString:string) {
+    const date = new Date(isoDateString);
+    return `${date.getFullYear().toString().slice(2)}.${(date.getMonth() + 1).toString().padStart(2, '0')}.${date.getDate().toString().padStart(2, '0')}`;
+}
 
   useEffect(() => {
     const PublicReviewData = allReviewData.filter((item: any) => !item.private)
@@ -216,7 +208,7 @@ const AllReviewPage = () => {
                             </div>
                           </div>
                           <div className="pb-2 absolute right-8 bottom-4 text-end text-sm">
-                            23.03.01
+                            {formatDateToYYMMDD(item.createdAt)}
                           </div>
                         </div>
                       </div>

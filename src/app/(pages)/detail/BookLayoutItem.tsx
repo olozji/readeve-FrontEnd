@@ -45,6 +45,10 @@ const BookLayoutItem = (props: any) => {
   let session: any = useSession()
   const router = useRouter()
 
+  function formatDateToYYMMDD(isoDateString:string) {
+    const date = new Date(isoDateString);
+    return `${date.getFullYear().toString().slice(2)}.${(date.getMonth() + 1).toString().padStart(2, '0')}.${date.getDate().toString().padStart(2, '0')}`;
+}
   function isBook(element: any) {
     if (element.bookRespDto && element.bookRespDto.isbn) {
       let bookId = element.bookRespDto.isbn.replace(' ', '')
@@ -215,7 +219,7 @@ const BookLayoutItem = (props: any) => {
                              <div className='py-5 pt-5 text-[#503526] text-sm'>
                               <div className="flex items-center gap-5">
                                 <span className='font-bold' style={{ verticalAlign: 'middle' }}>등록일</span>
-                                <div className=''>2024. 03. 03</div>
+                                <div className=''>{formatDateToYYMMDD(data.createdAt)}</div>
                               </div>
                               {/* TODO: 태그 부분 수정 필요함 컴포넌트를 직접 가져와서 해야할지? 아직 안해봤어요 */}
                               <div className="flex">
