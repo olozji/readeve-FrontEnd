@@ -5,31 +5,43 @@ import markerImage from '/public/images/marker1.png'
 import { useRecoilState } from "recoil";
 import { allReviewDataState } from "@/store/writeAtoms";
 import { useSession } from "next-auth/react";
+import axios from "axios";
 
 
+interface ParamType {
+  id: string
 
+}
 
-const MyMapPage = () => {
+const MyMapPage = (props: ParamType) => {
 
   const session = useSession()
 
   let user: any = session.data?.user
   const [documents, setDocuments] = useState([]);
   const [allReviewData, setAllReviewData] = useRecoilState(allReviewDataState);
-  useEffect(() => {
-    if (allReviewData) {
-      const filteredData = allReviewData.filter(
-        (data: any) => Number(user.id) === data.socialId,
+  const [myData, setMyData] = useState<any[]>([])
+  
+  const fetchData = async () => {
+  
+    try {
+      const response = await axios.get(
+        `https://api.bookeverywhere.site/api/data/all/${props.id}`,
       )
-      setDocuments(filteredData)
-      console.log(documents)
+      const data = response.data.data // 응답으로 받은 데이터
+      setMyData(data)
+    } catch (error) {
+      console.error('Error fetching data:', error)
     }
-  }, [allReviewData])
+}
+useEffect(() => {
+  fetchData()
+}, [props.id])
     
     return (
         <div>
-            {allReviewData.length !== 0 ? (
-            <MapView myMapData={documents} isShared={false} isFull={`100vh`} markerImage={markerImage}></MapView>
+            {myData.length !== 0 ? (
+            <MapView myMapData={myData} isShared={false} isFull={`100vh`} markerImage={markerImage}></MapView>
           ) : (
             <div>
               <div id="map" style={{ display: 'none' }}></div>
