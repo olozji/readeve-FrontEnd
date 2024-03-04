@@ -16,6 +16,7 @@ import { table } from 'console'
 import { allReviewDataState } from '@/store/writeAtoms';
 
 declare global {
+  
   interface Window {
     kakao: any
   }
