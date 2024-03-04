@@ -39,7 +39,7 @@ export default function Home() {
     useRecoilState<boolean[]>(mainTagState)
 
   const [startIdx, setStartIdx] = useState(0)
-  const [allReviewData, setAllReviewData] = useRecoilState(allReviewDataState);
+  const [allReviewData, setAllReviewData] = useRecoilState<any>(allReviewDataState);
     
     const numVisibleBooks = 4;
 
@@ -72,26 +72,30 @@ export default function Home() {
 
   const fetchData = async () => {
     try {
-      const response = await axios.get('https://api.bookeverywhere.site/api/data/all')
+      const response = await axios.get('https://api.bookeverywhere.site/api/data/all');
       console.log(response.data); // 서버에서 받은 데이터 출력
       const data = response.data; // 응답으로 받은 데이터
-      data.splice(-2,2)
-      setAllReviewData(data)
-      console.log(allReviewData)
-            if (data.length !== 0) {
-              const PublicReviewData = allReviewData.filter((item: any) => !item.private)
-              setPublicReviews(PublicReviewData)
-           }
-      const filteredData = allReviewData.filter(
-        (d: any) => !d.place.private,
-      )
-      setDocuments(filteredData)
-      
+  
+      // 원본 배열을 복사하여 수정
+      const newData = [...data];
+      newData.splice(-2, 2);
+  
+      // 수정된 데이터를 상태에 반영
+      setAllReviewData(newData);
+  
+      // 상태 업데이트가 완료된 후에 데이터를 필터링하여 다른 상태에 반영
+      if (newData.length !== 0) {
+        const publicReviewData = newData.filter((item: any) => !item.private);
+        setPublicReviews(publicReviewData);
+      }
+  
+      const filteredData = newData.filter((d: any) => !d.place.private);
+      setDocuments(filteredData);
     } catch (error) {
-      console.error('Error fetching data:', error)
+      console.error('Error fetching data:', error);
     }
-    
-  }
+  };
+  
 
   
   useEffect(() => {
