@@ -89,7 +89,7 @@ export default function Home() {
         setPublicReviews(publicReviewData);
       }
   
-      const filteredData = newData.filter((d: any) => !d.place.private);
+      const filteredData = newData.filter((d: any) => !d.pinRespDto.private);
       setDocuments(filteredData);
     } catch (error) {
       console.error('Error fetching data:', error);

@@ -126,7 +126,7 @@ const MapView = ({
       data
         .map(
           (tag: any, i: number) =>
-            tag.isSelected && `<div class="tag">${tag.content}</div>`,
+            tag.selected && `<div class="tag">${tag.content}</div>`,
         )
         .filter(Boolean)
         .join(``)

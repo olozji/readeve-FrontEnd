@@ -14,7 +14,7 @@ import privateMarker from '/public/images/privateMarker.png'
 
 interface listItemProps {
   data: any
-  onListItemClick: (place: any, i: number) => void
+  onListItemClick: (pinRespDto: any, i: number) => void
   index: number
   isShared: boolean
   selectedMarkerIndex: string
@@ -39,7 +39,7 @@ const ListItem = ({
   }
 
   useEffect(() => {
-    if (selectedMarkerIndex === data.place.id) {
+    if (selectedMarkerIndex === data.pinRespDto.id) {
       setIsHovered(true)
     } else {
       setIsHovered(false)
@@ -51,17 +51,17 @@ const ListItem = ({
         <div
           className={`relative text-left block pt-6 my-2 
           border  rounded-2xl shadow z-50 hover:bg-[#E57C65] hover:border-[#e57c65] hover:border-2 hover:text-white  ${isHovered ? 'bg-[#E57C65] border-[#E57C65] border-2 text-white' : 'bg-white border-gray-200'}`}
-          onClick={() => onListItemClick(data.place, index)}
+          onClick={() => onListItemClick(data.pinRespDto, index)}
           onMouseEnter={() => setIsHovered(true)}
           onMouseLeave={()=>mouseLeaveList(index)}
         >
           <div className="flex justify-between px-6">
             <h5 className="mb-2 text-xl font-bold tracking-tight">
-              {data.place.place_name
-                ? data.place.place_name
-                : data.place.address}
+              {data.pinRespDto.name
+                ? data.pinRespDto.name
+                : data.pinRespDto.address}
             </h5>
-            <Link href={data.place.url ? data.place.url : ''}>
+            <Link href={data.pinRespDto.url ? data.pinRespDto.url : ''}>
               <div
                 className={`text-xs underline decoration-solid ${isHovered ? 'text-white' : 'text-gray'}`}
               >
@@ -78,7 +78,7 @@ const ListItem = ({
                 width={16}
                 height={10}
               />
-              <p className="text-sm">{data.place.address}</p>
+              <p className="text-sm">{data.pinRespDto.address}</p>
             </div>
             {!isHovered && (
               <div className="px-6">
@@ -94,7 +94,7 @@ const ListItem = ({
                 (tag: any, i: number) =>
                   tag.selected && (
                     <div className="text-gray-600 py-1 text-xs">
-                      #{tag.name}
+                      #{tag.content}
                     </div>
                   ),
               )}
@@ -104,7 +104,7 @@ const ListItem = ({
         <div
           className="relative text-left block p-6 my-2
             border bg-white border-gray-200 rounded-lg shadow z-50 hover:bg-[#E57C65] hover:text-white"
-          onClick={() => onListItemClick(data.place, index)}
+          onClick={() => onListItemClick(data.pinRespDto, index)}
           onMouseEnter={() => setIsHovered(true)}
           onMouseLeave={()=>mouseLeaveList(index)}
             
@@ -113,17 +113,17 @@ const ListItem = ({
             <div className="flex gap-3">
               <div className="flex">
                 <h5 className="mb-2 text-lg font-bold tracking-tight">
-                  {data.book?.title}
+                  {data.bookRespDto?.title}
                 </h5>
                 <Image
-                  src={data.isPrivate ? Private : unLock}
+                  src={data.private ? Private : unLock}
                   alt="private"
                   style={{ width: '25px', height: '25px' }}
                 />
               </div>
 
               <Link
-                href={`/detail/${data.book && data.book.isbn ? data.book.isbn.replace(' ', '') : ''}`}
+                href={`/detail/${data.bookRespDto && data.bookRespDto.isbn ? data.bookRespDto.isbn.replace(' ', '') : ''}`}
               >
                 <Image
                   src={isHovered ? linkArrow : blackLinkArrow}
@@ -142,12 +142,12 @@ const ListItem = ({
                 className=""
               />
               <h5 className=" text-sm font-bold tracking-tight">
-                {data.place.place_name
-                  ? data.place.place_name
-                  : data.place.address}
+                {data.pinRespDto.name
+                  ? data.pinRespDto.name
+                  : data.pinRespDto.address}
               </h5>
             </div>
-                <p className="text-xs text-gray-600">{data.place.address}</p>
+                <p className="text-xs text-gray-600">{data.pinRespDto.address}</p>
                 </div>
           </div>
           <p

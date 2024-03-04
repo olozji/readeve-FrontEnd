@@ -99,7 +99,7 @@ const Editor = () => {
     if (index >= 0 && index < tagInfo.length) {
       // 객체를 복사하여 새로운 객체를 생성
       const updatedTags = tagInfo.map((tag: any, i: number) =>
-        i === index ? { ...tag, isSelected: !tag.isSelected } : tag,
+        i === index ? { ...tag, selected: !tag.selected } : tag,
       )
 
       // Recoil 상태를 갱신
@@ -152,7 +152,7 @@ const Editor = () => {
       try {
         const response = await axios.get('https://api.bookeverywhere.site/api/data/all');
         console.log(response.data); // 서버에서 받은 데이터 출력
-        const data = response.data; // 응답으로 받은 데이터
+        const data = response.data.data; // 응답으로 받은 데이터
     
         // 원본 배열을 복사하여 수정
         const newData = [...data];
@@ -311,7 +311,7 @@ const Editor = () => {
                           className={`box-border flex justify-center items-center px-4 py-2
                  my-2 mx-2 border border-gray-300 rounded-full 
                  ${
-                   tag.isSelected
+                   tag.selected
                      ? 'bg-[#E57C65] text-white'
                      : 'bg-white hover:border-[#C05555] hover:text-[#C05555]'
                  }`}

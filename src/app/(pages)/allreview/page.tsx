@@ -152,7 +152,7 @@ const AllReviewPage = () => {
                                       <span>tags</span>
                                       {item.tags.map(
                                         (data: any) =>
-                                          data.isSelected && (
+                                          data.selected && (
                                             <div>{data.content}</div>
                                           ),
                                       )}

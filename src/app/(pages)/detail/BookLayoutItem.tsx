@@ -223,7 +223,7 @@ const BookLayoutItem = (props: any) => {
                                 <div className='flex flex-wrap w-[16vw]'>
                                 {data.tags.map(
                                   (tag: any) =>
-                                    tag.isSelected && <div className='flex bg-[#E57C65] rounded-full m-1 p-2 text-white font-semibold text-xs'>#{tag.content}</div>,
+                                    tag.selected && <div className='flex bg-[#E57C65] rounded-full m-1 p-2 text-white font-semibold text-xs'>#{tag.content}</div>,
                                 )}
                               </div>
                               </div>
