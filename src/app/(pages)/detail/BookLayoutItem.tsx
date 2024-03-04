@@ -100,19 +100,18 @@ const BookLayoutItem = (props: any) => {
   console.log(bookData)
 
   return (
-    <div className="bg-[#F1E5CF] mx-auto">
+    <section className="bg-[#F1E5CF] mx-auto">
       {/* 램프&내 서재 */}
       <div className="grid relative mx-auto justify-center text-center mb-10">
         <Image
-          src={lampIcon.src}
+          src={lampIcon}
           className="inline-block text-center"
-          alt={lampIcon.src}
+          alt={'lampIcon'}
           width={150}
           height={100}
         />
         <div>
         <div className="absolute bottom-8 left-0 right-0 mx-auto myCustomText text-3xl text-white">내 서재</div>
-
         </div>
       </div>
       {bookData && bookData[0] && (
@@ -295,7 +294,7 @@ const BookLayoutItem = (props: any) => {
           </section>
         </section>
       </>
-    </div>
+    </section>
   )
 }
 

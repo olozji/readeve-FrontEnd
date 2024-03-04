@@ -58,7 +58,6 @@ const MyPageComponent = (props: ParamType) => {
         />
         <div>
         <div className="absolute bottom-8 left-0 right-0 mx-auto myCustomText text-3xl text-white">내 서재</div>
-
         </div>
       </div>
       <section>
@@ -83,7 +82,6 @@ const MyPageComponent = (props: ParamType) => {
                 isShared={false} 
                 isFull={'600px'} 
                 markerImage={props.markerImage} 
-                markerImageOpacity={props.markerImageOpacity}
                 />
             </div>
           ) : (
