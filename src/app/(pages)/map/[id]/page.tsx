@@ -8,25 +8,20 @@ import { useSession } from "next-auth/react";
 import axios from "axios";
 
 
-interface ParamType {
-  id: string
-
+export interface PropType {
+  params: {
+    id: string
+    searchParams: {}
+  }
 }
+const MyMapPage = (props: PropType) => {
 
-const MyMapPage = (props: ParamType) => {
-
-  const session = useSession()
-
-  let user: any = session.data?.user
-  const [documents, setDocuments] = useState([]);
-  const [allReviewData, setAllReviewData] = useRecoilState(allReviewDataState);
   const [myData, setMyData] = useState<any[]>([])
-  
   const fetchData = async () => {
   
     try {
       const response = await axios.get(
-        `https://api.bookeverywhere.site/api/data/all/${props.id}`,
+        `https://api.bookeverywhere.site/api/data/all/${props.params.id}`,
       )
       const data = response.data.data // 응답으로 받은 데이터
       setMyData(data)
@@ -36,7 +31,7 @@ const MyMapPage = (props: ParamType) => {
 }
 useEffect(() => {
   fetchData()
-}, [props.id])
+}, [props.params.id])
     
     return (
         <div>
