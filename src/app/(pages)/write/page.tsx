@@ -155,8 +155,7 @@ const Editor = () => {
         )
         console.log(getData.data) // 서버에서 받은 데이터 출력
         const newData = getData.data // 응답으로 받은 데이터
-        newData.pop()
-        newData.pop()
+       newData.splice(-2,2)
         
         setAllReviewData(newData)
         console.log(allReviewData)
