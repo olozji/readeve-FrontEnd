@@ -22,10 +22,9 @@ export const BookLayout = ({ isMain ,bookData}: bookLayoutProps) => {
  
     if (allReviewData) {
       
-        const filteredData = allReviewData.filter(
+      const filteredData = allReviewData.filter(
           (data: any) => Number(bookData) === data.socialId,
-        )
-        
+      )
       const onlyBookData = filteredData.filter((data: any, idx: number) => {
         return (
           allReviewData.findIndex((data1: any) => {
@@ -36,7 +35,7 @@ export const BookLayout = ({ isMain ,bookData}: bookLayoutProps) => {
       setDocuments(onlyBookData)
       
     }
-  }, [])
+  }, [allReviewData])
 
 
   const handleClickPrev = () => {
