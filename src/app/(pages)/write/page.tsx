@@ -182,10 +182,10 @@ const Editor = () => {
   return (
     <>
       <NavBar />
-      <div className="bg-[#F1E5CF] flex justify-center mx-auto box-border min-h-full">
+      <div className="bg-[#FAF2E5] flex justify-center mx-auto box-border min-h-full">
         <div className="sm:pt-10 md:pt-20 xl:pt-20">
           <header className="h-10 text-center">
-            <h1 className="myCustomText text-3xl text-white">독후감 작성</h1>
+            <h1 className="myCustomText text-3xl text-black">독후감 작성</h1>
           </header>
 
           <section className='py-10 px-10'>
@@ -194,7 +194,7 @@ const Editor = () => {
               <input
                 placeholder='제목'
                 ref={inputRef}
-                className="inline-block w-[60rem] h-[2.8rem] px-3 border-2 shadow-md rounded-md bg-[#FEF6E6]"
+                className="inline-block w-[60rem] h-[2.8rem] px-3 rounded-md bg-[#F9F9F9] placeholder-[#A08A7E]"
                 value={titleInfo}
                 onChange={handleTitle}
               />
@@ -206,7 +206,7 @@ const Editor = () => {
               <input
                 placeholder='독서한 장소를 입력해주세요'
                 ref={inputRef}
-                className="inline-block w-[35rem] h-[2rem] px-3 border-2 shadow-md rounded-2xl bg-[#FEF6E6]"
+                className="inline-block w-[35rem] h-[2rem] px-3 rounded-2xl bg-[#F9F9F9] placeholder-[#A08A7E]"
                 value={placeInfo.place_name}
                 onClick={handleSearchMap}
               />
@@ -336,7 +336,7 @@ const Editor = () => {
         </CustomModal>
         <div className="py-8 flex gap-4 justify-center items-center">
         <span
-        className={`inline-flex justify-center items-center gap-2 rounded-lg px-3 py-3 text-xs font-medium ${
+        className={`inline-flex justify-center items-center gap-2 rounded-full px-3 py-3 text-xs font-medium ${
           isPrivate ? 'bg-[#E57C65] text-white'  : 'bg-white text-black'
         }`}
         onClick={handleIsPrivateClick}
@@ -350,8 +350,8 @@ const Editor = () => {
         나만보기
         </span>
         <span
-        className={`inline-flex items-center rounded-lg gap-2 px-3 py-3 text-xs font-medium ${
-          !isPrivate ? 'bg-[#E57C65] text-white'  : 'bg-white text-black'
+        className={`inline-flex items-center rounded-full gap-2 px-3 py-3 text-xs font-medium ${
+          !isPrivate ? 'bg-[#E57C65] text-white'  : 'bg-[#F9f9f9] text-black'
         }`}
         onClick={handlePublicClick}
         >
@@ -366,7 +366,7 @@ const Editor = () => {
         </div>
 
 
-            <div className="py-8 border-white border-t-2">
+            <div className="py-8 border-[#A08A7E] border-t-2">
               <div className="px-5 py-8">
                 <div className="flex gap-2 pb-5">
                   <Image src={pen} alt="pen" width={30} height={30} />
@@ -376,7 +376,7 @@ const Editor = () => {
               </div>
 
               <textarea
-                className="border border-slate-200 rounded-2xl w-full h-80 bg-[#FEF6E6] px-3 py-3"
+                className="border border-slate-200 rounded-2xl w-full h-80 text-[#A08A7E] placeholder-[#A08A7E] bg-[#F9F9F9] px-3 py-3"
                 placeholder="(1500자 이내로 독후감을 작성해주세요)"
                 value={content}
                 onChange={(e) => setContent(e.target.value)}
