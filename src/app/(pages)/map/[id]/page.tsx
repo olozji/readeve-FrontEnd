@@ -4,12 +4,27 @@ import MapView from "./MapView";
 import markerImage from '/public/images/marker1.png'
 import { useRecoilState } from "recoil";
 import { allReviewDataState } from "@/store/writeAtoms";
+import { useSession } from "next-auth/react";
 
 
 
 
 const MyMapPage = () => {
-    const [allReviewData, setAllReviewData] = useRecoilState(allReviewDataState);
+
+  const session = useSession()
+
+  let user: any = session.data?.user
+  const [documents, setDocuments] = useState([]);
+  const [allReviewData, setAllReviewData] = useRecoilState(allReviewDataState);
+  useEffect(() => {
+    if (allReviewData) {
+      const filteredData = allReviewData.filter(
+        (data: any) => Number(user.id) === data.socialId,
+      )
+      setDocuments(filteredData)
+      console.log(documents)
+    }
+  }, [allReviewData])
     
     return (
         <div>
