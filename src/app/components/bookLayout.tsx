@@ -3,31 +3,39 @@ import Link from 'next/link'
 import { useEffect, useState } from 'react'
 import Image from 'next/image';
 import NotesImg from '/public/images/notesImg.png';
+import { useRecoilState } from 'recoil';
+import { allReviewDataState } from '@/store/writeAtoms';
 
 interface bookLayoutProps {
   isMain: boolean
+  bookData:any
 }
-export const BookLayout = ({ isMain }: bookLayoutProps) => {
+export const BookLayout = ({ isMain ,bookData}: bookLayoutProps) => {
   const [documents, setDocuments] = useState<any[]>([])
   const [parsedData, setParsedData] = useState<any[]>([]) 
   const [startIdx, setStartIdx] = useState(0)
+  const [allReviewData, setAllReviewData] = useRecoilState<any>(allReviewDataState);
+
   const numVisibleBooks = 5
 
   useEffect(() => {
-    const storedData = localStorage.getItem('allDataInfo')
-    if (storedData) {
-      const parsedData = JSON.parse(storedData)
-      const onlyBookData = parsedData.filter((data: any, idx: number) => {
+ 
+    if (allReviewData) {
+      
+      const filteredData = allReviewData.filter(
+          (data: any) => Number(bookData) === data.socialId,
+      )
+      const onlyBookData = filteredData.filter((data: any, idx: number) => {
         return (
-          parsedData.findIndex((data1: any) => {
-            return data.book.isbn === data1.book.isbn
+          filteredData.findIndex((data1: any) => {
+            return data.bookRespDto.isbn === data1.bookRespDto.isbn
           }) === idx
         )
       })
       setDocuments(onlyBookData)
-      setParsedData(parsedData);
+      
     }
-  }, [])
+  }, [allReviewData])
 
 
   const handleClickPrev = () => {
@@ -53,13 +61,13 @@ export const BookLayout = ({ isMain }: bookLayoutProps) => {
               .map((d: any, i: number) => (
                 <Link
                   key={i}
-                  href={`/detail/${d.book && d.book.isbn ? d.book.isbn.replace(' ', '') : ''}`}
+                  href={`/detail/${d.bookRespDto && d.bookRespDto.isbn ? d.bookRespDto.isbn.replace(' ', '') : ''}`}
                 >
                   <div className="flex flex-col items-center rounded-lg border-4 border-transparent p-4 cursor-pointer">
                     <img
                       src={
-                        d.book.thumbnail
-                          ? d.book.thumbnail
+                        d.bookRespDto.thumbnail
+                          ? d.bookRespDto.thumbnail
                           : 'http://via.placeholder.com/120X150'
                       }
                       alt="책 표지"
@@ -73,12 +81,12 @@ export const BookLayout = ({ isMain }: bookLayoutProps) => {
                       width={10}
                       height={10} 
                     />  
-                    {parsedData.filter(
+                    {allReviewData.filter(
                       (data: any) =>
-                        data.book.isbn === d.book.isbn
+                        data.bookRespDto.isbn === d.bookRespDto.isbn
                     ).length}{' '}
                   </span>
-                    <div className="px-1 py-1 text-[#5F5F5F] text-sm">{d.book.title}</div>
+                    <div className="px-1 py-1 text-[#5F5F5F] text-sm">{d.bookRespDto.title}</div>
                   </div>
                   </div>
                 </Link>
@@ -95,7 +103,7 @@ export const BookLayout = ({ isMain }: bookLayoutProps) => {
           {documents.map((d: any, i: number) => (
             <Link
               key={i}
-              href={`/detail/${d.book && d.book.isbn ? d.book.isbn.replace(' ', '') : ''}`}
+              href={`/detail/${d.bookRespDto && d.bookRespDto.isbn ? d.bookRespDto.isbn.replace(' ', '') : ''}`}
             >
               <div
                 className={`justify-items-center rounded-lg border-4 border-transparent`}
@@ -108,14 +116,14 @@ export const BookLayout = ({ isMain }: bookLayoutProps) => {
               >
                 <img
                   src={
-                    d.book.thumbnail
-                      ? d.book.thumbnail
+                    d.bookRespDto.thumbnail
+                      ? d.bookRespDto.thumbnail
                       : 'http://via.placeholder.com/120X150'
                   }
                   alt="책 표지"
                   className="mb-2 rounded"
                 />
-                <div className="p-4">{d.book.title}</div>
+                <div className="p-4">{d.bookRespDto.title}</div>
               </div>
             </Link>
           ))}

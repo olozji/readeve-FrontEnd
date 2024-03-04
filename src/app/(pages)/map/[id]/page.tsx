@@ -2,25 +2,34 @@
 import { useEffect, useState } from "react";
 import MapView from "./MapView";
 import markerImage from '/public/images/marker1.png'
-import markerImageOpacity from '/public/images/marker2.png'
+import { useRecoilState } from "recoil";
+import { allReviewDataState } from "@/store/writeAtoms";
+import { useSession } from "next-auth/react";
+
 
 
 
 const MyMapPage = () => {
-    const [documents, setDocuments] = useState<any[]>([])
-    useEffect(() => {
-        const storedData = localStorage.getItem('allDataInfo')
-    
-        if (storedData) {
-          const parsedData = JSON.parse(storedData)
-          setDocuments(parsedData)
-        }
-    }, [])
+
+  const session = useSession()
+
+  let user: any = session.data?.user
+  const [documents, setDocuments] = useState([]);
+  const [allReviewData, setAllReviewData] = useRecoilState(allReviewDataState);
+  useEffect(() => {
+    if (allReviewData) {
+      const filteredData = allReviewData.filter(
+        (data: any) => Number(user.id) === data.socialId,
+      )
+      setDocuments(filteredData)
+      console.log(documents)
+    }
+  }, [allReviewData])
     
     return (
         <div>
-            {documents.length !== 0 ? (
-            <MapView myMapData={documents} isShared={false} isFull={`100vh`} markerImage={markerImage} markerImageOpacity={markerImageOpacity}></MapView>
+            {allReviewData.length !== 0 ? (
+            <MapView myMapData={documents} isShared={false} isFull={`100vh`} markerImage={markerImage}></MapView>
           ) : (
             <div>
               <div id="map" style={{ display: 'none' }}></div>

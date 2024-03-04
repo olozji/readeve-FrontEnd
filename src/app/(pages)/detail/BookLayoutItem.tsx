@@ -2,6 +2,7 @@
 import Button from '@/app/components/buttons/button'
 import CustomModal from '@/app/components/modal'
 import {
+  allReviewDataState,
   bookState,
   editReivewState,
   removeReivewState,
@@ -22,6 +23,7 @@ import privateMarker from '/public/images/privateMarker.png'
 import isPrivatedIcon from '/public/images/isPrivatedIcon.png'
 import isSharedIcon from '/public/images/isSharedIcon.png'
 import whitePaper from '/public/images//whitePager.png';
+import { all } from 'node_modules/axios/index.cjs';
 
 export interface PropType {
   params: {
@@ -38,13 +40,14 @@ const BookLayoutItem = (props: any) => {
   const [editReviewId, setEditReviewId] = useRecoilState(editReivewState)
   const [removeReviewId, setRemoveReviewId] = useRecoilState(removeReivewState)
   const [sortOption, setSortOption] = useRecoilState(sortOptionState);
+  const [allReviewData, setAllReviewData] = useRecoilState(allReviewDataState);
 
   let session: any = useSession()
   const router = useRouter()
 
   function isBook(element: any) {
-    if (element.book && element.book.isbn) {
-      let bookId = element.book.isbn.replace(' ', '')
+    if (element.bookRespDto && element.bookRespDto.isbn) {
+      let bookId = element.bookRespDto.isbn.replace(' ', '')
       if (bookId === props.id) {
         return true
       }
@@ -71,10 +74,10 @@ const BookLayoutItem = (props: any) => {
   // 수정은 edit에서 구현되어 있는 것 같아서 냅뒀어요!
   const handleRemove = (isbn: string) => {
     if (window.confirm('정말로 삭제하시겠습니까?')) {
-      const storedData = localStorage.getItem('allDataInfo')
+      const allReviewData = localStorage.getItem('allDataInfo')
 
-      if (storedData) {
-        const parsedData: any[] = JSON.parse(storedData)
+      if (allReviewData) {
+        const parsedData: any[] = JSON.parse(allReviewData)
 
         // isbn을 통해 독후감을 삭제
         const updatedData = parsedData.filter((item) => !isBook(item))
@@ -89,12 +92,12 @@ const BookLayoutItem = (props: any) => {
 
 
   useEffect(() => {
-    const storedData = localStorage.getItem('allDataInfo')
+    
     let arr: boolean[] = []
 
-    if (storedData) {
-      const parsedData = JSON.parse(storedData)
-      let result = parsedData.filter(isBook)
+    if (allReviewData) {
+
+      let result = allReviewData.filter(isBook)
       console.log(result)
       setBookData(result)
       result.forEach(() => {
@@ -131,15 +134,15 @@ const BookLayoutItem = (props: any) => {
         >
           <img
             src={
-              bookData[0].book.thumbnail
-                ? bookData[0].book.thumbnail
+              bookData[0].bookRespDto.thumbnail
+                ? bookData[0].bookRespDto.thumbnail
                 : 'http://via.placeholder.com/120X150'
             }
             alt="책 표지"
             className="mb-2 rounded-xl drop-shadow-lg"
           />
           <div className="p-4 text-xl text-[#503526] font-display font-bold ">
-            {bookData[0].book.title} | {bookData[0].book.author} 작가
+            {bookData[0].bookRespDto.title} | {bookData[0].bookRespDto.author} 작가
           </div>
         </div>
       )}
@@ -180,8 +183,8 @@ const BookLayoutItem = (props: any) => {
                           <div className="flex justify-center items-center">
                             <img
                               src={
-                                bookData[0].book.thumbnail
-                                  ? bookData[0].book.thumbnail
+                                bookData[0].bookRespDto.thumbnail
+                                  ? bookData[0].bookRespDto.thumbnail
                                   : 'http://via.placeholder.com/120X150'
                               }
                               alt="책 표지"
@@ -192,7 +195,7 @@ const BookLayoutItem = (props: any) => {
                                 {data.title}
                               </div>
                               <div className="text-sm font-bold text-[#9C8A80]">
-                                | {bookData[0].book.author} 저자
+                                | {bookData[0].bookRespDto.author} 저자
                               </div>
                               <div className="justify-center items-center py-2">
                               <span
@@ -220,7 +223,7 @@ const BookLayoutItem = (props: any) => {
                                 <div className='flex flex-wrap w-[16vw]'>
                                 {data.tags.map(
                                   (tag: any) =>
-                                    tag.selected && <div className='flex bg-[#E57C65] rounded-full m-1 p-2 text-white font-semibold text-xs'>#{tag.name}</div>,
+                                    tag.selected && <div className='flex bg-[#E57C65] rounded-full m-1 p-2 text-white font-semibold text-xs'>#{tag.content}</div>,
                                 )}
                               </div>
                               </div>
@@ -233,7 +236,7 @@ const BookLayoutItem = (props: any) => {
                                     src={privateMarker}
                                     alt={'장소'}
                                   />
-                                  {data.place.place_name}
+                                  {data.pinRespDto.name}
                                   </div>
                                   </Link>
                               </div>
@@ -274,7 +277,7 @@ const BookLayoutItem = (props: any) => {
                       <div className="grid justify-itmes-center">
                         <div>2024.03.01</div>
                         <Image
-                          src={data.isPrivate ? Private : unLock}
+                          src={data.private ? Private : unLock}
                           alt="private"
                           style={{ width: '25px', height: '25px' }}
                           className=" mt-1 justify-self-center"
@@ -288,8 +291,8 @@ const BookLayoutItem = (props: any) => {
                         className="mx-1"
                       />
                       <div className="text-gray-500 text-sm font-semibold">
-                        독서장소: {data.place?.place_name} |{' '}
-                        {data.place?.address}
+                        독서장소: {data.pinRespDto?.name} |{' '}
+                        {data.pinRespDto.address}
                       </div>
                     </div>
                     {/* TODO:내용 글자 많으면 ...으로 표시하기 */}
