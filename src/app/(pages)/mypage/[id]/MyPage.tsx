@@ -92,15 +92,15 @@ const MyPageComponent = (props: ParamType) => {
             alt={tableImage.src}
            
           />
-          <div className="absolute top-[4%] left-1/2 max-w-[95%] transform -translate-x-1/2 z-10">
+          <div className="absolute top-[2%] left-1/2 max-w-[95%] transform -translate-x-1/2 z-10">
             
             <BookLayout bookData={props.id} isMain={true}></BookLayout>
           </div>
-          <div className="absolute bottom-[5vh] left-1/2 min-h-[60%] min-w-[60vw] transform -translate-x-1/2 z-20">
+          <div className="absolute bottom-[1vh] left-1/2 min-h-[60%] min-w-[60vw] transform -translate-x-1/2 z-20">
             {myData.length !== 0 ? (
               <div>
                 <div className="flex gap-2">
-                  <h1>나만의 지도</h1>
+                  <h1 className="pb-[3%]">나만의 지도</h1>
                   <div className="flex items-center gap-3">
                     <span className="inline-flex items-center justify-center max-h-10 rounded-lg gap-1 bg-[#E1E1E1] px-3 py-1 text-xs font-medium text-[#5F5F5F]">
                       <Image
