@@ -148,6 +148,11 @@ export const BookSearch = () => {
                 size={50}
                 placeholder="입력"
                 onChange={(e) => setBookName(e.target.value)}
+                onKeyDown={(e) => {
+                  if (e.key === 'Enter') {
+                    onSubmit(e);
+                  }
+                }}
                 className="w-[35rem] h-[2.5rem] px-3 border border-black rounded-2xl bg-white"
               />
               <div className="bg-[#E57C65] border-4 border-white px-2 py-1 rounded-3xl shadow-xl justify-center">
@@ -209,17 +214,18 @@ export const BookSearch = () => {
               </button>
             </div>
             <div className="mt-4 text-center flex gap-4 justify-center">
-              <button
-                onClick={() => handleConfirmation(true)}
-                className="px-4 py-2 bg-blue-500 text-white rounded-full"
-              >
-              확인
-              </button>
+              
               <button
                 onClick={() => handleConfirmation(false)}
-                className="px-4 py-2 bg-red-500 text-white rounded-full"
+                className="px-4 py-2 bg-[#65AFE5] text-white rounded-full"
               >
                 취소
+              </button>
+              <button
+                onClick={() => handleConfirmation(true)}
+                className="px-4 py-2 bg-[#e57c65]  text-white rounded-full"
+              >
+              확인
               </button>
             </div>
           </div>

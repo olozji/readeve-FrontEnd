@@ -22,14 +22,14 @@ export const Tag = ({tags, limit = tags.length, showModal = false} : TagProps) =
         // 선택된 태그의 상태를 변경
         const updatedTags = tagInfo.map((tag: any, index: number) => {
             if (index === i) {
-                return { ...tag, isSelected: !tag.isSelected };
+                return { ...tag, selected: !tag.selected };
             }
             return tag;
         });
         setTagInfo(updatedTags)
     };
 
-    const renderTags = showModal ? tags : tags.slice(0, limit);
+    const renderTags =tags
 
     return (
         <div className="flex flex-wrap justify-center sm:px-10 ">
@@ -38,7 +38,7 @@ export const Tag = ({tags, limit = tags.length, showModal = false} : TagProps) =
                 <div 
                     key={i}
                     className={`box-border flex justify-center items-center px-4 py-2 my-2 mx-2 border border-gray-300 rounded-full ${
-                        tags[i].isSelected
+                        tags[i].selected
                           ? 'bg-[#E57C65] text-white'
                           : 'bg-white hover:border-[#C05555] hover:text-[#C05555]'
                       }`}

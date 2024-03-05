@@ -8,6 +8,8 @@ import LoginBtn from './buttons/LoginButton'
 import LogoutBtn from './buttons/LogoutButton'
 import NavLogo from '/public/images/NavLogo.png'
 import Image from 'next/image'
+import navMapViewIcon from '/public/images/navMapViewIcon.png'
+import navWriteIcon from '/public/images/navWriteIcon.png'
 
 const NavBar = () => {
   const [isLogin, setIsLogin] = useState(false)
@@ -91,39 +93,68 @@ const NavBar = () => {
          읽는곳곳
         </div>
       </ul> */}
-      <div className="flex justify-between mx-auto max-w-5xl right-0 menu menu-horizontal p-0">
+      <div className="flex justify-between mx-auto max-w-5xl right-0 menu menu-horizontal py-3">
         <h1 className="self-center justify-start whitespace-nowrap mx-8">
           <Link href="/">
             <Image src={NavLogo} alt="Logo" />
           </Link>
         </h1>
 
-        <div className="flex justify-end">
-          {session.data && (
-            <>
-              <div className=" py-2  font-bold text-white-900 rounded hover:bg-gray-100 md:hover:bg-transparent dark:border-gray-700 mx-8 text-lg">
-                <Link href="/write">기록하기</Link>
+        <div className="flex justify-center items-center">
+        {session.data && (
+        <div className='flex items-center'>
+              <div className=" font-bold rounded hover:bg-gray-100 md:hover:bg-transparent dark:border-gray-700 mx-8 text-md">
+                <Link href="/write">
+                  <Image
+                    src={navWriteIcon}
+                    alt='navWriteIcon'
+                    className='max-h-5'
+                    width={15}
+                    height={15}
+                  />
+                </Link>
               </div>
-              <div className=" py-2 font-bold text-white-900 rounded hover:bg-gray-100 md:hover:bg-transparent dark:border-gray-700 mx-8 text-lg">
+              <div className=" font-bold rounded hover:bg-gray-100 md:hover:bg-transparent dark:border-gray-700 mx-8 text-md">
+            <Link href="/map">
+              <Image
+                src={navMapViewIcon}
+                alt='navMapViewIcon'
+                 className='max-h-4'
+                width={15}
+                height={15}
+              />
+            </Link>
+          </div>
+              <div className=" font-bold rounded hover:bg-gray-100 md:hover:bg-transparent dark:border-gray-700 mx-8 text-xs">
                 <Link href={`/mypage/${user?.id}`}>내 서재</Link>
               </div>
-            </>
-          )}
-          <div className=" py-2 font-bold text-white-900 rounded hover:bg-gray-100 md:hover:bg-transparent dark:border-gray-700 mx-8 text-lg">
-            <Link href="/map">지도 보기</Link>
-          </div>
-          <div className=" py-2  font-bold text-white-900 rounded hover:bg-gray-100 md:hover:bg-transparent dark:border-gray-700 mx-8 text-lg">
+            </div>
+          )} 
+
+         
+          <div className="   font-bold text-white-900 rounded hover:bg-gray-100 md:hover:bg-transparent dark:border-gray-700 mx-8 text-md">
             {session.data ? (
-              <div className="flex ">
-                <div className="mr-10">{session.data.user?.name}</div>
+              <div className="flex items-center">
+                <div className="mr-10 text-xs">{session.data.user?.name}</div>
                 <LogoutBtn></LogoutBtn>
               </div>
             ) : (
-              <>
-                <div>
-                  <button onClick={openLoginModal}>로그인</button>
+              <div className='flex items-center'>
+               <div className=" font-bold rounded hover:bg-gray-100 md:hover:bg-transparent dark:border-gray-700 mx-8 text-md">
+            <Link href="/map">
+              <Image
+                src={navMapViewIcon}
+                alt='navMapViewIcon'
+                 className='max-h-4'
+                width={15}
+                height={15}
+              />
+            </Link>
+          </div>
+               <div className=" font-bold rounded hover:bg-gray-100 md:hover:bg-transparent dark:border-gray-700 mx-8 text-md">
+                  <button className='text-xs' onClick={openLoginModal}>LOGIN</button>
                 </div>
-              </>
+              </div>
             )}
           </div>
         </div>

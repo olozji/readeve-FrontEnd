@@ -5,6 +5,7 @@ import Link from 'next/link'
 import { useRecoilState, useRecoilValue } from 'recoil'
 import {
   allDataState,
+  allReviewDataState,
   bookState,
   filterReviewState,
   getReviewData,
@@ -16,8 +17,7 @@ import NavBar from '@/app/components/NavBar'
 import Button from '@/app/components/buttons/button'
 import Image from 'next/image'
 import privateMarker from '/public/images/privateMarker.png'
-import axios from 'axios';
-
+import axios from 'axios'
 
 export interface ReviewData {
   [x: string]: any
@@ -52,7 +52,7 @@ const AllReviewPage = () => {
   const [detailOpen, setDetailOpen] = useState<boolean[]>(
     Array(publicReviews.length).fill(false),
   )
-
+  const [allReviewData, setAllReviewData] = useRecoilState(allReviewDataState)
   const handleModal = (idx: number) => {
     setDetailOpen((prevState) => {
       const copy = [...prevState]
@@ -66,34 +66,14 @@ const AllReviewPage = () => {
     setIsReviewsModal(false)
   }
 
-  // useEffect(() => {
-  //   const storedData = localStorage.getItem('allDataInfo')
-
-  //   if (storedData) {
-  //     const parsedData: ReviewData[] = JSON.parse(storedData)
-  //     const PublicReviewData = parsedData.filter(
-  //       (item: ReviewData) => !item.isPrivate,
-  //     )
-  //     console.log(PublicReviewData)
-  //     setPublicReviews(PublicReviewData)
-  //   }
-  // }, [])
+  function formatDateToYYMMDD(isoDateString:string) {
+    const date = new Date(isoDateString);
+    return `${date.getFullYear().toString().slice(2)}.${(date.getMonth() + 1).toString().padStart(2, '0')}.${date.getDate().toString().padStart(2, '0')}`;
+}
 
   useEffect(() => {
-    const fetchData = async () => {
-      try {
-        const response = await axios.get('https://api.bookeverywhere.site/api/reviews'); 
-        const data = response.data; // 응답으로 받은 데이터
-      
-        const PublicReviewData = data.filter((item: any) => !item.isPrivate)
-        setPublicReviews(PublicReviewData)
-      } catch (error) {
-        console.error('Error fetching data:', error);
-      }
-    };
-
-    fetchData(); 
-
+    const PublicReviewData = allReviewData.filter((item: any) => !item.private)
+    setPublicReviews(PublicReviewData)
   }, [])
 
   return (
@@ -102,29 +82,7 @@ const AllReviewPage = () => {
       <div className="bg-[#f1e5cf]">
         <section className="main mx-auto max-w-6xl px-4 ">
           <section className="pt-20 lg:pt-5 pb-4 lg:pb-8 px-4 xl:px-2 xl:container mx-auto">
-            {/* <h2 className='mb-5 lg:mb-8 text-3xl lg:text-4xl text-center font-bold'>
-                {categoryName}
-            </h2> */}
-            {/* <nav className="flex" aria-label="Breadcrumb">
-            <ol className="inline-flex items-center space-x-1 md:space-x-3">
-                <li className="inline-flex items-center">
-                <a href="#" className="inline-flex items-center text-sm font-medium">
-                    <svg className="w-3 h-3 mr-2.5" aria-hidden="true" xmlns="http://www.w3.org/2000/svg" fill="currentColor" viewBox="0 0 20 20">
-                    <path d="m19.707 9.293-2-2-7-7a1 1 0 0 0-1.414 0l-7 7-2 2a1 1 0 0 0 1.414 1.414L2 10.414V18a2 2 0 0 0 2 2h3a1 1 0 0 0 1-1v-4a1 1 0 0 1 1-1h2a1 1 0 0 1 1 1v4a1 1 0 0 0 1 1h3a2 2 0 0 0 2-2v-7.586l.293.293a1 1 0 0 0 1.414-1.414Z"/>
-                    </svg>
-                    홈
-                </a>
-            </li>
-            <li>
-      <div className="flex items-center">
-        <svg className="w-3 h-3 text-gray-400 mx-1" aria-hidden="true" xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 6 10">
-          <path stroke="currentColor" stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="m1 9 4-4-4-4"/>
-        </svg>
-        <a href="#" className="ml-1 text-sm font-medium">모든 공유기록 보기</a>
-      </div>
-    </li>
-  </ol>
-</nav> */}
+            
             <div className="lg-pt-10 md-pt-10 relative">
               <div className="absolute left-0">
                 <div className="flex py-4 md:py-8">
@@ -163,8 +121,8 @@ const AllReviewPage = () => {
                                 <div className="flex">
                                   <img
                                     src={
-                                      publicReviews[i].book?.thumbnail
-                                        ? publicReviews[i].book?.thumbnail
+                                      publicReviews[i].bookRespDto?.thumbnail
+                                        ? publicReviews[i].bookRespDto?.thumbnail
                                         : 'http://via.placeholder.com/120X150'
                                     }
                                     alt="책 표지"
@@ -186,7 +144,7 @@ const AllReviewPage = () => {
                                       <span>tags</span>
                                       {item.tags.map(
                                         (data: any) =>
-                                          data.isSelected && (
+                                          data.selected && (
                                             <div>{data.content}</div>
                                           ),
                                       )}
@@ -210,7 +168,7 @@ const AllReviewPage = () => {
                           <div
                             className="bg-auto w-[12rem] bg-no-repeat bg-center rounded-2xl "
                             style={{
-                              backgroundImage: `url(${item.book?.thumbnail})`,
+                              backgroundImage: `url(${item.bookRespDto?.thumbnail})`,
                             }}
                           ></div>
                           <div className="flex flex-col justify-between ml-2">
@@ -219,27 +177,39 @@ const AllReviewPage = () => {
                                 {item.title}
                               </h1>
                               <div className="py-2 text-sm">
-                              {item.content.length === 0 ? (
-                                <div>등록된 내용이 없습니다</div>
-                              ) : (
-                                <div>
-                                  {item.content.length > 100
-                                    ? `${item.content.slice(0, 100)}...`
-                                    : item.content}
-                                </div>
-                              )}
-                            </div>
+                                {item.content.length === 0 ? (
+                                  <div>등록된 내용이 없습니다</div>
+                                ) : (
+                                  <div>
+                                    {item.content.length > 100
+                                      ? `${item.content.slice(0, 100)}...`
+                                      : item.content}
+                                  </div>
+                                )}
+                              </div>
                             </div>
 
-                          <div className='flex justify-between'>
-                            <div className="flex text-sm pb-2">
-                              <Image src={privateMarker} alt='marker' className='mr-2' />
-                              {item.pinRespDto.isPrivate ? <div>{item.writer}님만의 장소</div>:<div className="">독서장소: {item.pinRespDto?.name} | {item.pinRespDto?.address }</div>}
-                              
+                            <div className="flex justify-between">
+                              <div className="flex text-sm pb-2">
+                                <Image
+                                  src={privateMarker}
+                                  alt="marker"
+                                  className="mr-2"
+                                />
+                                {item.pinRespDto.private ? (
+                                  <div>{item.writer}님만의 장소</div>
+                                ) : (
+                                  <div className="">
+                                    독서장소: {item.pinRespDto?.name} |{' '}
+                                    {item.pinRespDto?.address}
+                                  </div>
+                                )}
                               </div>
-                              </div>
+                            </div>
                           </div>
-                          <div className='pb-2 absolute right-8 bottom-4 text-end text-sm'>23.03.01</div>
+                          <div className="pb-2 absolute right-8 bottom-4 text-end text-sm">
+                            {formatDateToYYMMDD(item.createdAt)}
+                          </div>
                         </div>
                       </div>
                     ))}
