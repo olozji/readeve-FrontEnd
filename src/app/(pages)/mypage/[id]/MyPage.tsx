@@ -84,18 +84,19 @@ const MyPageComponent = (props: ParamType) => {
         </div>
       </div>
       <section>
-        <div className="relative justify-center text-center">
+      <div className="relative w-[70vw] h-[100vh] justify-center text-center" >
           <Image
+            fill
             src={tableImage.src}
             className="inline-block text-center"
             alt={tableImage.src}
-            width={1500}
-            height={1500}
+           
           />
-          <div className="absolute top-[1vh] left-1/2 max-w-[65vw] transform -translate-x-1/2 z-10">
+          <div className="absolute top-[4%] left-1/2 max-w-[95%] transform -translate-x-1/2 z-10">
+            
             <BookLayout bookData={props.id} isMain={true}></BookLayout>
           </div>
-          <div className="absolute  bottom-[5vh] left-1/2 min-w-[60vw] transform -translate-x-1/2 z-20">
+          <div className="absolute bottom-[5vh] left-1/2 min-h-[60%] min-w-[60vw] transform -translate-x-1/2 z-20">
             {myData.length !== 0 ? (
               <div>
                 <div className="flex gap-2">
@@ -143,7 +144,7 @@ const MyPageComponent = (props: ParamType) => {
               </div>
             ) : (
               
-                <div className="h-[50vh]">
+                <div className="bg-red-300 h-[50%]">
                   독서 기록을 남기고 나만의 지도를 확인해보세요:&#41;
                 
               </div>

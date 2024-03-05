@@ -168,7 +168,7 @@ useEffect(() => {
         </div>
       </div>
       
-      <div className="mx-auto max-w-5xl">
+      <div className="mx-auto  max-w-5xl">
         <div className="text-center ">
           <div className="text-2xl font-display font-bold py-10">
             이런 장소는 어때요?
@@ -214,13 +214,13 @@ useEffect(() => {
         <div className="mt-10">
              <h1 className='text-2xl font-display font-bold py-10'>콘텐츠</h1>
             <div className=''>
-            <div className='my-3 w-[60rem] h-[5rem] bg-[#D9D9D9] rounded-lg'>
+            <div className='my-3  h-[5rem] bg-[#D9D9D9] rounded-lg'>
               <p>오늘 제일 많이 읽은 장소</p>
             </div>
-            <div className='my-3 w-[60rem] h-[5rem] bg-[#D9D9D9] rounded-lg'>
+            <div className='my-3  h-[5rem] bg-[#D9D9D9] rounded-lg'>
               <p>베스트셀러를 읽은 장소</p>
             </div>
-            <div className='my-3 w-[60rem] h-[5rem] bg-[#D9D9D9] rounded-lg'>
+            <div className='my-3  h-[5rem] bg-[#D9D9D9] rounded-lg'>
               <p>오늘 가장 많이 읽은 책</p>
             </div>
                 </div>
