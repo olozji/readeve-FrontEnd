@@ -12,6 +12,9 @@ import Link from 'next/link'
 
 import lampIcon from '/public/images/lampicon.png'
 import tableImage from '/public/images/tableImg.png'
+import bookIcon from '/public/images/bookIcon.png';
+import NotesImg from '/public/images/notesImg.png';
+
 import { table } from 'console'
 import { allReviewDataState } from '@/store/writeAtoms'
 import axios from 'axios'
@@ -98,7 +101,39 @@ const MyPageComponent = (props: ParamType) => {
           <div className="absolute top-20 left-1/2 max-w-[70vw] transform -translate-x-1/2 z-10">
             <BookLayout bookData={user?.id} isMain={true}></BookLayout>
           </div>
-          <div>
+          <div className="absolute top-[30vh] left-[13vw] max-w-[70vw] transform -translate-x-1/2 z-10">
+            <div className='flex gap-2'>
+            <h1 className="relative">나만의 지도</h1>
+              <div className='flex items-center gap-3'>
+              <span className="inline-flex items-center justify-center max-h-10 rounded-lg gap-1 bg-[#E1E1E1] px-3 py-1 text-xs font-medium text-[#5F5F5F]">
+                    <Image
+                      src={bookIcon}
+                      alt={'bookIcon'}
+                      width={15}
+                      height={15} 
+                    />  
+                    {documents.filter(
+                      (data: any) =>
+                        data.bookRespDto.isbn === data.bookRespDto.isbn
+                    ).length}{' '}
+                    권
+                  </span>
+                  <span className="inline-flex items-center justify-center max-h-10 rounded-lg gap-1 bg-[#E1E1E1] px-3 py-1 text-xs font-medium text-[#5F5F5F]">
+                    <Image
+                      src={NotesImg}
+                      alt={'NotesImg'}
+                      width={15}
+                      height={15} 
+                    />  
+                    {documents.filter(
+                      (data: any) =>
+                        data.bookRespDto.isbn === data.bookRespDto.isbn
+                    ).length}{' '}
+                    개
+                  </span>
+                  </div>
+                  </div>
+               
             {documents.length !== 0 ? (
               <div className="absolute left-0 bottom-20 right-0 max-w-[70vw] px-[20rem]">
                 <Link href={`/map/${props.id}`}>내 지도 크게보기</Link>
@@ -111,9 +146,11 @@ const MyPageComponent = (props: ParamType) => {
                 />
               </div>
             ) : (
-              <div>
+              <div className='relative'>
                 <div id="map" style={{ display: 'none' }}></div>
-                <div>독서 기록을 남기고 지도를 확인하세요</div>
+                <div className='absolute w-[30vw] max-w-[40vw] left-[14vw] top-[15vh]'>
+                  독서 기록을 남기고 나만의 지도를 확인해보세요:&#41;
+                  </div>
               </div>
             )}
           </div>
@@ -124,7 +161,7 @@ const MyPageComponent = (props: ParamType) => {
             <div className="pt-4 lg:pt-5 pb-4 lg:pb-8 px-4 xl:px-2 xl:container mx-auto">
               <section className="pt-16">
                 <div className="pt-4 lg:pt-5 pb-4 lg:pb-8 px-4 xl:px-2 xl:container mx-auto">
-                  <h1 className="text-4xl">
+                  <h1 className="text-xl">
                     등록된 리뷰가 없어요. 리뷰를 등록해보세요!
                   </h1>
                 </div>
