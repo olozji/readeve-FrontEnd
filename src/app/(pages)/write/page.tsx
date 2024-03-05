@@ -198,19 +198,19 @@ const Editor = () => {
               <input
                 placeholder='제목'
                 ref={inputRef}
-                className="inline-block w-[60rem] h-[2.8rem] px-3 rounded-md bg-[#F9F9F9] placeholder-[#A08A7E]"
+                className="inline-block w-[60rem] h-[2.8rem] text-base px-3 rounded-md bg-[#F9F9F9] placeholder-[#A08A7E]"
                 value={titleInfo}
                 onChange={handleTitle}
               />
             </div>
           </div>
           <div className="px-8 py-3 flex gap-5 items-center">
-            <h4 className="px-5 font-extrabold">장소</h4>
+            <h4 className="px-5  font-extrabold">장소</h4>
             <div>
               <input
                 placeholder='독서한 장소를 입력해주세요'
                 ref={inputRef}
-                className="inline-block w-[35rem] h-[2rem] px-3 rounded-2xl bg-[#F9F9F9] placeholder-[#A08A7E]"
+                className="inline-block w-[35rem] h-[2rem] text-xs/[10px] px-3 rounded-2xl bg-[#F9F9F9] placeholder-[#A08A7E]"
                 value={placeInfo.place_name}
                 onClick={handleSearchMap}
               />
@@ -289,7 +289,7 @@ const Editor = () => {
               
               {tagInfo.map((tag:any) => (
                 tag.selected && <div className='box-border flex justify-center items-center px-4 py-2
-                my-2 mx-2 border border-gray-300 rounded-full bg-[#E57C65] text-white'>#{tag.content }</div>
+                my-2 mx-2 text-xs/[10px] border border-gray-300 rounded-full bg-[#E57C65] text-white'>#{tag.content }</div>
               ))}
               <button
                 onClick={() => setShowTagModal(true)}
@@ -311,13 +311,13 @@ const Editor = () => {
                   <h1 className="font-bold text-2xl text-left py-3 border-b-[2px]">
                     장소와 딱맞는 태그를 선택해 주세요
                   </h1>
-                  <div className="flex flex-wrap justify-center my-10 sm:px-20 ">
+                  <div className="flex flex-wrap justify-center my-10 sm:px-20">
                     {tagInfo.map((tag: any, i: number) => (
                       <div className="flex">
                         <div
                           key={i}
                           className={`box-border flex justify-center items-center px-4 py-2
-                 my-2 mx-2 border border-gray-300 rounded-full 
+                 my-2 mx-2 border border-gray-300 rounded-full text-xs/[10px] 
                  ${
                    tag.selected
                      ? 'bg-[#E57C65] text-white'
@@ -384,7 +384,7 @@ const Editor = () => {
               </div>
 
               <textarea
-                className="border border-slate-200 rounded-2xl w-full h-80 text-[#A08A7E] placeholder-[#A08A7E] bg-[#F9F9F9] px-3 py-3"
+                className="border border-slate-200 rounded-2xl w-full h-80 text-[#A08A7E] text-xs placeholder-[#A08A7E] bg-[#F9F9F9] px-3 py-3"
                 placeholder="(1500자 이내로 독후감을 작성해주세요)"
                 value={content}
                 onChange={(e) => setContent(e.target.value)}
