@@ -2,25 +2,44 @@
 import { useEffect, useState } from "react";
 import MapView from "./MapView";
 import markerImage from '/public/images/marker1.png'
-import markerImageOpacity from '/public/images/marker2.png'
+import { useRecoilState } from "recoil";
+import { allReviewDataState } from "@/store/writeAtoms";
+import { useSession } from "next-auth/react";
+import axios from "axios";
 
 
+export interface PropType {
+  params: {
+    id: string
+    searchParams: {}
+  }
+}
+const MyMapPage = (props: PropType) => {
 
-const MyMapPage = () => {
-    const [documents, setDocuments] = useState<any[]>([])
-    useEffect(() => {
-        const storedData = localStorage.getItem('allDataInfo')
-    
-        if (storedData) {
-          const parsedData = JSON.parse(storedData)
-          setDocuments(parsedData)
-        }
-    }, [])
+  const [myData, setMyData] = useState<any[]>([])
+  const fetchData = async () => {
+  
+    try {
+      const response = await axios.get(
+        `https://api.bookeverywhere.site/api/data/all/${props.params.id}`,
+      )
+      const data = response.data.data // 응답으로 받은 데이터
+      setMyData(data)
+      
+    } catch (error) {
+      console.error('Error fetching data:', error)
+      console.log(myData)
+      console.log(props.params.id)
+    }
+}
+useEffect(() => {
+  fetchData()
+}, [props.params.id])
     
     return (
         <div>
-            {documents.length !== 0 ? (
-            <MapView myMapData={documents} isShared={false} isFull={`100vh`} markerImage={markerImage} markerImageOpacity={markerImageOpacity}></MapView>
+            {myData&&myData.length !== 0 ? (
+            <MapView myMapData={myData} isShared={false} isFull={`100vh`} markerImage={markerImage}></MapView>
           ) : (
             <div>
               <div id="map" style={{ display: 'none' }}></div>

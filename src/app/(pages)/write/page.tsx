@@ -8,6 +8,7 @@ import CustomModal from '@/app/components/modal'
 import { Tag } from '@/app/components/tags'
 import {
   allDataState,
+  allReviewDataState,
   bookState,
   placeState,
   tagState,
@@ -20,10 +21,9 @@ import { useRecoilState } from 'recoil'
 
 import Image from 'next/image'
 
-import pen from 'public/images/Pen.png';
-import isPrivatedIcon from '/public/images/isPrivatedIcon.png';
-import isSharededIcon from '/public/images/isSharedIcon.png';
-
+import pen from 'public/images/Pen.png'
+import isPrivatedIcon from '/public/images/isPrivatedIcon.png'
+import isSharededIcon from '/public/images/isSharedIcon.png'
 
 const Editor = () => {
   const [content, setContent] = useState('')
@@ -38,7 +38,8 @@ const Editor = () => {
   const [placeInfo, setPlaceInfo] = useRecoilState<any>(placeState)
   const [allDataInfo, setAllDataInfo] = useRecoilState<any>(allDataState)
   const [showTagModal, setShowTagModal] = useState(false)
-
+  const [allReviewData, setAllReviewData] =
+    useRecoilState<any>(allReviewDataState)
   let session: any = useSession()
 
   let user: any = session.data?.user
@@ -58,7 +59,14 @@ const Editor = () => {
     }
   }, [isPrivatePlace])
 
-  const numTag = tagInfo.slice(0, 3)
+  let numTag:any[]=[];
+  useEffect(() => {
+    console.log(1)
+    numTag = tagInfo.filter((tag: any) => {
+      tag.selected == true
+    })
+  }, [tagInfo])
+
   const inputRef = useRef<HTMLInputElement | null>(null)
 
   const handleCloseMap = useCallback(() => {
@@ -99,7 +107,7 @@ const Editor = () => {
     if (index >= 0 && index < tagInfo.length) {
       // 객체를 복사하여 새로운 객체를 생성
       const updatedTags = tagInfo.map((tag: any, i: number) =>
-        i === index ? { ...tag, isSelected: !tag.isSelected } : tag,
+        i === index ? { ...tag, selected: !tag.selected } : tag,
       )
 
       // Recoil 상태를 갱신
@@ -128,7 +136,7 @@ const Editor = () => {
         title: bookInfo.title,
         thumbnail: bookInfo.thumbnail,
         isComplete: bookInfo.isComplete,
-        // author:bookInfo.authors[0],
+        // author: bookInfo.authors[0],
       },
       tags: tagInfo,
       content: content,
@@ -148,31 +156,26 @@ const Editor = () => {
       }
     }
 
+    const fetchData = async () => {
+      try {
+        const response = await axios.get(
+          'https://api.bookeverywhere.site/api/data/all?isPrivate=false',
+        )
+        console.log(response.data) // 서버에서 받은 데이터 출력
+        const data = response.data.data // 응답으로 받은 데이터
+
+        setAllReviewData(data)
+      } catch (error) {
+        console.error('Error fetching data:', error)
+      }
+    }
     postData()
-
-    // const url =
-    //   'http://ec2-54-180-159-247.ap-northeast-2.compute.amazonaws.com/map'
-
-    // // GET 요청 보내기
-    // try {
-    //   const response = await axios.get(url);
-    //   console.log('응답 데이터:', response.data);
-    // } catch (error) {
-    //   console.error('에러 발생:', error);
-    // }
-    const storedData = localStorage.getItem('allDataInfo')
-    const previousData = storedData ? JSON.parse(storedData) : []
-
-    // 새로운 데이터 추가
-    const newData = [...previousData, data]
-
-    // // 로컬 스토리지에 저장
-    localStorage.setItem('allDataInfo', JSON.stringify(newData))
+    fetchData()
+    //write 초기화
     // setAllDataInfo({})
     // setTitleInfo('')
     // setPlaceInfo({})
     // setTagInfo([{content:'잔잔한 음악이 흘러요',selected:false},{content:'날씨 좋은날 테라스가 좋아요',selected:false},{content:'카공하기 좋아요',selected:false},{content:'힙합BGM이 흘러나와요',selected:false},{content:'조용해서 좋아요',selected:false},{content:'한적해요',selected:false},{content:'자리가 많아요',selected:false},{content:'차마시기 좋아요',selected:false},{content:'귀여운 고양이가 있어요🐈',selected:false},{content:'책을 무료로 대여해줘요📚',selected:false}])
-    // Router 인스턴스 가져오기
 
     // 페이지 리다이렉트
     // window.location.href = `/mypage/${session.data?.user.id}` // 이동할 경로
@@ -187,6 +190,7 @@ const Editor = () => {
           <header className="h-10 text-center">
             <h1 className="myCustomText text-3xl text-black">독후감 작성</h1>
           </header>
+
 
           <section className='py-10 px-10'>
           <div className="px-5 py-8 flex rounded-t-md">
@@ -279,22 +283,28 @@ const Editor = () => {
                 <BookSearch></BookSearch>
               </div>
             </div>
-            <div className="px-8 py-3 flex items-center">
-              <h4 className="px-5 font-extrabold">장소 태그</h4>
-              <Tag tags={numTag}></Tag>
+            <div className='flex px-8 py-3 items-center '>
+            <h4 className="px-5 font-extrabold">장소 태그</h4>
+            <div className="flex flex-wrap max-w-[50vw] items-center">
+              
+              {tagInfo.map((tag:any) => (
+                tag.selected && <div className='box-border flex justify-center items-center px-4 py-2
+                my-2 mx-2 border border-gray-300 rounded-full bg-[#E57C65] text-white'>#{tag.content }</div>
+              ))}
               <button
                 onClick={() => setShowTagModal(true)}
                 className="cursor-pointer text-[#7a7a7a] font-light text-4xl"
               >
                 +
               </button>
-            </div>
+              </div>
+              </div>
             <CustomModal
               isOpen={showTagModal}
               onClose={() => setShowTagModal(false)}
               size={'60rem'}
               modalheight={'40rem'}
-              modalColor='#fff'
+              modalColor="#fff"
             >
               <div className="mt-10 px-10 py-10 text-center">
                 <div className="border-b-[2px]">
@@ -302,15 +312,14 @@ const Editor = () => {
                     장소와 딱맞는 태그를 선택해 주세요
                   </h1>
                   <div className="flex flex-wrap justify-center my-10 sm:px-20 ">
-                  {tagInfo.map((tag: any, i: number) => (
-                    <div className="flex">
-                      
+                    {tagInfo.map((tag: any, i: number) => (
+                      <div className="flex">
                         <div
                           key={i}
                           className={`box-border flex justify-center items-center px-4 py-2
                  my-2 mx-2 border border-gray-300 rounded-full 
                  ${
-                   tag.isSelected
+                   tag.selected
                      ? 'bg-[#E57C65] text-white'
                      : 'bg-white hover:border-[#C05555] hover:text-[#C05555]'
                  }`}
@@ -318,10 +327,9 @@ const Editor = () => {
                         >
                           #{tag.content}
                         </div>
-                     
-                    </div>
-                  ))}
-                    </div>
+                      </div>
+                    ))}
+                  </div>
                 </div>
               </div>
               <div className="flex mx-auto w-[8rem]">
@@ -333,6 +341,7 @@ const Editor = () => {
                   }}
                 />
               </div>
+
         </CustomModal>
         <div className="py-8 flex gap-4 justify-center items-center">
         <span
@@ -372,7 +381,6 @@ const Editor = () => {
                   <Image src={pen} alt="pen" width={30} height={30} />
                   <h1 className="font-extrabold text-xl">작성</h1>
                 </div>
-               
               </div>
 
               <textarea
@@ -381,7 +389,6 @@ const Editor = () => {
                 value={content}
                 onChange={(e) => setContent(e.target.value)}
               />
-
             </div>
             <div>
               <div className="control_btn flex mx-auto w-[18rem] gap-5">

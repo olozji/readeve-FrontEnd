@@ -6,6 +6,7 @@ import Link from 'next/link'
 import { useEffect, useState } from 'react'
 import { useRecoilState, useRecoilValue } from 'recoil'
 import {
+  allReviewDataState,
   allReviewSelector,
   mainTagState,
   selectedReviewState,
@@ -24,6 +25,7 @@ import NavBar from './components/NavBar';
 
 export default function Home() {
   let session = useSession()
+  let user: any = session.data?.user
   console.log(session)
 
   const [map, setMap] = useState(false)
@@ -37,21 +39,22 @@ export default function Home() {
   const [isSelectedTags, setIsSelectedTags] =
     useRecoilState<boolean[]>(mainTagState)
 
-    const [startIdx, setStartIdx] = useState(0)
+  const [startIdx, setStartIdx] = useState(0)
+  const [allReviewData, setAllReviewData] = useRecoilState<any>(allReviewDataState);
     
     const numVisibleBooks = 4;
 
-  useEffect(() => {
-    const storedData = localStorage.getItem('allDataInfo')
+  // useEffect(() => {
+  //   const storedData = localStorage.getItem('allDataInfo')
 
-    if (storedData) {
-      const parsedData = JSON.parse(storedData)
-      const filteredData = parsedData.filter(
-        (data: any) => !data.place.isPrivate,
-      )
-      setDocuments(filteredData)
-    }
-  }, [])
+  //   if (storedData) {
+  //     const parsedData = JSON.parse(storedData)
+  //     const filteredData = parsedData.filter(
+  //       (data: any) => !data.place.isPrivate,
+  //     )
+  //     setDocuments(filteredData)
+  //   }
+  // }, [])
 
   
   const handleClickPrev = () => {
@@ -70,45 +73,38 @@ export default function Home() {
 
   const fetchData = async () => {
     try {
-      const response = await axios.get('https://api.bookeverywhere.site/api/reviews')
-      console.log(response.data) // 서버에서 받은 데이터 출력
+        const response = await axios.get('https://api.bookeverywhere.site/api/data/all?isPrivate=false');
+        const data = response.data.data; // 응답으로 받은 데이터
+
+        // 원본 배열을 복사하여 수정
+        const newData = [...data];
+
+        // 수정된 데이터를 상태에 반영
+        setAllReviewData(newData);
     } catch (error) {
-      console.error('Error fetching data:', error)
-    }
-    
-  }
-
-  
-  useEffect(() => {
-    fetchData()
-    setMap(true)
-  }, [])
-
-  useEffect(() => {
-    const fetchData = async () => {
-      try {
-        const response = await axios.get('https://api.bookeverywhere.site/api/reviews'); 
-        const data = response.data; // 응답으로 받은 데이터
-      //   if (data.length !== 0) {
-      //     const PublicReviewData = data.filter((item: any) => !item.isPrivate)
-      //     setPublicReviews(PublicReviewData)
-      //  }
-        console.log(data)
-       
-      } catch (error) {
         console.error('Error fetching data:', error);
-      }
-    };
+    }
+};
 
-    fetchData(); // 데이터를 가져오는 함수 호출
+useEffect(() => {
+  fetchData();
+  setMap(true)
+}, []);
 
-    // if (storedData) {
-    //   const parsedData = JSON.parse(storedData)
-    //   const PublicReviewData = parsedData.filter((item: any) => !item.isPrivate)
-    //   console.log(PublicReviewData)
-    //   setPublicReviews(PublicReviewData)
-    // }
-  }, [])
+useEffect(() => {
+    // allReviewData 상태가 업데이트되면서 새로운 데이터로 필터링하여 다른 상태에 반영
+    if (allReviewData.length !== 0) {
+        const publicReviewData = allReviewData.filter((item: any) => !item.private);
+        setPublicReviews(publicReviewData);
+    }
+}, [allReviewData]);
+
+useEffect(() => {
+    // allReviewData 상태가 업데이트되면서 새로운 데이터로 필터링하여 다른 상태에 반영
+    const filteredData = allReviewData.filter((d: any) => !d.pinRespDto.private);
+    setDocuments(filteredData);
+}, [allReviewData]);
+
 
 
   
@@ -209,7 +205,7 @@ export default function Home() {
         <div className="mt-10">
           <div className="text-2xl font-display font-bold py-10">내 서재</div>
           {session.data ? (
-            <BookLayout isMain={true}></BookLayout>
+            <BookLayout bookData={user.id} isMain={true}></BookLayout>
           ) : (
             <div>로그인 하고 내 서재 를 확인하세요</div>
           )}
@@ -261,13 +257,13 @@ export default function Home() {
               .map((d: any, i: number) => (
                 <Link
                   key={i}
-                  href={`/detail/${d.book && d.book.isbn ? d.book.isbn.replace(' ', '') : ''}`}
+                  href={`/detail/${d.bookRespDto && d.bookRespDto.isbn ? d.bookRespDto.isbn.replace(' ', '') : ''}`}
                 >
                   <div className="flex flex-col items-center rounded-lg border-4 border-transparent p-4 cursor-pointer">
                   <div className="relative w-[14rem] h-[12rem] rounded-2xl">
                    <div className="mx-auto h-full border rounded-2xl shadow-xl bg-[#fcfcfc]">
                      <div className='text-left'>
-                     <div className='text-xl font-display font-bold px-5 py-5'>{d.book?.title}</div>
+                     <div className='text-xl font-display font-bold px-5 py-5'>{d.bookRespDto?.title}</div>
                      <div className='px-3'>{d.content.length > 20 ? `${d.content.slice(0, 20)}...` : d.content}</div>
                      </div>
                    </div>

@@ -2,18 +2,17 @@
 import { useEffect, useState } from 'react'
 import MapView from './[id]/MapView'
 import markerImage from '/public/images/marker1.png'
-import markerImageOpacity from '/public/images/marker2.png'
+import { useRecoilState } from 'recoil';
+import { allReviewDataState } from '@/store/writeAtoms';
 
 
 
 const SharedMapPage = () => {
   const [documents, setDocuments] = useState<any[]>([])
+  const [allReviewData, setAllReviewData] = useRecoilState(allReviewDataState);
   useEffect(() => {
-    const storedData = localStorage.getItem('allDataInfo')
-
-    if (storedData) {
-      const parsedData = JSON.parse(storedData)
-      const filteredData = parsedData.filter((data: any) => !data.place.isPrivate)
+    if (allReviewData) {
+      const filteredData = allReviewData.filter((data: any) => !data.pinRespDto.private)
       setDocuments(filteredData)
     }
   }, [])
@@ -21,7 +20,7 @@ const SharedMapPage = () => {
   return (
     <div>
       {documents.length !== 0 ? (
-        <MapView myMapData={documents} isShared={true} isFull={`100vh`} markerImage={markerImage} markerImageOpacity={markerImageOpacity} isMain={false}></MapView>
+        <MapView myMapData={documents} isShared={true} isFull={`100vh`} markerImage={markerImage}  isMain={false}></MapView>
       ) : (
         <div>
           <div id="map" style={{ display: 'none' }}></div>
