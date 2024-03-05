@@ -283,8 +283,10 @@ const Editor = () => {
                 <BookSearch></BookSearch>
               </div>
             </div>
-            <div className="px-8 py-3 flex items-center">
-              <h4 className="px-5 font-extrabold">장소 태그</h4>
+            <div className='flex px-8 py-3 items-center '>
+            <h4 className="px-5 font-extrabold">장소 태그</h4>
+            <div className="flex flex-wrap max-w-[50vw] items-center">
+              
               {tagInfo.map((tag:any) => (
                 tag.selected && <div className='box-border flex justify-center items-center px-4 py-2
                 my-2 mx-2 border border-gray-300 rounded-full bg-[#E57C65] text-white'>#{tag.content }</div>
@@ -295,7 +297,8 @@ const Editor = () => {
               >
                 +
               </button>
-            </div>
+              </div>
+              </div>
             <CustomModal
               isOpen={showTagModal}
               onClose={() => setShowTagModal(false)}

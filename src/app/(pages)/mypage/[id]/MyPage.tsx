@@ -71,7 +71,7 @@ const MyPageComponent = (props: ParamType) => {
   }, [myData])
 
   return (
-    <section className="bg-[#F1E5CF] mx-auto">
+    <section className="bg-[#F1E5CF] px-[15vw]">
       <div className="grid relative mx-auto justify-center text-center mb-10">
         <Image
           src={lampIcon.src}
@@ -95,12 +95,12 @@ const MyPageComponent = (props: ParamType) => {
             width={1500}
             height={1500}
           />
-          <div className="absolute top-20 left-1/2 transform -translate-x-1/2 z-10">
+          <div className="absolute top-20 left-1/2 max-w-[70vw] transform -translate-x-1/2 z-10">
             <BookLayout bookData={user?.id} isMain={true}></BookLayout>
           </div>
           <div>
             {documents.length !== 0 ? (
-              <div className="absolute left-0 bottom-20 right-0 px-[20rem]">
+              <div className="absolute left-0 bottom-20 right-0 max-w-[70vw] px-[20rem]">
                 <Link href={`/map/${props.id}`}>내 지도 크게보기</Link>
                 <MapView
                   isMain={true}
