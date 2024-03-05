@@ -84,7 +84,7 @@ const MyPageComponent = (props: ParamType) => {
         </div>
       </div>
       <section>
-        <div className="relative mx-auto justify-center text-center">
+        <div className="relative justify-center text-center">
           <Image
             src={tableImage.src}
             className="inline-block text-center"
@@ -93,62 +93,62 @@ const MyPageComponent = (props: ParamType) => {
             height={1500}
           />
           <div className="absolute top-[1vh] left-1/2 max-w-[65vw] transform -translate-x-1/2 z-10">
-            <BookLayout bookData={user?.id} isMain={true}></BookLayout>
+            <BookLayout bookData={props.id} isMain={true}></BookLayout>
           </div>
-          {myData.length !== 0 ? (
-            <div className="absolute left-0 bottom-20 right-0 max-w-[65vw] max-h-[35vh] z-20">
-              <div className="flex gap-2">
-                <h1>나만의 지도</h1>
-                <div className="flex items-center gap-3">
-                  <span className="inline-flex items-center justify-center max-h-10 rounded-lg gap-1 bg-[#E1E1E1] px-3 py-1 text-xs font-medium text-[#5F5F5F]">
-                    <Image
-                      src={bookIcon}
-                      alt={'bookIcon'}
-                      width={15}
-                      height={15}
-                    />
-                    {
-                      myData.filter(
-                        (data: any) =>
-                          data.bookRespDto.isbn === data.bookRespDto.isbn,
-                      ).length
-                    }{' '}
-                    권
-                  </span>
-                  <span className="inline-flex items-center justify-center max-h-10 rounded-lg gap-1 bg-[#E1E1E1] px-3 py-1 text-xs font-medium text-[#5F5F5F]">
-                    <Image
-                      src={NotesImg}
-                      alt={'NotesImg'}
-                      width={15}
-                      height={15}
-                    />
-                    {
-                      myData.filter(
-                        (data: any) =>
-                          data.bookRespDto.isbn === data.bookRespDto.isbn,
-                      ).length
-                    }{' '}
-                    개
-                  </span>
+          <div className="absolute  bottom-[5vh] left-1/2 min-w-[60vw] transform -translate-x-1/2 z-20">
+            {myData.length !== 0 ? (
+              <div>
+                <div className="flex gap-2">
+                  <h1>나만의 지도</h1>
+                  <div className="flex items-center gap-3">
+                    <span className="inline-flex items-center justify-center max-h-10 rounded-lg gap-1 bg-[#E1E1E1] px-3 py-1 text-xs font-medium text-[#5F5F5F]">
+                      <Image
+                        src={bookIcon}
+                        alt={'bookIcon'}
+                        width={15}
+                        height={15}
+                      />
+                      {
+                        myData.filter(
+                          (data: any) =>
+                            data.bookRespDto.isbn === data.bookRespDto.isbn,
+                        ).length
+                      }{' '}
+                      권
+                    </span>
+                    <span className="inline-flex items-center justify-center max-h-10 rounded-lg gap-1 bg-[#E1E1E1] px-3 py-1 text-xs font-medium text-[#5F5F5F]">
+                      <Image
+                        src={NotesImg}
+                        alt={'NotesImg'}
+                        width={15}
+                        height={15}
+                      />
+                      {
+                        myData.filter(
+                          (data: any) =>
+                            data.bookRespDto.isbn === data.bookRespDto.isbn,
+                        ).length
+                      }{' '}
+                      개
+                    </span>
+                  </div>
                 </div>
+                <MapView
+                  isMain={true}
+                  myMapData={myData}
+                  isShared={false}
+                  isFull={'50vh'}
+                  markerImage={props.markerImage}
+                />
               </div>
-              <Link href={`/map/${props.id}`}>내 지도 크게보기</Link>
-              <MapView
-                isMain={true}
-                myMapData={myData}
-                isShared={false}
-                isFull={'600px'}
-                markerImage={props.markerImage}
-              />
-            </div>
-          ) : (
-            <div className="relative">
-              <div id="map" style={{ display: 'none' }}></div>
-              <div className="absolute w-[30vw] max-w-[40vw] left-[14vw] top-[15vh]">
-                독서 기록을 남기고 나만의 지도를 확인해보세요:&#41;
+            ) : (
+              
+                <div className="h-[50vh]">
+                  독서 기록을 남기고 나만의 지도를 확인해보세요:&#41;
+                
               </div>
-            </div>
-          )}
+            )}
+          </div>
         </div>
         <div className="mt-10 mx-auto max-w-7xl">
           <h1 className="text-xl font-display font-bold">최근 기록순</h1>

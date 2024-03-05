@@ -5,6 +5,7 @@ import Image from 'next/image';
 import NotesImg from '/public/images/notesImg.png';
 import { useRecoilState } from 'recoil';
 import { allReviewDataState } from '@/store/writeAtoms';
+import axios from 'axios';
 
 interface bookLayoutProps {
   isMain: boolean
@@ -15,24 +16,48 @@ export const BookLayout = ({ isMain ,bookData}: bookLayoutProps) => {
   const [parsedData, setParsedData] = useState<any[]>([]) 
   const [startIdx, setStartIdx] = useState(0)
   const [allReviewData, setAllReviewData] = useRecoilState<any>(allReviewDataState);
+ 
 
   const numVisibleBooks = 5
 
+  const [myData, setMyData] = useState([])
+  const [isLoading, setIsLoading] = useState(true)
+
+  const fetchData = async () => {
+    try {
+      const response = await axios.get(
+        `https://api.bookeverywhere.site/api/data/all/${bookData}`,
+      )
+      const data = response.data.data
+      setMyData(data)
+      console.log(data)
+    } catch (error) {
+      console.error('Error fetching data:', error)
+    } finally {
+      setIsLoading(false)
+    }
+  }
+
   useEffect(() => {
-    if (allReviewData && allReviewData.length > 0) {
-      const filteredData = allReviewData.filter(
-        (data: any) => Number(bookData) === data.socialId
-      );
-      const onlyBookData = filteredData.filter((data: any, idx: number) => {
+    fetchData()
+  }, [bookData])
+
+  if (isLoading) {
+    return ''
+  }
+
+  useEffect(() => {
+    
+      const onlyBookData = myData.filter((data: any, idx: number) => {
         return (
-          filteredData.findIndex((data1: any) => {
+          myData.findIndex((data1: any) => {
             return data.bookRespDto.isbn === data1.bookRespDto.isbn;
           }) === idx
         );
       });
       setDocuments(onlyBookData);
-    }
-  }, [allReviewData, bookData]);
+    
+  }, [myData]);
   
 
 

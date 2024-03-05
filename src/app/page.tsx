@@ -41,6 +41,7 @@ export default function Home() {
 
   const [startIdx, setStartIdx] = useState(0)
   const [allReviewData, setAllReviewData] = useRecoilState<any>(allReviewDataState);
+  const [myData, setMyData] = useState([])
     
     const numVisibleBooks = 4;
 
