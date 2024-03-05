@@ -96,7 +96,7 @@ const MyPageComponent = (props: ParamType) => {
             
             <BookLayout bookData={props.id} isMain={true}></BookLayout>
           </div>
-          <div className="absolute bottom-[1vh] left-1/2 min-h-[60%] min-w-[60vw] transform -translate-x-1/2 z-20">
+          <div className="absolute bottom-[2vh] left-1/2 min-h-[60%] min-w-[60vw] transform -translate-x-1/2 z-20">
             {myData.length !== 0 ? (
               <div>
                 <div className="flex gap-2">
@@ -172,13 +172,13 @@ const MyPageComponent = (props: ParamType) => {
                     href={`/detail/${d.bookRespDto && d.bookRespDto.isbn ? d.bookRespDto.isbn.replace(' ', '') : ''}`}
                   >
                     <div className="flex flex-col items-center rounded-lg border-4 border-transparent p-4 cursor-pointer">
-                      <div className="w-[20vw] h-[8.5vh] rounded-2xl">
+                      <div className="w-[20vw] rounded-2xl">
                         <div className="mx-auto h-full border rounded-2xl shadow-xl bg-[#fcfcfc]">
                           <div className="text-left">
                             <div className="text-xl font-display font-bold px-5 py-5">
                               {d.bookRespDto?.title}
                             </div>
-                            <div className="px-5">
+                            <div className="px-5 pb-5">
                               {d.content.length > 20
                                 ? `${d.content.slice(0, 20)}...`
                                 : d.content}
