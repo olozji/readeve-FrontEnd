@@ -97,8 +97,9 @@ const MyPageComponent = (props: ParamType) => {
           <div className="absolute top-[1vh] left-1/2 max-w-[65vw] transform -translate-x-1/2 z-10">
             <BookLayout bookData={user?.id} isMain={true}></BookLayout>
           </div>
-          <div className="absolute top-[30vh] left-[15vw] max-w-[70vw] z-10">
-            <div className='flex gap-2'>
+            {myData.length !== 0 ? (
+            <div className="absolute left-0 bottom-20 right-0 max-w-[70vw] max-h-[35vh] px-[2.5vw]">
+              <div className='flex gap-2'>
             <h1 className="relative">나만의 지도</h1>
               <div className='flex items-center gap-3'>
               <span className="inline-flex items-center justify-center max-h-10 rounded-lg gap-1 bg-[#E1E1E1] px-3 py-1 text-xs font-medium text-[#5F5F5F]">
@@ -129,9 +130,6 @@ const MyPageComponent = (props: ParamType) => {
                   </span>
                   </div>
                   </div>
-              </div>
-            {myData.length !== 0 ? (
-              <div className="absolute left-0 bottom-20 right-0 max-w-[70vw] max-h-[35vh] px-[10vw]">
                 <Link href={`/map/${props.id}`}>내 지도 크게보기</Link>
                 <MapView
                   isMain={true}
