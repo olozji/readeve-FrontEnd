@@ -12,8 +12,8 @@ import Link from 'next/link'
 
 import lampIcon from '/public/images/lampicon.png'
 import tableImage from '/public/images/tableImg.png'
-import bookIcon from '/public/images/bookIcon.png';
-import NotesImg from '/public/images/notesImg.png';
+import bookIcon from '/public/images/bookIcon.png'
+import NotesImg from '/public/images/notesImg.png'
 
 import { table } from 'console'
 import { allReviewDataState } from '@/store/writeAtoms'
@@ -41,33 +41,31 @@ const MyPageComponent = (props: ParamType) => {
   const [address, setAddress] = useState('')
   const [selectBook, setSelectBook] = useState<any[]>([])
 
-  const [myData, setMyData] = useState([]);
-  const [isLoading, setIsLoading] = useState(true);
+  const [myData, setMyData] = useState([])
+  const [isLoading, setIsLoading] = useState(true)
 
   const fetchData = async () => {
     try {
       const response = await axios.get(
-        `https://api.bookeverywhere.site/api/data/all/${props.id}`
-      );
-      const data = response.data.data;
-      setMyData(data);
+        `https://api.bookeverywhere.site/api/data/all/${props.id}`,
+      )
+      const data = response.data.data
+      setMyData(data)
       console.log(data)
     } catch (error) {
-      console.error('Error fetching data:', error);
+      console.error('Error fetching data:', error)
     } finally {
-      setIsLoading(false);
+      setIsLoading(false)
     }
-  };
-
-  useEffect(() => {
-    fetchData();
-  }, [props.id]);
-
-  if (isLoading) {
-    return <div>Loading...</div>;
   }
 
+  useEffect(() => {
+    fetchData()
+  }, [props.id])
 
+  if (isLoading) {
+    return <div>Loading...</div>
+  }
 
   return (
     <section className="bg-[#F1E5CF] px-[15vw]">
@@ -97,22 +95,24 @@ const MyPageComponent = (props: ParamType) => {
           <div className="absolute top-[1vh] left-1/2 max-w-[65vw] transform -translate-x-1/2 z-10">
             <BookLayout bookData={user?.id} isMain={true}></BookLayout>
           </div>
-            {myData.length !== 0 ? (
-            <div className="absolute left-0 bottom-20 right-0 max-w-[70vw] max-h-[35vh] px-[2.5vw]">
-              <div className='flex gap-2'>
-            <h1 className="relative">나만의 지도</h1>
-              <div className='flex items-center gap-3'>
-              <span className="inline-flex items-center justify-center max-h-10 rounded-lg gap-1 bg-[#E1E1E1] px-3 py-1 text-xs font-medium text-[#5F5F5F]">
+          {myData.length !== 0 ? (
+            <div className="absolute left-0 bottom-20 right-0 max-w-[65vw] max-h-[35vh] z-20">
+              <div className="flex gap-2">
+                <h1>나만의 지도</h1>
+                <div className="flex items-center gap-3">
+                  <span className="inline-flex items-center justify-center max-h-10 rounded-lg gap-1 bg-[#E1E1E1] px-3 py-1 text-xs font-medium text-[#5F5F5F]">
                     <Image
                       src={bookIcon}
                       alt={'bookIcon'}
                       width={15}
-                      height={15} 
-                    />  
-                    {myData.filter(
-                      (data: any) =>
-                        data.bookRespDto.isbn === data.bookRespDto.isbn
-                    ).length}{' '}
+                      height={15}
+                    />
+                    {
+                      myData.filter(
+                        (data: any) =>
+                          data.bookRespDto.isbn === data.bookRespDto.isbn,
+                      ).length
+                    }{' '}
                     권
                   </span>
                   <span className="inline-flex items-center justify-center max-h-10 rounded-lg gap-1 bg-[#E1E1E1] px-3 py-1 text-xs font-medium text-[#5F5F5F]">
@@ -120,34 +120,35 @@ const MyPageComponent = (props: ParamType) => {
                       src={NotesImg}
                       alt={'NotesImg'}
                       width={15}
-                      height={15} 
-                    />  
-                    {myData.filter(
-                      (data: any) =>
-                        data.bookRespDto.isbn === data.bookRespDto.isbn
-                    ).length}{' '}
+                      height={15}
+                    />
+                    {
+                      myData.filter(
+                        (data: any) =>
+                          data.bookRespDto.isbn === data.bookRespDto.isbn,
+                      ).length
+                    }{' '}
                     개
                   </span>
-                  </div>
-                  </div>
-                <Link href={`/map/${props.id}`}>내 지도 크게보기</Link>
-                <MapView
-                  isMain={true}
-                  myMapData={myData}
-                  isShared={false}
-                  isFull={'600px'}
-                  markerImage={props.markerImage}
-                />
+                </div>
               </div>
-            ) : (
-              <div className='relative'>
-                <div id="map" style={{ display: 'none' }}></div>
-                <div className='absolute w-[30vw] max-w-[40vw] left-[14vw] top-[15vh]'>
-                  독서 기록을 남기고 나만의 지도를 확인해보세요:&#41;
-                  </div>
+              <Link href={`/map/${props.id}`}>내 지도 크게보기</Link>
+              <MapView
+                isMain={true}
+                myMapData={myData}
+                isShared={false}
+                isFull={'600px'}
+                markerImage={props.markerImage}
+              />
+            </div>
+          ) : (
+            <div className="relative">
+              <div id="map" style={{ display: 'none' }}></div>
+              <div className="absolute w-[30vw] max-w-[40vw] left-[14vw] top-[15vh]">
+                독서 기록을 남기고 나만의 지도를 확인해보세요:&#41;
               </div>
-            )}
-          
+            </div>
+          )}
         </div>
         <div className="mt-10 mx-auto max-w-7xl">
           <h1 className="text-xl font-display font-bold">최근 기록순</h1>

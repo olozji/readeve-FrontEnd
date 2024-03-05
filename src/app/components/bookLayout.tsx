@@ -19,23 +19,21 @@ export const BookLayout = ({ isMain ,bookData}: bookLayoutProps) => {
   const numVisibleBooks = 5
 
   useEffect(() => {
- 
-    if (allReviewData) {
-      
+    if (allReviewData && allReviewData.length > 0) {
       const filteredData = allReviewData.filter(
-          (data: any) => Number(bookData) === data.socialId,
-      )
+        (data: any) => Number(bookData) === data.socialId
+      );
       const onlyBookData = filteredData.filter((data: any, idx: number) => {
         return (
           filteredData.findIndex((data1: any) => {
-            return data.bookRespDto.isbn === data1.bookRespDto.isbn
+            return data.bookRespDto.isbn === data1.bookRespDto.isbn;
           }) === idx
-        )
-      })
-      setDocuments(onlyBookData)
-      
+        );
+      });
+      setDocuments(onlyBookData);
     }
-  }, [allReviewData])
+  }, [allReviewData, bookData]);
+  
 
 
   const handleClickPrev = () => {
