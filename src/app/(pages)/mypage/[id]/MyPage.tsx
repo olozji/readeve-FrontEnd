@@ -129,9 +129,9 @@ const MyPageComponent = (props: ParamType) => {
                   </span>
                   </div>
                   </div>
-                  </div>
+              </div>
             {myData.length !== 0 ? (
-              <div className="absolute left-0 bottom-20 right-0 max-w-[70vw] px-[10vw]">
+              <div className="absolute left-0 bottom-20 right-0 max-w-[70vw] max-h-[35vh] px-[10vw]">
                 <Link href={`/map/${props.id}`}>내 지도 크게보기</Link>
                 <MapView
                   isMain={true}
