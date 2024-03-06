@@ -15,12 +15,15 @@ import {
 import CustomModal from '@/app/components/modal'
 import NavBar from '@/app/components/NavBar'
 import Button from '@/app/components/buttons/button'
+
 import Image from 'next/image'
 import privateMarker from '/public/images/privateMarker.png'
 import isPrivatedIcon from '/public/images/isPrivatedIcon.png'
 import isSharedIcon from '/public/images/isSharedIcon.png'
+
 import axios from 'axios'
-import { useSession } from 'next-auth/react';
+import { useSession } from 'next-auth/react'
+
 
 export interface ReviewData {
   [x: string]: any
@@ -55,8 +58,15 @@ const AllReviewPage = () => {
   const [detailOpen, setDetailOpen] = useState<boolean[]>(
     Array(publicReviews.length).fill(false),
   )
+
   const [allReviewData, setAllReviewData] = useRecoilState<any>(allReviewDataState)
 
+
+
+
+  
+  let session: any = useSession()
+  
 
 
   const handleModal = (idx: number) => {
@@ -139,6 +149,7 @@ const AllReviewPage = () => {
                         className="relative w-90 min-h-32  border rounded-md border-slate-200"
                         onClick={() => handleModal(i)}
                       >
+
                         {detailOpen && (
                           <CustomModal size={'70rem'} isOpen={detailOpen[i]} modalColor='#FEF6E6'>
                           <div className="">
@@ -224,6 +235,7 @@ const AllReviewPage = () => {
                           </div>
                         </CustomModal>
                         )}
+
                         <div className="relative flex p-4 w-full min-h-52 bg-[#fff9f6] rounded-2xl ">
                           <div
                             className="bg-auto w-[12rem] bg-no-repeat bg-center rounded-2xl "

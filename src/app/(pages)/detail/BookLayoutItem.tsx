@@ -295,7 +295,7 @@ function isBook(element: any) {
                         {data.title}
                       </div>
                       <div className="grid justify-itmes-center">
-                        <div>2024.03.01</div>
+                        {formatDateToYYMMDD(data.createdAt)}
                         <Image
                           src={data.private ? Private : unLock}
                           alt="private"
