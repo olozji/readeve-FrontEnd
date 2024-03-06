@@ -208,7 +208,7 @@ const AllReviewPage = () => {
                             </div>
                           </div>
                           <div className="pb-2 absolute right-8 bottom-4 text-end text-sm">
-                            {formatDateToYYMMDD(item.createdAt)}
+                            {formatDateToYYMMDD(item.createAt)}
                           </div>
                         </div>
                       </div>
