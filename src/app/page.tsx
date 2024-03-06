@@ -216,7 +216,7 @@ useEffect(() => {
         <div className="mt-10">
           <div className="text-2xl font-display font-bold py-10">내 서재</div>
           {session.data ? (
-            <BookLayout bookData={myData} isMain={'w-full'}></BookLayout>
+            <BookLayout bookData={myData} isMain={'full'}></BookLayout>
           ) : (
             <div>로그인 하고 내 서재 를 확인하세요</div>
           )}

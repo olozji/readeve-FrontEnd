@@ -47,7 +47,7 @@ export const BookLayout = ({ isMain, bookData }: bookLayoutProps) => {
       {documents.length !== 0 && (
         <div>
          
-            <div className="flex justify-between items-center" style={{width:isMain}}>
+            <div className={`flex justify-between items-center w-${isMain}`}>
               <div className="p-2 cursor-pointer" onClick={handleClickPrev}>
                 &lt;
               </div>
@@ -78,7 +78,7 @@ export const BookLayout = ({ isMain, bookData }: bookLayoutProps) => {
                               height={10}
                             />
                             {
-                              documents.filter(
+                              bookData.filter(
                                 (data: any) =>
                                   data.bookRespDto.isbn === d.bookRespDto.isbn,
                               ).length
