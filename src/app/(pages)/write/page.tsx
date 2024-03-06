@@ -118,7 +118,7 @@ const Editor = () => {
     let data = {
       socialId: session.data.user!.id,
       title: titleInfo,
-      private: isPrivate,
+      isPrivate: isPrivate,
       writer: session.data.user!.name,
       pinRespDto: {
         name: placeInfo.place_name,
@@ -126,7 +126,7 @@ const Editor = () => {
         y: placeInfo.y,
         x: placeInfo.x,
         address: placeInfo.road_address_name,
-        private: isPrivatePlace,
+        isPrivate: isPrivatePlace,
         url: placeInfo.place_url,
       },
       bookRespDto: {

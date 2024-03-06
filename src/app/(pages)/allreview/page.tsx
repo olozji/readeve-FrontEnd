@@ -57,7 +57,7 @@ const AllReviewPage = () => {
   )
   const [allReviewData, setAllReviewData] = useRecoilState<any>(allReviewDataState)
 
-  let session:any = useSession()
+
 
   const handleModal = (idx: number) => {
     setDetailOpen((prevState) => {
@@ -105,7 +105,7 @@ const AllReviewPage = () => {
       
         <section className="main mx-auto max-w-6xl px-4 ">
           <section className="pt-20 lg:pt-5 pb-4 lg:pb-8 px-4 xl:px-2 xl:container mx-auto">
-          <div className=" mx-auto myCustomText text-3xl text-white">
+          <div className="text-center mt-4 mx-auto myCustomText text-3xl text-white">
             모든 기록
           </div>
             <div className="lg-pt-10 md-pt-10 relative">
@@ -143,7 +143,7 @@ const AllReviewPage = () => {
                           <CustomModal size={'70rem'} isOpen={detailOpen[i]} modalColor='#FEF6E6'>
                           <div className="">
                             <div className="px-8 py-8">
-                              <div className="flex justify-center datas-center">
+                              <div className="flex justify-center items-center">
                                 <img
                                   src={
                                     publicReviews[i].bookRespDto.thumbnail
@@ -192,7 +192,7 @@ const AllReviewPage = () => {
                                   </div>
                                   <div className="flex datas-center gap-5">
                                   <span className='font-bold' style={{ verticalAlign: 'middle' }}>장소</span>
-                                    <Link href={`/map/${session.data.user.id}`}>
+
                                     <div 
                                       className='flex datas-center'>
                                       <Image
@@ -201,7 +201,7 @@ const AllReviewPage = () => {
                                       />
                                       {item.pinRespDto.name}
                                       </div>
-                                      </Link>
+                                      
                                   </div>
                                   </div>
                                 </div>
