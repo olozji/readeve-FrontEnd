@@ -17,7 +17,10 @@ import NavBar from '@/app/components/NavBar'
 import Button from '@/app/components/buttons/button'
 import Image from 'next/image'
 import privateMarker from '/public/images/privateMarker.png'
+import isPrivatedIcon from '/public/images/isPrivatedIcon.png'
+import isSharedIcon from '/public/images/isSharedIcon.png'
 import axios from 'axios'
+import { useSession } from 'next-auth/react';
 
 export interface ReviewData {
   [x: string]: any
@@ -53,6 +56,9 @@ const AllReviewPage = () => {
     Array(publicReviews.length).fill(false),
   )
   const [allReviewData, setAllReviewData] = useRecoilState(allReviewDataState)
+
+  let session:any = useSession()
+
   const handleModal = (idx: number) => {
     setDetailOpen((prevState) => {
       const copy = [...prevState]
@@ -80,6 +86,9 @@ const AllReviewPage = () => {
     <>
       <NavBar />
       <div className="bg-[#f1e5cf]">
+      <div className="absolute bottom-8 left-0 right-0 mx-auto myCustomText text-3xl text-white">
+            모든 기록
+          </div>
         <section className="main mx-auto max-w-6xl px-4 ">
           <section className="pt-20 lg:pt-5 pb-4 lg:pb-8 px-4 xl:px-2 xl:container mx-auto">
             
@@ -115,54 +124,89 @@ const AllReviewPage = () => {
                         onClick={() => handleModal(i)}
                       >
                         {detailOpen && (
-                          <CustomModal isOpen={detailOpen[i]} size={'60rem'}>
-                            <div className="h-[50rem]">
-                              <div className="px-8 py-8">
-                                <div className="flex">
-                                  <img
-                                    src={
-                                      publicReviews[i].bookRespDto?.thumbnail
-                                        ? publicReviews[i].bookRespDto?.thumbnail
-                                        : 'http://via.placeholder.com/120X150'
-                                    }
-                                    alt="책 표지"
-                                    className="w-[14rem] mb-2 rounded object-fll"
-                                  />
-                                  <div>
-                                    <h1 className="text-lg font-extrabold">
-                                      {item.title}
-                                    </h1>
-                                    <div className="flex gap-4">
-                                      <span>where</span>
-                                      <div>{item.pinRespDto.name}</div>
-                                    </div>
-                                    <div className="flex gap-4">
-                                      <span>when</span>
-                                      <div>{item.pinRespDto.name}</div>
-                                    </div>
-                                    <div className="flex gap-4">
-                                      <span>tags</span>
-                                      {item.tags.map(
-                                        (data: any) =>
-                                          data.selected && (
-                                            <div>{data.content}</div>
-                                          ),
-                                      )}
-                                    </div>
+                          <CustomModal size={'70rem'} isOpen={detailOpen[i]} modalColor='#FEF6E6'>
+                          <div className="">
+                            <div className="px-8 py-8">
+                              <div className="flex justify-center datas-center">
+                                <img
+                                  src={
+                                    publicReviews[0].bookRespDto.thumbnail
+                                      ? publicReviews[0].bookRespDto.thumbnail
+                                      : 'http://via.placeholder.com/120X150'
+                                  }
+                                  alt="책 표지"
+                                  className="w-[10rem] mb-2 rounded object-fll"
+                                />
+                                <div className='p-10'>
+                                  <div className="text-xl font-extrabold text-[#6F5C52]">
+                                    {item.bookRespDto.title}
+                                  </div>
+                                  <div className="text-sm font-bold text-[#9C8A80]">
+                                    | {publicReviews[0].bookRespDto.author} 저자
+                                  </div>
+                                  <div className="justify-center datas-center py-2">
+                                  <span
+                                  className={`inline-flex justify-center datas-center gap-2 rounded-lg px-2 py-2 text-xs ${
+                                    item.isPrivate ? 'bg-[#E57C65] text-white'  : 'bg-white text-[#6F5C52]'
+                                  }`}
+                                >
+                                <Image
+                                  src={item.isPrivate ? isPrivatedIcon : isSharedIcon}
+                                  alt='Icon'
+                                  width={10}
+                                  height={10}
+                                />
+                                  {item.isPrivate ? '나만보기' : '전체공개'}
+                                  </span>
+                                  </div>
+                                 <div className='py-5 pt-5 text-[#503526] text-sm'>
+                                  <div className="flex datas-center gap-5">
+                                    <span className='font-bold' style={{ verticalAlign: 'middle' }}>등록일</span>
+                                    <div className=''>{formatDateToYYMMDD(item.createAt)}</div>
+                                  </div>
+                                  {/* TODO: 태그 부분 수정 필요함 컴포넌트를 직접 가져와서 해야할지? 아직 안해봤어요 */}
+                                  <div className="flex">
+                                    <span className='font-bold mr-4' style={{ verticalAlign: 'middle' }}>태그</span>
+                                    <div className='flex flex-wrap w-[16vw]'>
+                                    {item.tags.map(
+                                      (tag: any) =>
+                                        tag.selected && <div className='flex bg-[#E57C65] rounded-full m-1 p-2 text-white font-semibold text-xs'>#{tag.content}</div>,
+                                    )}
+                                  </div>
+                                  </div>
+                                  <div className="flex datas-center gap-5">
+                                  <span className='font-bold' style={{ verticalAlign: 'middle' }}>장소</span>
+                                    <Link href={`/map/${session.data.user.id}`}>
+                                    <div 
+                                      className='flex datas-center'>
+                                      <Image
+                                        src={privateMarker}
+                                        alt={'장소'}
+                                      />
+                                      {item.pinRespDto.name}
+                                      </div>
+                                      </Link>
+                                  </div>
                                   </div>
                                 </div>
-                                <div className="flex relative left-[35rem] w-[10rem] gap-4">
-                                  <Link href={'/edit/1'}>
-                                    <Button label="수정" outline={true} />
-                                  </Link>
-                                  <Button label="삭제" outline={false} />
-                                </div>
-                                <div className="h-[30rem] border border-slate-200 rounded-md bg-slate-200">
-                                  {item.content}
-                                </div>
                               </div>
+                              {/* 내용 엔터키 적용 */}
+                              <div className='flex justify-center datas-center'>
+                              <div
+                                key={i}
+                                className="w-[50vw] my-4 rounded-lg overflow-hidden shadow-lg px-3 py-3 p-10 bg-[#FFFCF9]"
+                              >
+                                
+                              <div className='mt-10 px-5'>
+                              <h2 className="text-2xl font-bold mb-4 border-black border-b pb-5 text-[#503526]">{item.title}</h2>
+                                <div className="h-[45vh] mx-auto text-[#999999]" dangerouslySetInnerHTML={{ __html: item.content.replace(/\n/g, '<br>') }}>
+                                </div>
+                                </div>
                             </div>
-                          </CustomModal>
+                            </div>
+                            </div>
+                          </div>
+                        </CustomModal>
                         )}
                         <div className="relative flex p-4 w-full min-h-52 bg-[#fff9f6] rounded-2xl ">
                           <div
