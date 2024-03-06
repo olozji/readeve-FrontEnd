@@ -7,7 +7,7 @@ import { useRecoilState } from 'recoil'
 import { allReviewDataState } from '@/store/writeAtoms'
 
 interface bookLayoutProps {
-  isMain: boolean
+  isMain: string
   bookData: any
 }
 export const BookLayout = ({ isMain, bookData }: bookLayoutProps) => {
@@ -46,8 +46,8 @@ export const BookLayout = ({ isMain, bookData }: bookLayoutProps) => {
     <div>
       {documents.length !== 0 && (
         <div>
-          {isMain ? (
-            <div className="flex w-[70vw] justify-between items-center">
+         
+            <div className="flex justify-between items-center" style={{width:isMain}}>
               <div className="p-2 cursor-pointer" onClick={handleClickPrev}>
                 &lt;
               </div>
@@ -78,7 +78,7 @@ export const BookLayout = ({ isMain, bookData }: bookLayoutProps) => {
                               height={10}
                             />
                             {
-                              allReviewData.filter(
+                              documents.filter(
                                 (data: any) =>
                                   data.bookRespDto.isbn === d.bookRespDto.isbn,
                               ).length
@@ -98,37 +98,7 @@ export const BookLayout = ({ isMain, bookData }: bookLayoutProps) => {
                 </div>
               </div>
             </div>
-          ) : (
-            <div className="grid grid-cols-5 ">
-              {documents.map((d: any, i: number) => (
-                <Link
-                  key={i}
-                  href={`/detail/${d.bookRespDto && d.bookRespDto.isbn ? d.bookRespDto.isbn.replace(' ', '') : ''}`}
-                >
-                  <div
-                    className={`justify-items-center rounded-lg border-4 border-transparent`}
-                    key={i}
-                    style={{
-                      display: 'flex',
-                      flexDirection: 'column',
-                      alignItems: 'center',
-                    }}
-                  >
-                    <img
-                      src={
-                        d.bookRespDto.thumbnail
-                          ? d.bookRespDto.thumbnail
-                          : 'http://via.placeholder.com/120X150'
-                      }
-                      alt="책 표지"
-                      className="mb-2 rounded"
-                    />
-                    <div className="p-4">{d.bookRespDto.title}</div>
-                  </div>
-                </Link>
-              ))}
-            </div>
-          )}
+        
         </div>
       )}
     </div>

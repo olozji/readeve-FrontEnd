@@ -93,7 +93,7 @@ const MyPageComponent = (props: ParamType) => {
            
           />
           <div className="absolute top-[2%] left-1/2 max-w-[95%] transform -translate-x-1/2 z-10">
-            <BookLayout bookData={myData} isMain={true}></BookLayout>
+            <BookLayout bookData={myData} isMain={'70vw'}></BookLayout>
           </div>
           <div className="absolute bottom-[2vh] left-1/2 min-h-[60%] min-w-[60vw] transform -translate-x-1/2 z-20">
             {myData.length !== 0 ? (
