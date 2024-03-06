@@ -104,7 +104,7 @@ function isBook(element: any) {
       })
       setDetailOpen(arr)
     }
-  }, [props.id, removeReviewId])
+  }, [props.id,allReviewData ,removeReviewId])
   console.log(bookData)
 
   return (
