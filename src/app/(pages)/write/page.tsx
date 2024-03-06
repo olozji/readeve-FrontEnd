@@ -126,7 +126,7 @@ const Editor = () => {
         y: placeInfo.y,
         x: placeInfo.x,
         address: placeInfo.road_address_name,
-        rivate: isPrivatePlace,
+        private: isPrivatePlace,
         url: placeInfo.place_url,
       },
       bookRespDto: {
@@ -232,7 +232,7 @@ const Editor = () => {
                           className="sr-only peer"
                           onClick={() => {
                             setIsPrivatePlace(!isPrivatePlace)
-                            
+                            console.log(isPrivatePlace)
                           }}
                           checked={isPrivatePlace}
                         />

@@ -55,7 +55,7 @@ const AllReviewPage = () => {
   const [detailOpen, setDetailOpen] = useState<boolean[]>(
     Array(publicReviews.length).fill(false),
   )
-  const [allReviewData, setAllReviewData] = useRecoilState(allReviewDataState)
+  const [allReviewData, setAllReviewData] = useRecoilState<any>(allReviewDataState)
 
   let session:any = useSession()
 
@@ -67,6 +67,25 @@ const AllReviewPage = () => {
     })
   }
 
+  const fetchData = async () => {
+    try {
+      const response = await axios.get(
+        'https://api.bookeverywhere.site/api/data/all?isPrivate=false',
+      )
+      const data = response.data.data // 응답으로 받은 데이터
+
+      // 원본 배열을 복사하여 수정
+      const newData = [...data]
+
+      // 수정된 데이터를 상태에 반영
+      setAllReviewData(newData)
+    } catch (error) {
+      console.error('Error fetching data:', error)
+    }
+  }
+  useEffect(() => {
+  fetchData()
+},[])
 
 
   function formatDateToYYMMDD(isoDateString:string) {
@@ -83,12 +102,12 @@ const AllReviewPage = () => {
     <>
       <NavBar />
       <div className="bg-[#f1e5cf]">
-      <div className="absolute bottom-8 left-0 right-0 mx-auto myCustomText text-3xl text-white">
-            모든 기록
-          </div>
+      
         <section className="main mx-auto max-w-6xl px-4 ">
           <section className="pt-20 lg:pt-5 pb-4 lg:pb-8 px-4 xl:px-2 xl:container mx-auto">
-            
+          <div className=" mx-auto myCustomText text-3xl text-white">
+            모든 기록
+          </div>
             <div className="lg-pt-10 md-pt-10 relative">
               <div className="absolute left-0">
                 <div className="flex py-4 md:py-8">
@@ -127,8 +146,8 @@ const AllReviewPage = () => {
                               <div className="flex justify-center datas-center">
                                 <img
                                   src={
-                                    publicReviews[0].bookRespDto.thumbnail
-                                      ? publicReviews[0].bookRespDto.thumbnail
+                                    publicReviews[i].bookRespDto.thumbnail
+                                      ? publicReviews[i].bookRespDto.thumbnail
                                       : 'http://via.placeholder.com/120X150'
                                   }
                                   alt="책 표지"
@@ -139,7 +158,7 @@ const AllReviewPage = () => {
                                     {item.bookRespDto.title}
                                   </div>
                                   <div className="text-sm font-bold text-[#9C8A80]">
-                                    | {publicReviews[0].bookRespDto.author} 저자
+                                    | {publicReviews[i].bookRespDto.author} 저자
                                   </div>
                                   <div className="justify-center datas-center py-2">
                                   <span

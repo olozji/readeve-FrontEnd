@@ -24,8 +24,8 @@ import { BookLayout } from './components/bookLayout'
 import NavBar from './components/NavBar'
 
 export default function Home() {
-  let session = useSession()
-  let user: any = session.data?.user
+  let session:any = useSession()
+ 
   console.log(session)
 
   const [map, setMap] = useState(false)
@@ -81,11 +81,12 @@ export default function Home() {
       console.error('Error fetching data:', error)
     }
   }
+
   const fetchPersonalData = async () => {
-    if (user.id) {
+    if (session.data.user.id) {
       try {
         const response = await axios.get(
-          `https://api.bookeverywhere.site/api/data/all/${user.id}`,
+          `https://api.bookeverywhere.site/api/data/all/${session.data.user.id}`,
         )
         const data = response.data.data
         setMyData(data)
