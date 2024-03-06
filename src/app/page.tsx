@@ -73,33 +73,33 @@ export default function Home() {
     } catch (error) {
         console.error('Error fetching data:', error);
     }
-};
-
-const fetchPersonalData = async () => {
+  };
+  const fetchPersonalData = async () => {
     if (user.id) {
-        try {
-            const response = await axios.get(`https://api.bookeverywhere.site/api/data/all/${user.id}`);
-            const data = response.data.data;
-            setMyData(data);
-            console.log(data);
-        } catch (error) {
-            console.error('Error fetching data:', error);
-        } finally {
-            setIsLoading(false); // finally 블록을 사용하여 isLoading 상태를 false로 설정합니다.
-        }
+      try {
+        const response = await axios.get(
+          `https://api.bookeverywhere.site/api/data/all/${user.id}`,
+        )
+        const data = response.data.data
+        setMyData(data)
+        console.log(data)
+      } catch (error) {
+        console.error('Error fetching data:', error)
+      } 
     }
-};
+    
+  }
+
+  
+
+ 
 
 useEffect(() => {
-    const fetchDataAndPersonalData = async () => {
-        await fetchData();
-        await fetchPersonalData();
-        setMap(true);
-    };
-
-    fetchDataAndPersonalData();
+  fetchData();
+  fetchPersonalData()
+  setMap(true)
 }, []);
-
+  
 
 
 useEffect(() => {
@@ -128,10 +128,7 @@ useEffect(() => {
   const scrollToTop = () => {
     window.scrollTo({ top: 0, behavior: 'smooth' })
   }
-
-  if (isLoading) {
-    return <div>Loading...</div>
-  }
+  
   return (
     <div>
       <NavBar/>

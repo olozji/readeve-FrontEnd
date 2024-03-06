@@ -95,7 +95,7 @@ function isBook(element: any) {
     let arr: boolean[] = []
 
     if (allReviewData) {
-
+      setAllReviewData([...allReviewData])
       let result = allReviewData.filter(isBook)
       console.log(result)
       setBookData(result)
