@@ -44,16 +44,14 @@ const Editor = () => {
 
   let user: any = session.data?.user
 
-  useEffect(() => {
-    console.log(isPrivatePlace)
-  }, [isPrivatePlace])
+ 
   const handleSearchMap = useCallback((e: any) => {
     e.preventDefault()
     setShowMap(true)
   }, [])
 
   useEffect(() => {
-    console.log(isPrivatePlace)
+
     if (inputRef.current) {
       inputRef.current.focus() // Input에 focus() 호출
     }
@@ -120,7 +118,7 @@ const Editor = () => {
     let data = {
       socialId: session.data.user!.id,
       title: titleInfo,
-      isPrivate: isPrivate,
+      private: isPrivate,
       writer: session.data.user!.name,
       pinRespDto: {
         name: placeInfo.place_name,
@@ -128,7 +126,7 @@ const Editor = () => {
         y: placeInfo.y,
         x: placeInfo.x,
         address: placeInfo.road_address_name,
-        isPrivate: isPrivatePlace,
+        rivate: isPrivatePlace,
         url: placeInfo.place_url,
       },
       bookRespDto: {
@@ -234,6 +232,7 @@ const Editor = () => {
                           className="sr-only peer"
                           onClick={() => {
                             setIsPrivatePlace(!isPrivatePlace)
+                            
                           }}
                           checked={isPrivatePlace}
                         />
