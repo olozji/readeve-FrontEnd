@@ -94,15 +94,15 @@ export default function Home() {
 
   
 
-  if (isLoading) {
-    return <div>Loading...</div>
-  }
+ 
 
 useEffect(() => {
   fetchData();
   fetchPersonalData()
   setMap(true)
 }, []);
+  
+
 
 useEffect(() => {
     // allReviewData 상태가 업데이트되면서 새로운 데이터로 필터링하여 다른 상태에 반영
@@ -130,7 +130,10 @@ useEffect(() => {
   const scrollToTop = () => {
     window.scrollTo({ top: 0, behavior: 'smooth' })
   }
-
+  
+  if (isLoading) {
+    return <div>Loading...</div>
+  }
   return (
     <div>
       <NavBar/>
