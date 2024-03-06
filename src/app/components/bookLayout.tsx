@@ -19,20 +19,18 @@ export const BookLayout = ({ isMain, bookData }: bookLayoutProps) => {
   const numVisibleBooks = 5
 
   useEffect(() => {
-    if (allReviewData && allReviewData.length > 0) {
-      const filteredData = allReviewData.filter(
-        (data: any) => Number(bookData) === data.socialId,
-      )
-      const onlyBookData = filteredData.filter((data: any, idx: number) => {
+    
+      
+      const onlyBookData = bookData.filter((data: any, idx: number) => {
         return (
-          filteredData.findIndex((data1: any) => {
+         bookData.findIndex((data1: any) => {
             return data.bookRespDto.isbn === data1.bookRespDto.isbn
           }) === idx
         )
       })
       setDocuments(onlyBookData)
-    }
-  }, [allReviewData, bookData])
+    
+  }, [ bookData])
 
   const handleClickPrev = () => {
     setStartIdx(Math.max(0, startIdx - numVisibleBooks))

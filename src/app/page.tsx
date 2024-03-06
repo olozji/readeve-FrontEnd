@@ -42,21 +42,9 @@ export default function Home() {
   const [startIdx, setStartIdx] = useState(0)
   const [allReviewData, setAllReviewData] = useRecoilState<any>(allReviewDataState);
   const [myData, setMyData] = useState([])
+  const [isLoading, setIsLoading] = useState(true)
     
-    const numVisibleBooks = 4;
-
-  // useEffect(() => {
-  //   const storedData = localStorage.getItem('allDataInfo')
-
-  //   if (storedData) {
-  //     const parsedData = JSON.parse(storedData)
-  //     const filteredData = parsedData.filter(
-  //       (data: any) => !data.place.isPrivate,
-  //     )
-  //     setDocuments(filteredData)
-  //   }
-  // }, [])
-
+  const numVisibleBooks = 4;
   
   const handleClickPrev = () => {
     setStartIdx(Math.max(0, startIdx - numVisibleBooks))
@@ -85,10 +73,34 @@ export default function Home() {
     } catch (error) {
         console.error('Error fetching data:', error);
     }
-};
+  };
+  const fetchPersonalData = async () => {
+    if (user.id) {
+      try {
+        const response = await axios.get(
+          `https://api.bookeverywhere.site/api/data/all/${user.id}`,
+        )
+        const data = response.data.data
+        setMyData(data)
+        console.log(data)
+      } catch (error) {
+        console.error('Error fetching data:', error)
+      } finally {
+        setIsLoading(false)
+      }
+    }
+    
+  }
+
+  
+
+  if (isLoading) {
+    return <div>Loading...</div>
+  }
 
 useEffect(() => {
   fetchData();
+  fetchPersonalData()
   setMap(true)
 }, []);
 
@@ -206,7 +218,7 @@ useEffect(() => {
         <div className="mt-10">
           <div className="text-2xl font-display font-bold py-10">내 서재</div>
           {session.data ? (
-            <BookLayout bookData={user.id} isMain={true}></BookLayout>
+            <BookLayout bookData={myData} isMain={true}></BookLayout>
           ) : (
             <div>로그인 하고 내 서재 를 확인하세요</div>
           )}

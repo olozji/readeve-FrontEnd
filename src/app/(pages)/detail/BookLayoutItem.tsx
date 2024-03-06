@@ -49,14 +49,9 @@ const BookLayoutItem = (props: any) => {
     const date = new Date(isoDateString);
     return `${date.getFullYear().toString().slice(2)}.${(date.getMonth() + 1).toString().padStart(2, '0')}.${date.getDate().toString().padStart(2, '0')}`;
 }
-  function isBook(element: any) {
-    if (element.bookRespDto && element.bookRespDto.isbn) {
-      let bookId = element.bookRespDto.isbn.replace(' ', '')
-      if (bookId === props.id) {
-        return true
-      }
-    }
-  }
+function isBook(element: any) {
+  return element?.bookRespDto?.isbn?.replace(' ', '') === props.id;
+}
 
   const handleSort = (option: 'latest' | 'oldest') => {
     setSortOption(option);
