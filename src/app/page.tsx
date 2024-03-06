@@ -105,7 +105,7 @@ export default function Home() {
       fetchPersonalData()
       setMap(true)
     
-  }, [])
+  }, [session])
 
   useEffect(() => {
     // allReviewData 상태가 업데이트되면서 새로운 데이터로 필터링하여 다른 상태에 반영
