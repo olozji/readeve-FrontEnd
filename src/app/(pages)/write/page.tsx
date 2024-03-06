@@ -146,7 +146,7 @@ const Editor = () => {
           'https://api.bookeverywhere.site/api/write',
           data,
         )
-        // console.log(data)
+        console.log(data)
         console.log('Success:', response.data)
       } catch (error) {
         console.log(data)
