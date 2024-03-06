@@ -17,6 +17,8 @@ export interface PropType {
 const MyMapPage = (props: PropType) => {
 
   const [myData, setMyData] = useState<any[]>([])
+  const [isLoading, setIsLoading] = useState(true);
+
   const fetchData = async () => {
   
     try {
@@ -25,16 +27,24 @@ const MyMapPage = (props: PropType) => {
       )
       const data = response.data.data // 응답으로 받은 데이터
       setMyData(data)
+      console.log(myData)
       
     } catch (error) {
       console.error('Error fetching data:', error)
       console.log(myData)
       console.log(props.params.id)
+    }finally {
+      setIsLoading(false);
     }
-}
+  }
+  
 useEffect(() => {
   fetchData()
 }, [props.params.id])
+
+if (isLoading) {
+  return <div>Loading...</div>;
+}
     
     return (
         <div>

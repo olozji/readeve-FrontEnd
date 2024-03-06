@@ -370,13 +370,13 @@ const MapView = ({
 
                   <div
                     ref={listContainerRef}
-                    className="absolute scrollBar w-[25rem] bg-[#f9f9f9] h-full px-[2rem] py-[1rem] bg-opacity-80 overflow-y-auto rounded-lg"
+                    className="absolute scrollBar w-[26vw] bg-[#f9f9f9] h-full px-[2vw] py-[1vw] bg-opacity-80 overflow-y-auto rounded-lg"
                     style={{ zIndex: 2 }}
                   >
                     <div className="flex py-2 w-full  justify-between text-center font-bold border-b-[1px] border-gray-600 mb-4">
                       {isFull == '100vh' && <GoBackButton />}
 
-                      <div className=" mr-[8rem] ">
+                      <div className=" mr-[8vw] ">
                         {isShared ? '공유 지도' : '개인 지도'}
                       </div>
                     </div>
