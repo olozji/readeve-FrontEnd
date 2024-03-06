@@ -38,8 +38,14 @@ const MyMapPage = (props: PropType) => {
     }
   }
   
-useEffect(() => {
-  fetchData()
+
+
+  
+  useEffect(() => {
+    window.onload = () => {
+      fetchData()
+  }
+
 }, [props.params.id])
 
 if (isLoading) {

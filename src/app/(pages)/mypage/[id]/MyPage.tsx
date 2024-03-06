@@ -60,7 +60,10 @@ const MyPageComponent = (props: ParamType) => {
   }
 
   useEffect(() => {
-    fetchData()
+    window.onload = () => {
+      fetchData()
+    };
+    
   }, [props.id])
 
   if (isLoading) {
@@ -117,8 +120,8 @@ const MyPageComponent = (props: ParamType) => {
                         width={15}
                         height={15}
                       />
-                      {`${myData.length} 권`}
-                      개
+                      {`${myData.length} 개`}
+                      
                     </span>
                   </div>
                 </div>
