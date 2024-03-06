@@ -99,11 +99,11 @@ export const MapDirectSearch = ({ onMarkerClick, markerImage }: any) => {
                 setMarkers((prevMarkers: any) => [...prevMarkers, newMarker])
                 setPlaceInfo({
                   place_name: null,
-                  id: null,
+                  id: newMarker.lat+newMarker.lng,
                   y: newMarker.lat,
                   x: newMarker.lng,
                   road_address_name: addr,
-                  place_url: null,
+                  place_url: '누군가의 장소',
                 })
                 // 기존 마커를 제거하고 새로운 마커를 넣는다.
                 marker.setMap(null)

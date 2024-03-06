@@ -34,7 +34,7 @@ const NavBar = () => {
   }
 
   return (
-    <nav className="navbar sticky top-0 z-20 bg-white">
+    <nav className="navbar sticky top-0 z-30 bg-white">
       {/*반응형 NavBar 일단 주석 처리*/}
       {/* <div className="dropdown md:hidden" id="category_drop-down">
         <label tabIndex={0} className="btn btn-ghost btn-circle">

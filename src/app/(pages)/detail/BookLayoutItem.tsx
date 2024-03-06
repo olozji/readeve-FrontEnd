@@ -24,6 +24,7 @@ import isPrivatedIcon from '/public/images/isPrivatedIcon.png'
 import isSharedIcon from '/public/images/isSharedIcon.png'
 import whitePaper from '/public/images//whitePager.png';
 import { all } from 'node_modules/axios/index.cjs';
+import axios from 'axios';
 
 export interface PropType {
   params: {
@@ -40,23 +41,35 @@ const BookLayoutItem = (props: any) => {
   const [editReviewId, setEditReviewId] = useRecoilState(editReivewState)
   const [removeReviewId, setRemoveReviewId] = useRecoilState(removeReivewState)
   const [sortOption, setSortOption] = useRecoilState(sortOptionState);
-  const [allReviewData, setAllReviewData] = useRecoilState(allReviewDataState);
+  const [allReviewData, setAllReviewData] = useRecoilState<any>(allReviewDataState);
 
   let session: any = useSession()
   const router = useRouter()
 
+  const fetchData = async () => {
+    try {
+      const response = await axios.get(
+        'https://api.bookeverywhere.site/api/data/all?isPrivate=false',
+      )
+      const data = response.data.data // 응답으로 받은 데이터
+
+      // 원본 배열을 복사하여 수정
+      const newData = [...data]
+
+      // 수정된 데이터를 상태에 반영
+      setAllReviewData(newData)
+    } catch (error) {
+      console.error('Error fetching data:', error)
+    }
+  }
+  
   function formatDateToYYMMDD(isoDateString:string) {
     const date = new Date(isoDateString);
     return `${date.getFullYear().toString().slice(2)}.${(date.getMonth() + 1).toString().padStart(2, '0')}.${date.getDate().toString().padStart(2, '0')}`;
 }
-  function isBook(element: any) {
-    if (element.bookRespDto && element.bookRespDto.isbn) {
-      let bookId = element.bookRespDto.isbn.replace(' ', '')
-      if (bookId === props.id) {
-        return true
-      }
-    }
-  }
+function isBook(element: any) {
+  return element?.bookRespDto?.isbn?.replace(' ', '') === props.id;
+}
 
   const handleSort = (option: 'latest' | 'oldest') => {
     setSortOption(option);
@@ -93,14 +106,17 @@ const BookLayoutItem = (props: any) => {
       }
     }
   }
-
+  
+  useEffect(() => {
+  fetchData()
+},[])
 
   useEffect(() => {
     
     let arr: boolean[] = []
 
     if (allReviewData) {
-
+      setAllReviewData([...allReviewData])
       let result = allReviewData.filter(isBook)
       console.log(result)
       setBookData(result)
@@ -109,8 +125,8 @@ const BookLayoutItem = (props: any) => {
       })
       setDetailOpen(arr)
     }
-  }, [props.id, removeReviewId])
-  console.log(bookData)
+  }, [props.id,removeReviewId])
+
 
   return (
     <section className="bg-[#F1E5CF] mx-auto">
@@ -196,7 +212,7 @@ const BookLayoutItem = (props: any) => {
                             />
                             <div className='p-10'>
                               <div className="text-xl font-extrabold text-[#6F5C52]">
-                                {data.title}
+                                {data.bookRespDto.title}
                               </div>
                               <div className="text-sm font-bold text-[#9C8A80]">
                                 | {bookData[0].bookRespDto.author} 저자
@@ -219,7 +235,7 @@ const BookLayoutItem = (props: any) => {
                              <div className='py-5 pt-5 text-[#503526] text-sm'>
                               <div className="flex items-center gap-5">
                                 <span className='font-bold' style={{ verticalAlign: 'middle' }}>등록일</span>
-                                <div className=''>{formatDateToYYMMDD(data.createdAt)}</div>
+                                <div className=''>{formatDateToYYMMDD(data.createAt)}</div>
                               </div>
                               {/* TODO: 태그 부분 수정 필요함 컴포넌트를 직접 가져와서 해야할지? 아직 안해봤어요 */}
                               <div className="flex">

@@ -17,15 +17,15 @@ import { sessionState } from '@/store/AuthAtoms'
 import LogoutButton from './components/buttons/LogoutButton'
 import mainLogo from '/public/images/mainLogo.png'
 import MapView from './(pages)/map/[id]/MapView'
-import moreIcon from '/public/images/moreIcon.png';
+import moreIcon from '/public/images/moreIcon.png'
 import markerImage from '/public/images/marker1.png'
 import markerImageOpacity from '/public/images/marker2.png'
 import { BookLayout } from './components/bookLayout'
-import NavBar from './components/NavBar';
+import NavBar from './components/NavBar'
 
 export default function Home() {
-  let session = useSession()
-  let user: any = session.data?.user
+  let session:any = useSession()
+ 
   console.log(session)
 
   const [map, setMap] = useState(false)
@@ -40,31 +40,24 @@ export default function Home() {
     useRecoilState<boolean[]>(mainTagState)
 
   const [startIdx, setStartIdx] = useState(0)
-  const [allReviewData, setAllReviewData] = useRecoilState<any>(allReviewDataState);
+  const [allReviewData, setAllReviewData] =
+    useRecoilState<any>(allReviewDataState)
   const [myData, setMyData] = useState([])
-    
-    const numVisibleBooks = 4;
+  const [myPageData,setMyPageData] = useState([])
+  const [isLoading, setIsLoading] = useState(true)
 
-  // useEffect(() => {
-  //   const storedData = localStorage.getItem('allDataInfo')
+  const numVisibleBooks = 4
 
-  //   if (storedData) {
-  //     const parsedData = JSON.parse(storedData)
-  //     const filteredData = parsedData.filter(
-  //       (data: any) => !data.place.isPrivate,
-  //     )
-  //     setDocuments(filteredData)
-  //   }
-  // }, [])
-
-  
   const handleClickPrev = () => {
     setStartIdx(Math.max(0, startIdx - numVisibleBooks))
   }
 
   const handleClickNext = () => {
     setStartIdx(
-      Math.min(publicReviews.length - numVisibleBooks, startIdx + numVisibleBooks),
+      Math.min(
+        publicReviews.length - numVisibleBooks,
+        startIdx + numVisibleBooks,
+      ),
     )
   }
 
@@ -74,41 +67,66 @@ export default function Home() {
 
   const fetchData = async () => {
     try {
-        const response = await axios.get('https://api.bookeverywhere.site/api/data/all?isPrivate=false');
-        const data = response.data.data; // 응답으로 받은 데이터
+      const response = await axios.get(
+        'https://api.bookeverywhere.site/api/data/all?isPrivate=false',
+      )
+      const data = response.data.data // 응답으로 받은 데이터
 
-        // 원본 배열을 복사하여 수정
-        const newData = [...data];
+      // 원본 배열을 복사하여 수정
+      const newData = [...data]
 
-        // 수정된 데이터를 상태에 반영
-        setAllReviewData(newData);
+      // 수정된 데이터를 상태에 반영
+      setAllReviewData(newData)
     } catch (error) {
-        console.error('Error fetching data:', error);
+      console.error('Error fetching data:', error)
     }
-};
+  }
 
-useEffect(() => {
-  fetchData();
-  setMap(true)
-}, []);
+  const fetchPersonalData = async () => {
+    if (session.data.user.id) {
+      try {
+        const response = await axios.get(
+          `https://api.bookeverywhere.site/api/data/all/${session.data.user.id}`,
+        )
+        const data = response.data.data
+        setMyData(data)
+        console.log(data)
+      } catch (error) {
+        console.error('Error fetching data:', error)
+      }
+    }
+  }
 
-useEffect(() => {
+
+
+  useEffect(() => {
+   
+      fetchData()
+      fetchPersonalData()
+      setMap(true)
+    
+  }, [session])
+
+  useEffect(() => {
     // allReviewData 상태가 업데이트되면서 새로운 데이터로 필터링하여 다른 상태에 반영
     if (allReviewData.length !== 0) {
-        const publicReviewData = allReviewData.filter((item: any) => !item.private);
-        setPublicReviews(publicReviewData);
+      const publicReviewData = allReviewData.filter(
+        (item: any) => !item.private,
+      )
+      setPublicReviews(publicReviewData)
     }
-}, [allReviewData]);
+  }, [allReviewData])
 
-useEffect(() => {
+  useEffect(() => {
     // allReviewData 상태가 업데이트되면서 새로운 데이터로 필터링하여 다른 상태에 반영
-    const filteredData = allReviewData.filter((d: any) => !d.pinRespDto.private);
-    setDocuments(filteredData);
-}, [allReviewData]);
+    const filteredData = allReviewData.filter((d: any) => !d.pinRespDto.private)
+    setDocuments(filteredData)
+  }, [allReviewData])
 
+  useEffect(() => {
+    setMyPageData(myData)
+  },[myData])
 
-
-  
   const searchTag = (i: number) => {
     let copy = [...isSelectedTags] // 이전 배열의 복사본을 만듦
     copy[i] = !copy[i] // 복사본을 변경
@@ -121,7 +139,7 @@ useEffect(() => {
 
   return (
     <div>
-      <NavBar/>
+      <NavBar />
       <div
         className="relative w-full py-24 px-10 grid grid-cols-1 sm:px-[25%] sm:grid-cols-2 "
         style={{
@@ -167,7 +185,7 @@ useEffect(() => {
           <Image src={mainLogo} alt="메인 로고" style={{ width: '200px' }} />
         </div>
       </div>
-      
+
       <div className="mx-auto  max-w-5xl">
         <div className="text-center ">
           <div className="text-2xl font-display font-bold py-10">
@@ -206,36 +224,31 @@ useEffect(() => {
         <div className="mt-10">
           <div className="text-2xl font-display font-bold py-10">내 서재</div>
           {session.data ? (
-            <BookLayout bookData={user.id} isMain={true}></BookLayout>
+            <BookLayout bookData={myPageData} isMain={'full'}></BookLayout>
           ) : (
             <div>로그인 하고 내 서재 를 확인하세요</div>
           )}
         </div>
         <div className="mt-10">
-             <h1 className='text-2xl font-display font-bold py-10'>콘텐츠</h1>
-            <div className=''>
-            <div className='my-3  h-[5rem] bg-[#D9D9D9] rounded-lg'>
+          <h1 className="text-2xl font-display font-bold py-10">콘텐츠</h1>
+          <div className="">
+            <div className="my-3  h-[5rem] bg-[#D9D9D9] rounded-lg">
               <p>오늘 제일 많이 읽은 장소</p>
             </div>
-            <div className='my-3  h-[5rem] bg-[#D9D9D9] rounded-lg'>
+            <div className="my-3  h-[5rem] bg-[#D9D9D9] rounded-lg">
               <p>베스트셀러를 읽은 장소</p>
             </div>
-            <div className='my-3  h-[5rem] bg-[#D9D9D9] rounded-lg'>
+            <div className="my-3  h-[5rem] bg-[#D9D9D9] rounded-lg">
               <p>오늘 가장 많이 읽은 책</p>
             </div>
-                </div>
-                </div>
+          </div>
+        </div>
         <div className="mt-10">
           <div className="flex justify-between items-center">
             <h1 className="text-2xl font-display font-bold py-10">모든 기록</h1>
-            <span className='inline-block align-middle'>
+            <span className="inline-block align-middle">
               <Link href={'/allreview'}>
-                <Image
-                  src={moreIcon}
-                  alt={'moreIcon'}
-                  width={22}
-                  height={30}
-                />
+                <Image src={moreIcon} alt={'moreIcon'} width={22} height={30} />
               </Link>
             </span>
           </div>
@@ -248,37 +261,43 @@ useEffect(() => {
               </section>
             </div>
           ) : (
-          <div className="flex justify-between items-center">
-          <div className="p-2 cursor-pointer" onClick={handleClickPrev}>
-              &lt;
+            <div className="flex justify-between items-center">
+              <div className="p-2 cursor-pointer" onClick={handleClickPrev}>
+                &lt;
+              </div>
+              <div className="grid grid-cols-4 justify-center items-center w-[80rem]">
+                {publicReviews
+                  .slice(startIdx, startIdx + numVisibleBooks)
+                  .map((d: any, i: number) => (
+                    <Link
+                      key={i}
+                      href={`/detail/${d.bookRespDto && d.bookRespDto.isbn ? d.bookRespDto.isbn.replace(' ', '') : ''}`}
+                    >
+                      <div className="flex flex-col items-center rounded-lg border-4 border-transparent p-4 cursor-pointer">
+                        <div className="relative w-[14rem] h-[12rem] rounded-2xl">
+                          <div className="mx-auto h-full border rounded-2xl shadow-xl bg-[#fcfcfc]">
+                            <div className="text-left">
+                              <div className="text-xl font-display font-bold px-5 py-5">
+                                {d.bookRespDto?.title}
+                              </div>
+                              <div className="px-3">
+                                {d.content.length > 20
+                                  ? `${d.content.slice(0, 20)}...`
+                                  : d.content}
+                              </div>
+                            </div>
+                          </div>
+                        </div>
+                      </div>
+                    </Link>
+                  ))}
+              </div>
+              <div className="flex items-center justify-center">
+                <div className="p-2 cursor-pointer" onClick={handleClickNext}>
+                  &gt;
+                </div>
+              </div>
             </div>
-          <div className="grid grid-cols-4 justify-center items-center w-[80rem]">
-            {publicReviews
-              .slice(startIdx, startIdx + numVisibleBooks)
-              .map((d: any, i: number) => (
-                <Link
-                  key={i}
-                  href={`/detail/${d.bookRespDto && d.bookRespDto.isbn ? d.bookRespDto.isbn.replace(' ', '') : ''}`}
-                >
-                  <div className="flex flex-col items-center rounded-lg border-4 border-transparent p-4 cursor-pointer">
-                  <div className="relative w-[14rem] h-[12rem] rounded-2xl">
-                   <div className="mx-auto h-full border rounded-2xl shadow-xl bg-[#fcfcfc]">
-                     <div className='text-left'>
-                     <div className='text-xl font-display font-bold px-5 py-5'>{d.bookRespDto?.title}</div>
-                     <div className='px-3'>{d.content.length > 20 ? `${d.content.slice(0, 20)}...` : d.content}</div>
-                     </div>
-                   </div>
-                 </div>
-                  </div>
-                </Link>
-              ))}
-          </div>
-          <div className="flex items-center justify-center">
-            <div className="p-2 cursor-pointer" onClick={handleClickNext}>
-              &gt;
-            </div>
-          </div>
-        </div>
           )}
         </div>
         <div className="py-[10rem] text-center">
