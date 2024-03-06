@@ -99,7 +99,7 @@ export const MapDirectSearch = ({ onMarkerClick, markerImage }: any) => {
                 setMarkers((prevMarkers: any) => [...prevMarkers, newMarker])
                 setPlaceInfo({
                   place_name: null,
-                  id: `${newMarker.lat}_${newMarker.lng}`,
+                  id: newMarker.lat+newMarker.lng,
                   y: newMarker.lat,
                   x: newMarker.lng,
                   road_address_name: addr,
