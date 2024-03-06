@@ -24,6 +24,7 @@ import isPrivatedIcon from '/public/images/isPrivatedIcon.png'
 import isSharedIcon from '/public/images/isSharedIcon.png'
 import whitePaper from '/public/images//whitePager.png';
 import { all } from 'node_modules/axios/index.cjs';
+import axios from 'axios';
 
 export interface PropType {
   params: {
@@ -40,11 +41,28 @@ const BookLayoutItem = (props: any) => {
   const [editReviewId, setEditReviewId] = useRecoilState(editReivewState)
   const [removeReviewId, setRemoveReviewId] = useRecoilState(removeReivewState)
   const [sortOption, setSortOption] = useRecoilState(sortOptionState);
-  const [allReviewData, setAllReviewData] = useRecoilState(allReviewDataState);
+  const [allReviewData, setAllReviewData] = useRecoilState<any>(allReviewDataState);
 
   let session: any = useSession()
   const router = useRouter()
 
+  const fetchData = async () => {
+    try {
+      const response = await axios.get(
+        'https://api.bookeverywhere.site/api/data/all?isPrivate=false',
+      )
+      const data = response.data.data // 응답으로 받은 데이터
+
+      // 원본 배열을 복사하여 수정
+      const newData = [...data]
+
+      // 수정된 데이터를 상태에 반영
+      setAllReviewData(newData)
+    } catch (error) {
+      console.error('Error fetching data:', error)
+    }
+  }
+  
   function formatDateToYYMMDD(isoDateString:string) {
     const date = new Date(isoDateString);
     return `${date.getFullYear().toString().slice(2)}.${(date.getMonth() + 1).toString().padStart(2, '0')}.${date.getDate().toString().padStart(2, '0')}`;
@@ -88,7 +106,10 @@ function isBook(element: any) {
       }
     }
   }
-
+  
+  useEffect(() => {
+  fetchData()
+},[])
 
   useEffect(() => {
     
@@ -104,8 +125,8 @@ function isBook(element: any) {
       })
       setDetailOpen(arr)
     }
-  }, [props.id,allReviewData ,removeReviewId])
-  console.log(bookData)
+  }, [props.id,removeReviewId])
+
 
   return (
     <section className="bg-[#F1E5CF] mx-auto">
