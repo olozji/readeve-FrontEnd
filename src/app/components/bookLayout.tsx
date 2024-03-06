@@ -45,7 +45,7 @@ export const BookLayout = ({ isMain, bookData }: bookLayoutProps) => {
   return (
     <div>
       {documents.length !== 0 && (
-        <div>
+        <div className='flex justify-center'>
          
             <div className={`flex justify-between items-center w-${isMain}`}>
               <div className="p-2 cursor-pointer" onClick={handleClickPrev}>
