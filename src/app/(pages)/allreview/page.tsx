@@ -67,10 +67,7 @@ const AllReviewPage = () => {
     })
   }
 
-  const closeReviewModal = () => {
-    setSelectedReview(null)
-    setIsReviewsModal(false)
-  }
+
 
   function formatDateToYYMMDD(isoDateString:string) {
     const date = new Date(isoDateString);
@@ -80,7 +77,7 @@ const AllReviewPage = () => {
   useEffect(() => {
     const PublicReviewData = allReviewData.filter((item: any) => !item.private)
     setPublicReviews(PublicReviewData)
-  }, [])
+  }, [allReviewData])
 
   return (
     <>

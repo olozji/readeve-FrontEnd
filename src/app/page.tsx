@@ -43,6 +43,7 @@ export default function Home() {
   const [allReviewData, setAllReviewData] =
     useRecoilState<any>(allReviewDataState)
   const [myData, setMyData] = useState([])
+  const [myPageData,setMyPageData] = useState([])
   const [isLoading, setIsLoading] = useState(true)
 
   const numVisibleBooks = 4
@@ -98,11 +99,11 @@ export default function Home() {
 
 
   useEffect(() => {
-    window.onload = () => {
+   
       fetchData()
       fetchPersonalData()
       setMap(true)
-    }
+    
   }, [])
 
   useEffect(() => {
@@ -120,6 +121,10 @@ export default function Home() {
     const filteredData = allReviewData.filter((d: any) => !d.pinRespDto.private)
     setDocuments(filteredData)
   }, [allReviewData])
+
+  useEffect(() => {
+    setMyPageData(myData)
+  },[myData])
 
   const searchTag = (i: number) => {
     let copy = [...isSelectedTags] // 이전 배열의 복사본을 만듦
@@ -218,7 +223,7 @@ export default function Home() {
         <div className="mt-10">
           <div className="text-2xl font-display font-bold py-10">내 서재</div>
           {session.data ? (
-            <BookLayout bookData={myData} isMain={'full'}></BookLayout>
+            <BookLayout bookData={myPageData} isMain={'full'}></BookLayout>
           ) : (
             <div>로그인 하고 내 서재 를 확인하세요</div>
           )}

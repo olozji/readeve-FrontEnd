@@ -17,6 +17,7 @@ export interface PropType {
 const MyMapPage = (props: PropType) => {
 
   const [myData, setMyData] = useState<any[]>([])
+  const [myPageData,setMyPageData] = useState<any[]>([])
   const [isLoading, setIsLoading] = useState(true);
 
   const fetchData = async () => {
@@ -42,11 +43,15 @@ const MyMapPage = (props: PropType) => {
 
   
   useEffect(() => {
-    window.onload = () => {
-      fetchData()
-  }
 
-}, [props.params.id])
+      fetchData()
+  
+
+  }, [props.params.id])
+  
+  useEffect(() => {
+    setMyPageData(myData)
+  }, [myData])
 
 if (isLoading) {
   return <div>Loading...</div>;
@@ -54,8 +59,8 @@ if (isLoading) {
     
     return (
         <div>
-            {myData&&myData.length !== 0 ? (
-            <MapView myMapData={myData} isShared={false} isFull={`100vh`} markerImage={markerImage}></MapView>
+            {myPageData&&myPageData.length !== 0 ? (
+            <MapView myMapData={myPageData} isShared={false} isFull={`100vh`} markerImage={markerImage}></MapView>
           ) : (
             <div>
               <div id="map" style={{ display: 'none' }}></div>
