@@ -61,14 +61,13 @@ const ListItem = ({
                 ? data.pinRespDto.name
                 : data.pinRespDto.address}
             </h5>
-            {data.pinRespDto.url!=='누군가의 장소'?<Link href={data.pinRespo.url}>
+            <Link href={data.pinRespo.url!=='누군가의 장소' ? data.pinRespDto.url : ''} className={data.pinRespo.url!=='누군가의 장소' ?'hidden': ''}>
               <div
                 className={`text-xs underline decoration-solid ${isHovered ? 'text-white' : 'text-gray'}`}
               >
                 카카오맵으로 자세히보기
               </div>
-            </Link>:''}
-            
+            </Link>
           </div>
           <div>
             <div className="flex my-2 px-6">
