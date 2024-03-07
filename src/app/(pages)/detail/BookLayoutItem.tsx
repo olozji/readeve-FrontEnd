@@ -94,8 +94,11 @@ function isBook(element: any) {
     
     let arr: boolean[] = []
 
-
-      let result = propsData.filter(isBook)
+    console.log(`bookId=${bookId}`)
+    console.log(`propsData=${propsData}`)
+    let result = propsData.filter((data: any) =>
+    data.bookRespDto.isbn.replace(' ','') == bookId  
+    )
       console.log(result)
       setBookData(result)
       result.forEach(() => {
