@@ -4,18 +4,37 @@ import MapView from './[id]/MapView'
 import markerImage from '/public/images/marker1.png'
 import { useRecoilState } from 'recoil';
 import { allReviewDataState } from '@/store/writeAtoms';
+import axios from 'axios';
 
 
 
 const SharedMapPage = () => {
   const [documents, setDocuments] = useState<any[]>([])
-  const [allReviewData, setAllReviewData] = useRecoilState(allReviewDataState);
-  useEffect(() => {
-    if (allReviewData) {
-      const filteredData = allReviewData.filter((data: any) => !data.pinRespDto.private)
-      setDocuments(filteredData)
+  const [allReviewData, setAllReviewData] = useRecoilState<any>(allReviewDataState);
+
+  const fetchData = async () => {
+    try {
+      const response = await axios.get(
+        'https://api.bookeverywhere.site/api/data/all?isPrivate=false',
+      )
+      const data = response.data.data // 응답으로 받은 데이터
+  
+      // 원본 배열을 복사하여 수정
+      const newData = [...data]
+  
+      // 수정된 데이터를 상태에 반영
+      setAllReviewData(newData)
+    } catch (error) {
+      console.error('Error fetching data:', error)
     }
+  }
+
+  useEffect(() => {
+    fetchData()
   }, [])
+  useEffect(() => {
+    setDocuments(allReviewData)
+  },[allReviewData])
 
   return (
     <div>

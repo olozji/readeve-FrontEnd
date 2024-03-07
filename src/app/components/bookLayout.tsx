@@ -19,18 +19,15 @@ export const BookLayout = ({ isMain, bookData }: bookLayoutProps) => {
   const numVisibleBooks = 5
 
   useEffect(() => {
-    
-      
-      const onlyBookData = bookData.filter((data: any, idx: number) => {
-        return (
-         bookData.findIndex((data1: any) => {
-            return data.bookRespDto.isbn === data1.bookRespDto.isbn
-          }) === idx
-        )
-      })
-      setDocuments(onlyBookData)
-    
-  }, [ bookData])
+    const onlyBookData = bookData.filter((data: any, idx: number) => {
+      return (
+        bookData.findIndex((data1: any) => {
+          return data.bookRespDto.isbn === data1.bookRespDto.isbn
+        }) === idx
+      )
+    })
+    setDocuments(onlyBookData)
+  }, [bookData])
 
   const handleClickPrev = () => {
     setStartIdx(Math.max(0, startIdx - numVisibleBooks))
@@ -45,13 +42,13 @@ export const BookLayout = ({ isMain, bookData }: bookLayoutProps) => {
   return (
     <div>
       {documents.length !== 0 && (
-        <div className='flex justify-center'>
-         
-            <div className={`flex justify-between items-center w-${isMain}`}>
-              <div className="p-2 cursor-pointer" onClick={handleClickPrev}>
-                &lt;
-              </div>
-              <div className="grid grid-cols-5 gap-4 justify-center items-center ">
+        <div className="flex justify-center">
+          <div className={`flex justify-between items-center w-${isMain} `}>
+            <div className="p-2 cursor-pointer" onClick={handleClickPrev}>
+              &lt;
+            </div>
+            <div className="flex items-start">
+              <div className="grid grid-cols-5 gap-4 justify-center ">
                 {documents
                   .slice(startIdx, startIdx + numVisibleBooks)
                   .map((d: any, i: number) => (
@@ -70,7 +67,7 @@ export const BookLayout = ({ isMain, bookData }: bookLayoutProps) => {
                           className="mb-2 rounded-lg w-[8vw]"
                         />
                         <div className="flex gap-2 w-[8vw] items-center">
-                          <span className="inline-flex items-center justify-center max-h-10 rounded-lg gap-1 bg-[#E1E1E1] px-3 py-1 text-xs font-medium text-[#5F5F5F]">
+                          <span className="flex items-center justify-center max-h-10 rounded-lg gap-1 bg-[#E1E1E1] px-3 py-1 text-xs font-medium text-[#5F5F5F]">
                             <Image
                               src={NotesImg}
                               alt={'NotesImg'}
@@ -92,13 +89,12 @@ export const BookLayout = ({ isMain, bookData }: bookLayoutProps) => {
                     </Link>
                   ))}
               </div>
-              <div className="flex items-center justify-center">
-                <div className="p-2 cursor-pointer" onClick={handleClickNext}>
-                  &gt;
-                </div>
-              </div>
             </div>
-        
+
+            <div className="p-2 cursor-pointer" onClick={handleClickNext}>
+              &gt;
+            </div>
+          </div>
         </div>
       )}
     </div>

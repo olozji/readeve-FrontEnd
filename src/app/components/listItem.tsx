@@ -61,7 +61,7 @@ const ListItem = ({
                 ? data.pinRespDto.name
                 : data.pinRespDto.address}
             </h5>
-            <Link href={data.pinRespDto.url ? data.pinRespDto.url : ''}>
+            <Link href={data.pinRespDto.url ? data.pinRespDto.url : ''} className={data.pinRespDto.url&&data.pinRespDto.url=='누군가의 장소'?'hidden':''}>
               <div
                 className={`text-xs underline decoration-solid ${isHovered ? 'text-white' : 'text-gray'}`}
               >

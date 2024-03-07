@@ -170,14 +170,12 @@ const Editor = () => {
     postData()
     fetchData()
     //write 초기화
-    // setAllDataInfo({})
-    // setTitleInfo('')
-    // setPlaceInfo({})
-    // setTagInfo([{content:'잔잔한 음악이 흘러요',selected:false},{content:'날씨 좋은날 테라스가 좋아요',selected:false},{content:'카공하기 좋아요',selected:false},{content:'힙합BGM이 흘러나와요',selected:false},{content:'조용해서 좋아요',selected:false},{content:'한적해요',selected:false},{content:'자리가 많아요',selected:false},{content:'차마시기 좋아요',selected:false},{content:'귀여운 고양이가 있어요🐈',selected:false},{content:'책을 무료로 대여해줘요📚',selected:false}])
+    setAllDataInfo({})
+    setTitleInfo('')
+    setPlaceInfo({})
+    setTagInfo([{content:'잔잔한 음악이 흘러요',selected:false},{content:'날씨 좋은날 테라스가 좋아요',selected:false},{content:'카공하기 좋아요',selected:false},{content:'힙합BGM이 흘러나와요',selected:false},{content:'조용해서 좋아요',selected:false},{content:'한적해요',selected:false},{content:'자리가 많아요',selected:false},{content:'차마시기 좋아요',selected:false},{content:'귀여운 고양이가 있어요🐈',selected:false},{content:'책을 무료로 대여해줘요📚',selected:false}])
 
-    // 페이지 리다이렉트
-    // window.location.href = `/mypage/${session.data?.user.id}` // 이동할 경로
-    // console.log(allDataInfo)
+    window.location.href = `/mypage/${session.data?.user.id}` // 이동할 경로
   }
 
   return (

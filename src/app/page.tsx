@@ -25,8 +25,6 @@ import NavBar from './components/NavBar'
 
 export default function Home() {
   let session:any = useSession()
- 
-  console.log(session)
 
   const [map, setMap] = useState(false)
   const [publicReviews, setPublicReviews] = useState<any[]>([])
@@ -105,7 +103,15 @@ export default function Home() {
       fetchPersonalData()
       setMap(true)
     
-  }, [session])
+  }, [])
+
+  useEffect(() => {
+   
+   
+    fetchPersonalData()
+   
+  
+}, [session])
 
   useEffect(() => {
     // allReviewData 상태가 업데이트되면서 새로운 데이터로 필터링하여 다른 상태에 반영

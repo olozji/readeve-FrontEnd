@@ -19,6 +19,7 @@ const MyMapPage = (props: PropType) => {
   const [myData, setMyData] = useState<any[]>([])
   const [myPageData,setMyPageData] = useState<any[]>([])
   const [isLoading, setIsLoading] = useState(true);
+  let session: any = useSession();
 
   const fetchData = async () => {
   
@@ -43,19 +44,14 @@ const MyMapPage = (props: PropType) => {
 
   
   useEffect(() => {
-
       fetchData()
-  
-
-  }, [props.params.id])
+  }, [props.params.id,session])
   
   useEffect(() => {
     setMyPageData(myData)
   }, [myData])
 
-if (isLoading) {
-  return <div>Loading...</div>;
-}
+
     
     return (
         <div>
