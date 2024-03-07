@@ -45,8 +45,9 @@ const Detail = (props: PropType) => {
 
   return (
     <><NavBar/>
-    <BookLayoutItem bookId={props.params.id} propsData={myData}>
-      </BookLayoutItem>
+   {myData.length > 0 && (
+      <BookLayoutItem bookId={props.params.id} propsData={myData} />
+    )}
       </>
   )
 }
