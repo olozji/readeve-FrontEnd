@@ -113,7 +113,7 @@ function isBook(element: any) {
     <section>
       {bookData && bookData[0] && (
         <div
-          className={`mx-auto w-[80rem] max-w-[80rem] text-center p-4 border border-b-black`}
+          className={`mx-auto max-w-[80rem] text-center p-4 border border-b-black`}
           style={{
             display: 'flex',
             flexDirection: 'column',
