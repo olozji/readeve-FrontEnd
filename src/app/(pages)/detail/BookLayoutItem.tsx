@@ -189,16 +189,16 @@ function isBook(element: any) {
                               <div className="justify-center items-center py-2">
                               <span
                               className={`inline-flex justify-center items-center gap-2 rounded-lg px-2 py-2 text-xs ${
-                                data.isPrivate ? 'bg-[#E57C65] text-white'  : 'bg-white text-[#6F5C52]'
+                                data.private ? 'bg-[#E57C65] text-white'  : 'bg-white text-[#6F5C52]'
                               }`}
                             >
                             <Image
-                              src={data.isPrivate ? isPrivatedIcon : isSharedIcon}
+                              src={data.private ? isPrivatedIcon : isSharedIcon}
                               alt='Icon'
                               width={10}
                               height={10}
                             />
-                              {data.isPrivate ? '나만보기' : '전체공개'}
+                              {data.private ? '나만보기' : '전체공개'}
                               </span>
                               </div>
                              <div className='py-5 pt-5 text-[#503526] text-sm'>
