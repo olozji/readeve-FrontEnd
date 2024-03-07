@@ -133,11 +133,8 @@ const MyPageComponent = (props: ParamType) => {
                 />
               </div>
             ) : (
-              
-                <div className="bg-red-300 h-[50%]">
-                  독서 기록을 남기고 나만의 지도를 확인해보세요:&#41;
-                
-              </div>
+              ''
+               
             )}
           </div>
         </div>
