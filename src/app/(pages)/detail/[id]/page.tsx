@@ -46,7 +46,7 @@ const Detail = (props: PropType) => {
 
   return (
     <><NavBar/>
-    <BookLayoutItem bookId={props.params.id} propsData={myPageData}>
+    <BookLayoutItem bookId={props.params.id} propsData={myData}>
       </BookLayoutItem>
       </>
   )
