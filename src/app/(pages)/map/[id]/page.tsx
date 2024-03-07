@@ -44,10 +44,7 @@ const MyMapPage = (props: PropType) => {
 
   
   useEffect(() => {
-
       fetchData()
-  
-
   }, [props.params.id,session])
   
   useEffect(() => {

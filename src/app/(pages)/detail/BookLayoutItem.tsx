@@ -135,9 +135,10 @@ function isBook(element: any) {
         </div>
       )}
       <>
+        
         <section className="main">
           <section className="pt-20 lg:pt-5 pb-4 lg:pb-8 px-4 xl:px-2 xl:container mx-auto">
-            <div className="md-pt-10 relative">
+          {bookData&&<div className="md-pt-10 relative">
               <div className="lg-pt-10 md-pt-10 relative">
                 <div className="absolute left-0">
                   <div className="flex py-4 md:py-8">
@@ -151,7 +152,7 @@ function isBook(element: any) {
                   </div>
                 </div>
               </div>
-            </div>
+            </div>}
             {bookData &&
               bookData.map((data: any, i: number) => (
                 // 리스트
