@@ -18,7 +18,7 @@ interface listItemProps {
   index: number
   isShared: boolean
   selectedMarkerIndex: string
-  onListMouseLeave:(i:number)=>void
+  onListMouseLeave: (i: number) => void
 }
 
 const ListItem = ({
@@ -27,7 +27,7 @@ const ListItem = ({
   index,
   isShared,
   selectedMarkerIndex,
-  onListMouseLeave
+  onListMouseLeave,
 }: listItemProps) => {
   const [recoilMap] = useRecoilState<any>(mapState)
   const [isHovered, setIsHovered] = useState(false)
@@ -53,7 +53,7 @@ const ListItem = ({
           border  rounded-2xl shadow z-50 hover:bg-[#E57C65] hover:border-[#e57c65] hover:border-2 hover:text-white  ${isHovered ? 'bg-[#E57C65] border-[#E57C65] border-2 text-white' : 'bg-white border-gray-200'}`}
           onClick={() => onListItemClick(data.pinRespDto, index)}
           onMouseEnter={() => setIsHovered(true)}
-          onMouseLeave={()=>mouseLeaveList(index)}
+          onMouseLeave={() => mouseLeaveList(index)}
         >
           <div className="flex justify-between px-6">
             <h5 className="mb-2 text-xl max-w-[10vw] font-bold tracking-tight">
@@ -61,13 +61,17 @@ const ListItem = ({
                 ? data.pinRespDto.name
                 : data.pinRespDto.address}
             </h5>
-            <Link href={data.pinRespDto.url ? data.pinRespDto.url : ''}>
-              <div
-                className={`text-xs underline decoration-solid ${isHovered ? 'text-white' : 'text-gray'}`}
-              >
-                카카오맵으로 자세히보기
-              </div>
-            </Link>
+            {data.pinRespDto.url && data.pinRespo.url !== '누군가의 장소' ? (
+              <Link href={data.pinRespDto.url}>
+                <div
+                  className={`text-xs underline decoration-solid ${isHovered ? 'text-white' : 'text-gray'}`}
+                >
+                  카카오맵으로 자세히보기
+                </div>
+              </Link>
+            ) : (
+              ''
+            )}
           </div>
           <div>
             <div className="flex my-2 px-6">
@@ -106,8 +110,7 @@ const ListItem = ({
             border bg-white border-gray-200 rounded-lg shadow z-50 hover:bg-[#E57C65] hover:text-white"
           onClick={() => onListItemClick(data.pinRespDto, index)}
           onMouseEnter={() => setIsHovered(true)}
-          onMouseLeave={()=>mouseLeaveList(index)}
-            
+          onMouseLeave={() => mouseLeaveList(index)}
         >
           <div className="gap-3">
             <div className="flex gap-3">
@@ -133,22 +136,22 @@ const ListItem = ({
                   height={10}
                 />
               </Link>
-              </div>
-              <div className='mb-2'>
-            <div className="flex align-center ">
-              <Image
-                src={isHovered ? hoverPrivateMarker : privateMarker}
-                alt="hoverPrivateMarker"
-                className=""
-              />
-              <h5 className=" text-sm font-bold tracking-tight">
-                {data.pinRespDto.name
-                  ? data.pinRespDto.name
-                  : data.pinRespDto.address}
-              </h5>
             </div>
-                <p className="text-xs text-gray-600">{data.pinRespDto.address}</p>
-                </div>
+            <div className="mb-2">
+              <div className="flex align-center ">
+                <Image
+                  src={isHovered ? hoverPrivateMarker : privateMarker}
+                  alt="hoverPrivateMarker"
+                  className=""
+                />
+                <h5 className=" text-sm font-bold tracking-tight">
+                  {data.pinRespDto.name
+                    ? data.pinRespDto.name
+                    : data.pinRespDto.address}
+                </h5>
+              </div>
+              <p className="text-xs text-gray-600">{data.pinRespDto.address}</p>
+            </div>
           </div>
           <p
             className={`font-normal ${iscontentExpanded ? 'whitespace-pre-line' : 'line-clamp-2'}`}
