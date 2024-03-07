@@ -61,15 +61,13 @@ const MyPageComponent = (props: ParamType) => {
       fetchData()
     
     
-  }, [props.id])
+  }, [props.id,session])
 
   useEffect(() => {
     setMyPageData(myData)
   }, [myData])
   
-  if (isLoading) {
-    return <div>Loading...</div>
-  }
+
 
   return (
     <section className="bg-[#F1E5CF] px-[15vw]">
