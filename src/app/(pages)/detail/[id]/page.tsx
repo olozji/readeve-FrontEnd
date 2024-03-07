@@ -4,6 +4,8 @@ import BookLayoutItem from "../BookLayoutItem"
 import axios from "axios";
 import { useSession } from "next-auth/react";
 import { useState, useEffect } from "react";
+import lampIcon from '/public/images/lampicon.png'
+import Image from "next/image";
 
 export interface PropType {
   params: {
@@ -44,10 +46,26 @@ const Detail = (props: PropType) => {
   }, [myData])
 
   return (
-    <><NavBar/>
+    <><NavBar />
+      <section className={`bg-[#F1E5CF] mx-auto ${myData.length<=0?'h-screen':''}`}>
+      {/* 램프&내 서재 */}
+      <div className="grid relative mx-auto justify-center text-center mb-10">
+        <Image
+          src={lampIcon}
+          className="inline-block text-center"
+          alt={'lampIcon'}
+          width={150}
+          height={100}
+        />
+        <div>
+        <div className="absolute bottom-8 left-0 right-0 mx-auto myCustomText text-3xl text-white">내 서재</div>
+        </div>
+        </div>
+       
    {myData.length > 0 && (
       <BookLayoutItem bookId={props.params.id} propsData={myData} />
-    )}
+        )}
+         </section>
       </>
   )
 }

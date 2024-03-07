@@ -110,20 +110,7 @@ function isBook(element: any) {
 
 
   return (
-    <section className="bg-[#F1E5CF] mx-auto">
-      {/* 램프&내 서재 */}
-      <div className="grid relative mx-auto justify-center text-center mb-10">
-        <Image
-          src={lampIcon}
-          className="inline-block text-center"
-          alt={'lampIcon'}
-          width={150}
-          height={100}
-        />
-        <div>
-        <div className="absolute bottom-8 left-0 right-0 mx-auto myCustomText text-3xl text-white">내 서재</div>
-        </div>
-      </div>
+    <section>
       {bookData && bookData[0] && (
         <div
           className={`mx-auto w-[80rem] max-w-[80rem] text-center p-4 border border-b-black`}
