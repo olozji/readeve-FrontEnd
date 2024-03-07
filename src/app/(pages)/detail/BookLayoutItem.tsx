@@ -26,14 +26,12 @@ import whitePaper from '/public/images//whitePager.png';
 import { all } from 'node_modules/axios/index.cjs';
 import axios from 'axios';
 
-export interface PropType {
-  params: {
-    id: string
-    searchParams: {}
-  }
+interface bookLayoutItemType {
+  bookId: string,
+  propsData:any
 }
 
-const BookLayoutItem = (props: any) => {
+const BookLayoutItem = ({bookId,propsData}:bookLayoutItemType) => {
   const [bookData, setBookData] = useState<any>(null)
   const [detailOpen, setDetailOpen] = useState<boolean[]>([false, false, false])
 
@@ -41,34 +39,17 @@ const BookLayoutItem = (props: any) => {
   const [editReviewId, setEditReviewId] = useRecoilState(editReivewState)
   const [removeReviewId, setRemoveReviewId] = useRecoilState(removeReivewState)
   const [sortOption, setSortOption] = useRecoilState(sortOptionState);
-  const [allReviewData, setAllReviewData] = useRecoilState<any>(allReviewDataState);
 
   let session: any = useSession()
   const router = useRouter()
 
-  const fetchData = async () => {
-    try {
-      const response = await axios.get(
-        'https://api.bookeverywhere.site/api/data/all?isPrivate=false',
-      )
-      const data = response.data.data // 응답으로 받은 데이터
 
-      // 원본 배열을 복사하여 수정
-      const newData = [...data]
-
-      // 수정된 데이터를 상태에 반영
-      setAllReviewData(newData)
-    } catch (error) {
-      console.error('Error fetching data:', error)
-    }
-  }
-  
   function formatDateToYYMMDD(isoDateString:string) {
     const date = new Date(isoDateString);
     return `${date.getFullYear().toString().slice(2)}.${(date.getMonth() + 1).toString().padStart(2, '0')}.${date.getDate().toString().padStart(2, '0')}`;
 }
 function isBook(element: any) {
-  return element?.bookRespDto?.isbn?.replace(' ', '') === props.id;
+  return element?.bookRespDto?.isbn?.replace(' ', '') === bookId;
 }
 
   const handleSort = (option: 'latest' | 'oldest') => {
@@ -107,25 +88,22 @@ function isBook(element: any) {
     }
   }
   
-  useEffect(() => {
-  fetchData()
-},[])
+ 
 
   useEffect(() => {
     
     let arr: boolean[] = []
 
-    if (allReviewData) {
-      setAllReviewData([...allReviewData])
-      let result = allReviewData.filter(isBook)
+
+      let result = propsData.filter(isBook)
       console.log(result)
       setBookData(result)
       result.forEach(() => {
         arr.push(false)
       })
       setDetailOpen(arr)
-    }
-  }, [props.id,removeReviewId])
+
+  }, [bookId,removeReviewId])
 
 
   return (
@@ -295,7 +273,7 @@ function isBook(element: any) {
                         {data.title}
                       </div>
                       <div className="grid justify-itmes-center">
-                        {formatDateToYYMMDD(data.createdAt)}
+                        {formatDateToYYMMDD(data.createAt)}
                         <Image
                           src={data.private ? Private : unLock}
                           alt="private"
