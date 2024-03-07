@@ -1,3 +1,4 @@
+'use client'
 import NavBar from "@/app/components/NavBar";
 import BookLayoutItem from "../BookLayoutItem"
 import axios from "axios";
