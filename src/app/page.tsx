@@ -192,7 +192,7 @@ export default function Home() {
         </div>
       </div>
 
-      <div className="mx-auto  max-w-5xl">
+      <div className="mx-auto max-w-5xl">
         <div className="text-center ">
           <div className="text-2xl font-display font-bold py-10">
             이런 장소는 어때요?
@@ -307,8 +307,8 @@ export default function Home() {
           )}
         </div>
         <div className="py-[10rem] text-center">
-          <h1 onClick={scrollToTop} className="cursor-pointer">
-            첫 화면으로 올라가기
+          <h1 onClick={scrollToTop} className="cursor-pointer underline decoration-solid">
+          △첫 화면으로 올라가기
           </h1>
         </div>
       </div>
