@@ -330,12 +330,12 @@ const Editor = () => {
               modalheight={'40rem'}
               modalColor="#fff"
             >
-              <div className="mt-10 px-[12%] py-10 text-center">
+              <div className="mt-10 px-[10%] py-10 text-center">
                 <div className="border-b-[2px]">
                   <h1 className="font-bold text-2xl text-left py-3 border-b-[2px]">
                     장소와 딱맞는 태그를 선택해 주세요
                   </h1>
-                  <div className="flex justify-center gap-4 my-10 ">
+                  <div className="flex  gap-4 my-10 ">
                     {tagCategory.map((category: string, index: number) => (
                       <div className="flex flex-col" key={index}>
                         <div className="text-start mb-4">{category}</div>
@@ -350,7 +350,7 @@ const Editor = () => {
                  mr-2 mb-2 border border-[#EAEAEA] rounded-[8px] text-xs/[10px] 
                  ${
                    tag.selected
-                     ? 'bg-[#FFE5E5] text-[#E57C65] border-[#E57C65]'
+                     ? 'bg-[#FFE5E5] text-[#E57C65] border border-[#E57C65]'
                      : 'bg-white '
                  }`}
                                 onClick={() => handleTagClick(tag.content)}
@@ -362,7 +362,7 @@ const Editor = () => {
                       </div>
                     ))}
                     <div className="flex flex-col">
-                      <div className="text-start mb-4 hidden"></div>
+                      <div className="text-start mb-4 block"></div>
                       <div className="flex">
                         <div
                           className={`box-border flex justify-center items-center px-6 py-3
