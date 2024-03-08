@@ -192,7 +192,7 @@ export default function Home() {
         </div>
       </div>
 
-      <div className="mx-auto  max-w-5xl">
+      <div className="mx-auto max-w-5xl">
         <div className="text-center ">
           <div className="text-2xl font-display font-bold py-10">
             이런 장소는 어때요?
@@ -230,7 +230,7 @@ export default function Home() {
         <div className="mt-10">
           <div className="text-2xl font-display font-bold py-10">내 서재</div>
           {session.data ? (
-            <BookLayout bookData={myPageData} isMain={'full'}></BookLayout>
+            <BookLayout bookData={myPageData} width={'full'} isMain={true} ></BookLayout>
           ) : (
             <div>로그인 하고 내 서재 를 확인하세요</div>
           )}
@@ -307,8 +307,8 @@ export default function Home() {
           )}
         </div>
         <div className="py-[10rem] text-center">
-          <h1 onClick={scrollToTop} className="cursor-pointer">
-            첫 화면으로 올라가기
+          <h1 onClick={scrollToTop} className="cursor-pointer underline decoration-solid">
+          △첫 화면으로 올라가기
           </h1>
         </div>
       </div>

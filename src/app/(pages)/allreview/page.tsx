@@ -97,6 +97,15 @@ const AllReviewPage = () => {
   fetchData()
 },[])
 
+function maskName(name:string) {
+  if (name.length <= 2) {
+      return name;
+  }
+  const firstChar = name.charAt(0);
+  const lastChar = name.charAt(name.length - 1);
+  const maskedPart = "*".repeat(name.length - 2);
+  return firstChar + maskedPart + lastChar;
+}
 
   function formatDateToYYMMDD(isoDateString:string) {
     const date = new Date(isoDateString);
@@ -269,7 +278,7 @@ const AllReviewPage = () => {
                                   className="mr-2"
                                 />
                                 {item.pinRespDto.private ? (
-                                  <div>{item.writer}님만의 장소</div>
+                                  <div>{maskName(item.writer)}님만의 장소</div>
                                 ) : (
                                   <div className="">
                                     독서장소: {item.pinRespDto?.name} |{' '}

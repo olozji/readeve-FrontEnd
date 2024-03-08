@@ -94,7 +94,7 @@ const NavBar = () => {
         </div>
       </ul> */}
       <div className="flex justify-between mx-auto max-w-5xl right-0 menu menu-horizontal py-3">
-        <h1 className="self-center justify-start whitespace-nowrap mx-8">
+        <h1 className="self-center justify-start whitespace-nowrap">
           <Link href="/">
             <Image src={NavLogo} alt="Logo" />
           </Link>

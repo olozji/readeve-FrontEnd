@@ -44,20 +44,18 @@ const Editor = () => {
 
   let user: any = session.data?.user
 
- 
   const handleSearchMap = useCallback((e: any) => {
     e.preventDefault()
     setShowMap(true)
   }, [])
 
   useEffect(() => {
-
     if (inputRef.current) {
       inputRef.current.focus() // Input에 focus() 호출
     }
   }, [isPrivatePlace])
 
-  let numTag:any[]=[];
+  let numTag: any[] = []
   useEffect(() => {
     console.log(1)
     numTag = tagInfo.filter((tag: any) => {
@@ -173,7 +171,18 @@ const Editor = () => {
     setAllDataInfo({})
     setTitleInfo('')
     setPlaceInfo({})
-    setTagInfo([{content:'잔잔한 음악이 흘러요',selected:false},{content:'날씨 좋은날 테라스가 좋아요',selected:false},{content:'카공하기 좋아요',selected:false},{content:'힙합BGM이 흘러나와요',selected:false},{content:'조용해서 좋아요',selected:false},{content:'한적해요',selected:false},{content:'자리가 많아요',selected:false},{content:'차마시기 좋아요',selected:false},{content:'귀여운 고양이가 있어요🐈',selected:false},{content:'책을 무료로 대여해줘요📚',selected:false}])
+    setTagInfo([
+      { content: '잔잔한 음악이 흘러요', selected: false },
+      { content: '날씨 좋은날 테라스가 좋아요', selected: false },
+      { content: '카공하기 좋아요', selected: false },
+      { content: '힙합BGM이 흘러나와요', selected: false },
+      { content: '조용해서 좋아요', selected: false },
+      { content: '한적해요', selected: false },
+      { content: '자리가 많아요', selected: false },
+      { content: '차마시기 좋아요', selected: false },
+      { content: '귀여운 고양이가 있어요🐈', selected: false },
+      { content: '책을 무료로 대여해줘요📚', selected: false },
+    ])
 
     window.location.href = `/mypage/${session.data?.user.id}` // 이동할 경로
   }
@@ -187,33 +196,36 @@ const Editor = () => {
             <h1 className="myCustomText text-3xl text-black">독후감 작성</h1>
           </header>
 
-
-          <section className='py-10 px-10'>
-          <div className="px-5 py-8 flex rounded-t-md">
-            <div className="flex max-w-[70rem] px-3">
-              <input
-                placeholder='제목'
-                ref={inputRef}
-                className="inline-block w-[60rem] h-[2.8rem] text-base px-3 rounded-md bg-[#F9F9F9] placeholder-[#A08A7E]"
-                value={titleInfo}
-                onChange={handleTitle}
-              />
+          <section className="py-10 px-10">
+            <div className="px-5 py-8 flex rounded-t-md">
+              <div className="flex max-w-[70rem] px-3">
+                <input
+                  placeholder="제목"
+                  ref={inputRef}
+                  className="inline-block w-[60rem] h-[2.8rem] text-base px-3 rounded-md bg-[#F9F9F9] placeholder-[#A08A7E]"
+                  value={titleInfo}
+                  onChange={handleTitle}
+                />
+              </div>
             </div>
-          </div>
-          <div className="px-8 py-3 flex gap-5 items-center">
-            <h4 className="px-5  font-extrabold">장소</h4>
-            <div>
-              <input
-                placeholder='독서한 장소를 입력해주세요'
-                ref={inputRef}
-                className="inline-block w-[35rem] h-[2rem] text-xs/[10px] px-3 rounded-2xl bg-[#F9F9F9] placeholder-[#A08A7E]"
-                value={placeInfo.place_name}
-                onClick={handleSearchMap}
-              />
-              {showMap && (
-
-                <CustomModal isOpen={true} modalheight={'85vh'} size={'100vh'} onClose={handleCloseMap} modalColor='#fff'>
-
+            <div className="px-8 py-3 flex gap-5 items-center">
+              <h4 className="px-5  font-extrabold">장소</h4>
+              <div>
+                <input
+                  placeholder="독서한 장소를 입력해주세요"
+                  ref={inputRef}
+                  className="inline-block w-[35rem] h-[2rem] text-xs/[10px] px-3 rounded-2xl bg-[#F9F9F9] placeholder-[#A08A7E]"
+                  value={placeInfo.place_name}
+                  onClick={handleSearchMap}
+                />
+                {showMap && (
+                  <CustomModal
+                    isOpen={true}
+                    modalheight={'85vh'}
+                    size={'100vh'}
+                    onClose={handleCloseMap}
+                    modalColor="#fff"
+                  >
                     <AddPlace
                       onClose={handleCloseMap}
                       onMarkerClickParent={setSelectedPlace}
@@ -222,7 +234,7 @@ const Editor = () => {
                     <div className="py-3 px-16">
                       <label className="inline-flex gap-3 items-center cursor-pointer">
                         <span className="ms-3 text-[#828282] text-sm font-medium">
-                          나만보기
+                          나만의 장소
                         </span>
                         <input
                           type="checkbox"
@@ -237,7 +249,7 @@ const Editor = () => {
                         <div className="relative w-11 h-6 bg-[#D1D1D1] peer-focus:outline-none peer-focus:ring-4 peer-focus:ring-blue-300 dark:peer-focus:ring-blue-800 rounded-full peer dark:bg-gray-700 peer-checked:after:translate-x-full rtl:peer-checked:after:-translate-x-full peer-checked:after:border-white after:content-[''] after:absolute after:top-[2px] after:start-[2px] after:bg-white after:border-gray-300 after:border after:rounded-full after:h-5 after:w-5 after:transition-all dark:border-gray-600 peer-checked:bg-[#E57C65]"></div>
                       </label>
                       <p className="py-3 px-3 text-sm text-[#979797]">
-                        나만보기를 선택할 경우, 다른 사람들이 회원님의 장소를
+                        나만의 장소를 선택할 경우, 다른 사람들이 회원님의 장소를
                         확인할 수 없습니다
                       </p>
                       <div className="flex mx-auto w-[8rem]">
@@ -280,22 +292,28 @@ const Editor = () => {
                 <BookSearch></BookSearch>
               </div>
             </div>
-            <div className='flex px-8 py-3 items-center '>
-            <h4 className="px-5 font-extrabold">장소 태그</h4>
-            <div className="flex flex-wrap max-w-[50vw] items-center">
-              
-              {tagInfo.map((tag:any) => (
-                tag.selected && <div className='box-border flex justify-center items-center px-4 py-2
-                my-2 mx-2 text-xs/[10px] border border-gray-300 rounded-full bg-[#E57C65] text-white'>#{tag.content }</div>
-              ))}
-              <button
-                onClick={() => setShowTagModal(true)}
-                className="cursor-pointer text-[#7a7a7a] font-light text-4xl"
-              >
-                +
-              </button>
+            <div className="flex px-8 py-3 mb-8 items-center ">
+              <h4 className="px-5 font-extrabold">장소 태그</h4>
+              <div className="flex flex-wrap max-w-[50vw] items-center">
+                {tagInfo.map(
+                  (tag: any) =>
+                    tag.selected && (
+                      <div
+                        className="box-border flex justify-center items-center px-4 py-2
+                my-2 mx-2 text-xs/[10px] border border-gray-300 rounded-full bg-[#E57C65] text-white"
+                      >
+                        #{tag.content}
+                      </div>
+                    ),
+                )}
+                <button
+                  onClick={() => setShowTagModal(true)}
+                  className="cursor-pointer text-[#7a7a7a] font-light text-4xl"
+                >
+                  +
+                </button>
               </div>
-              </div>
+            </div>
             <CustomModal
               isOpen={showTagModal}
               onClose={() => setShowTagModal(false)}
@@ -338,41 +356,43 @@ const Editor = () => {
                   }}
                 />
               </div>
-
-        </CustomModal>
-        <div className="py-8 flex gap-4 justify-center items-center">
-        <span
-        className={`inline-flex justify-center items-center gap-2 rounded-full px-3 py-3 text-xs font-medium ${
-          isPrivate ? 'bg-[#E57C65] text-white'  : 'bg-white text-black'
-        }`}
-        onClick={handleIsPrivateClick}
-      >
-       <Image
-         src={isPrivatedIcon}
-         alt='isPrivatedIcon'
-         width={13}
-         height={13}
-       />
-        나만보기
-        </span>
-        <span
-        className={`inline-flex items-center rounded-full gap-2 px-3 py-3 text-xs font-medium ${
-          !isPrivate ? 'bg-[#E57C65] text-white'  : 'bg-[#F9f9f9] text-black'
-        }`}
-        onClick={handlePublicClick}
-        >
-       <Image
-         src={isSharededIcon}
-         alt='isSharededIcon'
-         width={13}
-         height={13}
-       />
-        전체공개
-        </span>
-        </div>
-
+            </CustomModal>
 
             <div className="py-8 border-[#A08A7E] border-t-2">
+              <div className=" flex gap-4 justify-center items-center">
+                <span
+                  className={`inline-flex justify-center items-center gap-2 rounded-full px-3 py-3 text-xs font-medium ${
+                    isPrivate
+                      ? 'bg-[#E57C65] text-white'
+                      : 'bg-white text-black'
+                  }`}
+                  onClick={handleIsPrivateClick}
+                >
+                  <Image
+                    src={isPrivatedIcon}
+                    alt="isPrivatedIcon"
+                    width={13}
+                    height={13}
+                  />
+                  나만보기
+                </span>
+                <span
+                  className={`inline-flex items-center rounded-full gap-2 px-3 py-3 text-xs font-medium ${
+                    !isPrivate
+                      ? 'bg-[#E57C65] text-white'
+                      : 'bg-[#F9f9f9] text-black'
+                  }`}
+                  onClick={handlePublicClick}
+                >
+                  <Image
+                    src={isSharededIcon}
+                    alt="isSharededIcon"
+                    width={13}
+                    height={13}
+                  />
+                  전체공개
+                </span>
+              </div>
               <div className="px-5 py-8">
                 <div className="flex gap-2 pb-5">
                   <Image src={pen} alt="pen" width={30} height={30} />
