@@ -300,7 +300,7 @@ const Editor = () => {
                     tag.selected && (
                       <div
                         className="box-border flex justify-center items-center px-4 py-2
-                my-2 mx-2 text-xs/[10px] border border-gray-300 rounded-full bg-[#E57C65] text-white"
+                my-2 mx-2 text-xs/[10px] rounded-full bg-[#E57C65] text-white"
                       >
                         #{tag.content}
                       </div>
