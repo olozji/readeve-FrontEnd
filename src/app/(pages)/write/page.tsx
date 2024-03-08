@@ -32,7 +32,7 @@ const Editor = () => {
   const [InputText, setInputText] = useState('')
   const [isPrivate, setIsPrivate] = useState(true)
   const [isPrivatePlace, setIsPrivatePlace] = useState(true)
-  const [tagCategory] = useState(['분위기','서비스/모임','시설/기타'])
+  const [tagCategory] = useState(['분위기', '서비스/모임', '시설/기타'])
   const [tagData, setTagData] = useState<any>([])
   const [titleInfo, setTitleInfo] = useRecoilState<string>(titleState)
   const [bookInfo] = useRecoilState<any>(bookState)
@@ -100,7 +100,7 @@ const Editor = () => {
       const data = response.data.data
       setTagInfo(data)
       console.log(data)
-    } catch(error) {
+    } catch (error) {
       console.error('Error fetching data:', error)
     }
   }
@@ -114,15 +114,13 @@ const Editor = () => {
   }
 
   const handleTagClick = (content: string) => {
-    
-      // 객체를 복사하여 새로운 객체를 생성
-      const updatedTags = tagInfo.map((tag: any, i: number) =>
-        tag.content === content ? { ...tag, selected: !tag.selected } : tag,
-      )
+    // 객체를 복사하여 새로운 객체를 생성
+    const updatedTags = tagInfo.map((tag: any, i: number) =>
+      tag.content === content ? { ...tag, selected: !tag.selected } : tag,
+    )
 
-      // Recoil 상태를 갱신
-      setTagInfo(updatedTags)
-    
+    // Recoil 상태를 갱신
+    setTagInfo(updatedTags)
   }
 
   const handleAllData = async (e: any) => {
@@ -185,7 +183,6 @@ const Editor = () => {
     setAllDataInfo({})
     setTitleInfo('')
     setPlaceInfo({})
-   
 
     window.location.href = `/mypage/${session.data?.user.id}` // 이동할 경로
   }
@@ -193,12 +190,11 @@ const Editor = () => {
     if (tagInfo.length <= 10) {
       fetchTag()
     }
-    
-  },[])
+  }, [])
 
   useEffect(() => {
     setTagData(tagInfo)
-  },[tagInfo])
+  }, [tagInfo])
 
   return (
     <>
@@ -334,36 +330,49 @@ const Editor = () => {
               modalheight={'40rem'}
               modalColor="#fff"
             >
-              <div className="mt-10 px-10 py-10 text-center">
+              <div className="mt-10 px-[12%] py-10 text-center">
                 <div className="border-b-[2px]">
                   <h1 className="font-bold text-2xl text-left py-3 border-b-[2px]">
                     장소와 딱맞는 태그를 선택해 주세요
                   </h1>
-                  <div className="flex justify-center gap-4 my-10 sm:px-10">
+                  <div className="flex justify-center gap-4 my-10 ">
                     {tagCategory.map((category: string, index: number) => (
-                      <div className='flex flex-col' key={index}>
-                        <div className=''>{category}</div>
-                    
-                    {tagData.filter((t:any)=>t.category===category)
-                      .map((tag: any, i: number) => (
-                      <div className="flex">
-                        <div
-                          key={i}
-                          className={`box-border flex justify-center items-center px-4 py-2
-                 my-2 mx-2 border border-gray-300 rounded-full text-xs/[10px] 
+                      <div className="flex flex-col" key={index}>
+                        <div className="text-start mb-4">{category}</div>
+
+                        {tagData
+                          .filter((t: any) => t.category === category)
+                          .map((tag: any, i: number) => (
+                            <div className="flex">
+                              <div
+                                key={i}
+                                className={`box-border flex justify-center items-center px-6 py-3
+                 mr-2 mb-2 border border-[#EAEAEA] rounded-[8px] text-xs/[10px] 
                  ${
                    tag.selected
-                     ? 'bg-[#E57C65] text-white'
-                     : 'bg-white hover:border-[#C05555] hover:text-[#C05555]'
+                     ? 'bg-[#FFE5E5] text-[#E57C65] border-[#E57C65]'
+                     : 'bg-white '
                  }`}
-                          onClick={() => handleTagClick(tag.content)}
+                                onClick={() => handleTagClick(tag.content)}
+                              >
+                                {tag.content}
+                              </div>
+                            </div>
+                          ))}
+                      </div>
+                    ))}
+                    <div className="flex flex-col">
+                      <div className="text-start mb-4 hidden"></div>
+                      <div className="flex">
+                        <div
+                          className={`box-border flex justify-center items-center px-6 py-3
+                 mr-2 mb-2 border border-[#EAEAEA] rounded-[8px] text-xs/[10px] 
+                 `}
                         >
-                          #{tag.content}
+                          선택할 키워드가 없어요
                         </div>
                       </div>
-                      ))}
-                      </div>
-                   ))}
+                    </div>
                   </div>
                 </div>
               </div>
