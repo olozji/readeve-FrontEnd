@@ -42,7 +42,7 @@ export default function Home() {
     useRecoilState<any>(allReviewDataState)
   const [myData, setMyData] = useState([])
   const [myPageData, setMyPageData] = useState([])
-  const [tagData, setTagData] = useState([])
+  const [tagData, setTagData] = useState<any>([])
   const [isLoading, setIsLoading] = useState(true)
 
   const numVisibleBooks = 4
