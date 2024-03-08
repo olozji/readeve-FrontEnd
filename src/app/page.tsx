@@ -41,7 +41,8 @@ export default function Home() {
   const [allReviewData, setAllReviewData] =
     useRecoilState<any>(allReviewDataState)
   const [myData, setMyData] = useState([])
-  const [myPageData,setMyPageData] = useState([])
+  const [myPageData, setMyPageData] = useState([])
+  const [tagData, setTagData] = useState([])
   const [isLoading, setIsLoading] = useState(true)
 
   const numVisibleBooks = 4
@@ -79,6 +80,18 @@ export default function Home() {
       console.error('Error fetching data:', error)
     }
   }
+  const fetchTag = async () => {
+    try {
+      const response = await axios.get(
+        `https://api.bookeverywhere.site/api/tags`,
+      )
+      const data = response.data.data
+      setTagInfo(data)
+      console.log(data)
+    } catch(error) {
+      console.error('Error fetching data:', error)
+    }
+  }
 
   const fetchPersonalData = async () => {
     if (session.data.user.id) {
@@ -100,10 +113,16 @@ export default function Home() {
   useEffect(() => {
    
       fetchData()
-      fetchPersonalData()
+    fetchPersonalData()
+    fetchTag()
       setMap(true)
     
   }, [])
+
+  useEffect(() => {
+    setTagData(tagInfo)
+    setIsSelectedTags(new Array(tagInfo.length).fill(false))
+  },[tagInfo])
 
   useEffect(() => {
    
@@ -198,7 +217,7 @@ export default function Home() {
             이런 장소는 어때요?
           </div>
           <div className="flex flex-wrap justify-center mb-10 sm:px-40 ">
-            {tagInfo.map((tag: any, i: number) => (
+            {tagData.length>0&&tagData.map((tag: any, i: number) => (
               <div
                 key={i}
                 className={`box-border flex justify-center items-center px-4 py-2 my-2 mx-2 border border-gray-300 rounded-full ${isSelectedTags[i] ? 'bg-[#E57C65] text-white' : 'bg-white hover:border-[#C05555] hover:text-[#C05555]'}`}
