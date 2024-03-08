@@ -7,10 +7,11 @@ import { useRecoilState } from 'recoil'
 import { allReviewDataState } from '@/store/writeAtoms'
 
 interface bookLayoutProps {
-  isMain: string
+  isMain: boolean
   bookData: any
+  width: string
 }
-export const BookLayout = ({ isMain, bookData }: bookLayoutProps) => {
+export const BookLayout = ({ width, isMain, bookData }: bookLayoutProps) => {
   const [documents, setDocuments] = useState<any[]>([])
   const [parsedData, setParsedData] = useState<any[]>([])
   const [startIdx, setStartIdx] = useState(0)
@@ -43,7 +44,7 @@ export const BookLayout = ({ isMain, bookData }: bookLayoutProps) => {
     <div>
       {documents.length !== 0 && (
         <div className="flex justify-center">
-          <div className={`flex justify-between items-center w-${isMain} `}>
+          <div className={`flex justify-between items-center w-${width} `}>
             <div className="p-2 cursor-pointer" onClick={handleClickPrev}>
               &lt;
             </div>
@@ -66,25 +67,28 @@ export const BookLayout = ({ isMain, bookData }: bookLayoutProps) => {
                           alt="책 표지"
                           className="mb-2 rounded-lg w-[8vw]"
                         />
-                        <div className="flex gap-2 w-[8vw] items-center">
-                          <span className="flex items-center justify-center max-h-10 rounded-lg gap-1 bg-[#E1E1E1] px-3 py-1 text-xs font-medium text-[#5F5F5F]">
-                            <Image
-                              src={NotesImg}
-                              alt={'NotesImg'}
-                              width={10}
-                              height={10}
-                            />
-                            {
-                              bookData.filter(
-                                (data: any) =>
-                                  data.bookRespDto.isbn === d.bookRespDto.isbn,
-                              ).length
-                            }{' '}
-                          </span>
-                          <div className="px-1 py-1 text-[#5F5F5F] text-sm">
-                            {d.bookRespDto.title}
+                        {isMain && (
+                          <div className="flex gap-2 w-[8vw] items-center">
+                            <span className="flex items-center justify-center max-h-10 rounded-lg gap-1 bg-[#E1E1E1] px-3 py-1 text-xs font-medium text-[#5F5F5F]">
+                              <Image
+                                src={NotesImg}
+                                alt={'NotesImg'}
+                                width={10}
+                                height={10}
+                              />
+                              {
+                                bookData.filter(
+                                  (data: any) =>
+                                    data.bookRespDto.isbn ===
+                                    d.bookRespDto.isbn,
+                                ).length
+                              }{' '}
+                            </span>
+                            <div className="px-1 py-1 text-[#5F5F5F] text-sm">
+                              {d.bookRespDto.title}
+                            </div>
                           </div>
-                        </div>
+                        )}
                       </div>
                     </Link>
                   ))}

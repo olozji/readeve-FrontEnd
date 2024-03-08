@@ -230,7 +230,7 @@ export default function Home() {
         <div className="mt-10">
           <div className="text-2xl font-display font-bold py-10">내 서재</div>
           {session.data ? (
-            <BookLayout bookData={myPageData} isMain={'full'}></BookLayout>
+            <BookLayout bookData={myPageData} width={'full'} isMain={true} ></BookLayout>
           ) : (
             <div>로그인 하고 내 서재 를 확인하세요</div>
           )}
