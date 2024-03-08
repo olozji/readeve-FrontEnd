@@ -18,7 +18,7 @@ export const BookSearch = () => {
   const [documents, setDocuments] = useState<any>([])
   const [modalOpen, setModalOpen] = useState(false)
   const [selectedBook, setSelectedBook] = useState<any>(null)
-  const [bookInfo, setBookInfo] = useRecoilState(bookState)
+  const [bookInfo, setBookInfo] = useRecoilState<any>(bookState)
 
   const inputRef = useRef<HTMLInputElement | null>(null)
 
@@ -125,7 +125,7 @@ export const BookSearch = () => {
         ref={inputRef}
         type="text"
         placeholder="책 제목을 입력해주세요"
-        value={bookName}
+        value={selectedBook?selectedBook.title:''}
         onClick={() => setModalOpen(true)}
         onChange={(e) => setBookName(e.target.value)}
         onKeyDown={handleKeyDown}
@@ -155,7 +155,7 @@ export const BookSearch = () => {
                 }}
                 className="w-[35rem] h-[2.5rem] px-3 border border-black rounded-2xl bg-white"
               />
-              <div className="bg-[#E57C65] border-4 border-white px-2 py-1 rounded-3xl shadow-xl justify-center">
+              <div className="bg-[#E57C65] border-4 border-white mx-4 px-2 py-1 rounded-3xl shadow-xl justify-center">
                 <button id="searchBtn" onClick={onSubmit} onSubmit={onSubmit}>
                   <Image
                     src={mapSearchIcon}
@@ -169,7 +169,7 @@ export const BookSearch = () => {
            
             <div className="grid grid-cols-1 overflow-y-auto max-h-[37vh] mt-4 justify-items-start scrollBar">
               {documents.map((d: any, i: number) => (
-               <div  className={` w-[100%] block ${selectedBook && selectedBook.isbn === d.isbn ? 'rounded-lg border-4 border-[#E57c65]' : 'rounded-lg border-4 border-transparent'}`}>
+               <div  className={` w-[100%] block ${selectedBook && selectedBook.isbn === d.isbn ? 'rounded-[13px] border-4 border-[#E57c65]' : 'rounded-lg border-4 border-transparent'}`}>
                 <div
                   className='flex align-center'
                   key={i}
