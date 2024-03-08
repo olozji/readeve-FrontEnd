@@ -30,6 +30,8 @@ const MapSearch = ({ searchPlace, onMarkerClick, markerImage ,mapHeight  }: MapS
   const [hoveredPlace, setHoveredPlace] = useState<any | null>(null);
   const [placeInfo,setPlaceInfo] = useRecoilState<any>(placeState)
 
+  const [selectedListItem, setSelectedListItem] = useState<number | null>(null);
+
   // TODO:마커 호버시 리스트 배경색 효과를 위해 만든 state -> 아직 진행중
   const [selectedMarkerIndex, setSelectedMarkerIndex] = useState<number | null>(null);
 
@@ -135,16 +137,16 @@ const MapSearch = ({ searchPlace, onMarkerClick, markerImage ,mapHeight  }: MapS
            
             // 리스트 아이템에 hover 이벤트 처리
             // 각 아이템에 place.id를 부여해 마커 place.id가 아이템 인덱스가 일치할때
-            const listItem = document.getElementById(`list-item-${place.id}`);
-            if (listItem) {
-              listItem.addEventListener('mouseover', () => {
-                handleMarkerHover(place.id)
-              });
-              listItem.addEventListener('mouseout', () => {
-                //handleMarkerMouseOut();
-                //infowindow.close();
-            });
-            console.log(`Marker ID: ${place.id}, ListItem ID: ${listItem.id}`)}
+            // const listItem = document.getElementById(`list-item-${place.id}`);
+            // if (listItem) {
+            //   listItem.addEventListener('mouseover', () => {
+            //     handleMarkerHover(place.id)
+            //   });
+            //   listItem.addEventListener('mouseout', () => {
+            //     //handleMarkerMouseOut();
+            //     //infowindow.close();
+            // });
+            // console.log(`Marker ID: ${place.id}, ListItem ID: ${listItem.id}`)}
             
 
               // 리스트 아이템 hover 이벤트 처리
@@ -304,13 +306,13 @@ const MapSearch = ({ searchPlace, onMarkerClick, markerImage ,mapHeight  }: MapS
 
 
   // TODO:첫 클릭시 해당 위치 못잡는 버그 추후에 수정해야됨
-  const clickListItem = (place: any) => {
+  const clickListItem = (place: any, index:any) => {
     // useRef로 저장한 map을 참조하여 지도 이동 및 확대
-    mapRef.current.panTo(new window.kakao.maps.LatLng(place.y, place.x));
     mapRef.current.setLevel(2);
+    mapRef.current.panTo(new window.kakao.maps.LatLng(place.y, place.x));
     setPlaceInfo(place)
+    setSelectedListItem(index);
   };
-
 
 
   return (
@@ -336,29 +338,34 @@ const MapSearch = ({ searchPlace, onMarkerClick, markerImage ,mapHeight  }: MapS
           <div 
             key={item.id}
             id={`list-item-${item.id}`} 
-            className={`px-2 rounded-md  bg-white ${selectedMarkerIndex === i ? 'bg-[#E57C65]' : ''}`}
-            style={{ marginTop: '5px', marginBottom: '20px', cursor:'pointer' }}
-            onClick={() => clickListItem(item)}
-            onMouseEnter={() => handleListItem(item, i)}
-            onMouseLeave={() => handleListItem(item, i)}
+            className="px-2 rounded-md border-b"
+            style={{ cursor: 'pointer',
+            background: selectedListItem === i ? '#E57C65' : 'white',
+            color: selectedListItem === i ? 'white' : '#B6B6B6' 
+            }}
+            onClick={() => clickListItem(item, i)}
+            // onMouseEnter={() => handleListItem(item, i)}
+            // onMouseLeave={() => handleListItem(item, i)}
           >
-            <div className='border-b'>
-              <div className='text-[#E57C65] font-bold text-md' style={{ marginTop: '10px', marginBottom: '10px' }}>
+            <div>
+              <div className='text-[#E57C65] font-bold text-md' 
+                   style={{ paddingTop: '10px', marginBottom: '10px',
+                            color: selectedListItem === i ? 'white' : ''  }}>
                 {item.place_name}
               </div>
               {item.road_address_name ? (
                 <div
-                  className='text-[#B6B6B6] text-xs'
+                  className='text-xs'
                 >
                   <div 
-                   className='text-[#B6B6B6] text-xs'
+                   className='text-xs'
                    >
                     {item.road_address_name} |  {item.address_name}
                   </div>
                 </div>
               ) : (
                 <span 
-                  className='text-[#B6B6B6] text-xs'
+                  className='text-xs'
                   >
                   {item.address_name}
                 </span>

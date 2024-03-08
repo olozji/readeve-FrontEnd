@@ -53,7 +53,9 @@ export const MapDirectSearch = ({ onMarkerClick, markerImage }: any) => {
             position: currentPosition,
             image: new window.kakao.maps.MarkerImage(
               markerImage.src,
-              new window.kakao.maps.Size(markerImage.width, markerImage.height),
+              // markerImage.width랑 height 하니까 이미지가 너무 커서 기존 숫자값으로 정해놨어요!
+              // 커밋전 한번 브라우저에서 확인해보시고 이 부분 봐주세요!!
+              new window.kakao.maps.Size(30, 35),
             ),
           })
           currMarker.setMap(map)
