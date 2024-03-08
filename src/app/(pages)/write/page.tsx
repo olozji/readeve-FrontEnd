@@ -32,6 +32,8 @@ const Editor = () => {
   const [InputText, setInputText] = useState('')
   const [isPrivate, setIsPrivate] = useState(true)
   const [isPrivatePlace, setIsPrivatePlace] = useState(true)
+  const [tagCategory] = useState(['분위기','서비스/모임','시설/기타'])
+  const [tagData, setTagData] = useState<any>([])
   const [titleInfo, setTitleInfo] = useRecoilState<string>(titleState)
   const [bookInfo] = useRecoilState<any>(bookState)
   const [tagInfo, setTagInfo] = useRecoilState<any>(tagState)
@@ -90,6 +92,18 @@ const Editor = () => {
     setTitleInfo(e.target.value)
     console.log(titleInfo)
   }
+  const fetchTag = async () => {
+    try {
+      const response = await axios.get(
+        `https://api.bookeverywhere.site/api/tags`,
+      )
+      const data = response.data.data
+      setTagInfo(data)
+      console.log(data)
+    } catch(error) {
+      console.error('Error fetching data:', error)
+    }
+  }
 
   const handleIsPrivateClick = () => {
     setIsPrivate((prevIsPrivate) => !prevIsPrivate)
@@ -99,16 +113,16 @@ const Editor = () => {
     setIsPrivate((prevIsPrivate) => !prevIsPrivate)
   }
 
-  const handleTagClick = (index: number) => {
-    if (index >= 0 && index < tagInfo.length) {
+  const handleTagClick = (content: string) => {
+    
       // 객체를 복사하여 새로운 객체를 생성
       const updatedTags = tagInfo.map((tag: any, i: number) =>
-        i === index ? { ...tag, selected: !tag.selected } : tag,
+        tag.content === content ? { ...tag, selected: !tag.selected } : tag,
       )
 
       // Recoil 상태를 갱신
       setTagInfo(updatedTags)
-    }
+    
   }
 
   const handleAllData = async (e: any) => {
@@ -171,21 +185,20 @@ const Editor = () => {
     setAllDataInfo({})
     setTitleInfo('')
     setPlaceInfo({})
-    setTagInfo([
-      { content: '잔잔한 음악이 흘러요', selected: false },
-      { content: '날씨 좋은날 테라스가 좋아요', selected: false },
-      { content: '카공하기 좋아요', selected: false },
-      { content: '힙합BGM이 흘러나와요', selected: false },
-      { content: '조용해서 좋아요', selected: false },
-      { content: '한적해요', selected: false },
-      { content: '자리가 많아요', selected: false },
-      { content: '차마시기 좋아요', selected: false },
-      { content: '귀여운 고양이가 있어요🐈', selected: false },
-      { content: '책을 무료로 대여해줘요📚', selected: false },
-    ])
+   
 
     window.location.href = `/mypage/${session.data?.user.id}` // 이동할 경로
   }
+  useEffect(() => {
+    if (tagInfo.length <= 10) {
+      fetchTag()
+    }
+    
+  },[])
+
+  useEffect(() => {
+    setTagData(tagInfo)
+  },[tagInfo])
 
   return (
     <>
@@ -326,8 +339,13 @@ const Editor = () => {
                   <h1 className="font-bold text-2xl text-left py-3 border-b-[2px]">
                     장소와 딱맞는 태그를 선택해 주세요
                   </h1>
-                  <div className="flex flex-wrap justify-center my-10 sm:px-20">
-                    {tagInfo.map((tag: any, i: number) => (
+                  <div className="flex justify-center gap-4 my-10 sm:px-10">
+                    {tagCategory.map((category: string, index: number) => (
+                      <div className='flex flex-col' key={index}>
+                        <div className=''>{category}</div>
+                    
+                    {tagData.filter((t:any)=>t.category===category)
+                      .map((tag: any, i: number) => (
                       <div className="flex">
                         <div
                           key={i}
@@ -338,12 +356,14 @@ const Editor = () => {
                      ? 'bg-[#E57C65] text-white'
                      : 'bg-white hover:border-[#C05555] hover:text-[#C05555]'
                  }`}
-                          onClick={() => handleTagClick(i)}
+                          onClick={() => handleTagClick(tag.content)}
                         >
                           #{tag.content}
                         </div>
                       </div>
-                    ))}
+                      ))}
+                      </div>
+                   ))}
                   </div>
                 </div>
               </div>
