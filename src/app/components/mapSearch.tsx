@@ -16,10 +16,9 @@ interface MapSearchProps {
   onMarkerClick: (place: string) => void;
   markerImage: StaticImageData;
   mapHeight?:string
-
 }
 
-const MapSearch = ({ searchPlace, onMarkerClick, markerImage ,mapHeight  }: MapSearchProps): React.ReactElement => {
+const MapSearch = ({ searchPlace, onMarkerClick, markerImage ,mapHeight }: MapSearchProps): React.ReactElement => {
 
   const mapRef = useRef<any>(null)
   const listContainerRef = useRef<any>(null);
@@ -34,7 +33,7 @@ const MapSearch = ({ searchPlace, onMarkerClick, markerImage ,mapHeight  }: MapS
 
   // TODO:마커 호버시 리스트 배경색 효과를 위해 만든 state -> 아직 진행중
   const [selectedMarkerIndex, setSelectedMarkerIndex] = useState<number | null>(null);
-
+  const [searchedPlace, setSearchedPlace] = useState<string>('');
 
 
   
@@ -98,6 +97,12 @@ const MapSearch = ({ searchPlace, onMarkerClick, markerImage ,mapHeight  }: MapS
             // 페이지 목록 보여주는 displayPagination() 추가
             displayPagination(pagination)
             setPlaces(data)
+            
+
+            // 검색 결과를 searchInput에 검색된 장소로 설정
+            if(data.length > 0) {
+              setSearchedPlace(data[0].place)
+            }
           }
         }
 
