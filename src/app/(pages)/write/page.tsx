@@ -219,7 +219,7 @@ const Editor = () => {
   return (
     <>
       <NavBar />
-      
+      <LoadingScreen height={'400px'}/>
       <div className="bg-[#FAF2E5] flex justify-center mx-auto box-border min-h-full">
         <div className="sm:pt-10 md:pt-20 xl:pt-20">
           <header className="h-10 text-center">

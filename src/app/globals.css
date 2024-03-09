@@ -53,15 +53,16 @@ body {
   align-items: center;
 }
 .moving-image {
-  width: 7vw; /* 이미지의 너비 */
-  height: 120px; /* 이미지의 높이 */
+  width: 5vw; /* 이미지의 너비 */
+  height:90px;
   background-image: url('/images/sharedMarker.png'); /* 이미지 경로 설정 */
-  background-size: cover;
+  background-size: contain;
+  background-repeat: no-repeat;
   animation: moveUpDown 1s infinite alternate; /* 애니메이션 설정 */
 }
 .loading-bar {
   width: 400px; /* 막대의 너비 */
-  height: 25px; /* 막대의 높이 */
+  height: 20px; /* 막대의 높이 */
   padding: -2px;
   background-color: #f7f5f5; /* 막대의 배경색 */
   position: relative; /* 상대적 위치 지정 */
