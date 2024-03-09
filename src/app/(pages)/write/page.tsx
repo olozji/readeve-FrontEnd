@@ -24,6 +24,7 @@ import Image from 'next/image'
 import pen from 'public/images/Pen.png'
 import isPrivatedIcon from '/public/images/isPrivatedIcon.png'
 import isSharededIcon from '/public/images/isSharedIcon.png'
+import LoadingScreen from '@/app/components/loadingScreen';
 
 const Editor = () => {
   const [content, setContent] = useState('')
@@ -218,6 +219,7 @@ const Editor = () => {
   return (
     <>
       <NavBar />
+      
       <div className="bg-[#FAF2E5] flex justify-center mx-auto box-border min-h-full">
         <div className="sm:pt-10 md:pt-20 xl:pt-20">
           <header className="h-10 text-center">
