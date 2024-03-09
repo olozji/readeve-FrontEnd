@@ -90,6 +90,16 @@ export default function Home() {
    
   };
 
+  function maskName(name:string) {
+    if (name.length <= 2) {
+        return name;
+    }
+    const firstChar = name.charAt(0);
+    const lastChar = name.charAt(name.length - 1);
+    const maskedPart = "*".repeat(name.length - 2);
+    return firstChar + maskedPart + lastChar;
+  }
+
 
 
 
@@ -388,7 +398,14 @@ export default function Home() {
                                     src={privateMarker}
                                     alt={'장소'}
                                   />
-                                  {d.pinRespDto.name}
+                                 {d.pinRespDto.private ? (
+                                  <div>{maskName(d.writer)}님만의 장소</div>
+                                 ) : (
+                                  <div className="">
+                                    독서장소: {d.pinRespDto?.name} |{' '}
+                                    {d.pinRespDto?.address}
+                                  </div>
+                                 )}
                                   </div>
                                   </Link>
                               </div>

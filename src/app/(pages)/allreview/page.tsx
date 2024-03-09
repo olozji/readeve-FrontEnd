@@ -219,7 +219,14 @@ function maskName(name:string) {
                                         src={privateMarker}
                                         alt={'장소'}
                                       />
-                                      {item.pinRespDto.name}
+                                      {item.pinRespDto.private ? (
+                                      <div>{maskName(item.writer)}님만의 장소</div>
+                                    ) : (
+                                      <div className="">
+                                        독서장소: {item.pinRespDto?.name} |{' '}
+                                        {item.pinRespDto?.address}
+                                      </div>
+                                 )}
                                       </div>
                                       
                                   </div>
