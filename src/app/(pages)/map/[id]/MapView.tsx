@@ -355,9 +355,10 @@ const MapView = ({
           }}
         >
           <div>
+            <div className={`${loading && 'hidden'}`}>
             <div
               id="map"
-              className={`${isFull !== `100vh` ? 'rounded-lg' : ''} ${loading&&'hidden'}`}
+              className={`${isFull !== `100vh` ? 'rounded-lg' : ''}`}
               style={{
                 width: '100%',
                 height: `${isFull}`,
@@ -473,7 +474,8 @@ const MapView = ({
                   )}
                 </div>
               )}
-            </div>
+              </div>
+              </div>
           </div>
         </div>
       ) : (
