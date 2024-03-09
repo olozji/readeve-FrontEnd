@@ -48,9 +48,11 @@ export default function Home() {
   const [tagData, setTagData] = useState<any>([])
   const [isLoading, setIsLoading] = useState(true)
   const [sharedReview, setSharedReview] = useState(null);
-  const [isModalOpen, setIsModalOpen] = useState(false);
+
 
   const numVisibleBooks = 4
+
+  const [isModalOpen, setIsModalOpen] = useState<boolean[]>(Array(numVisibleBooks).fill(false));
 
   function formatDateToYYMMDD(isoDateString:string) {
     const date = new Date(isoDateString);
@@ -74,16 +76,30 @@ export default function Home() {
     setCurrentIndex(index)
   }
 
-  const openModal = (review:any) => {
-    setSharedReview(review);
-    setIsModalOpen(true);
+  const openModal = (idx:any) => {
+    let copy = []
+    for (let i = 0; i < isModalOpen.length; i++) {
+      if (i == idx) {
+        copy.push(!isModalOpen[i])
+      } else {
+        copy.push(isModalOpen[i])
+      }
+    }
+    setIsModalOpen(copy);
+    setSharedReview(idx);
+   
   };
 
-  
-  const closeModal = () => {
-    setSharedReview(null);
-    setIsModalOpen(false);
-  };
+  function maskName(name:string) {
+    if (name.length <= 2) {
+        return name;
+    }
+    const firstChar = name.charAt(0);
+    const lastChar = name.charAt(name.length - 1);
+    const maskedPart = "*".repeat(name.length - 2);
+    return firstChar + maskedPart + lastChar;
+  }
+
 
 
 
@@ -323,7 +339,7 @@ export default function Home() {
                     >
                       {/* 모든리뷰 상세 모달 */}
                       {isModalOpen && (
-                      <CustomModal size={'70rem'} isOpen={true} onClose={closeModal} modalColor='#FEF6E6'>
+                      <CustomModal size={'70rem'} isOpen={true} modalColor='#FEF6E6'>
                       <div className="">
                         <div className="px-8 py-8">
                           <div className="flex justify-center items-center">
@@ -382,7 +398,14 @@ export default function Home() {
                                     src={privateMarker}
                                     alt={'장소'}
                                   />
-                                  {d.pinRespDto.name}
+                                 {d.pinRespDto.private ? (
+                                  <div>{maskName(d.writer)}님만의 장소</div>
+                                 ) : (
+                                  <div className="">
+                                    독서장소: {d.pinRespDto?.name} |{' '}
+                                    {d.pinRespDto?.address}
+                                  </div>
+                                 )}
                                   </div>
                                   </Link>
                               </div>
