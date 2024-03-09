@@ -361,11 +361,11 @@ const Editor = () => {
             >
               <div className="mt-10 px-[10%] py-10 text-center">
                 <div className="border-b-[2px]">
-                  <h1 className="font-bold text-2xl text-left py-3 border-b-[2px]">
+                  <h1 className="font-bold text-2xl text-left ">
                     장소와 딱맞는 태그를 선택해 주세요
                   </h1>
                   <div
-                    className={`text-lg text-left py-3 ${selectedTag.length === 5 ? 'text-[#E57C65]' : 'text-[#AAAAAA]'}`}
+                    className={`text-lg text-left py-3 ${selectedTag.length === 5 ? 'text-[#E57C65]' : 'text-[#AAAAAA]'}  border-b-[2px]`}
                   >
                     (키워드 5개 이하)
                   </div>
