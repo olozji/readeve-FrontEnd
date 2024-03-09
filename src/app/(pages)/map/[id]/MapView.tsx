@@ -34,6 +34,7 @@ const MapView = ({
   const [tagInfo] = useRecoilState(tagState)
   const [isSelectedTags, setIsSelectedTags] = useRecoilState(mainTagState)
   const [startIdx, setStartIdx] = useState(0)
+  const [loading, setLoading] = useState(true);
   const numVisibleTags = 5 // 표시할 최대 태그 개수
 
   const [filteredReviews, setFilteredReviews] = useState<any>([])
@@ -273,7 +274,9 @@ const MapView = ({
   useEffect(() => {
     if (isShared) {
       window.kakao.maps.load(() => {
+        
         navigator.geolocation.getCurrentPosition((position) => {
+          setLoading(false);
           const { latitude, longitude } = position.coords
           const currentPosition = new window.kakao.maps.LatLng(
             latitude,
@@ -315,7 +318,7 @@ const MapView = ({
           center: new window.kakao.maps.LatLng(33.450701, 126.570667),
           level: 2,
         }
-
+        setLoading(false);
         const mapInstance = new window.kakao.maps.Map(container, options)
         mapRef.current = mapInstance
 
@@ -334,7 +337,11 @@ const MapView = ({
   }, [myMapData])
 
 
-
+  if (loading) {
+    return(<div className="loading-container">
+    <div className="loading-bar"></div>
+  </div>)
+  }
   const mapHeight = isFull === `100vh` ? windowHeight : 400
   
   return (
