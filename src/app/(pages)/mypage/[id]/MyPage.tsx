@@ -94,7 +94,7 @@ const MyPageComponent = (props: ParamType) => {
             alt={tableImage.src}
            
           />
-          <div className="absolute top-[2%] left-1/2 max-w-[95%] transform -translate-x-1/2 z-10">
+          <div className="absolute top-[5%] left-1/2 max-w-[95%] transform -translate-x-1/2 z-10">
             <BookLayout bookData={myPageData} width={'[70vw]'} isMain={false}></BookLayout>
           </div>
           <div className="absolute bottom-[2vh] left-1/2 min-h-[60%] min-w-[60vw] transform -translate-x-1/2 z-20">
