@@ -1,6 +1,10 @@
-const LoadingScreen = () => {
+interface LoadingProps{
+    height:string
+}
+
+const LoadingScreen = ({height}:LoadingProps) => {
   return (
-      <div className="loading-container">
+      <div className={`loading-container h-[${height}]`}>
           
           <div className="moving-image max-w-[10vw]"></div>
           <div className="text-lg font-bold py-4">LOADING</div>

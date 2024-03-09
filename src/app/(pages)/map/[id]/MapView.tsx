@@ -343,7 +343,7 @@ const MapView = ({
   
   return (
     <div style={{ position: 'relative' }}>
-      {loading && <LoadingScreen/>}
+      {loading && <LoadingScreen height={isFull} />}
       {myMapData.length !== 0 ? (
         <div
           className="
