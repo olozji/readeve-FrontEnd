@@ -48,7 +48,7 @@ export default function Home() {
   const [tagData, setTagData] = useState<any>([])
   const [isLoading, setIsLoading] = useState(true)
   const [sharedReview, setSharedReview] = useState(null);
-  const [isModalOpen, setIsModalOpen] = useState<boolean[]>([false, false, false]);
+  const [isModalOpen, setIsModalOpen] = useState<boolean[]>([false,false,false,false]);
 
   const numVisibleBooks = 4
 
