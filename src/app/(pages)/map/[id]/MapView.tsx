@@ -10,6 +10,7 @@ import sharedMarker from '/public/images/sharedMarker.png'
 
 import { GoBackButton } from '@/app/components/buttons/goBackButton'
 import { useSession } from 'next-auth/react';
+import LoadingScreen from '@/app/components/loadingScreen';
 
 interface MapDataType {
   myMapData: any[]
@@ -342,9 +343,7 @@ const MapView = ({
   
   return (
     <div style={{ position: 'relative' }}>
-      {loading && <div className="loading-container">
-      <div className="loading-bar"></div>
-    </div>}
+      {loading && <LoadingScreen/>}
       {myMapData.length !== 0 ? (
         <div
           className="
