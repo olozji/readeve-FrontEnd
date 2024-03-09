@@ -357,7 +357,7 @@ const MapView = ({
           <div>
             <div
               id="map"
-              className={`${isFull !== `100vh` ? 'rounded-lg' : ''}`}
+              className={`${isFull !== `100vh` ? 'rounded-lg' : ''} ${loading&&'hidden'}`}
               style={{
                 width: '100%',
                 height: `${isFull}`,
