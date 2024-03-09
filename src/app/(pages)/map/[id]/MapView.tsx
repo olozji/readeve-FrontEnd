@@ -339,154 +339,151 @@ const MapView = ({
 
   
   const mapHeight = isFull === `100vh` ? windowHeight : 400
-  if (loading) {
-    return(<div className="loading-container">
-    <div className="loading-bar"></div>
-  </div>)
-  } else {
-    return (
-      <div style={{ position: 'relative'}}>
-        {myMapData.length !== 0 ? (
-          <div
-            className="
-          relative
-         "
-            style={{
-              background: '#f9f9f9',
-              zIndex: 2,
-            }}
-          >
-            <div>
-              <div
-                id="map"
-                className={`${isFull !== `100vh` ? 'rounded-lg' : ''}`}
-                style={{
-                  width: '100%',
-                  height: `${isFull}`,
-                  position: 'relative',
-                }}
-              >
-                {!isMain && (
-                  <div>
-                    <button
-                      className="absolute bg-[#F66464] py-2 px-8 rounded-xl bottom-10 transform -translate-x-1/2 left-1/2 text-white hover:text-[#F66464] hover:bg-white font-bold z-20"
-                      onClick={getCurrentPosBtn}
-                    >
-                      현재 위치
-                    </button>
   
-                    <div
-                      ref={listContainerRef}
-                      className="absolute scrollBar w-[26vw] bg-[#f9f9f9] h-full px-[2vw] py-[1vw] bg-opacity-80 overflow-y-auto rounded-lg"
-                      style={{ zIndex: 2 }}
-                    >
-                      <div className="flex py-2 w-full  justify-between text-center font-bold border-b-[1px] border-gray-600 mb-4">
-                        {isFull == '100vh' && <GoBackButton />}
-  
-                        <div className=" mr-[8vw] ">
-                          {isShared ? '공유 지도' : '개인 지도'}
-                        </div>
+  return (
+    <div style={{ position: 'relative' }}>
+      {loading && <div className="loading-container">
+      <div className="loading-bar"></div>
+    </div>}
+      {myMapData.length !== 0 ? (
+        <div
+          className="
+        relative
+       "
+          style={{
+            background: '#f9f9f9',
+            zIndex: 2,
+          }}
+        >
+          <div>
+            <div
+              id="map"
+              className={`${isFull !== `100vh` ? 'rounded-lg' : ''}`}
+              style={{
+                width: '100%',
+                height: `${isFull}`,
+                position: 'relative',
+              }}
+            >
+              {!isMain && (
+                <div>
+                  <button
+                    className="absolute bg-[#F66464] py-2 px-8 rounded-xl bottom-10 transform -translate-x-1/2 left-1/2 text-white hover:text-[#F66464] hover:bg-white font-bold z-20"
+                    onClick={getCurrentPosBtn}
+                  >
+                    현재 위치
+                  </button>
+
+                  <div
+                    ref={listContainerRef}
+                    className="absolute scrollBar w-[26vw] bg-[#f9f9f9] h-full px-[2vw] py-[1vw] bg-opacity-80 overflow-y-auto rounded-lg"
+                    style={{ zIndex: 2 }}
+                  >
+                    <div className="flex py-2 w-full  justify-between text-center font-bold border-b-[1px] border-gray-600 mb-4">
+                      {isFull == '100vh' && <GoBackButton />}
+
+                      <div className=" mr-[8vw] ">
+                        {isShared ? '공유 지도' : '개인 지도'}
                       </div>
-                      <h1 className="font-bold">{isTitleActive}</h1>
-                      {filteredReviews.length === 0 ? (
-                        isShared ? (
-                          <div className="ml-12">
-                            선택된 태그에 해당하는 장소가 없습니다
-                          </div>
-                        ) : (
-                          myMapData.map((data: any, i: number) => (
-                            <div key={i}>
-                              <ListItem
-                                key={i}
-                                index={i}
-                                data={data}
-                                onListItemClick={() => {
-                                  clickListItem(data.pinRespDto, i)
-                                }}
-                                onListMouseLeave={() => {
-                                  mouseLeaveListItem(i)
-                                }}
-                                isShared={isShared}
-                                selectedMarkerIndex={selectedMarkerIndex}
-                              />
-                            </div>
-                          ))
-                        )
+                    </div>
+                    <h1 className="font-bold">{isTitleActive}</h1>
+                    {filteredReviews.length === 0 ? (
+                      isShared ? (
+                        <div className="ml-12">
+                          선택된 태그에 해당하는 장소가 없습니다
+                        </div>
                       ) : (
-                        filteredReviews.map((data: any, i: number) => (
-                          <div key={i} id={`list-item-${data.pinRespDto.placeId}`}>
+                        myMapData.map((data: any, i: number) => (
+                          <div key={i}>
                             <ListItem
                               key={i}
                               index={i}
                               data={data}
-                              selectedMarkerIndex={selectedMarkerIndex}
                               onListItemClick={() => {
                                 clickListItem(data.pinRespDto, i)
                               }}
-                              onListMouseLeave={() =>
-                              mouseLeaveListItem(i)
-                              }
+                              onListMouseLeave={() => {
+                                mouseLeaveListItem(i)
+                              }}
                               isShared={isShared}
+                              selectedMarkerIndex={selectedMarkerIndex}
                             />
                           </div>
                         ))
-                      )}
-                    </div>
-                  </div>
-                )}
-                {isMain && (
-                  <Link
-                    href={isShared?'/map':`/map/${user?.id}`}
-                    className="absolute text-2xl font-bold top-2 right-2  z-40  bg-white p-4 rounded-full"
-                  >
-                    <div className="absolute top-0 right-2">+</div>
-                  </Link>
-                )}
-  
-                {isShared && (
-                  <div className="absolute top-6 left-1/3 transform -translate-x-1/5 z-40 flex flex-row rounded-lg">
-                    {!isMain && (
-                      <div
-                        className="p-2 cursor-pointer"
-                        onClick={handleClickPrev}
-                      >
-                        &lt;
-                      </div>
-                    )}
-                    {!isMain &&
-                      tagInfo
-                        .slice(startIdx, startIdx + numVisibleTags)
-                        .map((tag: any, i: number) => (
-                          <div
+                      )
+                    ) : (
+                      filteredReviews.map((data: any, i: number) => (
+                        <div key={i} id={`list-item-${data.pinRespDto.placeId}`}>
+                          <ListItem
                             key={i}
-                            className={`box-border flex flex-row justify-center text-sm items-center px-4 py-2 mx-2 border border-gray-300 rounded-full  ${isSelectedTags[startIdx + i] ? 'bg-[#E57C65] text-white' : 'bg-white hover:border-[#C05555] hover:text-[#C05555]'}`}
-                            onClick={() => searchTag(startIdx + i)}
-                          >
-                            {tag.content}
-                          </div>
-                        ))}
-                    {!isMain && (
-                      <div
-                        className="p-2 cursor-pointer"
-                        onClick={handleClickNext}
-                      >
-                        &gt;
-                      </div>
+                            index={i}
+                            data={data}
+                            selectedMarkerIndex={selectedMarkerIndex}
+                            onListItemClick={() => {
+                              clickListItem(data.pinRespDto, i)
+                            }}
+                            onListMouseLeave={() =>
+                            mouseLeaveListItem(i)
+                            }
+                            isShared={isShared}
+                          />
+                        </div>
+                      ))
                     )}
                   </div>
-                )}
-              </div>
+                </div>
+              )}
+              {isMain && (
+                <Link
+                  href={isShared?'/map':`/map/${user?.id}`}
+                  className="absolute text-2xl font-bold top-2 right-2  z-40  bg-white p-4 rounded-full"
+                >
+                  <div className="absolute top-0 right-2">+</div>
+                </Link>
+              )}
+
+              {isShared && (
+                <div className="absolute top-6 left-1/3 transform -translate-x-1/5 z-40 flex flex-row rounded-lg">
+                  {!isMain && (
+                    <div
+                      className="p-2 cursor-pointer"
+                      onClick={handleClickPrev}
+                    >
+                      &lt;
+                    </div>
+                  )}
+                  {!isMain &&
+                    tagInfo
+                      .slice(startIdx, startIdx + numVisibleTags)
+                      .map((tag: any, i: number) => (
+                        <div
+                          key={i}
+                          className={`box-border flex flex-row justify-center text-sm items-center px-4 py-2 mx-2 border border-gray-300 rounded-full  ${isSelectedTags[startIdx + i] ? 'bg-[#E57C65] text-white' : 'bg-white hover:border-[#C05555] hover:text-[#C05555]'}`}
+                          onClick={() => searchTag(startIdx + i)}
+                        >
+                          {tag.content}
+                        </div>
+                      ))}
+                  {!isMain && (
+                    <div
+                      className="p-2 cursor-pointer"
+                      onClick={handleClickNext}
+                    >
+                      &gt;
+                    </div>
+                  )}
+                </div>
+              )}
             </div>
           </div>
-        ) : (
-          <div>
-            <div id="map" style={{ display: 'none' }}></div>
-            <div>독서 기록을 남기고 지도를 확인하세요</div>
-          </div>
-        )}
-      </div>
-    )
-  }
-  
+        </div>
+      ) : (
+        <div>
+          <div id="map" style={{ display: 'none' }}></div>
+          <div>독서 기록을 남기고 지도를 확인하세요</div>
+        </div>
+      )}
+    </div>
+  )
 }
 export default MapView
