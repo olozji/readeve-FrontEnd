@@ -19,9 +19,12 @@ import mainLogo from '/public/images/mainLogo.png'
 import MapView from './(pages)/map/[id]/MapView'
 import moreIcon from '/public/images/moreIcon.png'
 import markerImage from '/public/images/marker1.png'
-import markerImageOpacity from '/public/images/marker2.png'
+import privateMarker from '/public/images/privateMarker.png'
+import isPrivatedIcon from '/public/images/isPrivatedIcon.png'
+import isSharedIcon from '/public/images/isSharedIcon.png'
 import { BookLayout } from './components/bookLayout'
 import NavBar from './components/NavBar'
+import CustomModal from './components/modal'
 
 export default function Home() {
   let session:any = useSession()
@@ -44,8 +47,15 @@ export default function Home() {
   const [myPageData, setMyPageData] = useState([])
   const [tagData, setTagData] = useState<any>([])
   const [isLoading, setIsLoading] = useState(true)
+  const [sharedReview, setSharedReview] = useState(null);
+  const [isModalOpen, setIsModalOpen] = useState(false);
 
   const numVisibleBooks = 4
+
+  function formatDateToYYMMDD(isoDateString:string) {
+    const date = new Date(isoDateString);
+    return `${date.getFullYear().toString().slice(2)}.${(date.getMonth() + 1).toString().padStart(2, '0')}.${date.getDate().toString().padStart(2, '0')}`;
+}
 
   const handleClickPrev = () => {
     setStartIdx(Math.max(0, startIdx - numVisibleBooks))
@@ -63,6 +73,19 @@ export default function Home() {
   const handleChange = (index: any) => {
     setCurrentIndex(index)
   }
+
+  const openModal = (review:any) => {
+    setSharedReview(review);
+    setIsModalOpen(true);
+  };
+
+  
+  const closeModal = () => {
+    setSharedReview(null);
+    setIsModalOpen(false);
+  };
+
+
 
   const fetchData = async () => {
     try {
@@ -216,7 +239,7 @@ export default function Home() {
           <div className="text-2xl font-display font-bold py-10">
             이런 장소는 어때요?
           </div>
-          <div className="flex flex-wrap justify-center mb-10 text-sm ">
+          <div className="flex flex-wrap justify-center mb-10 sm:px-40 ">
             {tagData.length>0&&tagData.map((tag: any, i: number) => (
               <div
                 key={i}
@@ -294,10 +317,96 @@ export default function Home() {
                 {publicReviews
                   .slice(startIdx, startIdx + numVisibleBooks)
                   .map((d: any, i: number) => (
-                    <Link
+                    <div
                       key={i}
-                      href={`/detail/${d.bookRespDto && d.bookRespDto.isbn ? d.bookRespDto.isbn.replace(' ', '') : ''}`}
+                      onClick={() => openModal(d)}
                     >
+                      {/* 모든리뷰 상세 모달 */}
+                      {isModalOpen && (
+                      <CustomModal size={'70rem'} isOpen={true} onClose={closeModal} modalColor='#FEF6E6'>
+                      <div className="">
+                        <div className="px-8 py-8">
+                          <div className="flex justify-center items-center">
+                            <img
+                              src={
+                                d.bookRespDto.thumbnail
+                                  ? d.bookRespDto.thumbnail
+                                  : 'http://via.placeholder.com/120X150'
+                              }
+                              alt="책 표지"
+                              className="w-[10rem] mb-2 rounded object-fll"
+                            />
+                            <div className='p-10'>
+                              <div className="text-xl font-extrabold text-[#6F5C52]">
+                                {d.bookRespDto.title}
+                              </div>
+                              <div className="text-sm font-bold text-[#9C8A80]">
+                                | {d.bookRespDto.author} 저자
+                              </div>
+                              <div className="justify-center items-center py-2">
+                              <span
+                              className={`inline-flex justify-center items-center gap-2 rounded-lg px-2 py-2 text-xs ${
+                                d.private ? 'bg-[#E57C65] text-white'  : 'bg-white text-[#6F5C52]'
+                              }`}
+                            >
+                            <Image
+                              src={d.private ? isPrivatedIcon : isSharedIcon}
+                              alt='Icon'
+                              width={10}
+                              height={10}
+                            />
+                              {d.private ? '나만보기' : '전체공개'}
+                              </span>
+                              </div>
+                              <div className='py-5 pt-5 text-[#503526] text-sm'>
+                              <div className="flex items-center gap-5">
+                                <span className='font-bold' style={{ verticalAlign: 'middle' }}>등록일</span>
+                                <div className=''>{formatDateToYYMMDD(d.createAt)}</div>
+                              </div>
+                            
+                              <div className="flex">
+                                <span className='font-bold mr-4' style={{ verticalAlign: 'middle' }}>태그</span>
+                                <div className='flex flex-wrap w-[16vw]'>
+                                {d.tags.map(
+                                  (tag: any) =>
+                                    tag.selected && <div className='flex bg-[#E57C65] rounded-full m-1 p-2 text-white font-semibold text-xs'>#{tag.content}</div>,
+                                )}
+                              </div>
+                              </div>
+                              <div className="flex items-center gap-5">
+                              <span className='font-bold' style={{ verticalAlign: 'middle' }}>장소</span>
+                                <Link href={`/map/${session.data?.user.id}`}>
+                                <div 
+                                  className='flex items-center'>
+                                  <Image
+                                    src={privateMarker}
+                                    alt={'장소'}
+                                  />
+                                  {d.pinRespDto.name}
+                                  </div>
+                                  </Link>
+                              </div>
+                              </div>
+                            </div>
+                          </div>
+                          <div className='flex justify-center items-center'>
+                          <div
+                            key={i}
+                            className="w-[50vw] my-4 rounded-lg overflow-hidden shadow-lg px-3 py-3 p-10 bg-[#FFFCF9]"
+                          >
+                          <div className='mt-10 px-5'>
+                          <h2 className="text-2xl font-bold mb-4 border-black border-b pb-5 text-[#503526]">{d.title}</h2>
+                            <div className="h-[45vh] mx-auto text-[#999999]">
+                            {d.content}
+                            </div>
+                            </div>
+                        </div>
+                        </div>
+                        </div>
+                      </div>
+                    </CustomModal>
+                      )}
+                      {/* 모든 리뷰 */}
                       <div className="flex flex-col items-center rounded-lg border-4 border-transparent p-4 cursor-pointer">
                         <div className="relative w-[14rem] h-[12rem] rounded-2xl">
                           <div className="mx-auto h-full border rounded-2xl shadow-xl bg-[#fcfcfc]">
@@ -314,8 +423,8 @@ export default function Home() {
                           </div>
                         </div>
                       </div>
-                    </Link>
-                  ))}
+                    </div>
+                ))}
               </div>
               <div className="flex items-center justify-center">
                 <div className="p-2 cursor-pointer" onClick={handleClickNext}>
