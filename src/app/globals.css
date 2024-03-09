@@ -269,3 +269,10 @@ body {
     text-wrap: balance;
   }
 } */
+
+@media (max-width: 768px) {
+  .menuLogo {
+    margin:0 auto;
+  }
+}
+
