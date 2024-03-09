@@ -355,7 +355,7 @@ const MapView = ({
           }}
         >
           <div>
-            <div className={`${loading && 'hidden'}`}>
+            <div>
             <div
               id="map"
               className={`${isFull !== `100vh` ? 'rounded-lg' : ''}`}
