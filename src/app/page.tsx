@@ -335,7 +335,7 @@ export default function Home() {
                   .map((d: any, i: number) => (
                     <div
                       key={i}
-                      onClick={() => openModal(d)}
+                      onClick={() => openModal(i)}
                     >
                       {/* 모든리뷰 상세 모달 */}
                       {isModalOpen && (
