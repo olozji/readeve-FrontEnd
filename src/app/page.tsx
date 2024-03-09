@@ -48,9 +48,11 @@ export default function Home() {
   const [tagData, setTagData] = useState<any>([])
   const [isLoading, setIsLoading] = useState(true)
   const [sharedReview, setSharedReview] = useState(null);
-  const [isModalOpen, setIsModalOpen] = useState<boolean[]>([false,false,false,false]);
+
 
   const numVisibleBooks = 4
+
+  const [isModalOpen, setIsModalOpen] = useState<boolean[]>(Array(numVisibleBooks).fill(false));
 
   function formatDateToYYMMDD(isoDateString:string) {
     const date = new Date(isoDateString);
