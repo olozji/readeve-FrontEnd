@@ -48,7 +48,7 @@ export default function Home() {
   const [tagData, setTagData] = useState<any>([])
   const [isLoading, setIsLoading] = useState(true)
   const [sharedReview, setSharedReview] = useState(null);
-  const [isModalOpen, setIsModalOpen] = useState(false);
+  const [isModalOpen, setIsModalOpen] = useState<boolean[]>([false, false, false]);
 
   const numVisibleBooks = 4
 
@@ -74,16 +74,20 @@ export default function Home() {
     setCurrentIndex(index)
   }
 
-  const openModal = (review:any) => {
-    setSharedReview(review);
-    setIsModalOpen(true);
+  const openModal = (idx:any) => {
+    let copy = []
+    for (let i = 0; i < isModalOpen.length; i++) {
+      if (i == idx) {
+        copy.push(!isModalOpen[i])
+      } else {
+        copy.push(isModalOpen[i])
+      }
+    }
+    setIsModalOpen(copy);
+    setSharedReview(idx);
+   
   };
 
-  
-  const closeModal = () => {
-    setSharedReview(null);
-    setIsModalOpen(false);
-  };
 
 
 
@@ -323,7 +327,7 @@ export default function Home() {
                     >
                       {/* 모든리뷰 상세 모달 */}
                       {isModalOpen && (
-                      <CustomModal size={'70rem'} isOpen={true} onClose={closeModal} modalColor='#FEF6E6'>
+                      <CustomModal size={'70rem'} isOpen={true} modalColor='#FEF6E6'>
                       <div className="">
                         <div className="px-8 py-8">
                           <div className="flex justify-center items-center">
