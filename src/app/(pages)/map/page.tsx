@@ -33,7 +33,8 @@ const SharedMapPage = () => {
     fetchData()
   }, [])
   useEffect(() => {
-    setDocuments(allReviewData)
+    const filteredData = allReviewData.filter((d: any) => !d.pinRespDto.private)
+    setDocuments(filteredData)
   },[allReviewData])
 
   return (

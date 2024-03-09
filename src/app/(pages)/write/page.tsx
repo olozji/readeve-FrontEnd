@@ -34,6 +34,8 @@ const Editor = () => {
   const [isPrivatePlace, setIsPrivatePlace] = useState(true)
   const [tagCategory] = useState(['분위기', '서비스/모임', '시설/기타'])
   const [tagData, setTagData] = useState<any>([])
+  const [selectedTag, setSelectedTag] = useState<string[]>([])
+  const [allDeselect, setAllDeselect] = useState(false)
   const [titleInfo, setTitleInfo] = useRecoilState<string>(titleState)
   const [bookInfo] = useRecoilState<any>(bookState)
   const [tagInfo, setTagInfo] = useRecoilState<any>(tagState)
@@ -115,12 +117,26 @@ const Editor = () => {
 
   const handleTagClick = (content: string) => {
     // 객체를 복사하여 새로운 객체를 생성
-    const updatedTags = tagInfo.map((tag: any, i: number) =>
-      tag.content === content ? { ...tag, selected: !tag.selected } : tag,
-    )
+    // const updatedTags = tagInfo.map((tag: any, i: number) =>
+    //   tag.content === content ? { ...tag, selected: !tag.selected } : tag,
+    // )
 
-    // Recoil 상태를 갱신
-    setTagInfo(updatedTags)
+    // // Recoil 상태를 갱신
+    // setTagInfo(updatedTags)
+    setAllDeselect(false)
+    if (!selectedTag.includes(content)) {
+      if (selectedTag.length < 5) {
+        const insertTag = [...selectedTag, content]
+        setSelectedTag(insertTag)
+      }
+    } else {
+      let deleted = selectedTag.filter((tag: string) => tag !== content)
+      setSelectedTag(deleted)
+    }
+  }
+  const handleAllDeselect = () => {
+    setAllDeselect(true)
+    setSelectedTag([])
   }
 
   const handleAllData = async (e: any) => {
@@ -146,7 +162,7 @@ const Editor = () => {
         isComplete: bookInfo.isComplete,
         author: bookInfo.authors[0],
       },
-      tags: tagInfo,
+      tags: selectedTag,
       content: content,
     }
 
@@ -191,6 +207,9 @@ const Editor = () => {
       fetchTag()
     }
   }, [])
+  useEffect(() => {
+    console.log(selectedTag)
+  }, [selectedTag])
 
   useEffect(() => {
     setTagData(tagInfo)
@@ -304,7 +323,7 @@ const Editor = () => {
             <div className="flex px-8 py-3 mb-8 items-center ">
               <h4 className="px-5 font-extrabold">장소 태그</h4>
               <div className="flex flex-wrap max-w-[50vw] items-center">
-                {tagInfo.map(
+                {/* {tagInfo.map(
                   (tag: any) =>
                     tag.selected && (
                       <div
@@ -314,7 +333,17 @@ const Editor = () => {
                         #{tag.content}
                       </div>
                     ),
-                )}
+                )} */}
+                {selectedTag.length > 0 &&
+                  selectedTag.map((tagContent: any, i: number) => (
+                    <div
+                      key={i}
+                      className="box-border flex justify-center items-center px-4 py-2
+          my-2 mx-2 text-xs/[10px] rounded-full bg-[#E57C65] text-white"
+                    >
+                      {tagContent}
+                    </div>
+                  ))}
                 <button
                   onClick={() => setShowTagModal(true)}
                   className="cursor-pointer text-[#7a7a7a] font-light text-4xl"
@@ -332,9 +361,14 @@ const Editor = () => {
             >
               <div className="mt-10 px-[10%] py-10 text-center">
                 <div className="border-b-[2px]">
-                  <h1 className="font-bold text-2xl text-left py-3 border-b-[2px]">
+                  <h1 className="font-bold text-2xl text-left ">
                     장소와 딱맞는 태그를 선택해 주세요
                   </h1>
+                  <div
+                    className={`text-lg text-left py-3 ${selectedTag.length === 5 ? 'text-[#E57C65]' : 'text-[#AAAAAA]'}  border-b-[2px]`}
+                  >
+                    (키워드 5개 이하)
+                  </div>
                   <div className="flex  gap-4 my-10 ">
                     {tagCategory.map((category: string, index: number) => (
                       <div className="flex flex-col" key={index}>
@@ -349,7 +383,7 @@ const Editor = () => {
                                 className={`box-border flex justify-center items-center px-6 py-3
                  mr-2 mb-2 border rounded-[8px] text-xs/[10px] 
                  ${
-                   tag.selected
+                   selectedTag.includes(tag.content)
                      ? 'bg-[#FFE5E5] text-[#E57C65] border-[#E57C65]'
                      : 'bg-white  border-[#EAEAEA]'
                  }`}
@@ -362,12 +396,19 @@ const Editor = () => {
                       </div>
                     ))}
                     <div className="flex flex-col">
-                      <div className="text-start mb-4 block"></div>
+                      <div className="text-start mb-4 block min-h-[content] invisible">취소</div>
                       <div className="flex">
                         <div
                           className={`box-border flex justify-center items-center px-6 py-3
-                 mr-2 mb-2 border border-[#EAEAEA] rounded-[8px] text-xs/[10px] 
-                 `}
+                          mr-2 mb-2 border rounded-[8px] text-xs/[10px] 
+                          ${
+                            allDeselect
+                              ? 'bg-[#FFE5E5] text-[#E57C65] border-[#E57C65]'
+                              : 'bg-white  border-[#EAEAEA]'
+                          }`}
+                          onClick={() => {
+                            handleAllDeselect()
+                          }}
                         >
                           선택할 키워드가 없어요
                         </div>
@@ -376,7 +417,7 @@ const Editor = () => {
                   </div>
                 </div>
               </div>
-              <div className="flex mx-auto w-[8rem]">
+              <div className="flex mx-auto mb-10 w-[8rem]">
                 <Button
                   label="확인"
                   outline={true}

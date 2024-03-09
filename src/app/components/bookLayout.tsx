@@ -65,7 +65,7 @@ export const BookLayout = ({ width, isMain, bookData }: bookLayoutProps) => {
                               : 'http://via.placeholder.com/120X150'
                           }
                           alt="책 표지"
-                          className="mb-2 rounded-lg w-[8vw]"
+                          className="mb-2 rounded-lg w-[10vw]"
                         />
                         {isMain && (
                           <div className="flex gap-2 w-[8vw] items-center">

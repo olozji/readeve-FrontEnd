@@ -44,6 +44,25 @@ body {
   width: max-content;
   max-width: 80vw
 }
+.loading-container {
+  width: 100%;
+  height: 100vh;
+  display: flex;
+  justify-content: center;
+  align-items: center;
+}
+
+.loading-bar {
+  width: 200px; /* 막대의 너비 */
+  height: 20px; /* 막대의 높이 */
+  background-color: #ccc; /* 막대의 배경색 */
+  animation: loading 2s infinite; /* 로딩 애니메이션 */
+}
+
+@keyframes loading {
+  0% { width: 0; } /* 0%에서 막대의 길이가 0 */
+  100% { width: 100%; } /* 100%에서 막대의 길이가 100% */
+}
 .marker_overlay_isPrivate {
   text-align: left;
   padding: 10px 20px;

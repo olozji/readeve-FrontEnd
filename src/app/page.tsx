@@ -216,7 +216,7 @@ export default function Home() {
           <div className="text-2xl font-display font-bold py-10">
             이런 장소는 어때요?
           </div>
-          <div className="flex flex-wrap justify-center mb-10 sm:px-40 ">
+          <div className="flex flex-wrap justify-center mb-10 text-sm ">
             {tagData.length>0&&tagData.map((tag: any, i: number) => (
               <div
                 key={i}
