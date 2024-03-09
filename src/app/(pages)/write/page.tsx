@@ -396,7 +396,7 @@ const Editor = () => {
                       </div>
                     ))}
                     <div className="flex flex-col">
-                      <div className="text-start mb-4 block"></div>
+                      <div className="text-start mb-4 block min-h-[content] invisible">취소</div>
                       <div className="flex">
                         <div
                           className={`box-border flex justify-center items-center px-6 py-3
@@ -417,7 +417,7 @@ const Editor = () => {
                   </div>
                 </div>
               </div>
-              <div className="flex mx-auto w-[8rem]">
+              <div className="flex mx-auto mb-10 w-[8rem]">
                 <Button
                   label="확인"
                   outline={true}
