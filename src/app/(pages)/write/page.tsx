@@ -24,7 +24,7 @@ import Image from 'next/image'
 import pen from 'public/images/Pen.png'
 import isPrivatedIcon from '/public/images/isPrivatedIcon.png'
 import isSharededIcon from '/public/images/isSharedIcon.png'
-import LoadingScreen from '@/app/components/loadingScreen';
+import LoadingScreen from '@/app/components/loadingScreen'
 
 const Editor = () => {
   const [content, setContent] = useState('')
@@ -139,6 +139,11 @@ const Editor = () => {
     setAllDeselect(true)
     setSelectedTag([])
   }
+  const handleContent = (e: any) => {
+    e.preventDefault()
+    setContent(e.target.value)
+    console.log(content)
+  }
 
   const handleAllData = async (e: any) => {
     e.preventDefault()
@@ -219,7 +224,7 @@ const Editor = () => {
   return (
     <>
       <NavBar />
-      
+
       <div className="bg-[#FAF2E5] flex justify-center mx-auto box-border min-h-full">
         <div className="sm:pt-10 md:pt-20 xl:pt-20">
           <header className="h-10 text-center">
@@ -398,7 +403,9 @@ const Editor = () => {
                       </div>
                     ))}
                     <div className="flex flex-col">
-                      <div className="text-start mb-4 block min-h-[content] invisible">취소</div>
+                      <div className="text-start mb-4 block min-h-[content] invisible">
+                        취소
+                      </div>
                       <div className="flex">
                         <div
                           className={`box-border flex justify-center items-center px-6 py-3
@@ -476,7 +483,7 @@ const Editor = () => {
                 className="border border-slate-200 rounded-2xl w-full h-80 text-[#A08A7E] text-xs placeholder-[#A08A7E] bg-[#F9F9F9] px-3 py-3"
                 placeholder="(1500자 이내로 독후감을 작성해주세요)"
                 value={content}
-                onChange={(e) => setContent(e.target.value)}
+                onChange={handleContent}
               />
             </div>
             <div>

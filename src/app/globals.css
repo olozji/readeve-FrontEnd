@@ -53,8 +53,8 @@ body {
   align-items: center;
 }
 .moving-image {
-  width: 100px; /* 이미지의 너비 */
-  height:124px;
+  width: 70px; /* 이미지의 너비 */
+  height:87px;
   background-image: url('/images/sharedMarker.png'); /* 이미지 경로 설정 */
   background-size: contain;
   background-repeat: no-repeat;
