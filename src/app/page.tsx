@@ -339,7 +339,9 @@ export default function Home() {
                     >
                       {/* 모든리뷰 상세 모달 */}
                       {isModalOpen && (
+
                       <CustomModal size={'70rem'} isOpen={isModalOpen[i]} modalColor='#FEF6E6'>
+
                       <div className="">
                         <div className="px-8 py-8">
                           <div className="flex justify-center items-center">
