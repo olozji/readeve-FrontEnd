@@ -255,7 +255,7 @@ export default function Home() {
           <div className="text-2xl font-display font-bold py-10">
             이런 장소는 어때요?
           </div>
-          <div className="flex flex-wrap justify-center mb-10 sm:px-40 ">
+          <div className="flex flex-wrap justify-center mb-10 text-sm">
             {tagData.length>0&&tagData.map((tag: any, i: number) => (
               <div
                 key={i}
@@ -335,11 +335,13 @@ export default function Home() {
                   .map((d: any, i: number) => (
                     <div
                       key={i}
-                      onClick={() => openModal(d)}
+                      onClick={() => openModal(i)}
                     >
                       {/* 모든리뷰 상세 모달 */}
                       {isModalOpen && (
-                      <CustomModal size={'70rem'} isOpen={false} modalColor='#FEF6E6'>
+
+                      <CustomModal size={'70rem'} isOpen={isModalOpen[i]} modalColor='#FEF6E6'>
+
                       <div className="">
                         <div className="px-8 py-8">
                           <div className="flex justify-center items-center">
