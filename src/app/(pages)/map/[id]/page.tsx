@@ -19,7 +19,6 @@ const MyMapPage = (props: PropType) => {
   const [myData, setMyData] = useState<any[]>([])
   const [myPageData,setMyPageData] = useState<any[]>([])
   const [isLoading, setIsLoading] = useState(true);
-  const [documents, setDocuments] = useState<any[]>([])
   let session: any = useSession();
 
   const fetchData = async () => {
@@ -41,24 +40,15 @@ const MyMapPage = (props: PropType) => {
     }
   }
   
-  useEffect(() => {
-    const storedData = localStorage.getItem('allDataInfo')
-
-    if (storedData) {
-      const parsedData = JSON.parse(storedData)
-      
-      setDocuments(parsedData)
-    }
-  }, [])
 
   
-  // useEffect(() => {
-  //     fetchData()
-  // }, [props.params.id,session])
+  useEffect(() => {
+      fetchData()
+  }, [props.params.id,session])
   
   useEffect(() => {
-    setMyPageData(documents)
-  }, [documents])
+    setMyPageData(myData)
+  }, [myData])
 
 
     

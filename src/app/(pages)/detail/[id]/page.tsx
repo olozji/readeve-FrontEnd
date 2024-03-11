@@ -18,7 +18,6 @@ const Detail = (props: PropType) => {
   const session: any = useSession()
 
   const [myData, setMyData] = useState([])
-  const [documents, setDocuments] = useState<any[]>([])
   const [myPageData,setMyPageData] = useState<any>([])
 
   const fetchData = async () => {
@@ -36,19 +35,13 @@ const Detail = (props: PropType) => {
     }
   }
   useEffect(() => {
-    const storedData = localStorage.getItem('allDataInfo')
-
-    if (storedData) {
-      const parsedData = JSON.parse(storedData)
-      
-      setDocuments(parsedData)
-    }
-  }, [])
+    fetchData()
+  }, [session])
  
 
   useEffect(() => {
-    setMyPageData(documents)
-  }, [documents])
+    setMyPageData(myData)
+  }, [myData])
 
   return (
     <><NavBar />
@@ -67,8 +60,8 @@ const Detail = (props: PropType) => {
         </div>
         </div>
        
-   {documents.length > 0 && (
-      <BookLayoutItem bookId={props.params.id} propsData={documents} />
+   {myData.length > 0 && (
+      <BookLayoutItem bookId={props.params.id} propsData={myData} />
         )}
          </section>
       </>

@@ -39,7 +39,6 @@ const MyPageComponent = (props: ParamType) => {
   const [myData, setMyData] = useState<any>([])
   const [isLoading, setIsLoading] = useState(true)
   const [myPageData, setMyPageData] = useState([])
-  const [documents, setDocuments] = useState<any>([])
   const [smallMap, setSmallMap] = useState(false)
 
   const fetchData = async () => {
@@ -57,14 +56,11 @@ const MyPageComponent = (props: ParamType) => {
     }
   }
   useEffect(() => {
-    const storedData = localStorage.getItem('allDataInfo')
 
-    if (storedData) {
-      const parsedData = JSON.parse(storedData)
+    fetchData()
 
-      setDocuments(parsedData)
-    }
-  }, [])
+
+}, [props.id,session])
   useEffect(() => {
     function handleResize() {
       const screenWidth = window.innerWidth
@@ -85,8 +81,8 @@ const MyPageComponent = (props: ParamType) => {
   }, []) // 컴포넌트가 마운트될 때 한 번만 호출
 
   useEffect(() => {
-    setMyPageData(documents)
-  }, [documents])
+    setMyPageData(myData)
+  }, [myData])
 
   return (
     <section className="bg-[#F1E5CF] px-[15vw] sm:px-0">

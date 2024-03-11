@@ -54,7 +54,6 @@ const AllReviewPage = () => {
   const [selectedReview, setSelectedReview] =
     useRecoilState(selectedReviewState)
   const [isReviewsModal, setIsReviewsModal] = useState(false)
-  const [documents, setDocuments] = useState<any[]>([])
 
   const [detailOpen, setDetailOpen] = useState<boolean[]>(
     Array(publicReviews.length).fill(false),
@@ -90,13 +89,7 @@ const AllReviewPage = () => {
     }
   }
   useEffect(() => {
-    const storedData = localStorage.getItem('allDataInfo')
-
-    if (storedData) {
-      const parsedData = JSON.parse(storedData)
-
-      setDocuments(parsedData)
-    }
+   fetchData()
   }, [])
 
   function maskName(name: string) {
@@ -115,8 +108,9 @@ const AllReviewPage = () => {
   }
 
   useEffect(() => {
-    setPublicReviews(documents)
-  }, [documents])
+    const PublicReviewData = allReviewData.filter((item: any) => !item.private)
+    setPublicReviews(PublicReviewData)
+  }, [allReviewData])
 
   return (
     <>
