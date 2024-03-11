@@ -9,8 +9,8 @@ import { useRecoilState } from 'recoil'
 import sharedMarker from '/public/images/sharedMarker.png'
 
 import { GoBackButton } from '@/app/components/buttons/goBackButton'
-import { useSession } from 'next-auth/react';
-import LoadingScreen from '@/app/components/loadingScreen';
+import { useSession } from 'next-auth/react'
+import LoadingScreen from '@/app/components/loadingScreen'
 
 interface MapDataType {
   myMapData: any[]
@@ -35,8 +35,9 @@ const MapView = ({
   const [tagInfo] = useRecoilState(tagState)
   const [isSelectedTags, setIsSelectedTags] = useRecoilState(mainTagState)
   const [startIdx, setStartIdx] = useState(0)
-  const [loading, setLoading] = useState(true);
-  const numVisibleTags = 5 // 표시할 최대 태그 개수
+  const [loading, setLoading] = useState(true)
+  const [numVisible, setNumVisible] = useState(5) // 기본값은 2개의 책
+  const [numVisibleTags, setNumVisibleTags] = useState(1)
 
   const [filteredReviews, setFilteredReviews] = useState<any>([])
   const [windowHeight, setWindowHeight] = useState(window.innerHeight)
@@ -71,6 +72,28 @@ const MapView = ({
     }
   }, [isSelectedTags]) // 한 번만 실행
 
+  useEffect(() => {
+    function handleResize() {
+      const screenWidth = window.innerWidth
+      if (screenWidth < 819) {
+        setNumVisible(2) // 화면이 작을 때
+      } else {
+        setNumVisible(5) // 큰 화면
+      }
+    }
+    handleResize()
+    // 창의 크기가 변경될 때마다 호출
+    window.addEventListener('resize', handleResize)
+
+    // 컴포넌트가 언마운트될 때 리스너 제거
+    return () => {
+      window.removeEventListener('resize', handleResize)
+    }
+  }, []) // 컴포넌트가 마운트될 때 한 번만 호출
+  useEffect(() => {
+    setNumVisibleTags(numVisible)
+  }, [numVisible])
+
   const handleClickPrev = () => {
     setStartIdx(Math.max(startIdx - numVisibleTags, 0))
   }
@@ -82,7 +105,6 @@ const MapView = ({
     overlay[i].setMap(null)
   }
   const displayMarker = (place: any, i: number, data?: any) => {
-    
     // 이미 생성된 마커가 있다면 해당 마커를 반환
     if (markers[i]) {
       markers[i].setMap(null) // 기존 마커를 지도에서 제거
@@ -150,8 +172,11 @@ const MapView = ({
     let yAnchor
     if (isMain) {
       yAnchor = 1.7
-    } else {
+
+    } else if(isShared){
       yAnchor = 1.3
+    } else {
+      yAnchor=1.7
     }
 
     const customOverlay = new window.kakao.maps.CustomOverlay({
@@ -235,7 +260,7 @@ const MapView = ({
       openCustomOverlay(place, i)
     }
   }
-  const mouseLeaveListItem = ( i: number) => {
+  const mouseLeaveListItem = (i: number) => {
     // useRef로 저장한 map을 참조하여 지도 이동 및 확대
     if (mapRef.current) {
       closeOverlay(i)
@@ -275,9 +300,8 @@ const MapView = ({
   useEffect(() => {
     if (isShared) {
       window.kakao.maps.load(() => {
-        
         navigator.geolocation.getCurrentPosition((position) => {
-          setLoading(false);
+          setLoading(false)
           const { latitude, longitude } = position.coords
           const currentPosition = new window.kakao.maps.LatLng(
             latitude,
@@ -301,7 +325,9 @@ const MapView = ({
           } else {
             filteredReviews.forEach((d: any, i: number) => {
               displayMarker(d.pinRespDto, i, d.tags)
-              bounds.extend(new window.kakao.maps.LatLng(d.pinRespDto.y, d.pinRespDto.x))
+              bounds.extend(
+                new window.kakao.maps.LatLng(d.pinRespDto.y, d.pinRespDto.x),
+              )
 
               mapInstance.setBounds(bounds)
             })
@@ -319,7 +345,7 @@ const MapView = ({
           center: new window.kakao.maps.LatLng(33.450701, 126.570667),
           level: 2,
         }
-        setLoading(false);
+        setLoading(false)
         const mapInstance = new window.kakao.maps.Map(container, options)
         mapRef.current = mapInstance
 
@@ -337,10 +363,8 @@ const MapView = ({
     })
   }, [myMapData])
 
-
-  
   const mapHeight = isFull === `100vh` ? windowHeight : 400
-  
+
   return (
     <div style={{ position: 'relative' }}>
       {loading && <LoadingScreen height={isFull} />}
@@ -356,126 +380,129 @@ const MapView = ({
         >
           <div>
             <div>
-            <div
-              id="map"
-              className={`${isFull !== `100vh` ? 'rounded-lg' : ''}`}
-              style={{
-                width: '100%',
-                height: `${isFull}`,
-                position: 'relative',
-              }}
-            >
-              {!isMain && (
-                <div>
-                  <button
-                    className="absolute bg-[#F66464] py-2 px-8 rounded-xl bottom-10 transform -translate-x-1/2 left-1/2 text-white hover:text-[#F66464] hover:bg-white font-bold z-20"
-                    onClick={getCurrentPosBtn}
-                  >
-                    현재 위치
-                  </button>
+              <div
+                id="map"
+                className={`${isFull !== `100vh` ? 'rounded-lg' : ''}`}
+                style={{
+                  width: '100%',
+                  height: `${isFull}`,
+                  position: 'relative',
+                }}
+              >
+                {!isMain && (
+                  <div>
+                    <button
+                      className="absolute bg-[#F66464] py-2 px-8 rounded-xl sm:bottom-[32%] sm:text-sm bottom-10 transform -translate-x-1/2 left-1/2 text-white hover:text-[#F66464] hover:bg-white font-bold z-20"
+                      onClick={getCurrentPosBtn}
+                    >
+                      현재 위치
+                    </button>
 
-                  <div
-                    ref={listContainerRef}
-                    className="absolute scrollBar w-[26vw] bg-[#f9f9f9] h-full px-[2vw] py-[1vw] bg-opacity-80 overflow-y-auto rounded-lg"
-                    style={{ zIndex: 2 }}
-                  >
-                    <div className="flex py-2 w-full  justify-between text-center font-bold border-b-[1px] border-gray-600 mb-4">
-                      {isFull == '100vh' && <GoBackButton />}
+                    <div
+                      ref={listContainerRef}
+                      className="absolute md:scrollBar lg:scrollBar sm:w-[100vw] sm:top-[70%] w-[26vw] bg-[#f9f9f9] sm:h-[30%] h-full px-[2vw] py-[1vw] bg-opacity-80 sm:bg-opacity-0 overflow-y-auto rounded-lg"
+                      style={{ zIndex: 2 }}
+                    >
+                      <div className="flex py-2 w-full sm:hidden justify-between text-center font-bold border-b-[1px] border-gray-600 mb-4">
+                        {isFull == '100vh' && <GoBackButton />}
 
-                      <div className=" mr-[8vw] ">
-                        {isShared ? '공유 지도' : '개인 지도'}
-                      </div>
-                    </div>
-                    <h1 className="font-bold">{isTitleActive}</h1>
-                    {filteredReviews.length === 0 ? (
-                      isShared ? (
-                        <div className="ml-12">
-                          선택된 태그에 해당하는 장소가 없습니다
+                        <div className=" mr-[8vw] ">
+                          {isShared ? '공유 지도' : '개인 지도'}
                         </div>
+                      </div>
+                      <h1 className="font-bold">{isTitleActive}</h1>
+                      {filteredReviews.length === 0 ? (
+                        isShared ? (
+                          <div className="ml-12">
+                            선택된 태그에 해당하는 장소가 없습니다
+                          </div>
+                        ) : (
+                          myMapData.map((data: any, i: number) => (
+                            <div key={i}>
+                              <ListItem
+                                key={i}
+                                index={i}
+                                data={data}
+                                onListItemClick={() => {
+                                  clickListItem(data.pinRespDto, i)
+                                }}
+                                onListMouseLeave={() => {
+                                  mouseLeaveListItem(i)
+                                }}
+                                isShared={isShared}
+                                selectedMarkerIndex={selectedMarkerIndex}
+                              />
+                            </div>
+                          ))
+                        )
                       ) : (
-                        myMapData.map((data: any, i: number) => (
-                          <div key={i}>
+                        filteredReviews.map((data: any, i: number) => (
+                          <div
+                            key={i}
+                            id={`list-item-${data.pinRespDto.placeId}`}
+                          >
                             <ListItem
                               key={i}
                               index={i}
                               data={data}
+                              selectedMarkerIndex={selectedMarkerIndex}
                               onListItemClick={() => {
                                 clickListItem(data.pinRespDto, i)
                               }}
-                              onListMouseLeave={() => {
-                                mouseLeaveListItem(i)
-                              }}
+                              onListMouseLeave={() => mouseLeaveListItem(i)}
                               isShared={isShared}
-                              selectedMarkerIndex={selectedMarkerIndex}
                             />
                           </div>
                         ))
-                      )
-                    ) : (
-                      filteredReviews.map((data: any, i: number) => (
-                        <div key={i} id={`list-item-${data.pinRespDto.placeId}`}>
-                          <ListItem
-                            key={i}
-                            index={i}
-                            data={data}
-                            selectedMarkerIndex={selectedMarkerIndex}
-                            onListItemClick={() => {
-                              clickListItem(data.pinRespDto, i)
-                            }}
-                            onListMouseLeave={() =>
-                            mouseLeaveListItem(i)
-                            }
-                            isShared={isShared}
-                          />
-                        </div>
-                      ))
+                      )}
+                    </div>
+                  </div>
+                )}
+                {isMain && (
+                  <Link
+                    href={isShared ? '/map' : `/map/${user?.id}`}
+                    className="absolute text-2xl font-bold top-2 right-2  z-40  bg-white p-4 rounded-full"
+                  >
+                    <div className="absolute top-0 right-2">+</div>
+                  </Link>
+                )}
+
+                {isShared && (
+                  <div className="absolute top-6 left-1/3 transform -translate-x-1/5 sm:w-full sm:left-1/2 sm:-translate-x-1/2  z-40 flex flex-row rounded-lg">
+                    {!isMain && (
+                      <div
+                        className="p-2 cursor-pointer sm:absolute sm:left-4"
+                        onClick={handleClickPrev}
+                      >
+                        &lt;
+                      </div>
+                    )}
+                    <div className=" flex mx-auto justify-between">
+                      {!isMain &&
+                        tagInfo
+                          .slice(startIdx, startIdx + numVisibleTags)
+                          .map((tag: any, i: number) => (
+                            <div
+                              key={i}
+                              className={`box-border flex flex-row justify-center text-sm sm:justify-between items-center px-4 py-2 mx-2 border border-gray-300 rounded-full  ${isSelectedTags[startIdx + i] ? 'bg-[#E57C65] text-white' : 'bg-white hover:border-[#C05555] hover:text-[#C05555]'}`}
+                              onClick={() => searchTag(startIdx + i)}
+                            >
+                              {tag.content}
+                            </div>
+                          ))}
+                    </div>
+                    {!isMain && (
+                      <div
+                        className="p-2 cursor-pointer sm:absolute sm:right-4"
+                        onClick={handleClickNext}
+                      >
+                        &gt;
+                      </div>
                     )}
                   </div>
-                </div>
-              )}
-              {isMain && (
-                <Link
-                  href={isShared?'/map':`/map/${user?.id}`}
-                  className="absolute text-2xl font-bold top-2 right-2  z-40  bg-white p-4 rounded-full"
-                >
-                  <div className="absolute top-0 right-2">+</div>
-                </Link>
-              )}
-
-              {isShared && (
-                <div className="absolute top-6 left-1/3 transform -translate-x-1/5 z-40 flex flex-row rounded-lg">
-                  {!isMain && (
-                    <div
-                      className="p-2 cursor-pointer"
-                      onClick={handleClickPrev}
-                    >
-                      &lt;
-                    </div>
-                  )}
-                  {!isMain &&
-                    tagInfo
-                      .slice(startIdx, startIdx + numVisibleTags)
-                      .map((tag: any, i: number) => (
-                        <div
-                          key={i}
-                          className={`box-border flex flex-row justify-center text-sm items-center px-4 py-2 mx-2 border border-gray-300 rounded-full  ${isSelectedTags[startIdx + i] ? 'bg-[#E57C65] text-white' : 'bg-white hover:border-[#C05555] hover:text-[#C05555]'}`}
-                          onClick={() => searchTag(startIdx + i)}
-                        >
-                          {tag.content}
-                        </div>
-                      ))}
-                  {!isMain && (
-                    <div
-                      className="p-2 cursor-pointer"
-                      onClick={handleClickNext}
-                    >
-                      &gt;
-                    </div>
-                  )}
-                </div>
-              )}
+                )}
               </div>
-              </div>
+            </div>
           </div>
         </div>
       ) : (
