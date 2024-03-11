@@ -153,7 +153,7 @@ function maskName(name:string) {
                   </div>
                 </div>
               ) : (
-                <div className="grid gap-6 md:grid-cols-1 lg:grid-cols-1 lg:pt-20 md:pt-20 sm:pt-20">
+                <div className="grid gap-6 md:grid-cols-1 lg:grid-cols-1 lg:pt-20 md:pt-20 sm:pt-20 sm:gap-0">
                   {publicReviews &&
                     publicReviews.map((item: any, i: number) => (
                       <div
@@ -255,28 +255,29 @@ function maskName(name:string) {
                         </CustomModal>
                         )}
 
-                        <div className="relative flex p-4 w-full min-h-52 bg-[#fff9f6] rounded-2xl">
+                        <div className="relative flex p-4 w-full min-h-52 bg-[#fff9f6] rounded-2xl sm:p-2 sm:w-[85vw]">
                             <div className='relative'>
                             <div
                             className="bg-auto mb-2 absolute top-0 left-0 right-0 bottom-0 rounded object-fll bg-no-repeat bg-center overflow-hidden"
                             style={{
                               backgroundImage: `url(${item.bookRespDto?.thumbnail})`,
+                              width:'150px',
                             }}
                           >
                             </div>
                           </div>
-                          <div className="flex flex-col justify-between ml-2">
-                            <div className=" py-2">
-                              <h1 className="font-bold text-2xl sm:text-xs">
+                          <div className="flex flex-col justify-between ml-2 sm:ml-[9rem]">
+                            <div className="py-2">
+                              <h1 className="font-bold text-2xl sm:text-xs sm:w-[30vw]">
                                 {item.title}
                               </h1>
                               <div className="py-2 text-sm sm:text-xs">
                                 {item.content.length === 0 ? (
                                   <div>등록된 내용이 없습니다</div>
                                 ) : (
-                                  <div>
-                                    {item.content.length > 100
-                                      ? `${item.content.slice(0, 100)}...`
+                                  <div className='p-0 sm:w-[30vw]'>
+                                    {item.content.length > 20
+                                      ? `${item.content.slice(0, 20)}...`
                                       : item.content}
                                   </div>
                                 )}
@@ -284,7 +285,7 @@ function maskName(name:string) {
                             </div>
 
                             <div className="flex justify-between">
-                              <div className="flex text-sm pb-2 sm:text-xs">
+                              <div className="flex text-sm pb-2 sm:text-xs items-center">
                                 <Image
                                   src={privateMarker}
                                   alt="marker"
@@ -295,7 +296,7 @@ function maskName(name:string) {
                                 ) : (
                                   <div className="">
                                     독서장소: {item.pinRespDto?.name} |{' '}
-                                    {item.pinRespDto?.address}
+                                    {`${item.pinRespDto?.address.slice(0,10)}...`}
                                   </div>
                                 )}
                               </div>
