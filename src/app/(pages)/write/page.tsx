@@ -225,19 +225,19 @@ const Editor = () => {
     <>
       <NavBar />
 
-      <div className="bg-[#FAF2E5] flex justify-center mx-auto box-border min-h-full">
-        <div className="pt-20 sm:pt-10 md:pt-20 xl:pt-20">
+      <div className="bg-[#FAF2E5] flex justify-center box-border min-h-full">
+        <div className="pt-20 sm:pt-10  ">
           <header className="h-10 text-center">
             <h1 className="myCustomText text-3xl text-black">독후감 작성</h1>
           </header>
 
           <section className="py-10 px-10 sm:py-0 sm:mx-0">
-            <div className="px-5 py-8 flex rounded-t-md  sm:flex-none">
-              <div className="flex px-3 max-w-[60vw] sm:px-0 sm:flex-none">
+            <div className="px-5 sm:px-0 sm:py-4 py-8 flex rounded-t-md  ">
+              <div className="flex px-3 max-w-[60vw] sm:max-w-full sm:px-0 ">
                 <input
                   placeholder="제목"
                   ref={inputRef}
-                  className="inline-block w-[60rem] h-[2.8rem] text-base px-3 rounded-md bg-[#F9F9F9] placeholder-[#A08A7E]"
+                  className="inline-block  w-[60rem] sm:w-[72vw] h-[2.8rem] text-base px-3 rounded-md bg-[#F9F9F9] placeholder-[#A08A7E]"
                   value={titleInfo}
                   onChange={handleTitle}
                 />
@@ -245,11 +245,11 @@ const Editor = () => {
             </div>
             <div className="px-8 py-3 flex gap-5 items-center sm:px-2">
               <h4 className="px-5 font-extrabold sm:px-0 sm:text-xs">장소</h4>
-              <div className='flex px-3 max-w-[60vw] sm:px-5 sm:flex-none'>
+              <div className="flex px-3 max-w-[60vw] sm:px-0 ">
                 <input
                   placeholder="독서한 장소를 입력해주세요"
                   ref={inputRef}
-                  className="inline-block w-[35rem] h-[2rem] text-xs/[10px] px-3 rounded-2xl bg-[#F9F9F9] placeholder-[#A08A7E]"
+                  className="inline-block w-[35rem] h-[2rem] text-xs/[10px]  px-3 rounded-2xl bg-[#F9F9F9] placeholder-[#A08A7E]"
                   value={placeInfo.place_name}
                   onClick={handleSearchMap}
                 />
@@ -266,8 +266,8 @@ const Editor = () => {
                       onMarkerClickParent={setSelectedPlace}
                       selectedPlace={selectedPlace}
                     />
-                    <div className="py-3 px-16">
-                      <label className="inline-flex gap-3 items-center cursor-pointer  sm:flex-none">
+                    <div className="py-3 px-16 sm:p-2">
+                      <label className="inline-flex gap-3 items-center cursor-pointer  ">
                         <span className="ms-3 text-[#828282] text-sm font-medium">
                           나만의 장소
                         </span>
@@ -299,19 +299,17 @@ const Editor = () => {
                 )}
               </div>
             </div>
-            <div className="px-8 py-3 flex gap-5 items-center sm:px-2">
+            <div className="px-8 py-3 flex gap-5 items-start sm:px-2">
               <h4 className="px-5 font-extrabold sm:px-0 sm:text-xs">도서</h4>
               <div>
+                
+                <BookSearch></BookSearch>
                 {bookInfo.title && (
                   <div
-                    className="justify-items-center"
-                    style={{
-                      display: 'flex',
-                      flexDirection: 'column',
-                      alignItems: 'center',
-                    }}
+                    className="justify-items-start pt-4 px-5 sm:px-0"
+                    
                   >
-                    <div>현재 선택된 책</div>
+                 
                     <img
                       src={
                         bookInfo.thumbnail
@@ -321,26 +319,14 @@ const Editor = () => {
                       alt="책 표지"
                       className="mb-2 rounded"
                     />
-                    <div className="input_box">{bookInfo.title}</div>
+
                   </div>
                 )}
-                <BookSearch></BookSearch>
               </div>
             </div>
-            <div className="flex px-8 py-3 mb-8 items-center ">
-              <h4 className="px-5 font-extrabold">장소 태그</h4>
+            <div className="flex px-8 sm:px-0 py-3 mb-8 items-center ">
+              <h4 className="px-5 sm:px-2 sm:text-sm font-extrabold">장소 태그</h4>
               <div className="flex flex-wrap max-w-[50vw] items-center">
-                {/* {tagInfo.map(
-                  (tag: any) =>
-                    tag.selected && (
-                      <div
-                        className="box-border flex justify-center items-center px-4 py-2
-                my-2 mx-2 text-xs/[10px] rounded-full bg-[#E57C65] text-white"
-                      >
-                        #{tag.content}
-                      </div>
-                    ),
-                )} */}
                 {selectedTag.length > 0 &&
                   selectedTag.map((tagContent: any, i: number) => (
                     <div
@@ -353,7 +339,7 @@ const Editor = () => {
                   ))}
                 <button
                   onClick={() => setShowTagModal(true)}
-                  className="cursor-pointer text-[#7a7a7a] font-light text-4xl"
+                  className="cursor-pointer text-[#7a7a7a] font-light text-4xl sm:text-3xl"
                 >
                   +
                 </button>
@@ -376,9 +362,9 @@ const Editor = () => {
                   >
                     (키워드 5개 이하)
                   </div>
-                  <div className="flex  gap-4 my-10 ">
+                  <div className="flex sm:flex-col gap-4 my-10 ">
                     {tagCategory.map((category: string, index: number) => (
-                      <div className="flex flex-col" key={index}>
+                      <div className="flex flex-col sm:grid sm:grid-cols-2" key={index}>
                         <div className="text-start mb-4">{category}</div>
 
                         {tagData
@@ -487,7 +473,7 @@ const Editor = () => {
               />
             </div>
             <div>
-              <div className="control_btn flex mx-auto w-[18rem] gap-5">
+              <div className="control_btn flex mx-auto w-[18rem] sm:pb-8 gap-5">
                 <Button label="삭제하기" outline={false} />
                 <Button
                   label="저장하기"
