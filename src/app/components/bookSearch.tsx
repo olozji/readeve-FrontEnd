@@ -119,9 +119,9 @@ export const BookSearch = () => {
   }
 
   return (
-    <div className="flex gap-3 items-center">
+    <div className="flex px-3 max-w-[60vw] sm:px-0">
       <input
-        className="inline-block w-[35rem] h-[2rem] text-xs/[10px]  px-3 rounded-2xl  bg-[#F9F9F9] placeholder-[#A08A7E] gap-4"
+        className="inline-block w-[35rem] h-[2rem] text-xs/[10px] px-3 rounded-2xl  bg-[#F9F9F9] placeholder-[#A08A7E] gap-4 sm:gap-0"
         ref={inputRef}
         type="text"
         placeholder="책 제목을 입력해주세요"
@@ -130,19 +130,17 @@ export const BookSearch = () => {
         onChange={(e) => setBookName(e.target.value)}
         onKeyDown={handleKeyDown}
       />
-      <div className="w-[3rem] max-w-[5rem]">
-       
-      </div>
+
       {modalOpen && (
         <div
           className="fixed inset-0 bg-black bg-opacity-50 z-50 flex items-center justify-center"
           onClick={closeOnOverlayClick}
         >
-         <div className="bg-white w-[60rem] max-h-[80vh] py-8 px-16 rounded-lg overflow-y-auto">
-            <div className="pt-4 text-3xl font-extrabold">
+         <div className="bg-white w-[60rem] sm:w-[100vw] max-h-[80vh] py-8 px-16  sm:px-4 rounded-lg overflow-y-auto">
+            <div className="pt-4 text-3xl sm:text-2xl font-extrabold">
               도서명을 검색해주세요
             </div>
-            <div className="pt-8 pb-4 border-b-2 flex">
+            <div className="pt-8 pb-4 border-b-2 sm:pt-4 flex">
               <input
                 type="text"
                 size={50}
@@ -153,7 +151,7 @@ export const BookSearch = () => {
                     onSubmit(e);
                   }
                 }}
-                className="w-[35rem] h-[2.5rem] px-3 border border-black rounded-2xl bg-white"
+                className="w-[35rem] sm:w-[100%] h-[2.5rem] px-3 border border-black rounded-2xl bg-white"
               />
               <div className="bg-[#E57C65] border-4 border-white mx-4 px-2 py-1 rounded-3xl shadow-xl justify-center">
                 <button id="searchBtn" onClick={onSubmit} onSubmit={onSubmit}>
@@ -169,7 +167,7 @@ export const BookSearch = () => {
            
             <div className="grid grid-cols-1 overflow-y-auto max-h-[37vh] mt-4 justify-items-start scrollBar">
               {documents.map((d: any, i: number) => (
-               <div  className={` w-[100%] block ${selectedBook && selectedBook.isbn === d.isbn ? 'rounded-[13px] border-4 border-[#E57c65]' : 'rounded-lg border-4 border-transparent'}`}>
+               <div  className={` w-[100%] sm:max-h-[30vh] block ${selectedBook && selectedBook.isbn === d.isbn ? 'rounded-[13px] border-4 border-[#E57c65]' : 'rounded-lg border-4 border-transparent'}`}>
                 <div
                   className='flex align-center'
                   key={i}
@@ -185,10 +183,10 @@ export const BookSearch = () => {
                     alt="책 표지"
                     className="m-2 rounded-2xl"
                     />
-                    <div className="p-4 mt-2">
-                      <div className='font-black text-xl'>{d.title}</div>
+                    <div className="p-4 mt-2 sm:text-sm">
+                      <div className='font-black text-lg lg:text-xl '>{d.title}</div>
                       <div className='font-semibold text-[#646464'>| 지은이 {d.authors[0]}</div>
-                      <div className='pt-8 font-bold'>출판사:{d.publisher}</div>
+                      <div className='pt-8  font-bold'>출판사:{d.publisher}</div>
                       <div className='font-bold'>출판일 : {formatDate(d.datetime)}</div>
                   </div>
                 </div>

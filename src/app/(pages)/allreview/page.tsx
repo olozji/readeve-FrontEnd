@@ -24,7 +24,6 @@ import isSharedIcon from '/public/images/isSharedIcon.png'
 import axios from 'axios'
 import { useSession } from 'next-auth/react'
 
-
 export interface ReviewData {
   [x: string]: any
   id?: number
@@ -55,19 +54,16 @@ const AllReviewPage = () => {
   const [selectedReview, setSelectedReview] =
     useRecoilState(selectedReviewState)
   const [isReviewsModal, setIsReviewsModal] = useState(false)
+  const [documents, setDocuments] = useState<any[]>([])
+
   const [detailOpen, setDetailOpen] = useState<boolean[]>(
     Array(publicReviews.length).fill(false),
   )
 
-  const [allReviewData, setAllReviewData] = useRecoilState<any>(allReviewDataState)
+  const [allReviewData, setAllReviewData] =
+    useRecoilState<any>(allReviewDataState)
 
-
-
-
-  
   let session: any = useSession()
-  
-
 
   const handleModal = (idx: number) => {
     setDetailOpen((prevState) => {
@@ -94,39 +90,43 @@ const AllReviewPage = () => {
     }
   }
   useEffect(() => {
-  fetchData()
-},[])
+    const storedData = localStorage.getItem('allDataInfo')
 
-function maskName(name:string) {
-  if (name.length <= 2) {
-      return name;
+    if (storedData) {
+      const parsedData = JSON.parse(storedData)
+
+      setDocuments(parsedData)
+    }
+  }, [])
+
+  function maskName(name: string) {
+    if (name.length <= 2) {
+      return name
+    }
+    const firstChar = name.charAt(0)
+    const lastChar = name.charAt(name.length - 1)
+    const maskedPart = '*'.repeat(name.length - 2)
+    return firstChar + maskedPart + lastChar
   }
-  const firstChar = name.charAt(0);
-  const lastChar = name.charAt(name.length - 1);
-  const maskedPart = "*".repeat(name.length - 2);
-  return firstChar + maskedPart + lastChar;
-}
 
-  function formatDateToYYMMDD(isoDateString:string) {
-    const date = new Date(isoDateString);
-    return `${date.getFullYear().toString().slice(2)}.${(date.getMonth() + 1).toString().padStart(2, '0')}.${date.getDate().toString().padStart(2, '0')}`;
-}
+  function formatDateToYYMMDD(isoDateString: string) {
+    const date = new Date(isoDateString)
+    return `${date.getFullYear().toString().slice(2)}.${(date.getMonth() + 1).toString().padStart(2, '0')}.${date.getDate().toString().padStart(2, '0')}`
+  }
 
   useEffect(() => {
-    const PublicReviewData = allReviewData.filter((item: any) => !item.private)
-    setPublicReviews(PublicReviewData)
-  }, [allReviewData])
+    setPublicReviews(documents)
+  }, [documents])
 
   return (
     <>
       <NavBar />
       <div className="bg-[#f1e5cf]">
-      
-        <section className="main mx-auto max-w-6xl px-4 ">
+        <section className="main mx-auto max-w-6xl px-4">
           <section className="pt-20 lg:pt-5 pb-4 lg:pb-8 px-4 xl:px-2 xl:container mx-auto">
-          <div className="text-center mt-4 mx-auto myCustomText text-3xl text-white">
-            모든 기록
-          </div>
+            <div className="text-center mt-4 mx-auto myCustomText text-3xl text-white">
+              모든 기록
+            </div>
             <div className="lg-pt-10 md-pt-10 relative">
               <div className="absolute left-0">
                 <div className="flex py-4 md:py-8">
@@ -150,135 +150,163 @@ function maskName(name:string) {
                   </div>
                 </div>
               ) : (
-                <div className="grid gap-6 md:grid-cols-1 lg:grid-cols-1 lg:pt-20 md:pt-20">
+                <div className="grid gap-6 sm:gap-0 md:grid-cols-1 lg:grid-cols-1 lg:pt-20 md:pt-20 sm:pt-20">
                   {publicReviews &&
                     publicReviews.map((item: any, i: number) => (
                       <div
                         key={i}
-                        className="relative w-90 min-h-32  border rounded-md border-slate-200"
+                        className="w-[70vw] sm:w-full sm:max-w-[100%] my-4 sm:my-2 mx-auto rounded-lg overflow-hidden"
                         onClick={() => handleModal(i)}
                       >
-
                         {detailOpen && (
-                          <CustomModal size={'70rem'} isOpen={detailOpen[i]} modalColor='#FEF6E6'>
-                          <div className="">
-                            <div className="px-8 py-8">
-                              <div className="flex justify-center items-center">
-                                <img
-                                  src={
-                                    publicReviews[i].bookRespDto.thumbnail
-                                      ? publicReviews[i].bookRespDto.thumbnail
-                                      : 'http://via.placeholder.com/120X150'
-                                  }
-                                  alt="책 표지"
-                                  className="w-[10rem] mb-2 rounded object-fll"
-                                />
-                                <div className='p-10'>
-                                  <div className="text-xl font-extrabold text-[#6F5C52]">
-                                    {item.bookRespDto.title}
-                                  </div>
-                                  <div className="text-sm font-bold text-[#9C8A80]">
-                                    | {publicReviews[i].bookRespDto.author} 저자
-                                  </div>
-                                  <div className="justify-center datas-center py-2">
-                                  <span
-                                  className={`inline-flex justify-center datas-center gap-2 rounded-lg px-2 py-2 text-xs ${
-                                    item.isPrivate ? 'bg-[#E57C65] text-white'  : 'bg-white text-[#6F5C52]'
-                                  }`}
-                                >
-                                <Image
-                                  src={item.isPrivate ? isPrivatedIcon : isSharedIcon}
-                                  alt='Icon'
-                                  width={10}
-                                  height={10}
-                                />
-                                  {item.isPrivate ? '나만보기' : '전체공개'}
-                                  </span>
-                                  </div>
-                                 <div className='py-5 pt-5 text-[#503526] text-sm'>
-                                  <div className="flex datas-center gap-5">
-                                    <span className='font-bold' style={{ verticalAlign: 'middle' }}>등록일</span>
-                                    <div className=''>{formatDateToYYMMDD(item.createAt)}</div>
-                                  </div>
-                                  {/* TODO: 태그 부분 수정 필요함 컴포넌트를 직접 가져와서 해야할지? 아직 안해봤어요 */}
-                                  <div className="flex">
-                                    <span className='font-bold mr-4' style={{ verticalAlign: 'middle' }}>태그</span>
-                                    <div className='flex flex-wrap w-[16vw]'>
-                                    {item.tags.map(
-                                      (tag: any) =>
-                                        tag.selected && <div className='flex bg-[#E57C65] rounded-full m-1 p-2 text-white font-semibold text-xs'>#{tag.content}</div>,
-                                    )}
-                                  </div>
-                                  </div>
-                                  <div className="flex datas-center gap-5">
-                                  <span className='font-bold' style={{ verticalAlign: 'middle' }}>장소</span>
+                          <CustomModal
+                            size={'70rem'}
+                            isOpen={detailOpen[i]}
+                            modalColor="#FEF6E6"
+                          >
+                            <div className="">
+                              <div className="px-8 sm:px-2 py-8">
+                                <div className="flex justify-center items-center">
+                                  <img
+                                    src={
+                                      publicReviews[i].bookRespDto.thumbnail
+                                        ? publicReviews[i].bookRespDto.thumbnail
+                                        : 'http://via.placeholder.com/120X150'
+                                    }
+                                    alt="책 표지"
+                                    className="w-[10rem] mb-2 rounded object-fll"
+                                  />
+                                  <div className="p-10 sm:p-0">
+                                    <div className="text-xl font-extrabold text-[#6F5C52]">
+                                      {item.bookRespDto.title}
+                                    </div>
+                                    <div className="text-sm font-bold text-[#9C8A80]">
+                                      | {publicReviews[i].bookRespDto.author}{' '}
+                                      저자
+                                    </div>
+                                    <div className="justify-center datas-center py-2">
+                                      <span
+                                        className={`inline-flex justify-center datas-center gap-2 rounded-lg px-2 py-2 text-xs ${
+                                          item.isPrivate
+                                            ? 'bg-[#E57C65] text-white'
+                                            : 'bg-white text-[#6F5C52]'
+                                        }`}
+                                      >
+                                        <Image
+                                          src={
+                                            item.isPrivate
+                                              ? isPrivatedIcon
+                                              : isSharedIcon
+                                          }
+                                          alt="Icon"
+                                          width={10}
+                                          height={10}
+                                        />
+                                        {item.isPrivate
+                                          ? '나만보기'
+                                          : '전체공개'}
+                                      </span>
+                                    </div>
+                                    <div className="py-5 pt-5 text-[#503526] text-sm">
+                                      <div className="flex datas-center gap-5">
+                                        <span
+                                          className="font-bold"
+                                          style={{ verticalAlign: 'middle' }}
+                                        >
+                                          등록일
+                                        </span>
+                                        <div className="">
+                                          {formatDateToYYMMDD(item.createAt)}
+                                        </div>
+                                      </div>
+                                      {/* TODO: 태그 부분 수정 필요함 컴포넌트를 직접 가져와서 해야할지? 아직 안해봤어요 */}
+                                      <div className="flex ">
+                                        <span
+                                          className="font-bold mr-4 sm:block sm:mr-0"
+                                          style={{ verticalAlign: 'middle' }}
+                                        >
+                                          태그
+                                        </span>
+                                        <div className="flex flex-wrap w-[16vw] sm:w-[40vw]">
+                                          {item.tags.map(
+                                            (tag: any) =>
+                                              tag.selected && (
+                                                <div className="flex bg-[#E57C65] rounded-full m-1 p-2 text-white font-semibold text-xs">
+                                                  {tag.content}
+                                                </div>
+                                              ),
+                                          )}
+                                        </div>
+                                      </div>
+                                      <div className="flex datas-center gap-5 sm:gap-0 ">
+                                        <span
+                                          className="font-bold"
+                                          style={{ verticalAlign: 'middle' }}
+                                        >
+                                          장소
+                                        </span>
 
-                                    <div 
-                                      className='flex datas-center'>
-                                      <Image
-                                        src={privateMarker}
-                                        alt={'장소'}
-                                      />
-                                      {item.pinRespDto.private ? (
-                                      <div>{maskName(item.writer)}님만의 장소</div>
-                                    ) : (
-                                      <div className="">
-                                        독서장소: {item.pinRespDto?.name} |{' '}
-                                        {item.pinRespDto?.address}
+                                        <div className="flex items-center  sm:items-start">
+                                          <Image
+                                            src={privateMarker}
+                                            alt={'장소'}
+                                          />
+                                          {item.pinRespDto.private ? (
+                                            <div>
+                                              {maskName(item.writer)}님만의 장소
+                                            </div>
+                                          ) : (
+                                            <div className="sm:w-[40vw]">
+                                              독서장소: {item.pinRespDto?.name}{' '}
+                                              | {item.pinRespDto?.address}
+                                            </div>
+                                          )}
+                                        </div>
                                       </div>
-                                 )}
-                                      </div>
-                                      
+                                    </div>
                                   </div>
+                                </div>
+                                {/* 내용 엔터키 적용 */}
+                                <div className="flex justify-center datas-center">
+                                  <div
+                                    key={i}
+                                    className="w-[50vw] sm:w-[90vw] my-4 rounded-lg overflow-hidden shadow-lg px-3 py-3 sm:pt-0 p-10 bg-[#FFFCF9]"
+                                  >
+                                    <div className="mt-10 px-5">
+                                      <h2 className="text-2xl font-bold mb-4 border-black border-b pb-5 text-[#503526]">
+                                        {item.title}
+                                      </h2>
+                                      <div
+                                        className="h-[45vh] mx-auto text-[#999999]"
+                                        dangerouslySetInnerHTML={{
+                                          __html: item.content.replace(
+                                            /\n/g,
+                                            '<br>',
+                                          ),
+                                        }}
+                                      ></div>
+                                    </div>
                                   </div>
                                 </div>
                               </div>
-                              {/* 내용 엔터키 적용 */}
-                              <div className='flex justify-center datas-center'>
-                              <div
-                                key={i}
-                                className="w-[50vw] my-4 rounded-lg overflow-hidden shadow-lg px-3 py-3 p-10 bg-[#FFFCF9]"
-                              >
-                                
-                              <div className='mt-10 px-5'>
-                              <h2 className="text-2xl font-bold mb-4 border-black border-b pb-5 text-[#503526]">{item.title}</h2>
-                                <div className="h-[45vh] mx-auto text-[#999999]" dangerouslySetInnerHTML={{ __html: item.content.replace(/\n/g, '<br>') }}>
-                                </div>
-                                </div>
                             </div>
-                            </div>
-                            </div>
-                          </div>
-                        </CustomModal>
+                          </CustomModal>
                         )}
 
-                        <div className="relative flex p-4 w-full min-h-52 bg-[#fff9f6] rounded-2xl ">
+                        <div className="relative flex p-4 sm:px-0 w-[100%] min-h-52 bg-[#fff9f6] rounded-2xl ">
                           <div
-                            className="bg-auto w-[12rem] bg-no-repeat bg-center rounded-2xl "
+                            className="bg-auto sm:min-w-[8rem] w-[12rem] bg-no-repeat bg-center rounded-2xl "
                             style={{
                               backgroundImage: `url(${item.bookRespDto?.thumbnail})`,
                             }}
                           ></div>
+
                           <div className="flex flex-col justify-between ml-2">
-                            <div className=" py-2">
-                              <h1 className="font-bold text-2xl">
+                            <div className="">
+                              <h1 className="font-black text-2xl sm:text-base">
                                 {item.title}
                               </h1>
-                              <div className="py-2 text-sm">
-                                {item.content.length === 0 ? (
-                                  <div>등록된 내용이 없습니다</div>
-                                ) : (
-                                  <div>
-                                    {item.content.length > 100
-                                      ? `${item.content.slice(0, 100)}...`
-                                      : item.content}
-                                  </div>
-                                )}
-                              </div>
-                            </div>
-
-                            <div className="flex justify-between">
-                              <div className="flex text-sm pb-2">
+                              <div className="flex sm:max-w-[50vw] text-sm items-start sm:text-xs sm:pr-2">
                                 <Image
                                   src={privateMarker}
                                   alt="marker"
@@ -293,9 +321,27 @@ function maskName(name:string) {
                                   </div>
                                 )}
                               </div>
+                              <div className='text-xs sm:pr-2'>책 이름 : {item.bookRespDto.title}</div>
+                              <div className='text-xs sm:pr-2'>저자 : {item.bookRespDto.author}</div>
+
+                            
+                            </div>
+
+                            <div className="flex justify-between">
+                            <div className="py-2 sm:pr-4 text-sm sm:text-xs">
+                                {item.content.length === 0 ? (
+                                  <div>등록된 내용이 없습니다</div>
+                                ) : (
+                                  <div>
+                                    {item.content.length > 100
+                                      ? `${item.content.slice(0, 100)}...`
+                                      : item.content}
+                                  </div>
+                                )}
+                              </div>
                             </div>
                           </div>
-                          <div className="pb-2 absolute right-8 bottom-4 text-end text-sm">
+                          <div className="absolute bottom-4 right-4 sm:text-xs sm:bottom-2 justify-itmes-center">
                             {formatDateToYYMMDD(item.createAt)}
                           </div>
                         </div>

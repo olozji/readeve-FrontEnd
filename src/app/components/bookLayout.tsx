@@ -17,7 +17,26 @@ export const BookLayout = ({ width, isMain, bookData }: bookLayoutProps) => {
   const [startIdx, setStartIdx] = useState(0)
   const [allReviewData, setAllReviewData] =
     useRecoilState<any>(allReviewDataState)
-  const numVisibleBooks = 5
+  const [numVisibleBooks, setNumVisibleBooks] = useState(4) // 기본값은 2개의 책
+
+  useEffect(() => {
+    function handleResize() {
+      const screenWidth = window.innerWidth
+      if (screenWidth < 819) {
+        setNumVisibleBooks(4) // 화면이 작을 때
+      } else {
+        setNumVisibleBooks(5) // 큰 화면
+      }
+    }
+    handleResize()
+    // 창의 크기가 변경될 때마다 호출
+    window.addEventListener('resize', handleResize)
+
+    // 컴포넌트가 언마운트될 때 리스너 제거
+    return () => {
+      window.removeEventListener('resize', handleResize)
+    }
+  }, []) // 컴포넌트가 마운트될 때 한 번만 호출
 
   useEffect(() => {
     const onlyBookData = bookData.filter((data: any, idx: number) => {
@@ -44,12 +63,12 @@ export const BookLayout = ({ width, isMain, bookData }: bookLayoutProps) => {
     <div>
       {documents.length !== 0 && (
         <div className="flex justify-center">
-          <div className={`flex justify-between items-center w-${width} `}>
+          <div className={`flex justify-between items-center w-${width}`}>
             <div className="p-2 cursor-pointer" onClick={handleClickPrev}>
               &lt;
             </div>
             <div className="flex items-start">
-              <div className="grid grid-cols-5 gap-4 justify-center ">
+              <div className="grid sm:grid-cols-2 grid-cols-5 gap-4 justify-center ">
                 {documents
                   .slice(startIdx, startIdx + numVisibleBooks)
                   .map((d: any, i: number) => (
@@ -65,11 +84,11 @@ export const BookLayout = ({ width, isMain, bookData }: bookLayoutProps) => {
                               : 'http://via.placeholder.com/120X150'
                           }
                           alt="책 표지"
-                          className="mb-2 rounded-lg w-[8vw]"
+                          className="mb-2 rounded-lg sm:w-[30vw]"
                         />
                         {isMain && (
-                          <div className="flex gap-2 w-[8vw] items-center">
-                            <span className="flex items-center justify-center max-h-10 rounded-lg gap-1 bg-[#E1E1E1] px-3 py-1 text-xs font-medium text-[#5F5F5F]">
+                          <div className="flex sm:inline gap-2 items-center">
+                            <span className="flex items-center justify-center max-h-10 sm:w-[50px] rounded-lg gap-1 bg-[#E1E1E1] px-3 py-1 text-xs font-medium text-[#5F5F5F]">
                               <Image
                                 src={NotesImg}
                                 alt={'NotesImg'}

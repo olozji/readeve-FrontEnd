@@ -162,13 +162,13 @@ export const MapDirectSearch = ({ onMarkerClick, markerImage }: any) => {
     <div>
       <div className='pt-4 text-3xl font-extrabold'>위치를 선택해주세요</div>
       <div 
-        className='text-[#E57C65] text-md px-3 py-3 cursor-pointer'
+        className='text-[#E57C65] text-md px-3 sm:px-0 py-3 cursor-pointer'
         onClick={getCurrentPosBtn}>
           현재 위치설정
       </div>
-      <div className='flex'>
-      <div id="map" style={{ width: '55%', height: '45vh' }}></div>
-      <div className='w-[45%] bg-white bg-opacity-80 overflow-y-auto rounded-lg'>
+      <div className='flex sm:flex-col'>
+      <div id="map" className='w-[55%] sm:w-[100%]'style={{ height: '45vh' }}></div>
+      <div className='w-[45%] sm:w-[100%] bg-white bg-opacity-80 overflow-y-auto rounded-lg'>
         {address.length === 0 ? (
           <div className="text-[#B6B6B6] ml-2 mt-40">
                 핀을 직접 정하고 나만의 장소를 완성해보세요!
@@ -189,7 +189,7 @@ export const MapDirectSearch = ({ onMarkerClick, markerImage }: any) => {
                 <></>
               )}
             </div>
-            <div className='pt-10'>
+            <div className='pt-10 sm:pt-2'>
               <h2 className='font-bold pb-3'>별칭</h2>
             <input
               type="text"

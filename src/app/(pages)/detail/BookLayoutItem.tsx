@@ -22,39 +22,38 @@ import detailPaper from '/public/images/detailPaper.png'
 import privateMarker from '/public/images/privateMarker.png'
 import isPrivatedIcon from '/public/images/isPrivatedIcon.png'
 import isSharedIcon from '/public/images/isSharedIcon.png'
-import whitePaper from '/public/images//whitePager.png';
-import { all } from 'node_modules/axios/index.cjs';
-import axios from 'axios';
+import whitePaper from '/public/images//whitePager.png'
+import { all } from 'node_modules/axios/index.cjs'
+import axios from 'axios'
 
 interface bookLayoutItemType {
-  bookId: string,
-  propsData:any
+  bookId: string
+  propsData: any
 }
 
-const BookLayoutItem = ({bookId,propsData}:bookLayoutItemType) => {
+const BookLayoutItem = ({ bookId, propsData }: bookLayoutItemType) => {
   const [bookData, setBookData] = useState<any>(null)
   const [detailOpen, setDetailOpen] = useState<boolean[]>([false, false, false])
 
   // TODO: 수정 삭제도 리코일로 관리할지? 논의 해봐용
   const [editReviewId, setEditReviewId] = useRecoilState(editReivewState)
   const [removeReviewId, setRemoveReviewId] = useRecoilState(removeReivewState)
-  const [sortOption, setSortOption] = useRecoilState(sortOptionState);
+  const [sortOption, setSortOption] = useRecoilState(sortOptionState)
 
   let session: any = useSession()
   const router = useRouter()
 
-
-  function formatDateToYYMMDD(isoDateString:string) {
-    const date = new Date(isoDateString);
-    return `${date.getFullYear().toString().slice(2)}.${(date.getMonth() + 1).toString().padStart(2, '0')}.${date.getDate().toString().padStart(2, '0')}`;
-}
-function isBook(element: any) {
-  return element?.bookRespDto?.isbn?.replace(' ', '') === bookId;
-}
+  function formatDateToYYMMDD(isoDateString: string) {
+    const date = new Date(isoDateString)
+    return `${date.getFullYear().toString().slice(2)}.${(date.getMonth() + 1).toString().padStart(2, '0')}.${date.getDate().toString().padStart(2, '0')}`
+  }
+  function isBook(element: any) {
+    return element?.bookRespDto?.isbn?.replace(' ', '') === bookId
+  }
 
   const handleSort = (option: 'latest' | 'oldest') => {
-    setSortOption(option);
-  };
+    setSortOption(option)
+  }
 
   const handleModal = (idx: number) => {
     let copy = []
@@ -87,27 +86,22 @@ function isBook(element: any) {
       }
     }
   }
-  
- 
 
   useEffect(() => {
-    
     let arr: boolean[] = []
 
     console.log(`bookId=${bookId}`)
     console.log(`propsData=${propsData}`)
-    let result = propsData.filter((data: any) =>
-    data.bookRespDto.isbn.replace(' ','') == bookId  
+    let result = propsData.filter(
+      (data: any) => data.bookRespDto.isbn.replace(' ', '') == bookId,
     )
-      console.log(result)
-      setBookData(result)
-      result.forEach(() => {
-        arr.push(false)
-      })
-      setDetailOpen(arr)
-
-  }, [bookId,removeReviewId])
-
+    console.log(result)
+    setBookData(result)
+    result.forEach(() => {
+      arr.push(false)
+    })
+    setDetailOpen(arr)
+  }, [bookId, removeReviewId])
 
   return (
     <section>
@@ -130,29 +124,33 @@ function isBook(element: any) {
             className="mb-2 rounded-xl drop-shadow-lg"
           />
           <div className="p-4 text-xl text-[#503526] font-display font-bold ">
-            {bookData[0].bookRespDto.title} | {bookData[0].bookRespDto.author} 작가
+            {bookData[0].bookRespDto.title} | {bookData[0].bookRespDto.author}{' '}
+            작가
           </div>
         </div>
       )}
       <>
-        
         <section className="main">
-          <section className="pt-20 lg:pt-5 pb-4 lg:pb-8 px-4 xl:px-2 xl:container mx-auto">
-          {bookData&&<div className="md-pt-10 relative">
-              <div className="lg-pt-10 md-pt-10 relative">
-                <div className="absolute left-0">
-                  <div className="flex py-4 md:py-8">
-                    <div
-                      id="filter"
-                      className=" flex gap-3 text-gray-900 text-sm rounded-lg w-full p-2.5"
-                    >
-                      <div onClick={() => handleSort('latest')}>최신등록순</div>
-                      <div onClick={() => handleSort('oldest')}>오래된순</div>
+          <section className="pt-20 sm:pt-10 lg:pt-5 pb-4 lg:pb-8 px-4 xl:px-2 xl:container mx-auto">
+            {/* {bookData && (
+              <div className="md-pt-10 relative">
+                <div className="lg-pt-10 md-pt-10 relative">
+                  <div className="absolute left-0">
+                    <div className="flex py-4 md:py-8">
+                      <div
+                        id="filter"
+                        className=" flex gap-3 text-gray-900 text-sm rounded-lg w-full p-2.5"
+                      >
+                        <div onClick={() => handleSort('latest')}>
+                          최신등록순
+                        </div>
+                        <div onClick={() => handleSort('oldest')}>오래된순</div>
+                      </div>
                     </div>
                   </div>
                 </div>
               </div>
-            </div>}
+            )} */}
             {bookData &&
               bookData.map((data: any, i: number) => (
                 // 리스트
@@ -161,15 +159,19 @@ function isBook(element: any) {
                   onClick={() => {
                     handleModal(i)
                   }}
-                  className="max-w-3xl my-4 mx-auto bg-cover bg-center rounded-lg overflow-hidden shadow-lg p-10"
+                  className="max-w-3xl my-4 mx-auto bg-cover bg-center rounded-lg overflow-hidden shadow-lg sm:p-2 p-10"
                   style={{ backgroundImage: `url(${detailPaper.src})` }}
                 >
                   {/* 모달 */}
                   {detailOpen && (
-                    <CustomModal size={'70rem'} isOpen={detailOpen[i]} modalColor='#FEF6E6'>
+                    <CustomModal
+                      size={'70rem'}
+                      isOpen={detailOpen[i]}
+                      modalColor="#FEF6E6"
+                    >
                       <div className="">
                         <div className="px-8 py-8">
-                          <div className="flex justify-center items-center">
+                          <div className="flex sm:flex-col justify-center items-center">
                             <img
                               src={
                                 bookData[0].bookRespDto.thumbnail
@@ -179,7 +181,7 @@ function isBook(element: any) {
                               alt="책 표지"
                               className="w-[10rem] mb-2 rounded object-fll"
                             />
-                            <div className='p-10'>
+                            <div className="p-10 sm:p-0">
                               <div className="text-xl font-extrabold text-[#6F5C52]">
                                 {data.bookRespDto.title}
                               </div>
@@ -187,90 +189,125 @@ function isBook(element: any) {
                                 | {bookData[0].bookRespDto.author} 저자
                               </div>
                               <div className="justify-center items-center py-2">
-                              <span
-                              className={`inline-flex justify-center items-center gap-2 rounded-lg px-2 py-2 text-xs ${
-                                data.private ? 'bg-[#E57C65] text-white'  : 'bg-white text-[#6F5C52]'
-                              }`}
-                            >
-                            <Image
-                              src={data.private ? isPrivatedIcon : isSharedIcon}
-                              alt='Icon'
-                              width={10}
-                              height={10}
-                            />
-                              {data.private ? '나만보기' : '전체공개'}
-                              </span>
-                              </div>
-                             <div className='py-5 pt-5 text-[#503526] text-sm'>
-                              <div className="flex items-center gap-5">
-                                <span className='font-bold' style={{ verticalAlign: 'middle' }}>등록일</span>
-                                <div className=''>{formatDateToYYMMDD(data.createAt)}</div>
-                              </div>
-                              {/* TODO: 태그 부분 수정 필요함 컴포넌트를 직접 가져와서 해야할지? 아직 안해봤어요 */}
-                              <div className="flex">
-                                <span className='font-bold mr-4' style={{ verticalAlign: 'middle' }}>태그</span>
-                                <div className='flex flex-wrap w-[16vw]'>
-                                {data.tags.map(
-                                  (tag: any) =>
-                                    tag.selected && <div className='flex bg-[#E57C65] rounded-full m-1 p-2 text-white font-semibold text-xs'>#{tag.content}</div>,
-                                )}
-                              </div>
-                              </div>
-                              <div className="flex items-center gap-5">
-                              <span className='font-bold' style={{ verticalAlign: 'middle' }}>장소</span>
-                                <Link href={`/map/${session.data?.user.id}`}>
-                                <div 
-                                  className='flex items-center'>
+                                <span
+                                  className={`inline-flex justify-center items-center gap-2 rounded-lg px-2 py-2 text-xs ${
+                                    data.private
+                                      ? 'bg-[#E57C65] text-white'
+                                      : 'bg-white text-[#6F5C52]'
+                                  }`}
+                                >
                                   <Image
-                                    src={privateMarker}
-                                    alt={'장소'}
+                                    src={
+                                      data.private
+                                        ? isPrivatedIcon
+                                        : isSharedIcon
+                                    }
+                                    alt="Icon"
+                                    width={10}
+                                    height={10}
                                   />
-                                  {data.pinRespDto.name}
-                                  </div>
-                                  </Link>
+                                  {data.private ? '나만보기' : '전체공개'}
+                                </span>
                               </div>
+                              <div className="py-5 pt-5 text-[#503526] text-sm">
+                                <div className="flex items-center gap-5">
+                                  <span
+                                    className="font-bold"
+                                    style={{ verticalAlign: 'middle' }}
+                                  >
+                                    등록일
+                                  </span>
+                                  <div className="">
+                                    {formatDateToYYMMDD(data.createAt)}
+                                  </div>
+                                </div>
+                                {/* TODO: 태그 부분 수정 필요함 컴포넌트를 직접 가져와서 해야할지? 아직 안해봤어요 */}
+                                <div className="flex">
+                                  <span
+                                    className="font-bold mr-4"
+                                    style={{ verticalAlign: 'middle' }}
+                                  >
+                                    태그
+                                  </span>
+                                  <div className="flex flex-wrap w-[16vw]">
+                                    {data.tags.map(
+                                      (tag: any) =>
+                                        tag.selected && (
+                                          <div className="flex bg-[#E57C65] rounded-full m-1 p-2 text-white font-semibold text-xs">
+                                            #{tag.content}
+                                          </div>
+                                        ),
+                                    )}
+                                  </div>
+                                </div>
+                                <div className="flex items-center gap-5">
+                                  <span
+                                    className="font-bold"
+                                    style={{ verticalAlign: 'middle' }}
+                                  >
+                                    장소
+                                  </span>
+                                  <Link href={`/map/${session.data?.user.id}`}>
+                                    <div className="flex items-center">
+                                      <Image src={privateMarker} alt={'장소'} />
+                                      {data.pinRespDto.name}
+                                    </div>
+                                  </Link>
+                                </div>
                               </div>
                             </div>
                           </div>
                           {/* 내용 엔터키 적용 */}
-                          <div className='flex justify-center items-center'>
-                          <div
-                            key={i}
-                            className="w-[50vw] my-4 rounded-lg overflow-hidden shadow-lg px-3 py-3 p-10 bg-[#FFFCF9]"
-                          >
-                            <div className="flex relative float-end items-center gap-4">
-                            <Link href={'/edit/1'}>
-                              <span className='text-[#D37C7C] text-sm font-bold'>수정</span>
-                            </Link>
-                            <span 
-                             className='text-[#828282] text-sm font-bold'
-                             onClick={() => handleRemove(data.isbn)}>삭제</span>
+                          <div className="flex justify-center items-center">
+                            <div
+                              key={i}
+                              className="w-[50vw] sm:w-[90vw] my-4 rounded-lg overflow-hidden shadow-lg px-3 py-3 sm:pt-0 p-10 bg-[#FFFCF9]"
+                            >
+                              <div className="flex relative float-end items-center gap-4">
+                                <Link href={'/edit/1'}>
+                                  <span className="text-[#D37C7C] text-sm font-bold">
+                                    수정
+                                  </span>
+                                </Link>
+                                <span
+                                  className="text-[#828282] text-sm font-bold"
+                                  onClick={() => handleRemove(data.isbn)}
+                                >
+                                  삭제
+                                </span>
+                              </div>
+                              <div className="mt-10 px-5">
+                                <h2 className="text-2xl sm:text-lg font-bold mb-4 border-black border-b pb-5 text-[#503526]">
+                                  {data.title}
+                                </h2>
+                                <div
+                                  className="h-[45vh] mx-auto text-[#999999]"
+                                  dangerouslySetInnerHTML={{
+                                    __html: data.content.replace(/\n/g, '<br>'),
+                                  }}
+                                ></div>
+                              </div>
+                            </div>
                           </div>
-                          <div className='mt-10 px-5'>
-                          <h2 className="text-2xl font-bold mb-4 border-black border-b pb-5 text-[#503526]">{data.title}</h2>
-                            <div className="h-[45vh] mx-auto text-[#999999]" dangerouslySetInnerHTML={{ __html: data.content.replace(/\n/g, '<br>') }}>
-                            </div>
-                            </div>
-                        </div>
-                        </div>
                         </div>
                       </div>
                     </CustomModal>
                   )}
                   {/* 리스트 내부 글자 */}
-                  <div className="">
-                    <div className="flex justify-between">
-                      <div className="text-3xl font-black ml-2 pt-2 mb-2">
-                        {data.title}
-                      </div>
-                      <div className="grid justify-itmes-center">
-                        {formatDateToYYMMDD(data.createAt)}
+                  <div className="relative sm:p-2">
+                    <div className="flex justify-between ">
+                      <div className="flex justify-between text-3xl sm:text-xl font-black ml-2 pt-2  mb-2">
+                        <div>{data.title}</div>
                         <Image
                           src={data.private ? Private : unLock}
                           alt="private"
                           style={{ width: '25px', height: '25px' }}
                           className=" mt-1 justify-self-center"
                         />
+                      </div>
+                      <div className="grid sm:absolute sm:bottom-0 sm:right-2 justify-itmes-center">
+                        {formatDateToYYMMDD(data.createAt)}
+                        
                       </div>
                     </div>
                     <div className="flex align-center ">
@@ -285,7 +322,9 @@ function isBook(element: any) {
                       </div>
                     </div>
                     {/* TODO:내용 글자 많으면 ...으로 표시하기 */}
-                    <p className="text-sm font-semibold pt-12">{data.content}</p>
+                    <p className="text-sm font-semibold pt-12 sm:pt-6 sm:ml-2 ">
+                      {data.content}
+                    </p>
                   </div>
                 </div>
               ))}
