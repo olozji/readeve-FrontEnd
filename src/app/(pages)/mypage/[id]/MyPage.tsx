@@ -37,9 +37,10 @@ const MyPageComponent = (props: ParamType) => {
 
 
 
-  const [myData, setMyData] = useState([])
+  const [myData, setMyData] = useState<any>([])
   const [isLoading, setIsLoading] = useState(true)
-  const [myPageData,setMyPageData] = useState([])
+  const [myPageData, setMyPageData] = useState([])
+  const [documents, setDocuments] = useState<any>([])
 
   const fetchData = async () => {
     try {
@@ -55,17 +56,21 @@ const MyPageComponent = (props: ParamType) => {
       setIsLoading(false)
     }
   }
+  useEffect(() => {
+    const storedData = localStorage.getItem('allDataInfo')
+
+    if (storedData) {
+      const parsedData = JSON.parse(storedData)
+      
+      setDocuments(parsedData)
+    }
+  }, [])
+
+ 
 
   useEffect(() => {
-   
-      fetchData()
-    
-    
-  }, [props.id,session])
-
-  useEffect(() => {
-    setMyPageData(myData)
-  }, [myData])
+    setMyPageData(documents)
+  }, [documents])
   
 
 

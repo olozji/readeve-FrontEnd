@@ -29,13 +29,18 @@ const SharedMapPage = () => {
     }
   }
 
+  // useEffect(() => {
+  //   fetchData()
+  // }, [])
   useEffect(() => {
-    fetchData()
-  }, [])
-  useEffect(() => {
-    const filteredData = allReviewData.filter((d: any) => !d.pinRespDto.private)
-    setDocuments(filteredData)
-  },[allReviewData])
+    const storedData = localStorage.getItem('allDataInfo')
+
+    if (storedData) {
+      const parsedData = JSON.parse(storedData)
+      
+      setDocuments(parsedData)
+    }
+  },[])
 
   return (
     <div>
