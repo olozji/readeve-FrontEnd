@@ -44,14 +44,14 @@ const NavBar = () => {
         {/* 로고와 햄버거 아이콘 */}
         <div className="flex items-center menuLogo">
           {/* 로고 */}
-          <h1 className="self-center justify-start whitespace-nowrap sm:block">
+          <h1 className="self-center justify-start whitespace-nowrap">
             <Link href="/">
               <Image src={NavLogo} alt="Logo" />
             </Link>
           </h1>
 
           {/* 햄버거 아이콘 (sm 화면에서만 보임) */}
-          <div className="absolute right-5 top-4 md:hidden sm:block">
+          <div className="hidden sm:absolute right-5 top-4 sm:block">
             <label htmlFor="menu-toggle" className="cursor-pointer" onClick={toggleDropdown}>
               <svg
                 xmlns="http://www.w3.org/2000/svg"
@@ -72,7 +72,7 @@ const NavBar = () => {
         </div>
 
         {/* 네비게이션 메뉴 (md 화면에서만 보임) */}
-        <div className="hidden md:flex justify-center items-center space-x-4 md:space-x-8">
+        <div className="flex justify-center items-center space-x-4 md:space-x-8 sm:hidden">
           {session.data && (
             <div className="flex items-center space-x-4 gap-3">
               {/* write 아이콘 */}
