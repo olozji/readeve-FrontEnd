@@ -5,8 +5,12 @@ import RecoilRootProvider from '../utils/recoilRootProvider'
 import LoginBtn from "./components/buttons/LoginButton";
 import LogoutButton from "./components/buttons/LogoutButton";
 import LayOut from "./components/Layout/Page";
+import { Noto_Sans_KR } from 'next/font/google'; 
 
-const inter = Inter({ subsets: ["latin"] });
+const notoSansKr = Noto_Sans_KR({
+  weight: ['400'],
+  subsets: ['latin'],
+});
 
 export const metadata: Metadata = {
   title: "읽는곳곳",
@@ -20,7 +24,7 @@ export default function RootLayout({
 }) {
   return (
     <html lang="en">
-      <body className={inter.className}>
+      <body className={notoSansKr.className}>
       <RecoilRootProvider>
         <LayOut>
           

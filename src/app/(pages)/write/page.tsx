@@ -226,14 +226,14 @@ const Editor = () => {
       <NavBar />
 
       <div className="bg-[#FAF2E5] flex justify-center mx-auto box-border min-h-full">
-        <div className="sm:pt-10 md:pt-20 xl:pt-20">
+        <div className="pt-20 sm:pt-10 md:pt-20 xl:pt-20">
           <header className="h-10 text-center">
             <h1 className="myCustomText text-3xl text-black">독후감 작성</h1>
           </header>
 
-          <section className="py-10 px-10">
-            <div className="px-5 py-8 flex rounded-t-md">
-              <div className="flex max-w-[70rem] px-3">
+          <section className="py-10 px-10 sm:py-0 sm:mx-0">
+            <div className="px-5 py-8 flex rounded-t-md  sm:flex-none">
+              <div className="flex px-3 max-w-[60vw] sm:px-0 sm:flex-none">
                 <input
                   placeholder="제목"
                   ref={inputRef}
@@ -243,9 +243,9 @@ const Editor = () => {
                 />
               </div>
             </div>
-            <div className="px-8 py-3 flex gap-5 items-center">
-              <h4 className="px-5  font-extrabold">장소</h4>
-              <div>
+            <div className="px-8 py-3 flex gap-5 items-center sm:px-2">
+              <h4 className="px-5 font-extrabold sm:px-0 sm:text-xs">장소</h4>
+              <div className='flex px-3 max-w-[60vw] sm:px-5 sm:flex-none'>
                 <input
                   placeholder="독서한 장소를 입력해주세요"
                   ref={inputRef}
@@ -267,7 +267,7 @@ const Editor = () => {
                       selectedPlace={selectedPlace}
                     />
                     <div className="py-3 px-16">
-                      <label className="inline-flex gap-3 items-center cursor-pointer">
+                      <label className="inline-flex gap-3 items-center cursor-pointer  sm:flex-none">
                         <span className="ms-3 text-[#828282] text-sm font-medium">
                           나만의 장소
                         </span>
@@ -299,8 +299,8 @@ const Editor = () => {
                 )}
               </div>
             </div>
-            <div className="px-8 py-3 flex gap-5 items-center">
-              <h4 className="px-5 font-extrabold">도서</h4>
+            <div className="px-8 py-3 flex gap-5 items-center sm:px-2">
+              <h4 className="px-5 font-extrabold sm:px-0 sm:text-xs">도서</h4>
               <div>
                 {bookInfo.title && (
                   <div
