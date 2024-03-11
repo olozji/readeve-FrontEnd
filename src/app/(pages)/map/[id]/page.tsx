@@ -17,6 +17,11 @@ export interface PropType {
 const MyMapPage = (props: PropType) => {
 
   const [myData, setMyData] = useState<any[]>([])
+  const [myPageData,setMyPageData] = useState<any[]>([])
+  const [isLoading, setIsLoading] = useState(true);
+  const [documents, setDocuments] = useState<any[]>([])
+  let session: any = useSession();
+
   const fetchData = async () => {
   
     try {
@@ -25,21 +30,42 @@ const MyMapPage = (props: PropType) => {
       )
       const data = response.data.data // 응답으로 받은 데이터
       setMyData(data)
+      console.log(myData)
       
     } catch (error) {
       console.error('Error fetching data:', error)
       console.log(myData)
       console.log(props.params.id)
+    }finally {
+      setIsLoading(false);
     }
-}
-useEffect(() => {
-  fetchData()
-}, [props.params.id])
+  }
+  
+  useEffect(() => {
+    const storedData = localStorage.getItem('allDataInfo')
+
+    if (storedData) {
+      const parsedData = JSON.parse(storedData)
+      
+      setDocuments(parsedData)
+    }
+  }, [])
+
+  
+  // useEffect(() => {
+  //     fetchData()
+  // }, [props.params.id,session])
+  
+  useEffect(() => {
+    setMyPageData(documents)
+  }, [documents])
+
+
     
     return (
         <div>
-            {myData&&myData.length !== 0 ? (
-            <MapView myMapData={myData} isShared={false} isFull={`100vh`} markerImage={markerImage}></MapView>
+            {myPageData&&myPageData.length !== 0 ? (
+            <MapView myMapData={myPageData} isShared={false} isFull={`100vh`} markerImage={markerImage}></MapView>
           ) : (
             <div>
               <div id="map" style={{ display: 'none' }}></div>

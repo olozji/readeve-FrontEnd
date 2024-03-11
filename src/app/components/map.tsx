@@ -21,7 +21,7 @@ const AddPlace: React.FC<AddPlaceProps> = ({
   selectedPlace,
 }) => {
   const [InputText, setInputText] = useState('') // 추가할 장소이름 검색
-  const [Place, setPlace] = useState('') // 추가할 장소 데이터 설정
+  const [Place, setPlace] = useState('장소명, 도로명, 지번, 건물명 검색') // 추가할 장소 데이터 설정
   const [directSearch, setDirectSearch] = useState(false) // 초기 상태는 검색창으로 검색
   const [placeName, setPlaceName] = useState<string>('')
 
@@ -97,7 +97,7 @@ const AddPlace: React.FC<AddPlaceProps> = ({
                 <input
                   type="text"
                   size={50}
-                  placeholder="장소명, 도로명, 지번, 건물명 검색"
+                  placeholder={Place}
                   className="w-[35rem] h-[2.5rem] px-3 border border-black rounded-2xl bg-white"
                   onChange={onChange}
                   value={InputText}

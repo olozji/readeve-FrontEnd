@@ -56,12 +56,12 @@ const ListItem = ({
           onMouseLeave={()=>mouseLeaveList(index)}
         >
           <div className="flex justify-between px-6">
-            <h5 className="mb-2 text-xl font-bold tracking-tight">
+            <h5 className="mb-2 text-xl max-w-[10vw] font-bold tracking-tight">
               {data.pinRespDto.name
                 ? data.pinRespDto.name
                 : data.pinRespDto.address}
             </h5>
-            <Link href={data.pinRespDto.url ? data.pinRespDto.url : ''}>
+            <Link href={data.pinRespDto.url ? data.pinRespDto.url : ''} className={data.pinRespDto.url&&data.pinRespDto.url=='누군가의 장소'?'hidden':''}>
               <div
                 className={`text-xs underline decoration-solid ${isHovered ? 'text-white' : 'text-gray'}`}
               >

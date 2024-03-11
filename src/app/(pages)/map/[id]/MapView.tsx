@@ -10,6 +10,7 @@ import sharedMarker from '/public/images/sharedMarker.png'
 
 import { GoBackButton } from '@/app/components/buttons/goBackButton'
 import { useSession } from 'next-auth/react';
+import LoadingScreen from '@/app/components/loadingScreen';
 
 interface MapDataType {
   myMapData: any[]
@@ -34,6 +35,7 @@ const MapView = ({
   const [tagInfo] = useRecoilState(tagState)
   const [isSelectedTags, setIsSelectedTags] = useRecoilState(mainTagState)
   const [startIdx, setStartIdx] = useState(0)
+  const [loading, setLoading] = useState(true);
   const numVisibleTags = 5 // 표시할 최대 태그 개수
 
   const [filteredReviews, setFilteredReviews] = useState<any>([])
@@ -273,7 +275,9 @@ const MapView = ({
   useEffect(() => {
     if (isShared) {
       window.kakao.maps.load(() => {
+        
         navigator.geolocation.getCurrentPosition((position) => {
+          setLoading(false);
           const { latitude, longitude } = position.coords
           const currentPosition = new window.kakao.maps.LatLng(
             latitude,
@@ -315,7 +319,7 @@ const MapView = ({
           center: new window.kakao.maps.LatLng(33.450701, 126.570667),
           level: 2,
         }
-
+        setLoading(false);
         const mapInstance = new window.kakao.maps.Map(container, options)
         mapRef.current = mapInstance
 
@@ -334,11 +338,12 @@ const MapView = ({
   }, [myMapData])
 
 
-
+  
   const mapHeight = isFull === `100vh` ? windowHeight : 400
   
   return (
-    <div style={{ position: 'relative'}}>
+    <div style={{ position: 'relative' }}>
+      {loading && <LoadingScreen height={isFull} />}
       {myMapData.length !== 0 ? (
         <div
           className="
@@ -350,6 +355,7 @@ const MapView = ({
           }}
         >
           <div>
+            <div>
             <div
               id="map"
               className={`${isFull !== `100vh` ? 'rounded-lg' : ''}`}
@@ -370,13 +376,13 @@ const MapView = ({
 
                   <div
                     ref={listContainerRef}
-                    className="absolute scrollBar w-[25rem] bg-[#f9f9f9] h-full px-[2rem] py-[1rem] bg-opacity-80 overflow-y-auto rounded-lg"
+                    className="absolute scrollBar w-[26vw] bg-[#f9f9f9] h-full px-[2vw] py-[1vw] bg-opacity-80 overflow-y-auto rounded-lg"
                     style={{ zIndex: 2 }}
                   >
                     <div className="flex py-2 w-full  justify-between text-center font-bold border-b-[1px] border-gray-600 mb-4">
                       {isFull == '100vh' && <GoBackButton />}
 
-                      <div className=" mr-[8rem] ">
+                      <div className=" mr-[8vw] ">
                         {isShared ? '공유 지도' : '개인 지도'}
                       </div>
                     </div>
@@ -468,7 +474,8 @@ const MapView = ({
                   )}
                 </div>
               )}
-            </div>
+              </div>
+              </div>
           </div>
         </div>
       ) : (
