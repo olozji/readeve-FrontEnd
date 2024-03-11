@@ -4,17 +4,17 @@ import mainLogo from '/public/images/mainLogo.png'
 
 const Footer = () => {
   return (
-    <footer className="mx-auto  text-center bottom-0 footer md:p-[3rem] sm:p-[1rem] bg-base-200 border border-slate-200 text-[#AAAAAA]">
-      <div className="grid md:grid-flow-col gap-4">
-        <div className="footer_logo flex items-center gap-4">
-          <Image src={mainLogo} alt="메인 로고" className="md:w-[7vw]" />
+    <footer className="mx-auto text-center bottom-0 footer md:p-[3rem] sm:p-[1rem] bg-base-200 border border-slate-200 text-[#AAAAAA]">
+      <div className="grid grid-flow-col gap-4">
+        <div className="footer_logo flex items-center gap-4 p-4 sm:mx-auto ">
+          <Image src={mainLogo} alt="메인 로고" className="w-[5vw] sm:w-[10vw]" />
           <Image
             src={mainTitle}
             alt="메인 타이틀"
-            className="md:w-[4vw] md:h-[2vh]"
+            className="md:w-[5vw] md:h-[1vh] sm:w-[15vw]"
           />
         </div>
-        <ul className="footer_hidden pt-5 grid grid-flow-col gap-4 md:absolute md:right-10">
+        <ul className="footer_hidden pt-5 pb-5 grid grid-flow-col gap-4 md:absolute md:right-10">
           <li className="text-sm md:text-xs">
             서비스기획 : 박혜인
             <br />
@@ -41,7 +41,7 @@ const Footer = () => {
         <div className="text-sm md:text-xs">개인정보처리방침</div>
         <div className="text-sm md:text-xs">이용약관</div>
       </div>
-      <div className="footer_hidden text-xs md:text-sm sm:text-xs">
+      <div className="footer_hidden text-xs mb-5 md:text-sm sm:text-xs sm:mb-5">
         ©2024. 읽는곳곳 Co. All Rights Reserved. Prod By. SWYP
       </div>
     </footer>
