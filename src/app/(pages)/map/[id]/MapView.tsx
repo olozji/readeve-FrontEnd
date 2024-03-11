@@ -151,7 +151,7 @@ const MapView = ({
     if (isMain) {
       yAnchor = 1.7
     } else {
-      yAnchor = 1.4
+      yAnchor = 1.3
     }
 
     const customOverlay = new window.kakao.maps.CustomOverlay({
