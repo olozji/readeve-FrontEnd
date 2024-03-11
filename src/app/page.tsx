@@ -342,12 +342,12 @@ export default function Home() {
                       {/* 모든리뷰 상세 모달 */}
                       {isModalOpen && (
                         <CustomModal
-                          size={'70vw'}
+                          size={'70rem'}
                           isOpen={isModalOpen[i]}
                           modalColor="#FEF6E6"
                         >
                           <div className="">
-                            <div className="px-8 py-8">
+                            <div className="px-8 sm:px-2 py-8">
                               <div className="flex justify-center items-center">
                                 <img
                                   src={
@@ -356,9 +356,9 @@ export default function Home() {
                                       : 'http://via.placeholder.com/120X150'
                                   }
                                   alt="책 표지"
-                                  className="mb-2 rounded object-fll"
+                                  className="w-[10rem] mb-2 rounded object-fll"
                                 />
-                                <div className="p-10">
+                                <div className="p-10 sm:p-0">
                                   <div className="text-xl font-extrabold text-[#6F5C52]">
                                     {d.bookRespDto.title}
                                   </div>
@@ -401,12 +401,12 @@ export default function Home() {
 
                                     <div className="flex">
                                       <span
-                                        className="font-bold mr-4"
+                                        className="font-bold mr-4 sm:block sm:mr-0"
                                         style={{ verticalAlign: 'middle' }}
                                       >
                                         태그
                                       </span>
-                                      <div className="flex flex-wrap w-[16vw]">
+                                      <div className="flex flex-wrap w-[16vw] sm:w-[40vw]">
                                         {d.tags.map(
                                           (tag: any) =>
                                             tag.selected && (
@@ -417,7 +417,7 @@ export default function Home() {
                                         )}
                                       </div>
                                     </div>
-                                    <div className="flex items-center gap-5">
+                                    <div className="flex items-center gap-5 sm:gap-0">
                                       <span
                                         className="font-bold"
                                         style={{ verticalAlign: 'middle' }}
@@ -427,7 +427,7 @@ export default function Home() {
                                       <Link
                                         href={`/map/${session.data?.user.id}`}
                                       >
-                                        <div className="flex items-center">
+                                        <div className="flex items-center sm:items-start">
                                           <Image
                                             src={privateMarker}
                                             alt={'장소'}
@@ -437,7 +437,7 @@ export default function Home() {
                                               {maskName(d.writer)}님만의 장소
                                             </div>
                                           ) : (
-                                            <div className="">
+                                            <div className="sm:w-[40vw]">
                                               독서장소: {d.pinRespDto?.name} |{' '}
                                               {d.pinRespDto?.address}
                                             </div>
@@ -451,14 +451,19 @@ export default function Home() {
                               <div className="flex justify-center items-center">
                                 <div
                                   key={i}
-                                  className="w-[50vw] my-4 rounded-lg overflow-hidden shadow-lg px-3 py-3 p-10 bg-[#FFFCF9]"
+                                  className="w-[50vw] sm:w-[90vw] my-4 rounded-lg overflow-hidden shadow-lg px-3 py-3 sm:pt-0 p-10 bg-[#FFFCF9]"
                                 >
                                   <div className="mt-10 px-5">
                                     <h2 className="text-2xl font-bold mb-4 border-black border-b pb-5 text-[#503526]">
                                       {d.title}
                                     </h2>
-                                    <div className="h-[45vh] mx-auto text-[#999999]">
-                                      {d.content}
+                                    <div className="h-[45vh] mx-auto text-[#999999]" dangerouslySetInnerHTML={{
+                                          __html: d.content.replace(
+                                            /\n/g,
+                                            '<br>',
+                                          ),
+                                        }}>
+                                      
                                     </div>
                                   </div>
                                 </div>
