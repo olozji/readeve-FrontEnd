@@ -205,7 +205,7 @@ export default function Home() {
     <div>
       <NavBar />
       <div
-        className="relative w-full py-24 px-10 grid grid-cols-1 sm:px-[25%] sm:grid-cols-2 "
+        className="relative w-full py-24 sm:px-10 grid sm:grid-cols-1 px-[25%] grid-cols-2 "
         style={{
           width: '100%',
           height: '100%',
@@ -286,7 +286,7 @@ export default function Home() {
           )}
         </div>
 
-        <div className="mt-10">
+        <div className="mt-10 sm:px-5">
           <div className="text-2xl font-display font-bold py-10">내 서재</div>
           {session.data ? (
             <BookLayout
@@ -298,7 +298,7 @@ export default function Home() {
             <div>로그인 하고 내 서재 를 확인하세요</div>
           )}
         </div>
-        <div className="mt-10">
+        <div className="mt-10 sm:px-5">
           <h1 className="text-2xl font-display font-bold py-10">콘텐츠</h1>
           <div className="">
             <div className="my-3  h-[5rem] bg-[#D9D9D9] rounded-lg">
@@ -312,7 +312,7 @@ export default function Home() {
             </div>
           </div>
         </div>
-        <div className="mt-10">
+        <div className="mt-10 sm:px-5">
           <div className="flex justify-between items-center">
             <h1 className="text-2xl font-display font-bold py-10">모든 기록</h1>
             <span className="inline-block align-middle">
@@ -334,7 +334,7 @@ export default function Home() {
               <div className="p-2 cursor-pointer" onClick={handleClickPrev}>
                 &lt;
               </div>
-              <div className="grid grid-cols-4 justify-center items-center w-[80rem]">
+              <div className="grid sm:grid-cols-1 sm:w-[100%] grid-cols-4 justify-center items-center">
                 {documents
                   .slice(startIdx, startIdx + numVisibleBooks)
                   .map((d: any, i: number) => (
@@ -342,7 +342,7 @@ export default function Home() {
                       {/* 모든리뷰 상세 모달 */}
                       {isModalOpen && (
                         <CustomModal
-                          size={'70rem'}
+                          size={'70vw'}
                           isOpen={isModalOpen[i]}
                           modalColor="#FEF6E6"
                         >
@@ -356,7 +356,7 @@ export default function Home() {
                                       : 'http://via.placeholder.com/120X150'
                                   }
                                   alt="책 표지"
-                                  className="w-[10rem] mb-2 rounded object-fll"
+                                  className="mb-2 rounded object-fll"
                                 />
                                 <div className="p-10">
                                   <div className="text-xl font-extrabold text-[#6F5C52]">
@@ -468,14 +468,14 @@ export default function Home() {
                         </CustomModal>
                       )}
                       {/* 모든 리뷰 */}
-                      <div className="flex flex-col items-center rounded-lg border-4 border-transparent p-4 cursor-pointer">
-                        <div className="relative w-[14rem] h-[12rem] rounded-2xl">
+                      <div className="flex flex-col items-center rounded-lg border-4 border-transparent p-4 sm:p-0 cursor-pointer">
+                        <div className="relative w-[15rem] h-[12rem] sm:h-auto rounded-2xl">
                           <div className="mx-auto h-full border rounded-2xl shadow-xl bg-[#fcfcfc]">
                             <div className="text-left">
                               <div className="text-xl font-display font-bold px-5 py-5">
                                 {d.bookRespDto?.title}
                               </div>
-                              <div className="px-3">
+                              <div className="px-5 sm:pb-4">
                                 {d.content.length > 20
                                   ? `${d.content.slice(0, 20)}...`
                                   : d.content}
