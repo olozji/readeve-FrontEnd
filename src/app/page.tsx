@@ -35,11 +35,10 @@ export default function Home() {
     useRecoilState(selectedReviewState)
   const allReviews = useRecoilValue(allReviewSelector)
   const [currentIndex, setCurrentIndex] = useState(0)
-  const [documents, setDocuments] = useState<any[]>([])
   const [tagInfo, setTagInfo] = useRecoilState(tagState)
   const [isSelectedTags, setIsSelectedTags] =
     useRecoilState<boolean[]>(mainTagState)
-
+  const [documents, setDocuments] = useState<any>([])
   const [startIdx, setStartIdx] = useState(0)
   const [allReviewData, setAllReviewData] =
     useRecoilState<any>(allReviewDataState)
@@ -59,16 +58,6 @@ export default function Home() {
     const date = new Date(isoDateString)
     return `${date.getFullYear().toString().slice(2)}.${(date.getMonth() + 1).toString().padStart(2, '0')}.${date.getDate().toString().padStart(2, '0')}`
   }
-
-  useEffect(() => {
-    const storedData = localStorage.getItem('allDataInfo')
-
-    if (storedData) {
-      const parsedData = JSON.parse(storedData)
-
-      setDocuments(parsedData)
-    }
-  }, [])
 
   const handleClickPrev = () => {
     setStartIdx(Math.max(0, startIdx - numVisibleBooks))
@@ -177,19 +166,19 @@ export default function Home() {
         (item: any) => !item.private,
       )
       // setPublicReviews(publicReviewData)
-      setPublicReviews(documents)
+      setPublicReviews(publicReviewData)
     }
-  }, [documents])
-
-  // useEffect(() => {
-  //   // allReviewData 상태가 업데이트되면서 새로운 데이터로 필터링하여 다른 상태에 반영
-  //   const filteredData = allReviewData.filter((d: any) => !d.pinRespDto.private)
-  //   setDocuments(filteredData)
-  // }, [allReviewData])
+  }, [allReviewData])
 
   useEffect(() => {
-    setMyPageData(documents)
-  }, [documents])
+    // allReviewData 상태가 업데이트되면서 새로운 데이터로 필터링하여 다른 상태에 반영
+    const filteredData = allReviewData.filter((d: any) => !d.pinRespDto.private)
+    setDocuments(filteredData)
+  }, [allReviewData])
+
+  useEffect(() => {
+    setMyPageData(myData)
+  }, [myData])
 
   const searchTag = (i: number) => {
     let copy = [...isSelectedTags] // 이전 배열의 복사본을 만듦
@@ -335,7 +324,7 @@ export default function Home() {
                 &lt;
               </div>
               <div className="grid sm:grid-cols-1 sm:w-[100%] grid-cols-4 justify-center items-center">
-                {documents
+                {publicReviews
                   .slice(startIdx, startIdx + numVisibleBooks)
                   .map((d: any, i: number) => (
                     <div key={i} onClick={() => openModal(i)}>
@@ -457,14 +446,15 @@ export default function Home() {
                                     <h2 className="text-2xl font-bold mb-4 border-black border-b pb-5 text-[#503526]">
                                       {d.title}
                                     </h2>
-                                    <div className="h-[45vh] mx-auto text-[#999999]" dangerouslySetInnerHTML={{
-                                          __html: d.content.replace(
-                                            /\n/g,
-                                            '<br>',
-                                          ),
-                                        }}>
-                                      
-                                    </div>
+                                    <div
+                                      className="h-[45vh] mx-auto text-[#999999]"
+                                      dangerouslySetInnerHTML={{
+                                        __html: d.content.replace(
+                                          /\n/g,
+                                          '<br>',
+                                        ),
+                                      }}
+                                    ></div>
                                   </div>
                                 </div>
                               </div>
