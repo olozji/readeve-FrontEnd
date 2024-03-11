@@ -98,15 +98,20 @@ const NavBar = () => {
           <div className="font-bold rounded hover:bg-gray-100 dark:border-gray-700 text-md">
             {session.data ? (
               <div className="flex items-center">
-                <div className="mr-4 text-xs">{session.data.user?.name}</div>
+                <div className="mr-4 text-xs underline">{session.data.user?.name}님</div>
                 <LogoutBtn />
               </div>
             ) : (
-              <div className="flex items-center">
+              <div className="flex items-center gap-5">
+                 <div className="font-bold rounded hover:bg-gray-100 dark:border-gray-700 text-md">
+                <Link href="/map">
+                  <Image src={navMapViewIcon} alt="navMapViewIcon" className="max-h-4" width={15} height={15} />
+                </Link>
+              </div>
                 {/* 로그인 버튼 */}
                 <div className="font-bold rounded hover:bg-gray-100 dark:border-gray-700 text-md">
                   <button className="text-xs" onClick={openLoginModal}>
-                    LOGIN
+                    로그인
                   </button>
                 </div>
               </div>
@@ -144,9 +149,16 @@ const NavBar = () => {
                   <LogoutBtn />
                 </div>
               ) : (
+                <div className='flex flex-col items-center'>
+                <div className="font-bold rounded hover:bg-gray-100 dark:border-gray-700 text-md">
+                <Link href="/map">
+                  <Image src={navMapViewIcon} alt="navMapViewIcon" className="max-h-4" width={15} height={15} />
+                </Link>
+              </div>
                 <button className="font-bold rounded hover:bg-gray-100 dark:border-gray-700 text-md text-xs" onClick={openLoginModal}>
-                  LOGIN
+                  로그인
                 </button>
+                </div>
               )}
             </div>
           </div>
