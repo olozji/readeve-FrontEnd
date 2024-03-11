@@ -63,14 +63,9 @@ const AllReviewPage = () => {
 
   const [allReviewData, setAllReviewData] = useRecoilState<any>(allReviewDataState)
 
-
-
-
   
   let session: any = useSession()
   
-
-
   const handleModal = (idx: number) => {
     setDetailOpen((prevState) => {
       const copy = [...prevState]
@@ -130,7 +125,7 @@ function maskName(name:string) {
       <NavBar />
       <div className="bg-[#f1e5cf]">
       
-        <section className="main mx-auto max-w-6xl px-4 ">
+        <section className="main mx-auto max-w-6xl px-4">
           <section className="pt-20 lg:pt-5 pb-4 lg:pb-8 px-4 xl:px-2 xl:container mx-auto">
           <div className="text-center mt-4 mx-auto myCustomText text-3xl text-white">
             모든 기록
@@ -158,12 +153,12 @@ function maskName(name:string) {
                   </div>
                 </div>
               ) : (
-                <div className="grid gap-6 md:grid-cols-1 lg:grid-cols-1 lg:pt-20 md:pt-20">
+                <div className="grid gap-6 md:grid-cols-1 lg:grid-cols-1 lg:pt-20 md:pt-20 sm:pt-20">
                   {publicReviews &&
                     publicReviews.map((item: any, i: number) => (
                       <div
                         key={i}
-                        className="relative w-90 min-h-32  border rounded-md border-slate-200"
+                        className="max-w-3xl my-4 mx-auto rounded-lg overflow-hidden"
                         onClick={() => handleModal(i)}
                       >
 
@@ -260,19 +255,22 @@ function maskName(name:string) {
                         </CustomModal>
                         )}
 
-                        <div className="relative flex p-4 w-full min-h-52 bg-[#fff9f6] rounded-2xl ">
-                          <div
-                            className="bg-auto w-[12rem] bg-no-repeat bg-center rounded-2xl "
+                        <div className="relative flex p-4 w-full min-h-52 bg-[#fff9f6] rounded-2xl">
+                            <div className='relative'>
+                            <div
+                            className="bg-auto mb-2 absolute top-0 left-0 right-0 bottom-0 rounded object-fll bg-no-repeat bg-center overflow-hidden"
                             style={{
                               backgroundImage: `url(${item.bookRespDto?.thumbnail})`,
                             }}
-                          ></div>
+                          >
+                            </div>
+                          </div>
                           <div className="flex flex-col justify-between ml-2">
                             <div className=" py-2">
-                              <h1 className="font-bold text-2xl">
+                              <h1 className="font-bold text-2xl sm:text-xs">
                                 {item.title}
                               </h1>
-                              <div className="py-2 text-sm">
+                              <div className="py-2 text-sm sm:text-xs">
                                 {item.content.length === 0 ? (
                                   <div>등록된 내용이 없습니다</div>
                                 ) : (
@@ -286,7 +284,7 @@ function maskName(name:string) {
                             </div>
 
                             <div className="flex justify-between">
-                              <div className="flex text-sm pb-2">
+                              <div className="flex text-sm pb-2 sm:text-xs">
                                 <Image
                                   src={privateMarker}
                                   alt="marker"
@@ -303,7 +301,7 @@ function maskName(name:string) {
                               </div>
                             </div>
                           </div>
-                          <div className="pb-2 absolute right-8 bottom-4 text-end text-sm">
+                          <div className="grid sm:absolute sm:bottom-2 sm:right-5 sm:text-xs justify-itmes-center">
                             {formatDateToYYMMDD(item.createAt)}
                           </div>
                         </div>

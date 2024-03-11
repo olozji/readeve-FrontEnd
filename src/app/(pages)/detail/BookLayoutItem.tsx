@@ -179,7 +179,7 @@ const BookLayoutItem = ({ bookId, propsData }: bookLayoutItemType) => {
                                   : 'http://via.placeholder.com/120X150'
                               }
                               alt="책 표지"
-                              className="w-[10rem] mb-2 rounded  object-fll"
+                              className="w-[10rem] mb-2 rounded object-fll"
                             />
                             <div className="p-10 sm:p-0">
                               <div className="text-xl font-extrabold text-[#6F5C52]">
