@@ -162,17 +162,18 @@ const MyPageComponent = (props: ParamType) => {
           )}
         </div>
         {/* 모바일 화면 */}
-        <div className="relative w-[100vw] md:hidden lg:hidden h-[55vh] justify-center text-center">
+        
+        <div className="relative w-[100vw] md:hidden lg:hidden h-[60vh] justify-center text-center">
           <Image
             fill
             src={tableImageSmall.src}
             className="inline-block text-center"
             alt={tableImageSmall.src}
           />
-          <div className="absolute top-[10%] left-1/2 max-w-[100%] transform -translate-x-1/2 z-10">
+          <div className="absolute top-[7%] left-1/2 max-w-[100%] transform -translate-x-1/2 z-10">
             <BookLayout
               bookData={myPageData}
-              width={'[90vw]'}
+              width={'[100vw]'}
               isMain={false}
             ></BookLayout>
           </div>
