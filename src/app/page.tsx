@@ -127,6 +127,7 @@ export default function Home() {
       console.error('Error fetching data:', error)
     }
   }
+  
 
   const fetchPersonalData = async () => {
     if (session.data.user.id) {
@@ -212,7 +213,7 @@ export default function Home() {
             독서장소를 공유하며 새로이 독서를 기억할 수 있습니다.
           </div>
           <div>
-            {session ? (
+            {session.data ? (
               <Link
                 href="/write"
                 className=" bg-[#FFB988] text-white font-bold py-4 px-6 hover:bg-[#AF6C3E] rounded-lg shadow-md hover:shadow-lg"
@@ -221,7 +222,7 @@ export default function Home() {
               </Link>
             ) : (
               <div
-                className=" bg-[#FFB988] text-white font-bold py-4 px-6 hover:bg-[#AF6C3E] rounded-lg shadow-md hover:shadow-lg"
+                className=" bg-[#FFB988] inline-block text-white font-bold py-4 px-6 hover:bg-[#AF6C3E] rounded-lg shadow-md hover:shadow-lg"
                 onClick={async () => {
                   await signIn('kakao', {
                     callbackUrl:
