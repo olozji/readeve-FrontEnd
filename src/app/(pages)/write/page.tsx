@@ -25,6 +25,7 @@ import pen from 'public/images/Pen.png'
 import isPrivatedIcon from '/public/images/isPrivatedIcon.png'
 import isSharededIcon from '/public/images/isSharedIcon.png'
 import LoadingScreen from '@/app/components/loadingScreen'
+import CustomAlert from '@/app/components/alert';
 
 const Editor = () => {
   const [content, setContent] = useState('')
@@ -34,6 +35,9 @@ const Editor = () => {
   const [isPrivate, setIsPrivate] = useState(true)
   const [isPrivatePlace, setIsPrivatePlace] = useState(true)
   const [tagCategory] = useState(['분위기', '서비스/모임', '시설/기타'])
+  const [showAlert, setShowAlert] = useState(false);
+const [showQAlert, setShowQAlert] = useState(false);
+  const [alertMessage, setAlertMessage] = useState('');
   const [tagData, setTagData] = useState<any>([])
   const [selectedTag, setSelectedTag] = useState<string[]>([])
   const [allDeselect, setAllDeselect] = useState(false)
@@ -137,9 +141,13 @@ const Editor = () => {
     setContent(e.target.value)
     console.log(content)
   }
+  const handleQAlert = () => {
+    setAlertMessage('등록하시겠습니까?')
+    setShowQAlert(true)
+  }
 
-  const handleAllData = async (e: any) => {
-    e.preventDefault()
+  const handleAllData = async () => {
+    // e.preventDefault()
     let data = {
       socialId: session.data.user!.id,
       title: titleInfo,
@@ -159,7 +167,7 @@ const Editor = () => {
         title: bookInfo.title,
         thumbnail: bookInfo.thumbnail,
         isComplete: bookInfo.isComplete,
-        author: bookInfo.authors[0],
+        author: bookInfo.authors?bookInfo.authors[0]:null,
       },
       tags: selectedTag,
       content: content,
@@ -180,11 +188,33 @@ const Editor = () => {
 
       } catch (error) {
         console.log(data)
-        console.error('Error:', error)
+        console.log(showAlert)
+        if (titleInfo === '') {
+          setAlertMessage('제목을 입력해주세요!')
+        } else if(Object.keys(placeInfo).length === 0){
+          setAlertMessage('장소를 등록해주세요!')
+        } else if (Object.keys(bookInfo).length === 0) {
+          setAlertMessage('책을 등록해주세요!')
+        } else if (content === '') {
+          setAlertMessage('내용을 등록해주세요!')
+        }
+        else if (content.length > 1500) {
+          setAlertMessage('내용이 1500자 이상입니다!')
+        }
+        setShowAlert(true)
+        // console.error('Error:', error)
+        console.log(showAlert)
       }
     }
     postData()
   }
+  const handleCloseAlert= () => {
+    setShowAlert(false);
+  };
+  const handleCloseQAlert= () => {
+    setShowQAlert(false);
+  };
+  
   useEffect(() => {
     if (tagInfo.length <= 10) {
       fetchTag()
@@ -201,13 +231,14 @@ const Editor = () => {
   return (
     <>
       <NavBar />
-
+      
       <div className="bg-[#FAF2E5] flex justify-center box-border min-h-full">
         <div className="pt-20 sm:pt-10  ">
           <header className="h-10 text-center">
             <h1 className="myCustomText text-3xl text-black">독후감 작성</h1>
           </header>
-
+          {showAlert && <CustomAlert message={alertMessage} onClose={handleCloseAlert} />}
+          {showQAlert && <CustomAlert message={alertMessage} onClose={handleCloseQAlert} isActive={true} active={handleAllData} />}
           <section className="py-10 px-10 sm:py-0 sm:mx-0">
             <div className="px-5 sm:px-0 sm:py-4 py-8 flex rounded-t-md  ">
               <div className="flex px-3 max-w-[60vw] sm:max-w-full sm:px-0 ">
@@ -454,7 +485,7 @@ const Editor = () => {
                 <Button
                   label="저장하기"
                   outline={true}
-                  onClick={handleAllData}
+                  onClick={handleQAlert}
                 />
               </div>
             </div>
