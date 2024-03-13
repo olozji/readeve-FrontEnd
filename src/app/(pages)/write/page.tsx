@@ -117,13 +117,6 @@ const Editor = () => {
   }
 
   const handleTagClick = (content: string) => {
-    // 객체를 복사하여 새로운 객체를 생성
-    // const updatedTags = tagInfo.map((tag: any, i: number) =>
-    //   tag.content === content ? { ...tag, selected: !tag.selected } : tag,
-    // )
-
-    // // Recoil 상태를 갱신
-    // setTagInfo(updatedTags)
     setAllDeselect(false)
     if (!selectedTag.includes(content)) {
       if (selectedTag.length < 5) {
@@ -180,33 +173,17 @@ const Editor = () => {
         )
         console.log(data)
         console.log('Success:', response.data)
+        setAllDataInfo({})
+        setTitleInfo('')
+        setPlaceInfo({})
+        window.location.href = `/mypage/${session.data?.user.id}` 
+
       } catch (error) {
         console.log(data)
         console.error('Error:', error)
       }
     }
-
-    const fetchData = async () => {
-      try {
-        const response = await axios.get(
-          'https://api.bookeverywhere.site/api/data/all?isPrivate=false',
-        )
-        console.log(response.data) // 서버에서 받은 데이터 출력
-        const data = response.data.data // 응답으로 받은 데이터
-
-        setAllReviewData(data)
-      } catch (error) {
-        console.error('Error fetching data:', error)
-      }
-    }
     postData()
-    fetchData()
-    //write 초기화
-    setAllDataInfo({})
-    setTitleInfo('')
-    setPlaceInfo({})
-
-    window.location.href = `/mypage/${session.data?.user.id}` // 이동할 경로
   }
   useEffect(() => {
     if (tagInfo.length <= 10) {
@@ -302,14 +279,9 @@ const Editor = () => {
             <div className="px-8 py-3 flex gap-5 items-start sm:px-2">
               <h4 className="px-5 font-extrabold sm:px-0 sm:text-xs">도서</h4>
               <div>
-                
                 <BookSearch></BookSearch>
                 {bookInfo.title && (
-                  <div
-                    className="justify-items-start pt-4 px-5 sm:px-0"
-                    
-                  >
-                 
+                  <div className="justify-items-start pt-4 px-5 sm:px-0">
                     <img
                       src={
                         bookInfo.thumbnail
@@ -319,13 +291,14 @@ const Editor = () => {
                       alt="책 표지"
                       className="mb-2 rounded"
                     />
-
                   </div>
                 )}
               </div>
             </div>
             <div className="flex px-8 sm:px-0 py-3 mb-8 items-center ">
-              <h4 className="px-5 sm:px-2 sm:text-sm font-extrabold">장소 태그</h4>
+              <h4 className="px-5 sm:px-2 sm:text-sm font-extrabold">
+                장소 태그
+              </h4>
               <div className="flex flex-wrap max-w-[50vw] items-center">
                 {selectedTag.length > 0 &&
                   selectedTag.map((tagContent: any, i: number) => (
@@ -364,7 +337,10 @@ const Editor = () => {
                   </div>
                   <div className="flex sm:flex-col gap-4 my-10 ">
                     {tagCategory.map((category: string, index: number) => (
-                      <div className="flex flex-col sm:grid sm:grid-cols-2" key={index}>
+                      <div
+                        className="flex flex-col sm:grid sm:grid-cols-2"
+                        key={index}
+                      >
                         <div className="text-start mb-4">{category}</div>
 
                         {tagData
