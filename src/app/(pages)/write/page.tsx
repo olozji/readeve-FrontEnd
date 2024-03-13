@@ -195,6 +195,7 @@ const [showQAlert, setShowQAlert] = useState(false);
           setAlertMessage('장소를 등록해주세요!')
         } else if (Object.keys(bookInfo).length === 0) {
           setAlertMessage('책을 등록해주세요!')
+          // TODO:독후감 내용이 없을 때 안 올라가야대는데 올라가네요 ㅜㅜ 로컬환경에서는 작동하는데 배포환경에서는 작동 안 해요 ㅜ
         } else if (content.length===0) {
           setAlertMessage('내용을 등록해주세요!')
         }
