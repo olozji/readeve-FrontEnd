@@ -107,7 +107,7 @@ const BookLayoutItem = ({ bookId, propsData }: bookLayoutItemType) => {
     <section>
       {bookData && bookData[0] && (
         <div
-          className={`mx-auto max-w-[80rem] text-center p-4 border border-b-black`}
+          className={`mx-auto max-w-[80rem] text-center p-4 border-0.5 border-b-white`}
           style={{
             display: 'flex',
             flexDirection: 'column',
@@ -123,7 +123,7 @@ const BookLayoutItem = ({ bookId, propsData }: bookLayoutItemType) => {
             alt="책 표지"
             className="mb-2 rounded-xl drop-shadow-lg"
           />
-          <div className="p-4 text-xl text-[#503526] font-display font-bold ">
+          <div className="p-4 text-lg text-[#503526] font-display font-bold ">
             {bookData[0].bookRespDto.title} | {bookData[0].bookRespDto.author}{' '}
             작가
           </div>
@@ -159,7 +159,7 @@ const BookLayoutItem = ({ bookId, propsData }: bookLayoutItemType) => {
                   onClick={() => {
                     handleModal(i)
                   }}
-                  className="max-w-3xl my-4 mx-auto bg-cover bg-center rounded-lg overflow-hidden shadow-lg sm:p-2 p-10"
+                  className="max-w-4xl my-4 mx-auto bg-cover bg-center rounded-lg overflow-hidden shadow-lg sm:p-2 p-10"
                   style={{ backgroundImage: `url(${detailPaper.src})` }}
                 >
                   {/* 모달 */}
@@ -296,7 +296,7 @@ const BookLayoutItem = ({ bookId, propsData }: bookLayoutItemType) => {
                   {/* 리스트 내부 글자 */}
                   <div className="relative sm:p-2">
                     <div className="flex justify-between ">
-                      <div className="flex justify-between text-3xl sm:text-xl font-black ml-2 pt-2  mb-2">
+                      <div className="flex justify-between items-center text-2xl sm:text-xl font-black ml-2 pt-2  mb-2">
                         <div>{data.title}</div>
                         <Image
                           src={data.private ? Private : unLock}
@@ -305,24 +305,24 @@ const BookLayoutItem = ({ bookId, propsData }: bookLayoutItemType) => {
                           className=" mt-1 justify-self-center"
                         />
                       </div>
-                      <div className="grid sm:absolute sm:bottom-0 sm:right-2 justify-itmes-center">
+                      <div className="grid absolute bottom-4 right-4 sm:bottom-0 sm:right-2 justify-itmes-center">
                         {formatDateToYYMMDD(data.createAt)}
                         
                       </div>
                     </div>
                     <div className="flex align-center ">
-                      <Image
+                      {/* <Image
                         src={privateMarker}
                         alt="marker"
                         className="mx-1"
-                      />
+                      /> */}
                       <div className="text-gray-500 text-sm font-semibold">
                         독서장소: {data.pinRespDto?.name} |{' '}
                         {data.pinRespDto.address}
                       </div>
                     </div>
                     {/* TODO:내용 글자 많으면 ...으로 표시하기 */}
-                    <p className="text-sm font-semibold pt-12 sm:pt-6 sm:ml-2 ">
+                    <p className="text-sm font-semibold text-[#767676] max-w-[50vw] pt-12 sm:pt-6 sm:ml-2 ">
                       {data.content}
                     </p>
                   </div>
