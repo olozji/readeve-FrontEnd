@@ -195,7 +195,7 @@ const [showQAlert, setShowQAlert] = useState(false);
           setAlertMessage('장소를 등록해주세요!')
         } else if (Object.keys(bookInfo).length === 0) {
           setAlertMessage('책을 등록해주세요!')
-        } else if (content === '') {
+        } else if (content.length===0) {
           setAlertMessage('내용을 등록해주세요!')
         }
         else if (content.length > 1500) {
