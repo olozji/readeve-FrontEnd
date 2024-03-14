@@ -241,7 +241,7 @@ const Editor = ({editReviewId}: PropType) => {
   }, [])
   useEffect(() => {
     fetchData()
-  }, [editReviewId])
+  }, [])
   
   useEffect(() => {
     setTagData(tagInfo)
