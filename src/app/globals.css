@@ -76,6 +76,10 @@ body {
   background-color: #f66464; /* 로딩 진행 중 색상 */
   animation: fillLoading 2s linear infinite; /* 로딩 애니메이션 */
 }
+input {
+  touch-action: manipulation; /* 화면이 살짝 확대되는 것을 막음 */
+}
+
 
 @keyframes fillLoading {
   0% {
