@@ -194,6 +194,13 @@ const Editor = ({editReviewId}: PropType) => {
 
     const postData = async () => {
       try {
+        //TODO: 배포된 환경에서 안올라가야 하는데 올라간다는 부분 수정해보았는데 잘 동작할지는 모르겠어요..!ㅜㅜ
+        if(content.trim() === ''){
+          setAlertMessage('내용을 등록해주세요!');
+          setShowAlert(true);
+          return;
+        }
+
         const response = await axios.post(
           'https://api.bookeverywhere.site/api/write',
           data,
@@ -228,6 +235,7 @@ const Editor = ({editReviewId}: PropType) => {
     }
     postData()
   }
+  
   const handleCloseAlert= () => {
     setShowAlert(false);
   };
