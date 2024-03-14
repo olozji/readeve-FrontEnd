@@ -63,11 +63,11 @@ const Editor = ({editReviewId}: PropType) => {
         const data = response.data.data;
         let editArticle = data.filter((d: any) => d.reviewId === editReviewId)
         setEditDefault(editArticle)
-        setTitleInfo(editDefault.title);
-        setPlaceInfo(editDefault.pinRespDto);
-        setBookInfo(editDefault.bookRespDto);
-        setContent(editDefault.content);
-        setTagInfo(editDefault.tags);
+        setTitleInfo(editArticle.title);
+        setPlaceInfo(editArticle.pinRespDto);
+        setBookInfo(editArticle.bookRespDto);
+        setContent(editArticle.content);
+        setTagInfo(editArticle.tags);
 
         console.log(editArticle);
       } catch (error) {
