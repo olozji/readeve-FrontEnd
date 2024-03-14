@@ -265,7 +265,7 @@ const Editor = ({editReviewId}: PropType) => {
 
   return (
     <>
-      <NavBar />
+      
       
       <div className="bg-[#FAF2E5] flex justify-center box-border min-h-full">
         <div className="pt-20 sm:pt-10  ">
@@ -346,7 +346,7 @@ const Editor = ({editReviewId}: PropType) => {
               <h4 className="px-5 font-extrabold sm:px-0 sm:text-xs">도서</h4>
               <div>
                 <BookSearch></BookSearch>
-                {bookInfo.title && (
+                {bookInfo&&bookInfo.title && (
                   <div className="justify-items-start pt-4 px-5 sm:px-0">
                     <img
                       src={
