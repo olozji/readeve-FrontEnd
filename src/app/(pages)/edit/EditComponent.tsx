@@ -88,13 +88,6 @@ const Editor = ({editReviewId}: PropType) => {
     }
   }, [isPrivatePlace])
 
-  let numTag: any[] = []
-  useEffect(() => {
-    console.log(1)
-    numTag = tagInfo.filter((tag: any) => {
-      tag.selected == true
-    })
-  }, [tagInfo])
 
   const inputRef = useRef<HTMLInputElement | null>(null)
 
@@ -409,7 +402,7 @@ const Editor = ({editReviewId}: PropType) => {
                       >
                         <div className="text-start mb-4">{category}</div>
 
-                        {tagData
+                        {tagData&&tagData
                           .filter((t: any) => t.category === category)
                           .map((tag: any, i: number) => (
                             <div className="flex">
