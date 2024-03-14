@@ -27,12 +27,9 @@ import isSharededIcon from '/public/images/isSharedIcon.png'
 import LoadingScreen from '@/app/components/loadingScreen'
 import CustomAlert from '@/app/components/alert';
 export interface PropType {
-  params: {
-    id: string
-    searchParams: {}
-  }
+  editReviewId:number
 }
-const Editor = (props: PropType) => {
+const Editor = ({editReviewId}: PropType) => {
   const [content, setContent] = useState('')
   const [showMap, setShowMap] = useState(false)
   const [selectedPlace, setSelectedPlace] = useState('')
@@ -64,7 +61,7 @@ const Editor = (props: PropType) => {
           `https://api.bookeverywhere.site/api/data/all/${session.data.user.id}`,
         );
         const data = response.data.data;
-        let editArticle = data.filter((d: any) => d.reviewId === props.params.id)
+        let editArticle = data.filter((d: any) => d.reviewId === editReviewId)
         setEditDefault(editArticle)
         console.log(data);
       } catch (error) {
@@ -244,7 +241,7 @@ const Editor = (props: PropType) => {
   }, [])
   useEffect(() => {
     fetchData()
-  }, [props.params.id])
+  }, [editReviewId])
   
   useEffect(() => {
     setTagData(tagInfo)
