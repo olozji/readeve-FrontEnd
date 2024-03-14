@@ -248,14 +248,14 @@ const Editor = ({editReviewId}: PropType) => {
   }, [tagInfo])
   
   useEffect(() => {
-    setTitleInfo(editDefault.title)
-    
-    setPlaceInfo(editDefault.pinRespDto)
-    setBookInfo(editDefault.bookRespDto)
-    setContent(editDefault.content)
-    setTagInfo(editDefault.tags)
-    console.log(titleInfo,placeInfo,bookInfo,content,tagInfo)
-  },[editDefault])
+    if (editDefault) {
+      setTitleInfo(editDefault.title);
+      setPlaceInfo(editDefault.pinRespDto);
+      setBookInfo(editDefault.bookRespDto);
+      setContent(editDefault.content);
+      setTagInfo(editDefault.tags);
+    }
+  }, [editDefault, setTitleInfo, setPlaceInfo, setBookInfo, setContent, setTagInfo]);
 
   return (
     <>
