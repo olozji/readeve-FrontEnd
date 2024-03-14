@@ -62,6 +62,8 @@ const Editor = ({editReviewId}: PropType) => {
         );
         const data = response.data.data;
         let editArticle = data.filter((d: any) => d.reviewId === editReviewId)
+        // TODO:recoil상태를 비동기로 업데이트 할 수 없어서 selector 이용해서 비동기 요청 보내거나
+        // EditComponent 에서는 원래 게시글 데이터를 useState로 저장해서 보여주고 바뀌는 부분만 post 요청 보내는 방식으로 구현해야 할 거 같아요
         setEditDefault(editArticle)
         setTitleInfo(editArticle.title);
         setPlaceInfo(editArticle.pinRespDto);
