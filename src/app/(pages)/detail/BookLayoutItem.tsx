@@ -264,7 +264,7 @@ const BookLayoutItem = ({ bookId, propsData }: bookLayoutItemType) => {
                               className="w-[50vw] sm:w-[90vw] my-4 rounded-lg overflow-hidden shadow-lg px-3 py-3 sm:pt-0 p-10 bg-[#FFFCF9]"
                             >
                               <div className="flex relative float-end items-center gap-4">
-                                <Link href={'/edit/1'}>
+                                <Link href={`/edit/${data.reviewId}`}>
                                   <span className="text-[#D37C7C] text-sm font-bold">
                                     수정
                                   </span>
