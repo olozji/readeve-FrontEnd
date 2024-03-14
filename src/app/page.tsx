@@ -289,22 +289,46 @@ export default function Home() {
           )}
         </div>
         <div className="mt-10 sm:px-5">
-          <h1 className="text-2xl font-display font-bold py-10">콘텐츠</h1>
+          <h1 className="text-2xl font-display font-bold py-10">재방문 장소를 확인해 보세요!</h1>
+          {/* TODO: 추후 데이터 들어가야할 부분 */}
           <div className="">
-            <div className="my-3  h-[5rem] bg-[#D9D9D9] rounded-lg">
-              <p>오늘 제일 많이 읽은 장소</p>
+            <div className="p-5 mb-3 rounded-lg shadow-xl">
+            <div className="my-3 border-2 border-[#AE695A] rounded-lg shadow-lg">
+              <div className='flex gap-10 sm:gap-4'>
+                <span className='py-1 pl-5 font-bold'>1위</span>
+                <span className='py-1 gap-4 font-bold'>장소명</span>
+                <span className='flex w-[10rem] py-1 px-3 text-white  bg-gradient-to-r from-[#FFD6CD] to-[#E67D67] rounded-2xl'>
+                  {}명
+                  <Image
+                    src={mainLogo}
+                    alt='mainLogo'
+                    width={20}
+                    height={10}
+                    className='relative right-0'
+                  />
+                  </span>
+              </div>
             </div>
-            <div className="my-3  h-[5rem] bg-[#D9D9D9] rounded-lg">
-              <p>베스트셀러를 읽은 장소</p>
+            <div className="my-3 border-[#AE695A] rounded-lg shadow-lg">
+              <div className='flex gap-10 sm:gap-4'>
+                <span  className='py-1 pl-5 font-bold'>2위</span>
+                <span className='py-1 gap-4 font-bold'>장소명</span>
+                <span className='w-[10rem] py-1 px-3 text-white bg-gradient-to-r from-[#FFD6CD] to-[#E67D67] rounded-2xl'>{}명</span>
+              </div>
             </div>
-            <div className="my-3  h-[5rem] bg-[#D9D9D9] rounded-lg">
-              <p>오늘 가장 많이 읽은 책</p>
+            <div className="my-3 border-[#AE695A] rounded-lg shadow-lg">
+              <div className='flex gap-10 sm:gap-4'>
+                <span  className='py-1 pl-5 font-bold'>3위</span>
+                <span className='py-1 gap-4 font-bold'>장소명</span>
+                <span className='w-[10rem] py-1 px-3 text-white bg-gradient-to-r from-[#FFD6CD] to-[#E67D67] rounded-2xl'>{}명</span>
+              </div>
+            </div>
             </div>
           </div>
         </div>
         <div className="mt-10 sm:px-5">
           <div className="flex justify-between items-center">
-            <h1 className="text-2xl font-display font-bold py-10">모든 기록</h1>
+            <h1 className="text-2xl font-display font-bold py-10">다른 사람의 독후감을 확인해 보세요!</h1>
             <span className="inline-block align-middle">
               <Link href={'/allreview'}>
                 <Image src={moreIcon} alt={'moreIcon'} width={22} height={30} />
@@ -315,7 +339,7 @@ export default function Home() {
             <div className="pt-4 lg:pt-5 pb-4 lg:pb-8 px-4 xl:px-2 xl:container mx-auto">
               <section className="pt-16">
                 <div className="pt-4 lg:pt-5 pb-4 lg:pb-8 px-4 xl:px-2 xl:container mx-auto">
-                  <h1 className="text-4xl">등록된 리뷰가 없습니다</h1>
+                  <h1 className="text-4xl sm:text-sm">등록된 리뷰가 없습니다</h1>
                 </div>
               </section>
             </div>
