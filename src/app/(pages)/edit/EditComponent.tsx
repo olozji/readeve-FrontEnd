@@ -45,6 +45,9 @@ const Editor = ({editReviewId}: PropType) => {
   const [tagData, setTagData] = useState<any>([])
   const [selectedTag, setSelectedTag] = useState<string[]>([])
   const [allDeselect, setAllDeselect] = useState(false)
+  const [reviewTitle, setReviewTitle] = useState('')
+  const [reviewPlace, setReviewPlace] = useState<any>({})
+  const [reviewBook, setReviewBook] = useState<any>({})
   const [titleInfo, setTitleInfo] = useRecoilState<string>(titleState)
   const [bookInfo,setBookInfo] = useRecoilState<any>(bookState)
   const [tagInfo, setTagInfo] = useRecoilState<any>(tagState)
@@ -238,11 +241,11 @@ const Editor = ({editReviewId}: PropType) => {
     setShowQAlert(false);
   };
   
-  useEffect(() => {
-    if (tagInfo.length <= 10) {
-      fetchTag()
-    }
-  }, [])
+  // useEffect(() => {
+  //   if (tagInfo.length <= 10) {
+  //     fetchTag()
+  //   }
+  // }, [])
   useEffect(() => {
     fetchData()
   }, [])
@@ -252,14 +255,12 @@ const Editor = ({editReviewId}: PropType) => {
   }, [tagInfo])
   
   useEffect(() => {
-    if (editDefault) {
-      setTitleInfo(editDefault.title);
-      setPlaceInfo(editDefault.pinRespDto);
-      setBookInfo(editDefault.bookRespDto);
-      setContent(editDefault.content);
-      setTagInfo(editDefault.tags);
-    }
-  }, [editDefault, setTitleInfo, setPlaceInfo, setBookInfo, setContent, setTagInfo]);
+    setReviewTitle(editDefault.title);
+        setReviewPlace(editDefault.pinRespDto);
+        setReviewBook(editDefault.bookRespDto);
+        setContent(editDefault.content);
+        setTagInfo(editDefault.tags);
+  }, [editDefault]);
 
   return (
     <>
@@ -279,7 +280,7 @@ const Editor = ({editReviewId}: PropType) => {
                   placeholder="제목"
                   ref={inputRef}
                   className="inline-block  w-[60rem] sm:w-[72vw] h-[2.8rem] text-base px-3 rounded-md bg-[#F9F9F9] placeholder-[#A08A7E]"
-                  value={titleInfo}
+                  value={titleInfo!==''?titleInfo:reviewTitle}
                   onChange={handleTitle}
                 />
               </div>
@@ -291,7 +292,7 @@ const Editor = ({editReviewId}: PropType) => {
                   placeholder="독서한 장소를 입력해주세요"
                   ref={inputRef}
                   className="inline-block w-[35rem] h-[2rem] text-xs/[10px]  px-3 rounded-2xl bg-[#F9F9F9] placeholder-[#A08A7E]"
-                  value={placeInfo?placeInfo.place_name:''}
+                  value={placeInfo?placeInfo.place_name:reviewPlace.place_name}
                   onClick={handleSearchMap}
                 />
                 {showMap && (
@@ -343,7 +344,7 @@ const Editor = ({editReviewId}: PropType) => {
             <div className="px-8 py-3 flex gap-5 items-start sm:px-2">
               <h4 className="px-5 font-extrabold sm:px-0 sm:text-xs">도서</h4>
               <div>
-                <BookSearch></BookSearch>
+                <BookSearch edit={reviewBook.title }></BookSearch>
                 {bookInfo&&bookInfo.title && (
                   <div className="justify-items-start pt-4 px-5 sm:px-0">
                     <img
