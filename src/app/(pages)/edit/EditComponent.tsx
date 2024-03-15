@@ -75,10 +75,26 @@ const Editor = ({ editReviewId }: PropType) => {
         console.log(`수정할 리뷰의 장소:${JSON.stringify(editArticle)}`);
         if (editArticle) {
           setTitleInfo(editArticle.title)
-          setPlaceInfo(editArticle.pinRespDto)
-          setBookInfo(editArticle.bookRespDto)
+          let editPlace = {
+            place_name: editArticle.pinRespDto.name,
+            road_address_name: editArticle.pinRespDto.address,
+            y: editArticle.pinRespDto.y,
+            x: editArticle.pinRespDto.x,
+            place_url: editArticle.pinRespDto.url,
+            id: editArticle.pinRespDto.placeId,
+            isPrivate:editArticle.pinRespDto.private
+          }
+          let editBook = {
+            isbn: editArticle.bookRespDto.isbn,
+            title: editArticle.bookRespDto.title,
+            thumbnail: editArticle.bookRespDto.thumbnail,
+            authors:editArticle.bookRespDto.author,
+          }
+          setPlaceInfo(editPlace)
+          setBookInfo(editBook)
           setContent(editArticle.content)
           setTagInfo(editArticle.tags)
+          setEditDefault(editArticle)
         } else {
           console.error('Review not found:', editReviewId);
         }
@@ -190,7 +206,7 @@ const Editor = ({ editReviewId }: PropType) => {
         y: placeInfo.y,
         x: placeInfo.x,
         address: placeInfo.road_address_name,
-        isPrivate: isPrivatePlace,
+        isPrivate: placeInfo?placeInfo.isPrivate:isPrivatePlace,
         url: placeInfo.place_url,
       },
       bookRespDto: {
@@ -258,16 +274,15 @@ const Editor = ({ editReviewId }: PropType) => {
 
   useEffect(() => {
     setTagData(tagInfo)
+    const selectedTags = tagData.filter((tag: any) => tag.selected).map((tag: any) => tag.content);
+    setSelectedTag(selectedTags)
+
   }, [tagInfo])
 
-  // useEffect(() => {
-  //   console.log('장소' + placeInfo)
-  //   // setReviewTitle(editDefault.title)
-  //   // setReviewPlace(editDefault.pinRespDto)
-  //   // setReviewBook(editDefault.bookRespDto)
-  //   // setContent(editDefault.content)
-  //   // setTagInfo(editDefault.tags)
-  // }, [editDefault])
+  useEffect(() => {
+    setPlaceInfo(editDefault.pinRespDto)
+    setTagInfo(editDefault.tags)
+  }, [editDefault])
 
   return (
     <>
