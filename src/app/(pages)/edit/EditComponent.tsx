@@ -72,7 +72,7 @@ const Editor = ({ editReviewId }: PropType) => {
         // TODO:recoil상태를 비동기로 업데이트 할 수 없어서 selector 이용해서 비동기 요청 보내거나
         // EditComponent 에서는 원래 게시글 데이터를 useState로 저장해서 보여주고 바뀌는 부분만 post 요청 보내는 방식으로 구현해야 할 거 같아요
         setEditDefault(editArticle)
-        console.log(`수정할 리뷰:${editArticle}`)
+        console.log(`수정할 리뷰의 장소:${editArticle.pinRespDto}`)
         if (editArticle) {
           setTitleInfo(editArticle.title)
           setPlaceInfo(editArticle.pinRespDto)
@@ -246,7 +246,7 @@ const Editor = ({ editReviewId }: PropType) => {
           setAlertMessage('내용이 1500자 이상입니다!')
         }
         setShowAlert(true)
-        // console.error('Error:', error)
+        console.error('Error:', error)
         console.log(showAlert)
       }
     }

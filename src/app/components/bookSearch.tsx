@@ -124,7 +124,7 @@ export const BookSearch = ({edit}:BookType) => {
         ref={inputRef}
         type="text"
         placeholder="책 제목을 입력해주세요"
-        value={edit?edit:selectedBook?selectedBook.title:''}
+        value={bookInfo?bookInfo.title:selectedBook?selectedBook.title:''}
         onClick={() => setModalOpen(true)}
         onChange={(e) => setBookName(e.target.value)}
         onKeyDown={handleKeyDown}
