@@ -25,23 +25,23 @@ import pen from 'public/images/Pen.png'
 import isPrivatedIcon from '/public/images/isPrivatedIcon.png'
 import isSharededIcon from '/public/images/isSharedIcon.png'
 import LoadingScreen from '@/app/components/loadingScreen'
-import CustomAlert from '@/app/components/alert';
+import CustomAlert from '@/app/components/alert'
 export interface PropType {
-  editReviewId:number
+  editReviewId: number
 }
-const Editor = ({editReviewId}: PropType) => {
+const Editor = ({ editReviewId }: PropType) => {
   const [content, setContent] = useState('')
   const [showMap, setShowMap] = useState(false)
   const [selectedPlace, setSelectedPlace] = useState('')
-  const [editDefault, setEditDefault] = useState<any>({});
-  const [editedReview, setEditedReview] = useState<any>(null);
+  const [editDefault, setEditDefault] = useState<any>({})
+  const [editedReview, setEditedReview] = useState<any>(null)
   const [InputText, setInputText] = useState('')
   const [isPrivate, setIsPrivate] = useState(true)
   const [isPrivatePlace, setIsPrivatePlace] = useState(true)
   const [tagCategory] = useState(['분위기', '서비스/모임', '시설/기타'])
-  const [showAlert, setShowAlert] = useState(false);
-  const [showQAlert, setShowQAlert] = useState(false);
-  const [alertMessage, setAlertMessage] = useState('');
+  const [showAlert, setShowAlert] = useState(false)
+  const [showQAlert, setShowQAlert] = useState(false)
+  const [alertMessage, setAlertMessage] = useState('')
   const [tagData, setTagData] = useState<any>([])
   const [selectedTag, setSelectedTag] = useState<string[]>([])
   const [allDeselect, setAllDeselect] = useState(false)
@@ -49,7 +49,7 @@ const Editor = ({editReviewId}: PropType) => {
   const [reviewPlace, setReviewPlace] = useState<any>({})
   const [reviewBook, setReviewBook] = useState<any>({})
   const [titleInfo, setTitleInfo] = useRecoilState<string>(titleState)
-  const [bookInfo,setBookInfo] = useRecoilState<any>(bookState)
+  const [bookInfo, setBookInfo] = useRecoilState<any>(bookState)
   const [tagInfo, setTagInfo] = useRecoilState<any>(tagState)
   const [placeInfo, setPlaceInfo] = useRecoilState<any>(placeState)
   const [allDataInfo, setAllDataInfo] = useRecoilState<any>(allDataState)
@@ -57,38 +57,43 @@ const Editor = ({editReviewId}: PropType) => {
   const [allReviewData, setAllReviewData] =
     useRecoilState<any>(allReviewDataState)
   let session: any = useSession()
-  
+
   const fetchData = async () => {
     if (session.data.user.id) {
       try {
         const response = await axios.get(
           `https://api.bookeverywhere.site/api/data/all/${session.data.user.id}`,
-        );
-        const data = response.data.data;
-        let editArticle = data.filter((d: any) => d.reviewId === editReviewId)
+        )
+        const data = response.data.data
+        let editArticle = data.find((d: any) => d.reviewId === editReviewId)
         // TODO:recoil상태를 비동기로 업데이트 할 수 없어서 selector 이용해서 비동기 요청 보내거나
         // EditComponent 에서는 원래 게시글 데이터를 useState로 저장해서 보여주고 바뀌는 부분만 post 요청 보내는 방식으로 구현해야 할 거 같아요
-        setEditDefault(editArticle[0])
-        updateRecoilState(data);
+        setEditDefault(editArticle)
+        setTitleInfo(editArticle.title)
+        setPlaceInfo(editArticle.pinRespDto)
+        setBookInfo(editArticle.bookRespDto)
+        setContent(editArticle.content)
+        setTagInfo(editArticle.tags)
+        // updateRecoilState(data);
 
-        console.log(`수정할 리뷰:${editArticle[0]}`);
+        console.log(`수정할 리뷰:${editArticle}`)
       } catch (error) {
-        console.error('Error fetching data:', error);
-      } 
+        console.error('Error fetching data:', error)
+      }
     }
   }
-  const updateRecoilState = (data: any) => {
-    let editArticle = data.filter((d: any) => d.reviewId === editReviewId)
-    console.log(`수정할 리뷰 함수 안:${editArticle[0]}`);
+  // const updateRecoilState = (data: any) => {
 
-    // Recoil 상태를 설정하기 위한 함수를 정의합니다.
-    setTitleInfo(editArticle[0].title);
-    setPlaceInfo(editArticle[0].pinRespDto);
-    setBookInfo(editArticle[0].bookRespDto);
-    setContent(editArticle[0].content);
-    setTagInfo(editArticle[0].tags);
-    console.log(`함수 내부 장소:${placeInfo}`)
-  };
+  //   console.log(`수정할 리뷰 함수 안:${editArticle}`);
+
+  //   // Recoil 상태를 설정하기 위한 함수를 정의합니다.
+  //   setTitleInfo(editArticle.title);
+  //   setPlaceInfo(editArticle.pinRespDto);
+  //   setBookInfo(editArticle.bookRespDto);
+  //   setContent(editArticle.content);
+  //   setTagInfo(editArticle.tags);
+  //   console.log(`함수 내부 장소:${placeInfo}`)
+  // };
   let user: any = session.data?.user
 
   const handleSearchMap = useCallback((e: any) => {
@@ -101,7 +106,6 @@ const Editor = ({editReviewId}: PropType) => {
       inputRef.current.focus() // Input에 focus() 호출
     }
   }, [isPrivatePlace])
-
 
   const inputRef = useRef<HTMLInputElement | null>(null)
 
@@ -198,7 +202,7 @@ const Editor = ({editReviewId}: PropType) => {
         title: bookInfo.title,
         thumbnail: bookInfo.thumbnail,
         isComplete: bookInfo.isComplete,
-        author: bookInfo.authors?bookInfo.authors[0]:null,
+        author: bookInfo.authors ? bookInfo.authors[0] : null,
       },
       tags: selectedTag,
       content: content,
@@ -215,14 +219,13 @@ const Editor = ({editReviewId}: PropType) => {
         setAllDataInfo({})
         setTitleInfo('')
         setPlaceInfo({})
-        window.location.href = `/mypage/${session.data?.user.id}` 
-
+        window.location.href = `/mypage/${session.data?.user.id}`
       } catch (error) {
         console.log(data)
         console.log(showAlert)
         if (titleInfo === '') {
           setAlertMessage('제목을 입력해주세요!')
-        } else if(Object.keys(placeInfo).length === 0){
+        } else if (Object.keys(placeInfo).length === 0) {
           setAlertMessage('장소를 등록해주세요!')
         } else if (Object.keys(bookInfo).length === 0) {
           setAlertMessage('책을 등록해주세요!')
@@ -230,8 +233,7 @@ const Editor = ({editReviewId}: PropType) => {
           //TODO: 배포된 환경에서 안올라가야 하는데 올라간다는 부분 수정해보았는데 잘 동작할지는 모르겠어요..!ㅜㅜ
         } else if (content.trim() === '') {
           setAlertMessage('내용을 등록해주세요!')
-        }
-        else if (content.length > 1500) {
+        } else if (content.length > 1500) {
           setAlertMessage('내용이 1500자 이상입니다!')
         }
         setShowAlert(true)
@@ -241,14 +243,14 @@ const Editor = ({editReviewId}: PropType) => {
     }
     postData()
   }
-  
-  const handleCloseAlert= () => {
-    setShowAlert(false);
-  };
-  const handleCloseQAlert= () => {
-    setShowQAlert(false);
-  };
-  
+
+  const handleCloseAlert = () => {
+    setShowAlert(false)
+  }
+  const handleCloseQAlert = () => {
+    setShowQAlert(false)
+  }
+
   // useEffect(() => {
   //   if (tagInfo.length <= 10) {
   //     fetchTag()
@@ -257,31 +259,38 @@ const Editor = ({editReviewId}: PropType) => {
   useEffect(() => {
     fetchData()
   }, [])
-  
+
   useEffect(() => {
     setTagData(tagInfo)
   }, [tagInfo])
-  
+
   useEffect(() => {
-    console.log('장소'+placeInfo)
-    setReviewTitle(editDefault.title);
-        setReviewPlace(editDefault.pinRespDto);
-        setReviewBook(editDefault.bookRespDto);
-        setContent(editDefault.content);
-        setTagInfo(editDefault.tags);
-  }, [editDefault]);
+    console.log('장소' + placeInfo)
+    setReviewTitle(editDefault.title)
+    setReviewPlace(editDefault.pinRespDto)
+    setReviewBook(editDefault.bookRespDto)
+    setContent(editDefault.content)
+    setTagInfo(editDefault.tags)
+  }, [editDefault])
 
   return (
     <>
-      
-      
       <div className="bg-[#FAF2E5] flex justify-center box-border min-h-full">
         <div className="pt-20 sm:pt-10  ">
           <header className="h-10 text-center">
             <h1 className="myCustomText text-3xl text-black">독후감 작성</h1>
           </header>
-          {showAlert && <CustomAlert message={alertMessage} onClose={handleCloseAlert} />}
-          {showQAlert && <CustomAlert message={alertMessage} onClose={handleCloseQAlert} isActive={true} active={handleAllData} />}
+          {showAlert && (
+            <CustomAlert message={alertMessage} onClose={handleCloseAlert} />
+          )}
+          {showQAlert && (
+            <CustomAlert
+              message={alertMessage}
+              onClose={handleCloseQAlert}
+              isActive={true}
+              active={handleAllData}
+            />
+          )}
           <section className="py-10 px-10 sm:py-0 sm:mx-0">
             <div className="px-5 sm:px-0 sm:py-4 py-8 flex rounded-t-md  ">
               <div className="flex px-3 max-w-[60vw] sm:max-w-full sm:px-0 ">
@@ -289,7 +298,7 @@ const Editor = ({editReviewId}: PropType) => {
                   placeholder="제목"
                   ref={inputRef}
                   className="inline-block  w-[60rem] sm:w-[72vw] h-[2.8rem] text-base px-3 rounded-md bg-[#F9F9F9] placeholder-[#A08A7E]"
-                  value={titleInfo!==''?titleInfo:reviewTitle}
+                  value={titleInfo !== '' ? titleInfo : reviewTitle}
                   onChange={handleTitle}
                 />
               </div>
@@ -301,7 +310,7 @@ const Editor = ({editReviewId}: PropType) => {
                   placeholder="독서한 장소를 입력해주세요"
                   ref={inputRef}
                   className="inline-block w-[35rem] h-[2rem] text-xs/[10px]  px-3 rounded-2xl bg-[#F9F9F9] placeholder-[#A08A7E]"
-                  value={placeInfo?placeInfo.place_name:''}
+                  value={placeInfo ? placeInfo.place_name : ''}
                   onClick={handleSearchMap}
                 />
                 {showMap && (
@@ -353,8 +362,8 @@ const Editor = ({editReviewId}: PropType) => {
             <div className="px-8 py-3 flex gap-5 items-start sm:px-2">
               <h4 className="px-5 font-extrabold sm:px-0 sm:text-xs">도서</h4>
               <div>
-                <BookSearch ></BookSearch>
-                {bookInfo&&bookInfo.title && (
+                <BookSearch></BookSearch>
+                {bookInfo && bookInfo.title && (
                   <div className="justify-items-start pt-4 px-5 sm:px-0">
                     <img
                       src={
@@ -417,25 +426,26 @@ const Editor = ({editReviewId}: PropType) => {
                       >
                         <div className="text-start mb-4">{category}</div>
 
-                        {tagData&&tagData
-                          .filter((t: any) => t.category === category)
-                          .map((tag: any, i: number) => (
-                            <div className="flex">
-                              <div
-                                key={i}
-                                className={`box-border flex justify-center items-center px-6 py-3
+                        {tagData &&
+                          tagData
+                            .filter((t: any) => t.category === category)
+                            .map((tag: any, i: number) => (
+                              <div className="flex">
+                                <div
+                                  key={i}
+                                  className={`box-border flex justify-center items-center px-6 py-3
                  mr-2 mb-2 border rounded-[8px] text-xs/[10px] 
                  ${
                    selectedTag.includes(tag.content)
                      ? 'bg-[#FFE5E5] text-[#E57C65] border-[#E57C65]'
                      : 'bg-white  border-[#EAEAEA]'
                  }`}
-                                onClick={() => handleTagClick(tag.content)}
-                              >
-                                {tag.content}
+                                  onClick={() => handleTagClick(tag.content)}
+                                >
+                                  {tag.content}
+                                </div>
                               </div>
-                            </div>
-                          ))}
+                            ))}
                       </div>
                     ))}
                     <div className="flex flex-col">
