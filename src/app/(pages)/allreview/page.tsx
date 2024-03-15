@@ -24,6 +24,7 @@ import isSharedIcon from '/public/images/isSharedIcon.png'
 import axios from 'axios'
 import { useSession } from 'next-auth/react'
 import ModalContent from '@/app/components/detailModal'
+import { GoBackButton } from '@/app/components/buttons/goBackButton'
 
 export interface ReviewData {
   [x: string]: any
@@ -118,6 +119,9 @@ const AllReviewPage = () => {
       <NavBar />
       <div className="bg-[#f1e5cf]">
         <section className="main mx-auto max-w-6xl px-4">
+        <div className='absolute py-10 sm:hidden'>
+        <GoBackButton/> 
+        </div>
           <section className="pt-20 lg:pt-5 pb-4 lg:pb-8 px-4 xl:px-2 xl:container mx-auto">
             <div className="text-center mt-4 mx-auto myCustomText text-3xl text-white">
               모든 기록
@@ -164,6 +168,7 @@ const AllReviewPage = () => {
                             data={publicReviews[i]}
                             sessionUserId={session.data?.user.id}
                             handleRemove={() => {}}
+                            closeModal={() => handleModal(i)}
                      />
                           </CustomModal>
                         )}

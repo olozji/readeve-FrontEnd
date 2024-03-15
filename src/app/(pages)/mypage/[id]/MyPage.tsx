@@ -19,6 +19,7 @@ import NotesImg from '/public/images/notesImg.png'
 import { table } from 'console'
 import { allReviewDataState } from '@/store/writeAtoms'
 import axios from 'axios'
+import { GoBackButton } from '@/app/components/buttons/goBackButton'
 
 declare global {
   interface Window {
@@ -86,6 +87,9 @@ const MyPageComponent = (props: ParamType) => {
 
   return (
     <section className="bg-[#F1E5CF] px-[15vw] sm:px-0">
+      <div className='absolute py-20 sm:hidden'>
+        <GoBackButton/> 
+      </div>
       <div className="grid relative mx-auto justify-center text-center sm:mb-0 mb-10">
         <Image
           src={lampIcon.src}
