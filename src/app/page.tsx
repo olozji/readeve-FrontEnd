@@ -25,6 +25,7 @@ import isSharedIcon from '/public/images/isSharedIcon.png'
 import { BookLayout } from './components/bookLayout'
 import NavBar from './components/NavBar'
 import CustomModal from './components/modal'
+import ModalContent from './components/detailModal'
 
 export default function Home() {
   let session: any = useSession()
@@ -360,131 +361,12 @@ export default function Home() {
                           isOpen={isModalOpen[i]}
                           modalColor="#FEF6E6"
                         >
-                          <div className="">
-                            <div className="px-8 sm:px-2 py-8">
-                              <div className="flex justify-center items-center">
-                                <img
-                                  src={
-                                    d.bookRespDto.thumbnail
-                                      ? d.bookRespDto.thumbnail
-                                      : 'http://via.placeholder.com/120X150'
-                                  }
-                                  alt="책 표지"
-                                  className="w-[10rem] mb-2 rounded object-fll"
-                                />
-                                <div className="p-10 sm:p-0">
-                                  <div className="text-xl font-extrabold text-[#6F5C52]">
-                                    {d.bookRespDto.title}
-                                  </div>
-                                  <div className="text-sm font-bold text-[#9C8A80]">
-                                    | {d.bookRespDto.author} 저자
-                                  </div>
-                                  <div className="justify-center items-center py-2">
-                                    <span
-                                      className={`inline-flex justify-center items-center gap-2 rounded-lg px-2 py-2 text-xs ${
-                                        d.private
-                                          ? 'bg-[#E57C65] text-white'
-                                          : 'bg-white text-[#6F5C52]'
-                                      }`}
-                                    >
-                                      <Image
-                                        src={
-                                          d.private
-                                            ? isPrivatedIcon
-                                            : isSharedIcon
-                                        }
-                                        alt="Icon"
-                                        width={10}
-                                        height={10}
-                                      />
-                                      {d.private ? '나만보기' : '전체공개'}
-                                    </span>
-                                  </div>
-                                  <div className="py-5 pt-5 text-[#503526] text-sm">
-                                    <div className="flex items-center gap-5">
-                                      <span
-                                        className="font-bold"
-                                        style={{ verticalAlign: 'middle' }}
-                                      >
-                                        등록일
-                                      </span>
-                                      <div className="">
-                                        {formatDateToYYMMDD(d.createAt)}
-                                      </div>
-                                    </div>
-
-                                    <div className="flex">
-                                      <span
-                                        className="font-bold mr-4 sm:block sm:mr-0"
-                                        style={{ verticalAlign: 'middle' }}
-                                      >
-                                        태그
-                                      </span>
-                                      <div className="flex flex-wrap w-[16vw] sm:w-[40vw]">
-                                        {d.tags.map(
-                                          (tag: any) =>
-                                            tag.selected && (
-                                              <div className="flex bg-[#E57C65] rounded-full m-1 p-2 text-white font-semibold text-xs">
-                                                #{tag.content}
-                                              </div>
-                                            ),
-                                        )}
-                                      </div>
-                                    </div>
-                                    <div className="flex items-center gap-5 sm:gap-0">
-                                      <span
-                                        className="font-bold"
-                                        style={{ verticalAlign: 'middle' }}
-                                      >
-                                        장소
-                                      </span>
-                                      <Link
-                                        href={`/map/${session.data?.user.id}`}
-                                      >
-                                        <div className="flex items-center sm:items-start">
-                                          <Image
-                                            src={privateMarker}
-                                            alt={'장소'}
-                                          />
-                                          {d.pinRespDto.private ? (
-                                            <div>
-                                              {maskName(d.writer)}님만의 장소
-                                            </div>
-                                          ) : (
-                                            <div className="sm:w-[40vw]">
-                                              독서장소: {d.pinRespDto?.name} |{' '}
-                                              {d.pinRespDto?.address}
-                                            </div>
-                                          )}
-                                        </div>
-                                      </Link>
-                                    </div>
-                                  </div>
-                                </div>
-                              </div>
-                              <div className="flex justify-center items-center">
-                                <div
-                                  key={i}
-                                  className="w-[50vw] sm:w-[90vw] my-4 rounded-lg overflow-hidden shadow-lg px-3 py-3 sm:pt-0 p-10 bg-[#FFFCF9]"
-                                >
-                                  <div className="mt-10 px-5">
-                                    <h2 className="text-2xl font-bold mb-4 border-black border-b pb-5 text-[#503526]">
-                                      {d.title}
-                                    </h2>
-                                    <div
-                                      className="h-[45vh] mx-auto text-[#999999]"
-                                      dangerouslySetInnerHTML={{
-                                        __html: d.content.replace(
-                                          /\n/g,
-                                          '<br>',
-                                        ),
-                                      }}
-                                    ></div>
-                                  </div>
-                                </div>
-                              </div>
-                            </div>
-                          </div>
+                         <ModalContent
+                          bookData={publicReviews}
+                          data={publicReviews[i]}
+                          sessionUserId={session.data?.user.id}
+                          handleRemove={() => {}}
+                     />
                         </CustomModal>
                       )}
                       {/* 모든 리뷰 */}
