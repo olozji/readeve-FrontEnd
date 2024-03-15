@@ -6,6 +6,7 @@ import LoginBtn from "./components/buttons/LoginButton";
 import LogoutButton from "./components/buttons/LogoutButton";
 import LayOut from "./components/Layout/Page";
 import { Noto_Sans_KR } from 'next/font/google'; 
+import Head from "next/head";
 
 const notoSansKr = Noto_Sans_KR({
   weight: ['400'],
@@ -24,10 +25,16 @@ export default function RootLayout({
 }) {
   return (
     <html lang="en">
+       <Head>
+        <title>읽는곳곳</title>
+        <meta name="description" content="독후감을 작성하고 공유하는 지도 서비스입니다." />
+        <meta property="og:title" content="나만의 독후감 지도" />
+        <meta property="og:description" content="독후감을 작성하고 공유하는 지도 서비스입니다." />
+        <meta property="og:image" content="/public/images/mainTitle.png" />
+      </Head>
       <body className={notoSansKr.className}>
       <RecoilRootProvider>
         <LayOut>
-          
           {children} 
         <script type="text/javascript" src="//dapi.kakao.com/v2/maps/sdk.js?appkey=ed0400bf5dc9c6b6a4e99d63d27799a4&autoload=false&libraries=services"></script>
         </LayOut>

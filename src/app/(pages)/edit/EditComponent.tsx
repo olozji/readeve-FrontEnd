@@ -34,6 +34,7 @@ const Editor = ({editReviewId}: PropType) => {
   const [showMap, setShowMap] = useState(false)
   const [selectedPlace, setSelectedPlace] = useState('')
   const [editDefault, setEditDefault] = useState<any>({});
+  const [editedReview, setEditedReview] = useState<any>(null);
   const [InputText, setInputText] = useState('')
   const [isPrivate, setIsPrivate] = useState(true)
   const [isPrivatePlace, setIsPrivatePlace] = useState(true)
@@ -195,7 +196,7 @@ const Editor = ({editReviewId}: PropType) => {
     const postData = async () => {
       try {
         const response = await axios.post(
-          'https://api.bookeverywhere.site/api/write',
+          `https://api.bookeverywhere.site/api/write/${editedReview.reviewId}`,
           data,
         )
         console.log(data)
@@ -215,7 +216,8 @@ const Editor = ({editReviewId}: PropType) => {
         } else if (Object.keys(bookInfo).length === 0) {
           setAlertMessage('책을 등록해주세요!')
           // TODO:독후감 내용이 없을 때 안 올라가야대는데 올라가네요 ㅜㅜ 로컬환경에서는 작동하는데 배포환경에서는 작동 안 해요 ㅜ
-        } else if (content.length===0) {
+          //TODO: 배포된 환경에서 안올라가야 하는데 올라간다는 부분 수정해보았는데 잘 동작할지는 모르겠어요..!ㅜㅜ
+        } else if (content.trim() === '') {
           setAlertMessage('내용을 등록해주세요!')
         }
         else if (content.length > 1500) {
@@ -228,6 +230,7 @@ const Editor = ({editReviewId}: PropType) => {
     }
     postData()
   }
+  
   const handleCloseAlert= () => {
     setShowAlert(false);
   };

@@ -136,10 +136,10 @@ const AllReviewPage = () => {
             </div>
             <div className="grid gap-4 md:grid-cols-1 lg:grid-cols-1 lg:pt-20">
               {publicReviews.length === 0 ? (
-                <div className="pt-4 lg:pt-5 pb-4 lg:pb-8 px-4 xl:px-2 xl:container mx-auto">
+                <div className="blank pt-4 lg:pt-5 pb-4 lg:pb-8 px-4 xl:px-2 xl:container mx-auto">
                   <div className="pt-16">
-                    <div className="pt-4 lg:pt-5 pb-4 lg:pb-8 px-4 xl:px-2 xl:container mx-auto">
-                      <h1 className="text-4xl">등록된 리뷰가 없습니다</h1>
+                    <div className="mx-auto">
+                      <h1 className="text-3xl sm:text-sm">등록된 리뷰가 없습니다</h1>
                     </div>
                   </div>
                 </div>

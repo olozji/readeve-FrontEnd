@@ -44,9 +44,12 @@ const NavBar = () => {
         {/* 로고와 햄버거 아이콘 */}
         <div className="flex items-center menuLogo">
           {/* 로고 */}
-          <h1 className="self-center justify-start whitespace-nowrap">
+          <h1 className="self-center justify-start whitespace-nowraps">
             <Link href="/">
-              <Image src={NavLogo} alt="Logo" />
+              <Image 
+                src={NavLogo} 
+                alt="Logo" 
+                />
             </Link>
           </h1>
 

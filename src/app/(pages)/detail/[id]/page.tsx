@@ -45,7 +45,7 @@ const Detail = (props: PropType) => {
 
   return (
     <><NavBar />
-      <section className={`bg-[#F1E5CF] mx-auto h-screen`}>
+      <section className={`bg-[#F1E5CF] mx-auto h-screen blank`}>
       {/* 램프&내 서재 */}
       <div className="grid relative mx-auto justify-center text-center mb-10">
         <Image
