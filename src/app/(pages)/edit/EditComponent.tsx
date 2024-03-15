@@ -206,7 +206,7 @@ const Editor = ({ editReviewId }: PropType) => {
 
     const postData = async () => {
       try {
-        const response = await axios.post(
+        const response = await axios.put(
           `https://api.bookeverywhere.site/api/write/${editReviewId}`,
           data,
         )
