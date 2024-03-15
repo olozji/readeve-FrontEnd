@@ -71,8 +71,8 @@ const Editor = ({ editReviewId }: PropType) => {
         const editArticle = data.find((d: any) => d.reviewId == editReviewId)
         // TODO:recoil상태를 비동기로 업데이트 할 수 없어서 selector 이용해서 비동기 요청 보내거나
         // EditComponent 에서는 원래 게시글 데이터를 useState로 저장해서 보여주고 바뀌는 부분만 post 요청 보내는 방식으로 구현해야 할 거 같아요
-        setEditDefault(editArticle)
-        console.log(`수정할 리뷰의 장소:${editArticle.pinRespDto}`)
+
+        console.log(`수정할 리뷰의 장소:${JSON.stringify(editArticle)}`);
         if (editArticle) {
           setTitleInfo(editArticle.title)
           setPlaceInfo(editArticle.pinRespDto)
@@ -82,8 +82,6 @@ const Editor = ({ editReviewId }: PropType) => {
         } else {
           console.error('Review not found:', editReviewId);
         }
-       
-        // updateRecoilState(data);
 
         
       } catch (error) {
@@ -91,18 +89,7 @@ const Editor = ({ editReviewId }: PropType) => {
       }
     }
   }
-  // const updateRecoilState = (data: any) => {
 
-  //   console.log(`수정할 리뷰 함수 안:${editArticle}`);
-
-  //   // Recoil 상태를 설정하기 위한 함수를 정의합니다.
-  //   setTitleInfo(editArticle.title);
-  //   setPlaceInfo(editArticle.pinRespDto);
-  //   setBookInfo(editArticle.bookRespDto);
-  //   setContent(editArticle.content);
-  //   setTagInfo(editArticle.tags);
-  //   console.log(`함수 내부 장소:${placeInfo}`)
-  // };
   let user: any = session.data?.user
 
   const handleSearchMap = useCallback((e: any) => {
@@ -220,7 +207,7 @@ const Editor = ({ editReviewId }: PropType) => {
     const postData = async () => {
       try {
         const response = await axios.post(
-          `https://api.bookeverywhere.site/api/write/${editedReview.reviewId}`,
+          `https://api.bookeverywhere.site/api/write/${editReviewId}`,
           data,
         )
         console.log(data)
