@@ -66,8 +66,9 @@ const Editor = ({ editReviewId }: PropType) => {
         )
         const data = response.data.data
         console.log(`유저의 모든 데이터;${data}`)
-        console.log('게시글 id'+editReviewId)
-        const editArticle = data.find((d: any) => d.reviewId === editReviewId)
+        console.log('게시글 id' + editReviewId)
+        console.log('첫번째게시글 리뷰아이디'+data[0].reviewId,isNaN(data.reviewId))
+        const editArticle = data.find((d: any) => d.reviewId == editReviewId)
         // TODO:recoil상태를 비동기로 업데이트 할 수 없어서 selector 이용해서 비동기 요청 보내거나
         // EditComponent 에서는 원래 게시글 데이터를 useState로 저장해서 보여주고 바뀌는 부분만 post 요청 보내는 방식으로 구현해야 할 거 같아요
         setEditDefault(editArticle)
