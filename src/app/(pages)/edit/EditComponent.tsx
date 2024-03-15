@@ -69,11 +69,7 @@ const Editor = ({editReviewId}: PropType) => {
         // TODO:recoil상태를 비동기로 업데이트 할 수 없어서 selector 이용해서 비동기 요청 보내거나
         // EditComponent 에서는 원래 게시글 데이터를 useState로 저장해서 보여주고 바뀌는 부분만 post 요청 보내는 방식으로 구현해야 할 거 같아요
         setEditDefault(editArticle)
-        setTitleInfo(editArticle.title);
-        setPlaceInfo(editArticle.pinRespDto);
-        setBookInfo(editArticle.bookRespDto);
-        setContent(editArticle.content);
-        setTagInfo(editArticle.tags);
+        updateRecoilState(editArticle);
 
         console.log(editArticle);
       } catch (error) {
@@ -81,6 +77,14 @@ const Editor = ({editReviewId}: PropType) => {
       } 
     }
   }
+  const updateRecoilState = (editArticle:any) => {
+    // Recoil 상태를 설정하기 위한 함수를 정의합니다.
+    setTitleInfo(editArticle.title);
+    setPlaceInfo(editArticle.pinRespDto);
+    setBookInfo(editArticle.bookRespDto);
+    setContent(editArticle.content);
+    setTagInfo(editArticle.tags);
+  };
   let user: any = session.data?.user
 
   const handleSearchMap = useCallback((e: any) => {
@@ -344,7 +348,7 @@ const Editor = ({editReviewId}: PropType) => {
             <div className="px-8 py-3 flex gap-5 items-start sm:px-2">
               <h4 className="px-5 font-extrabold sm:px-0 sm:text-xs">도서</h4>
               <div>
-                <BookSearch edit={reviewBook.title }></BookSearch>
+                <BookSearch edit={reviewBook?reviewBook.title:'' }></BookSearch>
                 {bookInfo&&bookInfo.title && (
                   <div className="justify-items-start pt-4 px-5 sm:px-0">
                     <img
