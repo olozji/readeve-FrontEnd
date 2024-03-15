@@ -71,7 +71,7 @@ const Editor = ({editReviewId}: PropType) => {
         setEditDefault(editArticle)
         updateRecoilState(data);
 
-        console.log(editArticle);
+        console.log(`수정할 리뷰:${editArticle}`);
       } catch (error) {
         console.error('Error fetching data:', error);
       } 
@@ -79,13 +79,15 @@ const Editor = ({editReviewId}: PropType) => {
   }
   const updateRecoilState = (data: any) => {
     let editArticle = data.filter((d: any) => d.reviewId === editReviewId)
+    console.log(`수정할 리뷰 함수 안:${editArticle}`);
+
     // Recoil 상태를 설정하기 위한 함수를 정의합니다.
     setTitleInfo(editArticle.title);
     setPlaceInfo(editArticle.pinRespDto);
     setBookInfo(editArticle.bookRespDto);
     setContent(editArticle.content);
     setTagInfo(editArticle.tags);
-    console.log('updateRecoilState 함수')
+    console.log(`함수 내부 장소:${placeInfo}`)
   };
   let user: any = session.data?.user
 
