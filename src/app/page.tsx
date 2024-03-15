@@ -331,7 +331,7 @@ export default function Home() {
                    <span className='py-1 pl-5 w-[10vw] font-bold sm:text-xs sm:w-[20vw]'>{index + 1}위</span>
                    <span className='py-1 gap-4 w-[30vw] font-bold sm:text-xs sm:w-[50vw]'>{place.name}</span>
                    <div className='flex'>
-                   <span className='relative flex w-[40vw] py-1 px-3 text-white  bg-gradient-to-r from-[#FFD6CD] to-[#E67D67] rounded-l-2xl sm:text-xs sm:w-[30vw]'>
+                   <span className='relative flex w-[30vw] py-1 px-3 text-white  bg-gradient-to-r from-[#FFD6CD] to-[#E67D67] rounded-l-2xl sm:text-xs sm:w-[30vw]'>
                      <div className='flex justify-between absolute right-2 gap-4'>
                     {index === 0 && (
                       <>
