@@ -366,6 +366,7 @@ export default function Home() {
                           data={publicReviews[i]}
                           sessionUserId={session.data?.user.id}
                           handleRemove={() => {}}
+                          closeModal={() => openModal(i)}
                      />
                         </CustomModal>
                       )}

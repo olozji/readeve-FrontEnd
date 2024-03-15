@@ -1,13 +1,15 @@
 import React from 'react'
 import Image from 'next/image';
-import privateMarker from '/public/images/privateMarker.png'
 import Link from 'next/link';
+import privateMarker from '/public/images/privateMarker.png'
+import closeIcon from '/public/images/closeIcon.png';
 
 interface ModalContentProps {
   bookData: any;
   data: any;
   sessionUserId: string | undefined;
   handleRemove: (isbn: string) => void;
+  closeModal: () => void;
 }
 
 const ModalContent: React.FC<ModalContentProps> = ({
@@ -15,6 +17,7 @@ const ModalContent: React.FC<ModalContentProps> = ({
   data,
   sessionUserId,
   handleRemove,
+  closeModal
 }) => {
   const formatDateToYYMMDD = (isoDateString: string) => {
     const date = new Date(isoDateString)
@@ -26,6 +29,12 @@ const ModalContent: React.FC<ModalContentProps> = ({
   return (
     <div className="">
       <div className="px-8 py-8">
+        <Image
+          src={closeIcon}
+          alt='closeIcon'
+          className='float-right cursor-pointer'
+          onClick={closeModal}
+        />
         <div className="flex sm:flex-col justify-center items-center">
           <img
             src={
