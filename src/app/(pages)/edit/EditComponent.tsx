@@ -90,6 +90,8 @@ const Editor = ({ editReviewId }: PropType) => {
             thumbnail: editArticle.bookRespDto.thumbnail,
             authors:editArticle.bookRespDto.author,
           }
+          const selectedTags = editArticle.tags.filter((tag: any) => tag.selected).map((tag: any) => tag.content);
+          setSelectedTag(selectedTags)
           setPlaceInfo(editPlace)
           setBookInfo(editBook)
           setContent(editArticle.content)
@@ -274,8 +276,8 @@ const Editor = ({ editReviewId }: PropType) => {
 
   useEffect(() => {
     setTagData(tagInfo)
-    const selectedTags = tagData.filter((tag: any) => tag.selected).map((tag: any) => tag.content);
-    setSelectedTag(selectedTags)
+    
+    
 
   }, [tagInfo])
 
