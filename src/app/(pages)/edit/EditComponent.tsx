@@ -93,6 +93,7 @@ const Editor = ({ editReviewId }: PropType) => {
           const selectedTags = editArticle.tags.filter((tag: any) => tag.selected).map((tag: any) => tag.content);
           setSelectedTag(selectedTags)
           setPlaceInfo(editPlace)
+          console.log('장소 정보'+JSON.stringify(placeInfo))
           setBookInfo(editBook)
           setContent(editArticle.content)
           setTagInfo(editArticle.tags)
@@ -216,7 +217,7 @@ const Editor = ({ editReviewId }: PropType) => {
         title: bookInfo.title,
         thumbnail: bookInfo.thumbnail,
         isComplete: bookInfo.isComplete,
-        author: bookInfo.authors ? bookInfo.authors[0] : null,
+        author: bookInfo.authors ? typeof bookInfo.authors === 'string'?bookInfo.authors: bookInfo.authors[0] : null,
       },
       tags: selectedTag,
       content: content,
