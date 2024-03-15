@@ -7,11 +7,10 @@ import mapSearchIcon from '/public/images/mapSearchIcon.png'
 import Image from 'next/image'
 
 interface BookType {
-  title: string
-  thumbnail: string
+ edit?:any
 }
 
-export const BookSearch = () => {
+export const BookSearch = ({edit}:BookType) => {
   const [bookName, setBookName] = useState<string>('')
   const [page, setPage] = useState(1)
   const [last, setLast] = useState(1)
@@ -125,7 +124,7 @@ export const BookSearch = () => {
         ref={inputRef}
         type="text"
         placeholder="책 제목을 입력해주세요"
-        value={selectedBook?selectedBook.title:''}
+        value={bookInfo?bookInfo.title:selectedBook?selectedBook.title:''}
         onClick={() => setModalOpen(true)}
         onChange={(e) => setBookName(e.target.value)}
         onKeyDown={handleKeyDown}

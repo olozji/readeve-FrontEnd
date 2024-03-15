@@ -25,28 +25,31 @@ import pen from 'public/images/Pen.png'
 import isPrivatedIcon from '/public/images/isPrivatedIcon.png'
 import isSharededIcon from '/public/images/isSharedIcon.png'
 import LoadingScreen from '@/app/components/loadingScreen'
-import CustomAlert from '@/app/components/alert';
+import CustomAlert from '@/app/components/alert'
 export interface PropType {
-  editReviewId:number
+  editReviewId: number
 }
-const Editor = ({editReviewId}: PropType) => {
+const Editor = ({ editReviewId }: PropType) => {
   const [content, setContent] = useState('')
   const [showMap, setShowMap] = useState(false)
   const [selectedPlace, setSelectedPlace] = useState('')
-  const [editDefault, setEditDefault] = useState<any>({});
-  const [editedReview, setEditedReview] = useState<any>(null);
+  const [editDefault, setEditDefault] = useState<any>({})
+  const [editedReview, setEditedReview] = useState<any>(null)
   const [InputText, setInputText] = useState('')
   const [isPrivate, setIsPrivate] = useState(true)
   const [isPrivatePlace, setIsPrivatePlace] = useState(true)
   const [tagCategory] = useState(['분위기', '서비스/모임', '시설/기타'])
-  const [showAlert, setShowAlert] = useState(false);
-  const [showQAlert, setShowQAlert] = useState(false);
-  const [alertMessage, setAlertMessage] = useState('');
+  const [showAlert, setShowAlert] = useState(false)
+  const [showQAlert, setShowQAlert] = useState(false)
+  const [alertMessage, setAlertMessage] = useState('')
   const [tagData, setTagData] = useState<any>([])
   const [selectedTag, setSelectedTag] = useState<string[]>([])
   const [allDeselect, setAllDeselect] = useState(false)
+  const [reviewTitle, setReviewTitle] = useState('')
+  const [reviewPlace, setReviewPlace] = useState<any>({})
+  const [reviewBook, setReviewBook] = useState<any>({})
   const [titleInfo, setTitleInfo] = useRecoilState<string>(titleState)
-  const [bookInfo,setBookInfo] = useRecoilState<any>(bookState)
+  const [bookInfo, setBookInfo] = useRecoilState<any>(bookState)
   const [tagInfo, setTagInfo] = useRecoilState<any>(tagState)
   const [placeInfo, setPlaceInfo] = useRecoilState<any>(placeState)
   const [allDataInfo, setAllDataInfo] = useRecoilState<any>(allDataState)
@@ -54,30 +57,58 @@ const Editor = ({editReviewId}: PropType) => {
   const [allReviewData, setAllReviewData] =
     useRecoilState<any>(allReviewDataState)
   let session: any = useSession()
-  
+
   const fetchData = async () => {
     if (session.data.user.id) {
       try {
         const response = await axios.get(
           `https://api.bookeverywhere.site/api/data/all/${session.data.user.id}`,
-        );
-        const data = response.data.data;
-        let editArticle = data.filter((d: any) => d.reviewId === editReviewId)
+        )
+        const data = response.data.data
+        console.log(`유저의 모든 데이터;${data}`)
+        console.log('게시글 id' + editReviewId)
+        console.log('첫번째게시글 리뷰아이디'+data[0].reviewId,isNaN(data.reviewId))
+        const editArticle = data.find((d: any) => d.reviewId == editReviewId)
         // TODO:recoil상태를 비동기로 업데이트 할 수 없어서 selector 이용해서 비동기 요청 보내거나
         // EditComponent 에서는 원래 게시글 데이터를 useState로 저장해서 보여주고 바뀌는 부분만 post 요청 보내는 방식으로 구현해야 할 거 같아요
-        setEditDefault(editArticle)
-        setTitleInfo(editArticle.title);
-        setPlaceInfo(editArticle.pinRespDto);
-        setBookInfo(editArticle.bookRespDto);
-        setContent(editArticle.content);
-        setTagInfo(editArticle.tags);
 
-        console.log(editArticle);
+        console.log(`수정할 리뷰의 장소:${JSON.stringify(editArticle)}`);
+        if (editArticle) {
+          setTitleInfo(editArticle.title)
+          let editPlace = {
+            place_name: editArticle.pinRespDto.name,
+            road_address_name: editArticle.pinRespDto.address,
+            y: editArticle.pinRespDto.y,
+            x: editArticle.pinRespDto.x,
+            place_url: editArticle.pinRespDto.url,
+            id: editArticle.pinRespDto.placeId,
+            isPrivate:editArticle.pinRespDto.private
+          }
+          let editBook = {
+            isbn: editArticle.bookRespDto.isbn,
+            title: editArticle.bookRespDto.title,
+            thumbnail: editArticle.bookRespDto.thumbnail,
+            authors:editArticle.bookRespDto.author,
+          }
+          const selectedTags = editArticle.tags.filter((tag: any) => tag.selected).map((tag: any) => tag.content);
+          setSelectedTag(selectedTags)
+          setPlaceInfo(editPlace)
+          console.log('장소 정보'+JSON.stringify(placeInfo))
+          setBookInfo(editBook)
+          setContent(editArticle.content)
+          setTagInfo(editArticle.tags)
+          setEditDefault(editArticle)
+        } else {
+          console.error('Review not found:', editReviewId);
+        }
+
+        
       } catch (error) {
-        console.error('Error fetching data:', error);
-      } 
+        console.error('Error fetching data:', error)
+      }
     }
   }
+
   let user: any = session.data?.user
 
   const handleSearchMap = useCallback((e: any) => {
@@ -90,7 +121,6 @@ const Editor = ({editReviewId}: PropType) => {
       inputRef.current.focus() // Input에 focus() 호출
     }
   }, [isPrivatePlace])
-
 
   const inputRef = useRef<HTMLInputElement | null>(null)
 
@@ -179,7 +209,7 @@ const Editor = ({editReviewId}: PropType) => {
         y: placeInfo.y,
         x: placeInfo.x,
         address: placeInfo.road_address_name,
-        isPrivate: isPrivatePlace,
+        isPrivate: placeInfo?placeInfo.isPrivate:isPrivatePlace,
         url: placeInfo.place_url,
       },
       bookRespDto: {
@@ -187,7 +217,7 @@ const Editor = ({editReviewId}: PropType) => {
         title: bookInfo.title,
         thumbnail: bookInfo.thumbnail,
         isComplete: bookInfo.isComplete,
-        author: bookInfo.authors?bookInfo.authors[0]:null,
+        author: bookInfo.authors ? typeof bookInfo.authors === 'string'?bookInfo.authors: bookInfo.authors[0] : null,
       },
       tags: selectedTag,
       content: content,
@@ -195,8 +225,8 @@ const Editor = ({editReviewId}: PropType) => {
 
     const postData = async () => {
       try {
-        const response = await axios.post(
-          `https://api.bookeverywhere.site/api/write/${editedReview.reviewId}`,
+        const response = await axios.put(
+          `https://api.bookeverywhere.site/api/write/${editReviewId}`,
           data,
         )
         console.log(data)
@@ -204,14 +234,13 @@ const Editor = ({editReviewId}: PropType) => {
         setAllDataInfo({})
         setTitleInfo('')
         setPlaceInfo({})
-        window.location.href = `/mypage/${session.data?.user.id}` 
-
+        window.location.href = `/mypage/${session.data?.user.id}`
       } catch (error) {
         console.log(data)
         console.log(showAlert)
         if (titleInfo === '') {
           setAlertMessage('제목을 입력해주세요!')
-        } else if(Object.keys(placeInfo).length === 0){
+        } else if (Object.keys(placeInfo).length === 0) {
           setAlertMessage('장소를 등록해주세요!')
         } else if (Object.keys(bookInfo).length === 0) {
           setAlertMessage('책을 등록해주세요!')
@@ -219,59 +248,62 @@ const Editor = ({editReviewId}: PropType) => {
           //TODO: 배포된 환경에서 안올라가야 하는데 올라간다는 부분 수정해보았는데 잘 동작할지는 모르겠어요..!ㅜㅜ
         } else if (content.trim() === '') {
           setAlertMessage('내용을 등록해주세요!')
-        }
-        else if (content.length > 1500) {
+        } else if (content.length > 1500) {
           setAlertMessage('내용이 1500자 이상입니다!')
         }
         setShowAlert(true)
-        // console.error('Error:', error)
+        console.error('Error:', error)
         console.log(showAlert)
       }
     }
     postData()
   }
-  
-  const handleCloseAlert= () => {
-    setShowAlert(false);
-  };
-  const handleCloseQAlert= () => {
-    setShowQAlert(false);
-  };
-  
-  useEffect(() => {
-    if (tagInfo.length <= 10) {
-      fetchTag()
-    }
-  }, [])
+
+  const handleCloseAlert = () => {
+    setShowAlert(false)
+  }
+  const handleCloseQAlert = () => {
+    setShowQAlert(false)
+  }
+
+  // useEffect(() => {
+  //   if (tagInfo.length <= 10) {
+  //     fetchTag()
+  //   }
+  // }, [])
   useEffect(() => {
     fetchData()
   }, [])
-  
+
   useEffect(() => {
     setTagData(tagInfo)
+    
+    
+
   }, [tagInfo])
-  
+
   useEffect(() => {
-    if (editDefault) {
-      setTitleInfo(editDefault.title);
-      setPlaceInfo(editDefault.pinRespDto);
-      setBookInfo(editDefault.bookRespDto);
-      setContent(editDefault.content);
-      setTagInfo(editDefault.tags);
-    }
-  }, [editDefault, setTitleInfo, setPlaceInfo, setBookInfo, setContent, setTagInfo]);
+    setTagInfo(editDefault.tags)
+  }, [editDefault])
 
   return (
     <>
-      
-      
       <div className="bg-[#FAF2E5] flex justify-center box-border min-h-full">
         <div className="pt-20 sm:pt-10  ">
           <header className="h-10 text-center">
             <h1 className="myCustomText text-3xl text-black">독후감 작성</h1>
           </header>
-          {showAlert && <CustomAlert message={alertMessage} onClose={handleCloseAlert} />}
-          {showQAlert && <CustomAlert message={alertMessage} onClose={handleCloseQAlert} isActive={true} active={handleAllData} />}
+          {showAlert && (
+            <CustomAlert message={alertMessage} onClose={handleCloseAlert} />
+          )}
+          {showQAlert && (
+            <CustomAlert
+              message={alertMessage}
+              onClose={handleCloseQAlert}
+              isActive={true}
+              active={handleAllData}
+            />
+          )}
           <section className="py-10 px-10 sm:py-0 sm:mx-0">
             <div className="px-5 sm:px-0 sm:py-4 py-8 flex rounded-t-md  ">
               <div className="flex px-3 max-w-[60vw] sm:max-w-full sm:px-0 ">
@@ -279,7 +311,7 @@ const Editor = ({editReviewId}: PropType) => {
                   placeholder="제목"
                   ref={inputRef}
                   className="inline-block  w-[60rem] sm:w-[72vw] h-[2.8rem] text-base px-3 rounded-md bg-[#F9F9F9] placeholder-[#A08A7E]"
-                  value={titleInfo}
+                  value={titleInfo !== '' ? titleInfo : reviewTitle}
                   onChange={handleTitle}
                 />
               </div>
@@ -291,7 +323,7 @@ const Editor = ({editReviewId}: PropType) => {
                   placeholder="독서한 장소를 입력해주세요"
                   ref={inputRef}
                   className="inline-block w-[35rem] h-[2rem] text-xs/[10px]  px-3 rounded-2xl bg-[#F9F9F9] placeholder-[#A08A7E]"
-                  value={placeInfo?placeInfo.place_name:''}
+                  value={placeInfo ? placeInfo.place_name : ''}
                   onClick={handleSearchMap}
                 />
                 {showMap && (
@@ -344,7 +376,7 @@ const Editor = ({editReviewId}: PropType) => {
               <h4 className="px-5 font-extrabold sm:px-0 sm:text-xs">도서</h4>
               <div>
                 <BookSearch></BookSearch>
-                {bookInfo&&bookInfo.title && (
+                {bookInfo && bookInfo.title && (
                   <div className="justify-items-start pt-4 px-5 sm:px-0">
                     <img
                       src={
@@ -407,25 +439,26 @@ const Editor = ({editReviewId}: PropType) => {
                       >
                         <div className="text-start mb-4">{category}</div>
 
-                        {tagData&&tagData
-                          .filter((t: any) => t.category === category)
-                          .map((tag: any, i: number) => (
-                            <div className="flex">
-                              <div
-                                key={i}
-                                className={`box-border flex justify-center items-center px-6 py-3
+                        {tagData &&
+                          tagData
+                            .filter((t: any) => t.category === category)
+                            .map((tag: any, i: number) => (
+                              <div className="flex">
+                                <div
+                                  key={i}
+                                  className={`box-border flex justify-center items-center px-6 py-3
                  mr-2 mb-2 border rounded-[8px] text-xs/[10px] 
                  ${
                    selectedTag.includes(tag.content)
                      ? 'bg-[#FFE5E5] text-[#E57C65] border-[#E57C65]'
                      : 'bg-white  border-[#EAEAEA]'
                  }`}
-                                onClick={() => handleTagClick(tag.content)}
-                              >
-                                {tag.content}
+                                  onClick={() => handleTagClick(tag.content)}
+                                >
+                                  {tag.content}
+                                </div>
                               </div>
-                            </div>
-                          ))}
+                            ))}
                       </div>
                     ))}
                     <div className="flex flex-col">
