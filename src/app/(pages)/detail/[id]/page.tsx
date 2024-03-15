@@ -46,7 +46,7 @@ const Detail = (props: PropType) => {
 
   return (
     <><NavBar />
-      <section className={`bg-[#F1E5CF] px-[15vw] sm:px-0 mx-auto h-screen blank`}>
+      <section className={`bg-[#F1E5CF] px-[15vw] sm:px-0 mx-auto h-screen`}>
       <div className='absolute py-20 sm:hidden'>
         <GoBackButton/> 
       </div>
@@ -65,7 +65,9 @@ const Detail = (props: PropType) => {
         </div>
        
    {myData.length > 0 && (
+    <div className="overflow-y-auto max-h-[90vh]">
       <BookLayoutItem bookId={props.params.id} propsData={myData} />
+      </div>
         )}
          </section>
       </>
