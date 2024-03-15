@@ -283,7 +283,6 @@ const Editor = ({ editReviewId }: PropType) => {
   }, [tagInfo])
 
   useEffect(() => {
-    setPlaceInfo(editDefault.pinRespDto)
     setTagInfo(editDefault.tags)
   }, [editDefault])
 
