@@ -180,7 +180,7 @@ const MyPageComponent = (props: ParamType) => {
             {myPageData.length !== 0 ? (
               <div>
                 <div className="flex justify-between gap-2 pb-[3%]">
-                  <h1>나만의 지도</h1>
+                  <h1 className='sm:text-sm font-bold'>나만의 지도</h1>
                   <div className="flex  items-center gap-3">
                     <span className="inline-flex items-center justify-center max-h-10 rounded-lg gap-1 bg-[#F8F3ED] px-3 py-1 text-xs font-medium text-[#5F5F5F]">
                       <Image
@@ -217,19 +217,19 @@ const MyPageComponent = (props: ParamType) => {
         )}
 
         <div className="mt-10 mx-auto max-w-7xl sm:px-5">
-          <h1 className="text-xl font-display font-bold">최근 기록순</h1>
+          <h1 className="text-xl font-display font-bold sm:text-md">최근 기록순</h1>
           {myPageData.length === 0 ? (
             <div className="pt-4 lg:pt-5 pb-4 lg:pb-8 px-4 xl:px-2 xl:container mx-auto">
               <section className="pt-16">
                 <div className="pt-4 lg:pt-5 pb-4 lg:pb-8 px-4 xl:px-2 xl:container mx-auto">
-                  <h1 className="text-xl">
+                  <h1 className="text-xl sm:text-md">
                     등록된 리뷰가 없어요. 리뷰를 등록해보세요!
                   </h1>
                 </div>
               </section>
             </div>
           ) : (
-            <div className="flex justify-between items-center">
+            <div className="flex justify-between items-center sm:justify-center">
               <div className="grid sm:grid-cols-1 grid-cols-3 justify-center items-center ">
                 {myPageData.slice(0, 3).map((d: any, i: number) => (
                   <Link
@@ -240,7 +240,7 @@ const MyPageComponent = (props: ParamType) => {
                       <div className="w-[100%] h-[15vh] rounded-2xl">
                         <div className="mx-auto h-full border rounded-2xl shadow-xl bg-[#fcfcfc]">
                           <div className="text-left">
-                            <div className="text-xl font-display font-bold px-5 py-5">
+                            <div className="text-xl font-display font-bold px-5 py-5 sm:text-md">
                               {d.bookRespDto?.title}
                             </div>
                             <div className="px-5 pb-5">
