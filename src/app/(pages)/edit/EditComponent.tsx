@@ -69,7 +69,7 @@ const Editor = ({editReviewId}: PropType) => {
         // TODO:recoil상태를 비동기로 업데이트 할 수 없어서 selector 이용해서 비동기 요청 보내거나
         // EditComponent 에서는 원래 게시글 데이터를 useState로 저장해서 보여주고 바뀌는 부분만 post 요청 보내는 방식으로 구현해야 할 거 같아요
         setEditDefault(editArticle)
-        updateRecoilState(editArticle);
+        updateRecoilState(data);
 
         console.log(editArticle);
       } catch (error) {
@@ -77,13 +77,15 @@ const Editor = ({editReviewId}: PropType) => {
       } 
     }
   }
-  const updateRecoilState = (editArticle:any) => {
+  const updateRecoilState = (data: any) => {
+    let editArticle = data.filter((d: any) => d.reviewId === editReviewId)
     // Recoil 상태를 설정하기 위한 함수를 정의합니다.
     setTitleInfo(editArticle.title);
     setPlaceInfo(editArticle.pinRespDto);
     setBookInfo(editArticle.bookRespDto);
     setContent(editArticle.content);
     setTagInfo(editArticle.tags);
+    console.log('updateRecoilState 함수')
   };
   let user: any = session.data?.user
 
@@ -259,6 +261,7 @@ const Editor = ({editReviewId}: PropType) => {
   }, [tagInfo])
   
   useEffect(() => {
+    console.log('장소'+placeInfo)
     setReviewTitle(editDefault.title);
         setReviewPlace(editDefault.pinRespDto);
         setReviewBook(editDefault.bookRespDto);
@@ -296,7 +299,7 @@ const Editor = ({editReviewId}: PropType) => {
                   placeholder="독서한 장소를 입력해주세요"
                   ref={inputRef}
                   className="inline-block w-[35rem] h-[2rem] text-xs/[10px]  px-3 rounded-2xl bg-[#F9F9F9] placeholder-[#A08A7E]"
-                  value={placeInfo?placeInfo.place_name:reviewPlace.place_name}
+                  value={placeInfo?placeInfo.place_name:''}
                   onClick={handleSearchMap}
                 />
                 {showMap && (
@@ -348,7 +351,7 @@ const Editor = ({editReviewId}: PropType) => {
             <div className="px-8 py-3 flex gap-5 items-start sm:px-2">
               <h4 className="px-5 font-extrabold sm:px-0 sm:text-xs">도서</h4>
               <div>
-                <BookSearch edit={reviewBook?reviewBook.title:'' }></BookSearch>
+                <BookSearch ></BookSearch>
                 {bookInfo&&bookInfo.title && (
                   <div className="justify-items-start pt-4 px-5 sm:px-0">
                     <img
