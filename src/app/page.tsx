@@ -77,6 +77,29 @@ export default function Home() {
     setCurrentIndex(index)
   }
 
+  const getTopVisitedPlaces = () => {
+    // publicReviews 에서 가장 많이 중복된 장소명를 기준으로 카운트
+    const visitCounts = publicReviews.reduce((counts:any, review:any) => {
+      console.log(publicReviews);
+      console.log(allReviewData);
+      const placeName = review.pinRespDto.name
+      counts[placeName] = (counts[placeName] || 0) + 1;
+      return counts;
+    
+    }, {});
+  
+    // 방문 횟수를 기준으로 내림차순으로 정렬
+    const sortedPlace = Object.keys(visitCounts).sort((a, b) => visitCounts[b] - visitCounts[a]);
+  
+    return sortedPlace.slice(0, 3).map(placeName => ({
+      name: placeName,
+      visitCount: visitCounts[placeName]
+    }));
+  }
+
+  const topVisitedPlaces = getTopVisitedPlaces();
+  
+
   const openModal = (idx: any) => {
     let copy = []
     for (let i = 0; i < isModalOpen.length; i++) {
@@ -172,11 +195,19 @@ export default function Home() {
     }
   }, [allReviewData])
 
+
   useEffect(() => {
     // allReviewData 상태가 업데이트되면서 새로운 데이터로 필터링하여 다른 상태에 반영
     const filteredData = allReviewData.filter((d: any) => !d.pinRespDto.private)
     setDocuments(filteredData)
   }, [allReviewData])
+
+  useEffect(() => {
+    const topVisitedPlaces = allReviewData.filter(
+      (item:any) => item.pinRespDto.name,
+    )
+    setPublicReviews(documents)
+  },[topVisitedPlaces])
 
   useEffect(() => {
     setMyPageData(myData)
@@ -294,39 +325,36 @@ export default function Home() {
           {/* TODO: 추후 데이터 들어가야할 부분 */}
           <div className="">
             <div className="p-5 mb-3 rounded-lg shadow-xl">
-            <div className="my-3 border-2 border-[#AE695A] rounded-lg shadow-lg">
-              <div className='flex gap-10 sm:gap-4'>
-                <span className='py-1 pl-5 font-bold'>1위</span>
-                <span className='py-1 gap-4 font-bold'>장소명</span>
-                <span className='flex w-[10rem] py-1 px-3 text-white  bg-gradient-to-r from-[#FFD6CD] to-[#E67D67] rounded-2xl'>
-                  {}명
-                  <Image
-                    src={mainLogo}
-                    alt='mainLogo'
-                    width={20}
-                    height={10}
-                    className='relative right-0'
-                  />
-                  </span>
-              </div>
-            </div>
-            <div className="my-3 border-[#AE695A] rounded-lg shadow-lg">
-              <div className='flex gap-10 sm:gap-4'>
-                <span  className='py-1 pl-5 font-bold'>2위</span>
-                <span className='py-1 gap-4 font-bold'>장소명</span>
-                <span className='w-[10rem] py-1 px-3 text-white bg-gradient-to-r from-[#FFD6CD] to-[#E67D67] rounded-2xl'>{}명</span>
-              </div>
-            </div>
-            <div className="my-3 border-[#AE695A] rounded-lg shadow-lg">
-              <div className='flex gap-10 sm:gap-4'>
-                <span  className='py-1 pl-5 font-bold'>3위</span>
-                <span className='py-1 gap-4 font-bold'>장소명</span>
-                <span className='w-[10rem] py-1 px-3 text-white bg-gradient-to-r from-[#FFD6CD] to-[#E67D67] rounded-2xl'>{}명</span>
-              </div>
+              {topVisitedPlaces.map((place, index) => (
+                 <div className="my-3 border-2 border-[#AE695A] rounded-lg shadow-lg">
+                 <div className='flex justify-between gap-10 sm:gap-4'>
+                   <span className='py-1 pl-5 w-[10vw] font-bold sm:text-xs sm:w-[20vw]'>{index + 1}위</span>
+                   <span className='py-1 gap-4 w-[30vw] font-bold sm:text-xs sm:w-[50vw]'>{place.name}</span>
+                   <div className='flex'>
+                   <span className='relative flex w-[40vw] py-1 px-3 text-white  bg-gradient-to-r from-[#FFD6CD] to-[#E67D67] rounded-l-2xl sm:text-xs sm:w-[30vw]'>
+                     <div className='flex justify-between absolute right-2 gap-4'>
+                    {index === 0 && (
+                      <>
+                      {index === 0 && `${place.visitCount}명`}
+                        <Image
+                        src={mainLogo}
+                        alt='mainLogo'
+                        width={30}
+                        height={10}
+                        className='gap-5 sm:w-[5vw]'
+                      />
+                      </>
+                    )}
+                      {index !== 0 && `${place.visitCount}명`}
+                     </div>
+                     </span>
+                   </div>
+                 </div>
+               </div>
+              ))}
             </div>
             </div>
           </div>
-        </div>
         <div className="mt-10 sm:px-5">
           <div className="flex justify-between items-center">
             <h1 className="text-2xl font-display font-bold py-10">다른 사람의 독후감을 확인해 보세요!</h1>
