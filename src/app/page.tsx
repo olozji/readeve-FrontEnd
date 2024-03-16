@@ -49,7 +49,7 @@ export default function Home() {
   const [isLoading, setIsLoading] = useState(true)
   const [sharedReview, setSharedReview] = useState(null)
 
-  const numVisibleBooks = 4
+  const numVisibleBooks = 5
 
   const [isModalOpen, setIsModalOpen] = useState<boolean[]>(
     Array(numVisibleBooks).fill(false),
@@ -278,8 +278,11 @@ export default function Home() {
             이런 장소는 어때요?
           </div>
           <div className="flex flex-wrap justify-center mb-10 text-sm">
+          <div className="p-2 cursor-pointer" onClick={handleClickNext}>
+                  &lt;
+                </div>
             {tagData.length > 0 &&
-              tagData.map((tag: any, i: number) => (
+              tagData.slice(startIdx, startIdx + numVisibleBooks).map((tag: any, i: number) => (
                 <div
                   key={i}
                   className={`box-border flex justify-center items-center px-4 py-2 my-2 mx-2 border border-gray-300 rounded-full ${isSelectedTags[i] ? 'bg-[#E57C65] text-white' : 'bg-white hover:border-[#C05555] hover:text-[#C05555]'}`}
@@ -290,6 +293,9 @@ export default function Home() {
                   {tag.content}
                 </div>
               ))}
+            <div className="p-2 cursor-pointer" onClick={handleClickNext}>
+                  &gt;
+                </div>
           </div>
 
           {documents.length !== 0 ? (
@@ -374,12 +380,10 @@ export default function Home() {
             </div>
           ) : (
             <div className="flex justify-between items-center">
-              <div className="p-2 cursor-pointer" onClick={handleClickPrev}>
-                &lt;
-              </div>
-              <div className="grid sm:grid-cols-1 sm:w-[100%] grid-cols-4 justify-center items-center">
+              
+              <div className="grid sm:grid-cols-1 sm:w-[100%] grid-cols-2 gap-4 justify-center items-center">
                 {publicReviews
-                  .slice(startIdx, startIdx + numVisibleBooks)
+                  .slice(2)
                   .map((d: any, i: number) => (
                     <div key={i} onClick={() => openModal(i)}>
                       {/* 모든리뷰 상세 모달 */}
@@ -399,7 +403,7 @@ export default function Home() {
                         </CustomModal>
                       )}
                       {/* 모든 리뷰 */}
-                      <div className="relative flex p-4 sm:px-0 w-[33vw] min-h-52 border shadow-lg rounded-2xl sm:w-full">
+                      <div className="relative flex p-6 sm:px-2 w-[45%] min-h-40 border shadow-lg rounded-2xl sm:w-full">
                           <div
                             className="bg-auto sm:min-w-[8rem] w-[12rem] bg-no-repeat bg-center rounded-2xl"
                             style={{
@@ -409,7 +413,7 @@ export default function Home() {
 
                           <div className="flex flex-col ml-2">
                             <div className="">
-                              <h1 className="font-black text-md w-[15vw] sm:text-xs">
+                              <h1 className="font-black text-xl w-[15vw] sm:text-md">
                                 {d.title}
                               </h1>
                               <div className="flex sm:max-w-[50vw] text-sm text-[#3C3C3C] items-start sm:text-xs sm:pr-2">
@@ -425,7 +429,7 @@ export default function Home() {
                             </div>
 
                             <div className="flex">
-                            <div className="py-2 sm:pr-4 text-sm text-[#767676] sm:text-xs">
+                            <div className="py-6 sm:pr-4 text-sm text-[#767676] sm:text-xs">
                                 {d.content.length === 0 ? (
                                   <div>등록된 내용이 없습니다</div>
                                 ) : (
@@ -438,7 +442,7 @@ export default function Home() {
                               </div>
                             </div>
                           </div>
-                          <div className="absolute top-4 right-4 sm:text-xs sm:bottom-2 justify-itmes-center">
+                          <div className="absolute top-6 right-4 sm:text-xs sm:bottom-2 justify-itmes-center">
                             {formatDateToYYMMDD(d.createAt)}
                           </div>
                         </div>
@@ -446,9 +450,7 @@ export default function Home() {
                   ))}
               </div>
               <div className="flex items-center justify-center">
-                <div className="p-2 cursor-pointer" onClick={handleClickNext}>
-                  &gt;
-                </div>
+              
               </div>
             </div>
           )}
