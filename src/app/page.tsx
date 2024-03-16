@@ -67,7 +67,7 @@ export default function Home() {
   const handleClickNext = () => {
     setStartIdx(
       Math.min(
-        publicReviews.length - numVisibleBooks,
+        tagData.length - numVisibleBooks,
         startIdx + numVisibleBooks,
       ),
     )
@@ -403,9 +403,9 @@ export default function Home() {
                         </CustomModal>
                       )}
                       {/* 모든 리뷰 */}
-                      <div className="relative flex p-6 sm:px-2 w-[90%] min-h-40 border shadow-lg rounded-2xl sm:w-full">
+                      <div className="relative flex p-6 sm:px-2 min-h-40 border shadow-lg rounded-2xl w-full">
                           <div
-                            className="bg-contain sm:min-w-[8rem] w-[12rem] bg-no-repeat bg-center rounded-2xl"
+                            className="bg-contain sm:min-w-[8rem] w-[8rem] bg-no-repeat bg-center rounded-3xl"
                             style={{
                               backgroundImage: `url(${d.bookRespDto?.thumbnail})`,
                             }}
@@ -416,7 +416,7 @@ export default function Home() {
                               <h1 className="font-black text-xl w-[15vw] sm:text-md">
                                 {d.title}
                               </h1>
-                              <div className="flex sm:max-w-[50vw] text-sm text-[#3C3C3C] items-start sm:text-xs sm:pr-2">
+                              <div className="flex sm:max-w-[50vw] text-xs text-[#3C3C3C] items-start sm:text-xs sm:pr-2">
                                 {d.pinRespDto.private ? (
                                   <div>독서장소: {maskName(d.writer)}님만의 장소</div>
                                 ) : (

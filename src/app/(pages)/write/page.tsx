@@ -185,7 +185,7 @@ const [showQAlert, setShowQAlert] = useState(false);
         setAllDataInfo({})
         setTitleInfo('')
         setPlaceInfo({})
-        // window.location.href = `/mypage/${session.data?.user.id}` 
+        window.location.href = `/mypage/${session.data?.user.id}` 
 
       } catch (error) {
         console.log(data)
