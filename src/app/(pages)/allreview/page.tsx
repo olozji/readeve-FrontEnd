@@ -167,7 +167,6 @@ const AllReviewPage = () => {
                             bookData={publicReviews}
                             data={publicReviews[i]}
                             sessionUserId={session.data?.user.id}
-                            handleRemove={() => {}}
                             closeModal={() => handleModal(i)}
                      />
                           </CustomModal>
