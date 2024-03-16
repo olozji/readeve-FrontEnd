@@ -375,7 +375,8 @@ const Editor = ({ editReviewId }: PropType) => {
             <div className="px-8 py-3 flex gap-5 items-start sm:px-2">
               <h4 className="px-5 font-extrabold sm:px-0 sm:text-xs">도서</h4>
               <div>
-                <BookSearch></BookSearch>
+                <div className='text-[#E57C65]'>❗️책을 수정하고 싶으시면 삭제 후 다른 책으로 등록해주세요</div>
+                {/* <BookSearch></BookSearch> */}
                 {bookInfo && bookInfo.title && (
                   <div className="justify-items-start pt-4 px-5 sm:px-0">
                     <img

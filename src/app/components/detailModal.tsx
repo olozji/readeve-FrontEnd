@@ -10,6 +10,7 @@ interface ModalContentProps {
   sessionUserId: string | undefined;
   handleRemove: (isbn: string) => void;
   closeModal: () => void;
+  isMyPage?:boolean
 }
 
 const ModalContent: React.FC<ModalContentProps> = ({
@@ -17,7 +18,8 @@ const ModalContent: React.FC<ModalContentProps> = ({
   data,
   sessionUserId,
   handleRemove,
-  closeModal
+  closeModal,
+  isMyPage
 }) => {
   const formatDateToYYMMDD = (isoDateString: string) => {
     const date = new Date(isoDateString)
@@ -104,7 +106,7 @@ const ModalContent: React.FC<ModalContentProps> = ({
           <div
             className="w-[50vw] sm:w-[90vw] my-4 rounded-lg overflow-hidden shadow-lg px-3 py-3 sm:pt-0 p-10 bg-[#FFFCF9]"
           >
-            <div className="flex relative float-end items-center gap-4">
+            {isMyPage&&<div className="flex relative float-end items-center gap-4">
               <Link href={`/edit/${data.reviewId}`}>
                 <span className="text-[#D37C7C] text-sm font-bold">수정</span>
               </Link>
@@ -124,7 +126,8 @@ const ModalContent: React.FC<ModalContentProps> = ({
                   삭제
                 </span>
 
-            </div>
+            </div>}
+            
             <div className="mt-10 px-5">
               <h2 className="text-2xl sm:text-lg font-bold mb-4 border-black border-b pb-5 text-[#503526]">
                 {data.title}
