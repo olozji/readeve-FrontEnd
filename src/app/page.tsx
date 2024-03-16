@@ -292,12 +292,12 @@ export default function Home() {
         </div>
       </div>
 
-      <div className="mx-auto max-w-5xl sm:overflow-x-auto">
+      <div className="mx-auto max-w-5xl sm:flex sm:flex-nowrap sm:overflow-x-auto">
         <div className="text-center ">
           <div className="text-2xl font-display font-bold pt-10 pb-8">
             이런 장소는 어때요?
           </div>
-          {!smallTagShow &&
+          {/* {!smallTagShow &&
             <div className="flex flex-wrap items-center justify-center mb-10 text-sm">
           <div className="p-2 cursor-pointer" onClick={handleClickPrev}>
                   &lt;
@@ -317,9 +317,9 @@ export default function Home() {
             <div className="p-2 cursor-pointer" onClick={handleClickNext}>
                   &gt;
                 </div>
-            </div>}
+            </div>} */}
           {smallTagShow &&
-          <div className="flex flex-nowrap items-center justify-center mb-10 text-sm overflow-x-auto">
+          <div className="flex items-center justify-center mb-10 text-sm overflow-x-auto">
           {tagData.length > 0 &&
             tagData.map((tag: any, i: number) => (
               <div
