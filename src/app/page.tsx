@@ -297,7 +297,7 @@ export default function Home() {
           <div className="text-2xl font-display font-bold pt-10 pb-8">
             이런 장소는 어때요?
           </div>
-          {/* {!smallTagShow &&
+          {!smallTagShow &&
             <div className="flex flex-wrap items-center justify-center mb-10 text-sm">
           <div className="p-2 cursor-pointer" onClick={handleClickPrev}>
                   &lt;
@@ -317,14 +317,14 @@ export default function Home() {
             <div className="p-2 cursor-pointer" onClick={handleClickNext}>
                   &gt;
                 </div>
-            </div>} */}
+            </div>}
           {smallTagShow &&
-          <div className="flex flex-nowrap mb-10 text-sm overflow-x-auto">
+          <div className="flex flex-nowrap min-h-[7vh] mb-10 text-sm overflow-x-auto">
           {tagData.length > 0 &&
             tagData.map((tag: any, i: number) => (
               <div
                 key={i}
-                className={`box-border flex justify-center items-center px-4 py-2 my-2 mx-2 border border-gray-300 rounded-full ${isSelectedTags[i] ? 'bg-[#E57C65] text-white' : 'bg-white hover:border-[#C05555] hover:text-[#C05555]'}`}
+                className={`box-border flex justify-center whitespace-nowrap items-center px-4 py-2 my-2 mx-2 border border-gray-300 rounded-full ${isSelectedTags[i] ? 'bg-[#E57C65] text-white' : 'bg-white hover:border-[#C05555] hover:text-[#C05555]'}`}
                 onClick={() => {
                   searchTag(i)
                 }}
