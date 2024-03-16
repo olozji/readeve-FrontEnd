@@ -274,11 +274,11 @@ export default function Home() {
 
       <div className="mx-auto max-w-5xl">
         <div className="text-center ">
-          <div className="text-2xl font-display font-bold py-10">
+          <div className="text-2xl font-display font-bold pt-10 pb-8">
             이런 장소는 어때요?
           </div>
-          <div className="flex flex-wrap justify-center mb-10 text-sm">
-          <div className="p-2 cursor-pointer" onClick={handleClickNext}>
+          <div className="flex flex-wrap items-center justify-center mb-10 text-sm">
+          <div className="p-2 cursor-pointer" onClick={handleClickPrev}>
                   &lt;
                 </div>
             {tagData.length > 0 &&
@@ -383,7 +383,7 @@ export default function Home() {
               
               <div className="grid sm:grid-cols-1 sm:w-[100%] grid-cols-2 gap-4 justify-center items-center">
                 {publicReviews
-                  .slice(2)
+                  .slice(0,2)
                   .map((d: any, i: number) => (
                     <div key={i} onClick={() => openModal(i)}>
                       {/* 모든리뷰 상세 모달 */}
@@ -403,9 +403,9 @@ export default function Home() {
                         </CustomModal>
                       )}
                       {/* 모든 리뷰 */}
-                      <div className="relative flex p-6 sm:px-2 w-[45%] min-h-40 border shadow-lg rounded-2xl sm:w-full">
+                      <div className="relative flex p-6 sm:px-2 w-[90%] min-h-40 border shadow-lg rounded-2xl sm:w-full">
                           <div
-                            className="bg-auto sm:min-w-[8rem] w-[12rem] bg-no-repeat bg-center rounded-2xl"
+                            className="bg-contain sm:min-w-[8rem] w-[12rem] bg-no-repeat bg-center rounded-2xl"
                             style={{
                               backgroundImage: `url(${d.bookRespDto?.thumbnail})`,
                             }}
