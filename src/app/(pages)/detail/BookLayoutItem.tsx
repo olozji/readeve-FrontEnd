@@ -175,7 +175,8 @@ const BookLayoutItem = ({ bookId, propsData }: bookLayoutItemType) => {
                       data={data}
                       sessionUserId={session.data?.user.id}
                       handleRemove={handleRemove}
-                      closeModal={() => handleModal(i)}
+                        closeModal={() => handleModal(i)}
+                        isMyPage={true}
                      />
                     </CustomModal>
                   )}
