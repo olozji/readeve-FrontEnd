@@ -182,7 +182,7 @@ const BookLayoutItem = ({ bookId, propsData }: bookLayoutItemType) => {
                   {/* 리스트 내부 글자 */}
                   <div className="relative sm:p-2">
                     <div className="flex justify-between ">
-                      <div className="flex justify-between items-center text-2xl sm:text-xl font-black pt-2  mb-2">
+                      <div className="flex justify-between items-center text-2xl sm:text-base font-black pt-2  mb-2">
                         <div>{data.title}</div>
                         <Image
                           src={data.private ? Private : unLock}
@@ -191,7 +191,7 @@ const BookLayoutItem = ({ bookId, propsData }: bookLayoutItemType) => {
                           className=" mt-1 justify-self-center"
                         />
                       </div>
-                      <div className="grid absolute bottom-0 right-0 sm:bottom-0 sm:right-2 justify-itmes-center">
+                      <div className="grid absolute bottom-0 right-0 sm:bottom-0 sm:right-2 sm:text-xs justify-itmes-center">
                         {formatDateToYYMMDD(data.createAt)}
                         
                       </div>
@@ -202,13 +202,13 @@ const BookLayoutItem = ({ bookId, propsData }: bookLayoutItemType) => {
                         alt="marker"
                         className="mx-1"
                       /> */}
-                      <div className="text-gray-500 text-sm font-semibold">
+                      <div className="text-gray-500 text-sm sm:text-xs font-semibold">
                         독서장소: {data.pinRespDto?.name} |{' '}
                         {data.pinRespDto.address}
                       </div>
                     </div>
                     {/* TODO:내용 글자 많으면 ...으로 표시하기 */}
-                    <p className="text-sm font-semibold text-[#767676] max-w-[50vw] pt-12 sm:pt-6 sm:ml-2 ">
+                    <p className="text-sm font-semibold text-[#767676] max-w-[50vw] pt-12 sm:pt-6 sm:ml-2 sm:text-xs">
                       {data.content}
                     </p>
                   </div>
