@@ -1,14 +1,16 @@
-import React from 'react'
+'use client'
+import React, { useState } from 'react';
 import Image from 'next/image';
 import Link from 'next/link';
 import privateMarker from '/public/images/privateMarker.png'
 import closeIcon from '/public/images/closeIcon.png';
+import CustomAlert from './alert';
+import axios from 'axios';
 
 interface ModalContentProps {
   bookData: any;
   data: any;
   sessionUserId: string | undefined;
-  handleRemove: (isbn: string) => void;
   closeModal: () => void;
   isMyPage?:boolean
 }
@@ -17,7 +19,6 @@ const ModalContent: React.FC<ModalContentProps> = ({
   bookData,
   data,
   sessionUserId,
-  handleRemove,
   closeModal,
   isMyPage
 }) => {
@@ -27,9 +28,33 @@ const ModalContent: React.FC<ModalContentProps> = ({
       .toString()
       .padStart(2, '0')}.${date.getDate().toString().padStart(2, '0')}`
   }
+  const handleCloseQAlert = () => {
+    setShowQAlert(false)
+  }
+  const handleRemove = async(reviewId: number) => {
+    await axios.delete(`https://api.bookeverywhere.site/api/review/delete/${reviewId}`)
+  .then(response => {
+    console.log('리뷰 삭제 성공:', response);
+    // 삭제 요청이 성공한 경우의 처리
+  })
+  .catch(error => {
+    console.error('리뷰 삭제 실패:', error);
+    // 삭제 요청이 실패한 경우의 처리
+  });
+
+  }
+  const [showQAlert, setShowQAlert] = useState(false);
 
   return (
     <div className="">
+      {showQAlert && (
+            <CustomAlert
+              message={'독후감을 삭제하시겠습니까?'}
+              onClose={handleCloseQAlert}
+              isActive={true}
+              active={() => handleRemove(data.reviewId)}
+            />
+          )}
       <div className="px-8 py-8">
         <Image
           src={closeIcon}
@@ -121,7 +146,7 @@ const ModalContent: React.FC<ModalContentProps> = ({
 
                 <span
                   className="text-[#828282] text-sm font-bold"
-                  onClick={() => handleRemove(data.isbn)}
+                  onClick={() => setShowQAlert(true)}
                 >
                   삭제
                 </span>
