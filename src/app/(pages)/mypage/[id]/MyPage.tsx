@@ -241,7 +241,7 @@ const MyPageComponent = (props: ParamType) => {
                     href={`/detail/${d.bookRespDto && d.bookRespDto.isbn ? d.bookRespDto.isbn.replace(' ', '') : ''}`}
                   >
                     <div className="flex flex-col items-center rounded-lg border-4 border-transparent p-4 sm:py-2 sm:px-0 cursor-pointer">
-                      <div className="w-[100%] h-[15vh] rounded-2xl">
+                      <div className="w-[100%] rounded-2xl">
                         <div className="mx-auto h-full border rounded-2xl shadow-xl bg-[#fcfcfc]">
                           <div className="text-left">
                             <div className="text-xl font-display font-bold px-5 py-5 sm:text-md">

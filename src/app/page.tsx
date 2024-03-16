@@ -297,6 +297,7 @@ export default function Home() {
           <div className="text-2xl font-display font-bold pt-10 pb-8">
             이런 장소는 어때요?
           </div>
+          <div className='text-sm text-[#E57C65]'>슬라이드해서 태그를 선택해보세요</div>
           {!smallTagShow &&
             <div className="flex flex-wrap items-center justify-center mb-10 text-sm">
           <div className="p-2 cursor-pointer" onClick={handleClickPrev}>
@@ -400,7 +401,7 @@ export default function Home() {
           </div>
         <div className="mt-10 sm:px-5">
           <div className="flex justify-between items-center">
-            <h1 className="text-2xl font-display font-bold py-10">다른 사람의 독후감을 확인해 보세요!</h1>
+            <h1 className="text-2xl sm:text-xl font-display font-bold py-10">다른 사람의 독후감을 확인해 보세요!</h1>
             <span className="inline-block align-middle">
               <Link href={'/allreview'}>
                 <Image src={moreIcon} alt={'moreIcon'} width={22} height={30} />

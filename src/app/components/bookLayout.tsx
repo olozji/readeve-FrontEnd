@@ -68,7 +68,7 @@ export const BookLayout = ({ width, isMain, bookData }: bookLayoutProps) => {
               &lt;
             </div>
             <div className="flex items-start">
-              <div className="grid sm:grid-cols-2 grid-cols-5 gap-4 justify-center ">
+              <div className="grid sm:grid-cols-2 grid-cols-5 gap-x-4 justify-center ">
                 {documents
                   .slice(startIdx, startIdx + numVisibleBooks)
                   .map((d: any, i: number) => (
