@@ -374,40 +374,45 @@ export default function Home() {
           </h1>
           {/* TODO: 추후 데이터 들어가야할 부분 */}
           <div className="">
-            <div className="p-5 mb-3 rounded-lg shadow-xl">
-              {topVisitedPlaces.map((place, index) => (
-                <div className="my-3 border-2 border-[#AE695A] rounded-lg shadow-lg">
-                  <div className="flex justify-between gap-10 sm:gap-4">
-                    <span className="py-1 pl-5 w-[10vw] font-bold sm:text-xs sm:w-[20vw]">
-                      {index + 1}위
-                    </span>
-                    <span className="py-1 gap-4 w-[30vw] font-bold sm:text-xs sm:w-[50vw]">
-                      {place.name}
-                    </span>
-                    <div className="flex">
-                      <span className="relative flex w-[30vw] py-1 px-3 text-white  bg-gradient-to-r from-[#FFD6CD] to-[#E67D67] rounded-l-2xl sm:text-xs sm:w-[30vw]">
-                        <div className="flex justify-between absolute right-2 gap-4">
-                          {index === 0 && (
-                            <>
-                              {index === 0 && `${place.visitCount}명`}
-                              <Image
-                                src={mainLogo}
-                                alt="mainLogo"
-                                width={30}
-                                height={10}
-                                className="gap-5 sm:w-[5vw]"
-                              />
-                            </>
-                          )}
-                          {index !== 0 && `${place.visitCount}명`}
-                        </div>
-                      </span>
-                    </div>
-                  </div>
+          <div className="p-5 mb-3 sm:p-0 rounded-lg shadow-xl relative sm:shadow-none">
+          {topVisitedPlaces.map((place, index) => (
+            <div key={index} className="mb-3">
+              <div className={`inline-flex pl-3 items-center gap-10 sm:gap-2  w-auto rounded-xl shadow-md sm:shadow-sm relative ${index === 0 ? 'border-2 border-[#AE695A]' : ''}`}>
+              <span className="font-bold px-8 sm:px-2 sm:text-xs sm:w-[10vw]">{index + 1}위</span>
+              <span className="font-bold sm:text-xs sm:w-[10vw]">{place.name}</span>
+              <div
+                className="flex flex-col justify-center relative w-[calc((100% - 100px) * 0.3)]"
+              >
+               <div
+                className="w-[calc((100% - 100px) * 0.7)] 
+                bg-gradient-to-r from-[#FFD6CD] to-[#E67D67] 
+                rounded-xl sm:w-[10vw]"
+                style={{ width: `${place.visitCount * 100}px` }}
+              >
+                <div className='flex justify-center float-end gap-4'>
+                <div className='mr-2 sm-ml-1 text-white font-bold sm:text-xs'>
+                {place.visitCount}명
                 </div>
-              ))}
+                {index === 0  && (
+                  <>
+                 <Image
+                 src={mainLogo}
+                 alt='mainLogo'
+                 className='w-[2vw] h-[2vh] sm:w-[5vw] sm:h-[3vh]'
+               />
+               </>
+               )}
+                </div>
+                </div>
+              </div>
+               </div>
             </div>
-          </div>
+          ))}
+        <div className='absolute right-5 bottom-4 font-semibold sm:top-[-4vh] sm:left-0 text-[#9E9E9E] sm:text-xs '>
+        (2번 이상 방문한 장소 기준)
+        </div>
+        </div>
+            </div>
         </div>
         <div className="mt-10 sm:px-5">
           <div className="flex justify-between items-center">
