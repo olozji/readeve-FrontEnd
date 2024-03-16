@@ -399,22 +399,49 @@ export default function Home() {
                         </CustomModal>
                       )}
                       {/* 모든 리뷰 */}
-                      <div className="flex flex-col items-center rounded-lg border-4 border-transparent p-4 sm:p-0 cursor-pointer">
-                        <div className="relative w-[15rem] h-[12rem] sm:h-auto rounded-2xl">
-                          <div className="mx-auto h-full border rounded-2xl shadow-xl bg-[#fcfcfc]">
-                            <div className="text-left">
-                              <div className="text-xl font-display font-bold px-5 py-5">
-                                {d.bookRespDto?.title}
+                      <div className="relative flex p-4 sm:px-0 w-[33vw] min-h-52 border shadow-lg rounded-2xl sm:w-full">
+                          <div
+                            className="bg-auto sm:min-w-[8rem] w-[12rem] bg-no-repeat bg-center rounded-2xl"
+                            style={{
+                              backgroundImage: `url(${d.bookRespDto?.thumbnail})`,
+                            }}
+                          ></div>
+
+                          <div className="flex flex-col ml-2">
+                            <div className="">
+                              <h1 className="font-black text-md w-[15vw] sm:text-xs">
+                                {d.title}
+                              </h1>
+                              <div className="flex sm:max-w-[50vw] text-sm text-[#3C3C3C] items-start sm:text-xs sm:pr-2">
+                                {d.pinRespDto.private ? (
+                                  <div>독서장소: {maskName(d.writer)}님만의 장소</div>
+                                ) : (
+                                  <div className="">
+                                    독서장소: {d.pinRespDto?.name} |{' '}
+                                    {d.pinRespDto?.address}
+                                  </div>
+                                )}
                               </div>
-                              <div className="px-5 sm:pb-4">
-                                {d.content.length > 20
-                                  ? `${d.content.slice(0, 20)}...`
-                                  : d.content}
+                            </div>
+
+                            <div className="flex">
+                            <div className="py-2 sm:pr-4 text-sm text-[#767676] sm:text-xs">
+                                {d.content.length === 0 ? (
+                                  <div>등록된 내용이 없습니다</div>
+                                ) : (
+                                  <div>
+                                    {d.content.length > 100
+                                      ? `${d.content.slice(0, 100)}...`
+                                      : d.content}
+                                  </div>
+                                )}
                               </div>
                             </div>
                           </div>
+                          <div className="absolute top-4 right-4 sm:text-xs sm:bottom-2 justify-itmes-center">
+                            {formatDateToYYMMDD(d.createAt)}
+                          </div>
                         </div>
-                      </div>
                     </div>
                   ))}
               </div>
