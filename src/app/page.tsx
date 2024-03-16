@@ -48,6 +48,7 @@ export default function Home() {
   const [tagData, setTagData] = useState<any>([])
   const [isLoading, setIsLoading] = useState(true)
   const [sharedReview, setSharedReview] = useState(null)
+  const [smallTagShow, setSmallTagShow] = useState(false)
 
   const numVisibleBooks = 5
 
@@ -66,10 +67,7 @@ export default function Home() {
 
   const handleClickNext = () => {
     setStartIdx(
-      Math.min(
-        tagData.length - numVisibleBooks,
-        startIdx + numVisibleBooks,
-      ),
+      Math.min(tagData.length - numVisibleBooks, startIdx + numVisibleBooks),
     )
   }
 
@@ -79,26 +77,26 @@ export default function Home() {
 
   const getTopVisitedPlaces = () => {
     // publicReviews 에서 가장 많이 중복된 장소명를 기준으로 카운트
-    const visitCounts = publicReviews.reduce((counts:any, review:any) => {
-      console.log(publicReviews);
-      console.log(allReviewData);
+    const visitCounts = publicReviews.reduce((counts: any, review: any) => {
+      console.log(publicReviews)
+      console.log(allReviewData)
       const placeName = review.pinRespDto.name
-      counts[placeName] = (counts[placeName] || 0) + 1;
-      return counts;
-    
-    }, {});
-  
+      counts[placeName] = (counts[placeName] || 0) + 1
+      return counts
+    }, {})
+
     // 방문 횟수를 기준으로 내림차순으로 정렬
-    const sortedPlace = Object.keys(visitCounts).sort((a, b) => visitCounts[b] - visitCounts[a]);
-  
-    return sortedPlace.slice(0, 3).map(placeName => ({
+    const sortedPlace = Object.keys(visitCounts).sort(
+      (a, b) => visitCounts[b] - visitCounts[a],
+    )
+
+    return sortedPlace.slice(0, 3).map((placeName) => ({
       name: placeName,
-      visitCount: visitCounts[placeName]
-    }));
+      visitCount: visitCounts[placeName],
+    }))
   }
 
-  const topVisitedPlaces = getTopVisitedPlaces();
-  
+  const topVisitedPlaces = getTopVisitedPlaces()
 
   const openModal = (idx: any) => {
     let copy = []
@@ -151,7 +149,6 @@ export default function Home() {
       console.error('Error fetching data:', error)
     }
   }
-  
 
   const fetchPersonalData = async () => {
     if (session.data.user.id) {
@@ -195,7 +192,6 @@ export default function Home() {
     }
   }, [allReviewData])
 
-
   useEffect(() => {
     // allReviewData 상태가 업데이트되면서 새로운 데이터로 필터링하여 다른 상태에 반영
     const filteredData = allReviewData.filter((d: any) => !d.pinRespDto.private)
@@ -204,10 +200,10 @@ export default function Home() {
 
   useEffect(() => {
     const topVisitedPlaces = allReviewData.filter(
-      (item:any) => item.pinRespDto.name,
+      (item: any) => item.pinRespDto.name,
     )
     setPublicReviews(documents)
-  },[topVisitedPlaces])
+  }, [topVisitedPlaces])
 
   useEffect(() => {
     setMyPageData(myData)
@@ -222,6 +218,25 @@ export default function Home() {
   const scrollToTop = () => {
     window.scrollTo({ top: 0, behavior: 'smooth' })
   }
+
+  useEffect(() => {
+    function handleResize() {
+      const screenWidth = window.innerWidth
+      if (screenWidth < 819) {
+        setSmallTagShow(true) // 화면이 작을 때
+      } else {
+        setSmallTagShow(false) // 큰 화면
+      }
+    }
+    handleResize()
+    // 창의 크기가 변경될 때마다 호출
+    window.addEventListener('resize', handleResize)
+
+    // 컴포넌트가 언마운트될 때 리스너 제거
+    return () => {
+      window.removeEventListener('resize', handleResize)
+    }
+  }, []) // 컴포넌트가 마운트될 때 한 번만 호출
 
   return (
     <div>
@@ -272,31 +287,58 @@ export default function Home() {
         </div>
       </div>
 
-      <div className="mx-auto max-w-5xl">
-        <div className="text-center ">
+      <div className="mx-auto max-w-5xl ">
+        <div className="text-center">
           <div className="text-2xl font-display font-bold pt-10 pb-8">
             이런 장소는 어때요?
           </div>
-          <div className="flex flex-wrap items-center justify-center mb-10 text-sm">
-          <div className="p-2 cursor-pointer" onClick={handleClickPrev}>
-                  &lt;
-                </div>
-            {tagData.length > 0 &&
-              tagData.slice(startIdx, startIdx + numVisibleBooks).map((tag: any, i: number) => (
-                <div
-                  key={i}
-                  className={`box-border flex justify-center items-center px-4 py-2 my-2 mx-2 border border-gray-300 rounded-full ${isSelectedTags[i] ? 'bg-[#E57C65] text-white' : 'bg-white hover:border-[#C05555] hover:text-[#C05555]'}`}
-                  onClick={() => {
-                    searchTag(i)
-                  }}
-                >
-                  {tag.content}
-                </div>
-              ))}
-            <div className="p-2 cursor-pointer" onClick={handleClickNext}>
-                  &gt;
-                </div>
-          </div>
+
+          {!smallTagShow && (
+            <div className="flex flex-wrap items-center justify-center mb-10 text-sm">
+              <div className="p-2 cursor-pointer" onClick={handleClickPrev}>
+                &lt;
+              </div>
+              {tagData.length > 0 &&
+                tagData
+                  .slice(startIdx, startIdx + numVisibleBooks)
+                  .map((tag: any, i: number) => (
+                    <div
+                      key={i}
+                      className={`box-border flex justify-center items-center px-4 py-2 my-2 mx-2 border border-gray-300 rounded-full ${isSelectedTags[i] ? 'bg-[#E57C65] text-white' : 'bg-white hover:border-[#C05555] hover:text-[#C05555]'}`}
+                      onClick={() => {
+                        searchTag(i)
+                      }}
+                    >
+                      {tag.content}
+                    </div>
+                  ))}
+              <div className="p-2 cursor-pointer" onClick={handleClickNext}>
+                &gt;
+              </div>
+            </div>
+          )}
+          {smallTagShow && (
+            <div>
+              <div className="text-sm text-[#E57C65]">
+                슬라이드해서 태그를 선택해보세요
+              </div>
+
+              <div className="flex flex-nowrap min-h-[7vh] mb-10 text-sm overflow-x-auto">
+                {tagData.length > 0 &&
+                  tagData.map((tag: any, i: number) => (
+                    <div
+                      key={i}
+                      className={`box-border flex justify-center whitespace-nowrap items-center px-4 py-2 my-2 mx-2 border border-gray-300 rounded-full ${isSelectedTags[i] ? 'bg-[#E57C65] text-white' : 'bg-white hover:border-[#C05555] hover:text-[#C05555]'}`}
+                      onClick={() => {
+                        searchTag(i)
+                      }}
+                    >
+                      {tag.content}
+                    </div>
+                  ))}
+              </div>
+            </div>
+          )}
 
           {documents.length !== 0 ? (
             <MapView
@@ -327,43 +369,51 @@ export default function Home() {
           )}
         </div>
         <div className="mt-10 sm:px-5">
-          <h1 className="text-2xl font-display font-bold py-10">재방문 장소를 확인해 보세요!</h1>
+          <h1 className="text-2xl font-display font-bold py-10">
+            재방문 장소를 확인해 보세요!
+          </h1>
           {/* TODO: 추후 데이터 들어가야할 부분 */}
           <div className="">
             <div className="p-5 mb-3 rounded-lg shadow-xl">
               {topVisitedPlaces.map((place, index) => (
-                 <div className="my-3 border-2 border-[#AE695A] rounded-lg shadow-lg">
-                 <div className='flex justify-between gap-10 sm:gap-4'>
-                   <span className='py-1 pl-5 w-[10vw] font-bold sm:text-xs sm:w-[20vw]'>{index + 1}위</span>
-                   <span className='py-1 gap-4 w-[30vw] font-bold sm:text-xs sm:w-[50vw]'>{place.name}</span>
-                   <div className='flex'>
-                   <span className='relative flex w-[30vw] py-1 px-3 text-white  bg-gradient-to-r from-[#FFD6CD] to-[#E67D67] rounded-l-2xl sm:text-xs sm:w-[30vw]'>
-                     <div className='flex justify-between absolute right-2 gap-4'>
-                    {index === 0 && (
-                      <>
-                      {index === 0 && `${place.visitCount}명`}
-                        <Image
-                        src={mainLogo}
-                        alt='mainLogo'
-                        width={30}
-                        height={10}
-                        className='gap-5 sm:w-[5vw]'
-                      />
-                      </>
-                    )}
-                      {index !== 0 && `${place.visitCount}명`}
-                     </div>
-                     </span>
-                   </div>
-                 </div>
-               </div>
+                <div className="my-3 border-2 border-[#AE695A] rounded-lg shadow-lg">
+                  <div className="flex justify-between gap-10 sm:gap-4">
+                    <span className="py-1 pl-5 w-[10vw] font-bold sm:text-xs sm:w-[20vw]">
+                      {index + 1}위
+                    </span>
+                    <span className="py-1 gap-4 w-[30vw] font-bold sm:text-xs sm:w-[50vw]">
+                      {place.name}
+                    </span>
+                    <div className="flex">
+                      <span className="relative flex w-[30vw] py-1 px-3 text-white  bg-gradient-to-r from-[#FFD6CD] to-[#E67D67] rounded-l-2xl sm:text-xs sm:w-[30vw]">
+                        <div className="flex justify-between absolute right-2 gap-4">
+                          {index === 0 && (
+                            <>
+                              {index === 0 && `${place.visitCount}명`}
+                              <Image
+                                src={mainLogo}
+                                alt="mainLogo"
+                                width={30}
+                                height={10}
+                                className="gap-5 sm:w-[5vw]"
+                              />
+                            </>
+                          )}
+                          {index !== 0 && `${place.visitCount}명`}
+                        </div>
+                      </span>
+                    </div>
+                  </div>
+                </div>
               ))}
             </div>
-            </div>
           </div>
+        </div>
         <div className="mt-10 sm:px-5">
           <div className="flex justify-between items-center">
-            <h1 className="text-2xl font-display font-bold py-10">다른 사람의 독후감을 확인해 보세요!</h1>
+            <h1 className="text-2xl sm:text-xl font-display font-bold py-10">
+              다른 사람의 독후감을 확인해 보세요!
+            </h1>
             <span className="inline-block align-middle">
               <Link href={'/allreview'}>
                 <Image src={moreIcon} alt={'moreIcon'} width={22} height={30} />
@@ -374,84 +424,82 @@ export default function Home() {
             <div className="pt-4 lg:pt-5 pb-4 lg:pb-8 px-4 xl:px-2 xl:container mx-auto">
               <section className="pt-16">
                 <div className="pt-4 lg:pt-5 pb-4 lg:pb-8 px-4 xl:px-2 xl:container mx-auto">
-                  <h1 className="text-4xl sm:text-sm">등록된 리뷰가 없습니다</h1>
+                  <h1 className="text-4xl sm:text-sm">
+                    등록된 리뷰가 없습니다
+                  </h1>
                 </div>
               </section>
             </div>
           ) : (
             <div className="flex justify-between items-center">
-              
               <div className="grid sm:grid-cols-1 sm:w-[100%] grid-cols-2 gap-4 justify-center items-center">
-                {publicReviews
-                  .slice(0,2)
-                  .map((d: any, i: number) => (
-                    <div key={i} onClick={() => openModal(i)}>
-                      {/* 모든리뷰 상세 모달 */}
-                      {isModalOpen && (
-                        <CustomModal
-                          size={'70rem'}
-                          isOpen={isModalOpen[i]}
-                          modalColor="#FEF6E6"
-                        >
-                         <ModalContent
+                {publicReviews.slice(0, 2).map((d: any, i: number) => (
+                  <div key={i} onClick={() => openModal(i)}>
+                    {/* 모든리뷰 상세 모달 */}
+                    {isModalOpen && (
+                      <CustomModal
+                        size={'70rem'}
+                        isOpen={isModalOpen[i]}
+                        modalColor="#FEF6E6"
+                      >
+                        <ModalContent
                           bookData={publicReviews}
                           data={publicReviews[i]}
                           sessionUserId={session.data?.user.id}
-                          handleRemove={() => {}}
                           closeModal={() => openModal(i)}
-                     />
-                        </CustomModal>
-                      )}
-                      {/* 모든 리뷰 */}
-                      <div className="relative flex p-6 sm:px-2 min-h-40 border shadow-lg rounded-2xl w-full">
-                          <div
-                            className="bg-contain sm:min-w-[8rem] w-[8rem] bg-no-repeat bg-center rounded-3xl"
-                            style={{
-                              backgroundImage: `url(${d.bookRespDto?.thumbnail})`,
-                            }}
-                          ></div>
+                        />
+                      </CustomModal>
+                    )}
+                    {/* 모든 리뷰 */}
+                    <div className="relative flex p-6 sm:px-2 min-h-40 border shadow-lg rounded-2xl w-full">
+                      <div
+                        className="bg-contain sm:min-w-[8rem] w-[8rem] bg-no-repeat bg-center rounded-3xl"
+                        style={{
+                          backgroundImage: `url(${d.bookRespDto?.thumbnail})`,
+                        }}
+                      ></div>
 
-                          <div className="flex flex-col ml-2">
-                            <div className="">
-                              <h1 className="font-black text-xl w-[15vw] sm:text-md">
-                                {d.title}
-                              </h1>
-                              <div className="flex sm:max-w-[50vw] text-xs text-[#3C3C3C] items-start sm:text-xs sm:pr-2">
-                                {d.pinRespDto.private ? (
-                                  <div>독서장소: {maskName(d.writer)}님만의 장소</div>
-                                ) : (
-                                  <div className="">
-                                    독서장소: {d.pinRespDto?.name} |{' '}
-                                    {d.pinRespDto?.address}
-                                  </div>
-                                )}
+                      <div className="flex flex-col ml-2">
+                        <div className="">
+                          <h1 className="font-black text-xl sm:text-md">
+                            {d.title}
+                          </h1>
+                          <div className="flex sm:max-w-[50vw] text-xs text-[#3C3C3C] items-start sm:text-xs sm:pr-2">
+                            {d.pinRespDto.private ? (
+                              <div>
+                                독서장소: {maskName(d.writer)}님만의 장소
                               </div>
-                            </div>
-
-                            <div className="flex">
-                            <div className="py-6 sm:pr-4 text-sm text-[#767676] sm:text-xs">
-                                {d.content.length === 0 ? (
-                                  <div>등록된 내용이 없습니다</div>
-                                ) : (
-                                  <div>
-                                    {d.content.length > 100
-                                      ? `${d.content.slice(0, 100)}...`
-                                      : d.content}
-                                  </div>
-                                )}
+                            ) : (
+                              <div className="">
+                                독서장소: {d.pinRespDto?.name} |{' '}
+                                {d.pinRespDto?.address}
                               </div>
-                            </div>
-                          </div>
-                          <div className="absolute top-6 right-4 sm:text-xs sm:bottom-2 justify-itmes-center">
-                            {formatDateToYYMMDD(d.createAt)}
+                            )}
                           </div>
                         </div>
+
+                        <div className="flex">
+                          <div className="py-6 sm:pr-4 text-sm text-[#767676] sm:text-xs">
+                            {d.content.length === 0 ? (
+                              <div>등록된 내용이 없습니다</div>
+                            ) : (
+                              <div>
+                                {d.content.length > 100
+                                  ? `${d.content.slice(0, 100)}...`
+                                  : d.content}
+                              </div>
+                            )}
+                          </div>
+                        </div>
+                      </div>
+                      <div className="absolute top-6 right-4 sm:text-xs sm:bottom-2 justify-itmes-center">
+                        {formatDateToYYMMDD(d.createAt)}
+                      </div>
                     </div>
-                  ))}
+                  </div>
+                ))}
               </div>
-              <div className="flex items-center justify-center">
-              
-              </div>
+              <div className="flex items-center justify-center"></div>
             </div>
           )}
         </div>

@@ -70,23 +70,7 @@ const BookLayoutItem = ({ bookId, propsData }: bookLayoutItemType) => {
 
   // 독후감 삭제 TODO: API 아직 몰라서 로컬에서 삭제되는 부분으로 처리 했어요 나중에 로직을 바꿔야 할듯
   // 수정은 edit에서 구현되어 있는 것 같아서 냅뒀어요!
-  const handleRemove = (isbn: string) => {
-    if (window.confirm('정말로 삭제하시겠습니까?')) {
-      const allReviewData = localStorage.getItem('allDataInfo')
-
-      if (allReviewData) {
-        const parsedData: any[] = JSON.parse(allReviewData)
-
-        // isbn을 통해 독후감을 삭제
-        const updatedData = parsedData.filter((item) => !isBook(item))
-        localStorage.setItem('allDataInfo', JSON.stringify(updatedData))
-
-        setBookData(updatedData)
-
-        router.push(`/mypage/${session.data?.user.id}`)
-      }
-    }
-  }
+  
 
   useEffect(() => {
     let arr: boolean[] = []
@@ -174,7 +158,6 @@ const BookLayoutItem = ({ bookId, propsData }: bookLayoutItemType) => {
                       bookData={bookData}
                       data={data}
                       sessionUserId={session.data?.user.id}
-                      handleRemove={handleRemove}
                         closeModal={() => handleModal(i)}
                         isMyPage={true}
                      />
