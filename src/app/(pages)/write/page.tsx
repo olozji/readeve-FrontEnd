@@ -26,6 +26,7 @@ import isPrivatedIcon from '/public/images/isPrivatedIcon.png'
 import isSharededIcon from '/public/images/isSharedIcon.png'
 import LoadingScreen from '@/app/components/loadingScreen'
 import CustomAlert from '@/app/components/alert';
+import { GoBackButton } from '@/app/components/buttons/goBackButton'
 
 const Editor = () => {
   const [content, setContent] = useState('')
@@ -234,7 +235,10 @@ const [showQAlert, setShowQAlert] = useState(false);
       <NavBar />
       
       <div className="bg-[#FAF2E5] flex justify-center box-border min-h-full">
-        <div className="pt-20 sm:pt-10  ">
+        <div className="pt-20 sm:pt-10">
+        <div className='absolute py-2 sm:hidden'>
+        <GoBackButton/> 
+        </div>
           <header className="h-10 text-center">
             <h1 className="myCustomText text-3xl text-black">독후감 작성</h1>
           </header>

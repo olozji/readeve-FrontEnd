@@ -1,13 +1,15 @@
 import React from 'react'
 import Image from 'next/image';
-import privateMarker from '/public/images/privateMarker.png'
 import Link from 'next/link';
+import privateMarker from '/public/images/privateMarker.png'
+import closeIcon from '/public/images/closeIcon.png';
 
 interface ModalContentProps {
   bookData: any;
   data: any;
   sessionUserId: string | undefined;
   handleRemove: (isbn: string) => void;
+  closeModal: () => void;
 }
 
 const ModalContent: React.FC<ModalContentProps> = ({
@@ -15,6 +17,7 @@ const ModalContent: React.FC<ModalContentProps> = ({
   data,
   sessionUserId,
   handleRemove,
+  closeModal
 }) => {
   const formatDateToYYMMDD = (isoDateString: string) => {
     const date = new Date(isoDateString)
@@ -26,11 +29,17 @@ const ModalContent: React.FC<ModalContentProps> = ({
   return (
     <div className="">
       <div className="px-8 py-8">
+        <Image
+          src={closeIcon}
+          alt='closeIcon'
+          className='float-right cursor-pointer'
+          onClick={closeModal}
+        />
         <div className="flex sm:flex-col justify-center items-center">
           <img
             src={
-              bookData[0].bookRespDto.thumbnail
-                ? bookData[0].bookRespDto.thumbnail
+              data.bookRespDto.thumbnail
+                ? data.bookRespDto.thumbnail
                 : 'http://via.placeholder.com/120X150'
             }
             alt="책 표지"
@@ -41,7 +50,7 @@ const ModalContent: React.FC<ModalContentProps> = ({
               {data.bookRespDto.title}
             </div>
             <div className="text-sm font-bold text-[#9C8A80]">
-              | {bookData[0].bookRespDto.author} 저자
+              | {data.bookRespDto.author} 저자
             </div>
             <div className="justify-center items-center py-2">
               <span
@@ -63,7 +72,7 @@ const ModalContent: React.FC<ModalContentProps> = ({
                 <span className="font-bold mr-4" style={{ verticalAlign: 'middle' }}>
                   태그
                 </span>
-                <div className="flex flex-wrap w-[16vw]">
+                <div className="flex flex-wrap w-[16vw] sm:w-0">
                   {data.tags.map(
                     (tag: any) =>
                       tag.selected && (
@@ -99,14 +108,22 @@ const ModalContent: React.FC<ModalContentProps> = ({
               <Link href={`/edit/${data.reviewId}`}>
                 <span className="text-[#D37C7C] text-sm font-bold">수정</span>
               </Link>
-              {sessionUserId && sessionUserId === data.userId && (
+              {/* {sessionUserId && sessionUserId === data.userId && (
                 <span
                   className="text-[#828282] text-sm font-bold"
                   onClick={() => handleRemove(data.isbn)}
                 >
                   삭제
                 </span>
-              )}
+              )} */}
+
+                <span
+                  className="text-[#828282] text-sm font-bold"
+                  onClick={() => handleRemove(data.isbn)}
+                >
+                  삭제
+                </span>
+
             </div>
             <div className="mt-10 px-5">
               <h2 className="text-2xl sm:text-lg font-bold mb-4 border-black border-b pb-5 text-[#503526]">

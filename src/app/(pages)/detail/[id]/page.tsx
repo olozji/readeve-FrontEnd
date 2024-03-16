@@ -6,6 +6,7 @@ import { useSession } from "next-auth/react";
 import { useState, useEffect } from "react";
 import lampIcon from '/public/images/lampicon.png'
 import Image from "next/image";
+import { GoBackButton } from "@/app/components/buttons/goBackButton";
 
 export interface PropType {
   params: {
@@ -45,7 +46,10 @@ const Detail = (props: PropType) => {
 
   return (
     <><NavBar />
-      <section className={`bg-[#F1E5CF] mx-auto h-screen blank`}>
+      <section className={`bg-[#F1E5CF] px-[15vw] sm:px-0 mx-auto h-screen`}>
+      <div className='absolute py-20 sm:hidden'>
+        <GoBackButton/> 
+      </div>
       {/* 램프&내 서재 */}
       <div className="grid relative mx-auto justify-center text-center mb-10">
         <Image
@@ -61,7 +65,9 @@ const Detail = (props: PropType) => {
         </div>
        
    {myData.length > 0 && (
+    <div className="overflow-y-auto max-h-[90vh]">
       <BookLayoutItem bookId={props.params.id} propsData={myData} />
+      </div>
         )}
          </section>
       </>
