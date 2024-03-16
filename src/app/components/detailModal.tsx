@@ -40,6 +40,7 @@ const ModalContent: React.FC<ModalContentProps> = ({
   .catch(error => {
     console.error('리뷰 삭제 실패:', error);
     // 삭제 요청이 실패한 경우의 처리
+    window.location.href = `/mypage/${sessionUserId}`
   });
 
   }
