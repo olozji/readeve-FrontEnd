@@ -48,6 +48,7 @@ export default function Home() {
   const [tagData, setTagData] = useState<any>([])
   const [isLoading, setIsLoading] = useState(true)
   const [sharedReview, setSharedReview] = useState(null)
+  const [smallTagShow,setSmallTagShow] = useState(false)
 
   const numVisibleBooks = 5
 
@@ -223,6 +224,25 @@ export default function Home() {
     window.scrollTo({ top: 0, behavior: 'smooth' })
   }
 
+  useEffect(() => {
+    function handleResize() {
+      const screenWidth = window.innerWidth
+      if (screenWidth < 819) {
+        setSmallTagShow(true) // 화면이 작을 때
+      } else {
+        setSmallTagShow(false) // 큰 화면
+      }
+    }
+    handleResize()
+    // 창의 크기가 변경될 때마다 호출
+    window.addEventListener('resize', handleResize)
+
+    // 컴포넌트가 언마운트될 때 리스너 제거
+    return () => {
+      window.removeEventListener('resize', handleResize)
+    }
+  }, []) // 컴포넌트가 마운트될 때 한 번만 호출
+
   return (
     <div>
       <NavBar />
@@ -277,7 +297,8 @@ export default function Home() {
           <div className="text-2xl font-display font-bold pt-10 pb-8">
             이런 장소는 어때요?
           </div>
-          <div className="flex flex-wrap items-center justify-center mb-10 text-sm">
+          {!smallTagShow &&
+            <div className="flex flex-wrap items-center justify-center mb-10 text-sm">
           <div className="p-2 cursor-pointer" onClick={handleClickPrev}>
                   &lt;
                 </div>
@@ -296,7 +317,23 @@ export default function Home() {
             <div className="p-2 cursor-pointer" onClick={handleClickNext}>
                   &gt;
                 </div>
-          </div>
+            </div>}
+          {smallTagShow &&
+          <div className="flex flex-wrap items-center justify-center mb-10 text-sm overflow-x-auto">
+          {tagData.length > 0 &&
+            tagData.map((tag: any, i: number) => (
+              <div
+                key={i}
+                className={`box-border flex justify-center items-center px-4 py-2 my-2 mx-2 border border-gray-300 rounded-full ${isSelectedTags[i] ? 'bg-[#E57C65] text-white' : 'bg-white hover:border-[#C05555] hover:text-[#C05555]'}`}
+                onClick={() => {
+                  searchTag(i)
+                }}
+              >
+                {tag.content}
+              </div>
+            ))}
+        </div>}
+          
 
           {documents.length !== 0 ? (
             <MapView
@@ -397,7 +434,6 @@ export default function Home() {
                           bookData={publicReviews}
                           data={publicReviews[i]}
                           sessionUserId={session.data?.user.id}
-                          handleRemove={() => {}}
                           closeModal={() => openModal(i)}
                      />
                         </CustomModal>
