@@ -17,21 +17,7 @@ body {
   font-family: 'Gugi', sans-serif;
 }
 
-/* .scrollbar {
-  scrollbar-width: thin;
-  background: #e57c65;
-  border-radius: 14px;
-}
 
-.scrollbar-webkit-scrollbar {
-  width: 15px;
-  background: #e57c65;
-  border-radius: 14px;
-} */
-
-.scrollBar {
-  overflow-y: scroll;
-}
 .marker_overlay {
   text-align: center;
   padding: 10px 20px;
@@ -220,6 +206,10 @@ input {
   white-space: pre-wrap;
 }
 
+.scrollBar {
+  overflow-y: scroll;
+}
+
 /* 아래의 모든 코드는 영역::코드로 사용 */
 .scrollBar::-webkit-scrollbar {
   width: 10px; /* 스크롤바의 너비 */
@@ -297,11 +287,13 @@ body {
     display:none;
   }
 
-
   .footer_logo {
     margin:0 auto;
     /* width:50px;
     height:50px; */
+  }
+  .scrollBar {
+    display:none;
   }
 }
 
