@@ -63,7 +63,7 @@ const ModalContent: React.FC<ModalContentProps> = ({
               active={() => handleRemove(data.reviewId, data.socialId, data.bookTitle, data.address, data.tags)}
             />
           )}
-      <div className="px-8 py-8">
+      <div className="px-8 py-8 sm:px-2">
         <Image
           src={closeIcon}
           alt='closeIcon'
@@ -104,10 +104,10 @@ const ModalContent: React.FC<ModalContentProps> = ({
                 <div>{formatDateToYYMMDD(data.createAt)}</div>
               </div>
               <div className="flex">
-                <span className="font-bold mr-4" style={{ verticalAlign: 'middle' }}>
+                <span className="font-bold mr-4 sm:block sm:mr-0" style={{ verticalAlign: 'middle' }}>
                   태그
                 </span>
-                <div className="flex flex-wrap w-[16vw] sm:w-0">
+                <div className="flex flex-wrap w-[16vw] sm:w-[40vw]">
                   {data.tags.map(
                     (tag: any) =>
                       tag.selected && (
@@ -118,7 +118,7 @@ const ModalContent: React.FC<ModalContentProps> = ({
                   )}
                 </div>
               </div>
-              <div className="flex items-center gap-5">
+              <div className="flex items-center gap-5 sm:gap-0">
                 <span className="font-bold" style={{ verticalAlign: 'middle' }}>
                   장소
                 </span>
