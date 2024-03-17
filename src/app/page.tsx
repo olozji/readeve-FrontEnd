@@ -398,7 +398,9 @@ export default function Home() {
                  <Image
                  src={mainLogo}
                  alt='mainLogo'
-                 className='w-[2vw] h-[2vh] sm:w-[5vw] sm:h-[3vh]'
+                 className='sm:w-[5vw] sm:h-[3vh]'
+                 width={30}
+                 height={20}
                />
                </>
                )}
