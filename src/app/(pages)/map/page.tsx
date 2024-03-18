@@ -5,12 +5,17 @@ import markerImage from '/public/images/marker1.png'
 import { useRecoilState } from 'recoil';
 import { allReviewDataState } from '@/store/writeAtoms';
 import axios from 'axios';
+import { useSearchParams } from 'next/navigation';
 
 
 
 const SharedMapPage = () => {
   const [documents, setDocuments] = useState<any[]>([])
   const [allReviewData, setAllReviewData] = useRecoilState<any>(allReviewDataState);
+
+  const params = useSearchParams();
+
+  const placeIdParam = params!.get('placeId');
 
   const fetchData = async () => {
     try {
@@ -46,7 +51,7 @@ const SharedMapPage = () => {
   return (
     <div>
       {documents.length !== 0 ? (
-        <MapView myMapData={documents} isShared={true} isFull={`100vh`} markerImage={markerImage}  isMain={false}></MapView>
+        <MapView myMapData={documents} isShared={true} isFull={`100vh`} markerImage={markerImage}  isMain={false} query={placeIdParam}></MapView>
       ) : (
         <div>
           <div id="map" style={{ display: 'none' }}></div>

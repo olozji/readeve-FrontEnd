@@ -102,6 +102,18 @@ export default function Home() {
     }))
   }
 
+  const handlePlaceClick = (place:any, i:any) => {
+    
+    console.log('장소 클릭:', place);
+    const placeReview = publicReviews.find((review:any) => review.pinRespDto.name == place.name);
+    
+    console.log(placeReview);
+    const mapLink = `/map/?placeId=${placeReview.pinRespDto.placeId}`;
+
+    console.log(mapLink);
+    window.location.href = mapLink;
+  };
+
   const topVisitedPlaces = getTopVisitedPlaces()
 
   const openModal = (idx: any) => {
@@ -389,7 +401,7 @@ export default function Home() {
           <div className="">
           <div className="p-5 mb-3 sm:p-0 rounded-lg shadow-xl relative sm:shadow-none">
           {topVisitedPlaces.map((place, index) => (
-            <div key={index} className="mb-3">
+            <div key={index} className="mb-3" onClick={() => handlePlaceClick(place,index)}>
               <div className={`inline-flex pl-3 items-center gap-10 sm:gap-2  w-auto rounded-xl shadow-md sm:shadow-sm relative ${index === 0 ? 'border-2 border-[#AE695A]' : ''}`}>
               <span className="font-bold px-8 sm:px-2 sm:text-xs sm:w-[10vw]">{index + 1}위</span>
               <span className="font-bold max-w-[30vw] w-[20vw] sm:max-w-[60vw] sm:w-[50vw] sm:text-xs">{place.name}</span>

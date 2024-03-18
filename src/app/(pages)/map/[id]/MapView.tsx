@@ -18,6 +18,7 @@ interface MapDataType {
   isFull: string
   markerImage: StaticImageData
   isMain?: boolean
+  query?: any;
 }
 
 const MapView = ({
@@ -26,6 +27,7 @@ const MapView = ({
   isFull,
   markerImage,
   isMain,
+  query,
 }: MapDataType) => {
   const mapRef = useRef<any>(null)
   const listContainerRef = useRef<any>(null)
@@ -316,6 +318,16 @@ const MapView = ({
           const mapInstance = new window.kakao.maps.Map(container, options)
           mapRef.current = mapInstance
 
+          const contentsParams = () => {
+            const isParams = myMapData.find((d:any) => d.pinRespDto.placeId == query)
+            console.log(isParams);
+        
+            mapRef.current.setLevel(2);
+            mapRef.current.panTo(
+              new window.kakao.maps.LatLng(isParams.pinRespDto.y, isParams.pinRespDto.x),
+            )
+          }
+
           let bounds = new window.kakao.maps.LatLngBounds()
 
           if (filteredReviews.length === 0) {
@@ -331,6 +343,9 @@ const MapView = ({
 
               mapInstance.setBounds(bounds)
             })
+            if(query){
+              contentsParams();
+            }
           }
         })
       })
@@ -400,7 +415,7 @@ const MapView = ({
 
                     <div
                       ref={listContainerRef}
-                      className="absolute scrollBar sm:w-[100vw] sm:top-[70%] w-[26vw] bg-[#f9f9f9] sm:h-[30%] h-full px-[2vw] py-[1vw] bg-opacity-80 sm:bg-opacity-0 overflow-y-auto rounded-lg"
+                      className="absolute lg:scrollBar sm:w-[100vw] sm:top-[70%] w-[26vw] bg-[#f9f9f9] sm:h-[30%] h-full px-[2vw] py-[1vw] bg-opacity-80 sm:bg-opacity-0 overflow-y-auto rounded-lg"
                       style={{ zIndex: 2 }}
                     >
                       <div className="flex py-2 w-full sm:hidden justify-between text-center font-bold border-b-[1px] border-gray-600 mb-4">
