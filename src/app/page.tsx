@@ -369,7 +369,7 @@ export default function Home() {
           )}
         </div>
         <div className="mt-10 sm:px-5">
-          <h1 className="text-2xl font-display font-bold py-10">
+          <h1 className="text-2xl sm:text-xl font-display font-bold py-10">
             재방문 장소를 확인해 보세요!
           </h1>
           {/* TODO: 추후 데이터 들어가야할 부분 */}
@@ -387,9 +387,9 @@ export default function Home() {
                 className="w-[calc((100% - 100px) * 0.7)] 
                 bg-gradient-to-r from-[#FFD6CD] to-[#E67D67] 
                 rounded-xl sm:w-[10vw]"
-                style={{ width: `${place.visitCount * 100}px` }}
+                style={{ width: `${place.visitCount * 50}px` }}
               >
-                <div className='flex justify-center float-end gap-4'>
+                <div className='flex justify-center items-center float-end'>
                 <div className='mr-2 sm-ml-1 text-white font-bold sm:text-xs'>
                 {place.visitCount}명
                 </div>
@@ -398,7 +398,7 @@ export default function Home() {
                  <Image
                  src={mainLogo}
                  alt='mainLogo'
-                 className='w-[2vw] h-[2vh] sm:w-[5vw] sm:h-[3vh]'
+                 className='w-[2vw] h-[3vh] sm:w-[5vw] sm:h-[3vh]'
                />
                </>
                )}
