@@ -31,23 +31,18 @@ const ModalContent: React.FC<ModalContentProps> = ({
   const handleCloseQAlert = () => {
     setShowQAlert(false)
   }
-  const handleRemove = async(reviewId: number, socialId: number, bookTitle: string, address: string, tags: string[] ) => {
+  const handleRemove = async(reviewId: number) => {
     
     try {
-      const res = await axios.delete(`https://api.bookeverywhere.site/api/review/delete/${reviewId}`, {
-        params: {
-          socialId: socialId,
-          bookTitle: bookTitle,
-          address: address,
-          tags: tags.join(',')
-        }
-    });
-    console.log('리뷰 삭제 성공:', res);
+    const selectedTags = data.tags.filter((tag: any) => tag.selected).map((tag: any) => tag.content);
+
+    await axios.delete(`https://api.bookeverywhere.site/api/review/delete/${reviewId}?socialId=${data.socialId}&bookTitle=${data.bookRespDto.title}&address=${data.bookRespDto.address}&tags=${selectedTags}`)
+    console.log('리뷰 삭제 성공:');
     // 삭제 요청이 성공한 경우의 처리
   } catch(error) {
     console.error('리뷰 삭제 실패:', error);
     // 삭제 요청이 실패한 경우의 처리
-    window.location.href = `/mypage/${sessionUserId}`
+    // window.location.href = `/mypage/${sessionUserId}`
   };
 
   }
@@ -60,7 +55,7 @@ const ModalContent: React.FC<ModalContentProps> = ({
               message={'독후감을 삭제하시겠습니까?'}
               onClose={handleCloseQAlert}
               isActive={true}
-              active={() => handleRemove(data.reviewId, data.socialId, data.bookTitle, data.address, data.tags)}
+              active={() => handleRemove(data.reviewId)}
             />
           )}
       <div className="px-8 py-8 sm:px-2">
