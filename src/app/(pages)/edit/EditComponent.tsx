@@ -230,6 +230,11 @@ const Editor = ({ editReviewId }: PropType) => {
         )
         console.log(data)
         console.log('Success:', response.data)
+
+        setAllDataInfo({})
+        setTitleInfo('')
+        setPlaceInfo({})
+        window.location.href = `/mypage/${session.data?.user.id}`
         
       } catch (error) {
         console.log(data)
@@ -248,14 +253,10 @@ const Editor = ({ editReviewId }: PropType) => {
           setAlertMessage('내용이 1500자 이상입니다!')
         }
         //TODO: 이 부분은 서버에서 에러 안 나오게 되면 위로 올려야 합니다
-        setAllDataInfo({})
-        setTitleInfo('')
-        setPlaceInfo({})
-        window.location.href = `/mypage/${session.data?.user.id}`
+        
         //
         setShowAlert(true)
         console.error('Error:', error)
-        console.log(showAlert)
       }
     }
     postData()
@@ -300,7 +301,7 @@ const Editor = ({ editReviewId }: PropType) => {
           )}
           {showQAlert && (
             <CustomAlert
-              message={alertMessage}
+              message={'수정하시겠습니까?'}
               onClose={handleCloseQAlert}
               isActive={true}
               active={handleAllData}
@@ -550,9 +551,9 @@ const Editor = ({ editReviewId }: PropType) => {
             </div>
             <div>
               <div className="control_btn flex mx-auto w-[18rem] sm:pb-8 gap-5">
-                <Button label="삭제하기" outline={false} />
+                <Button label="취소하기" outline={false} />
                 <Button
-                  label="저장하기"
+                  label="수정하기"
                   outline={true}
                   onClick={handleQAlert}
                 />

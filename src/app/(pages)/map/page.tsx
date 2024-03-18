@@ -26,6 +26,8 @@ const SharedMapPage = () => {
       setAllReviewData(newData)
     } catch (error) {
       console.error('Error fetching data:', error)
+
+      
     }
   }
 

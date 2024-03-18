@@ -16,6 +16,9 @@ const notoSansKr = Noto_Sans_KR({
 export const metadata: Metadata = {
   title: "읽는곳곳",
   description: "reading-everywhere",
+  icons: {
+    icon: "/mainIcon.svg",
+  },
 };
 
 export default function RootLayout({

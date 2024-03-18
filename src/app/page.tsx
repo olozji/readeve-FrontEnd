@@ -27,10 +27,12 @@ import { BookLayout } from './components/bookLayout'
 import NavBar from './components/NavBar'
 import CustomModal from './components/modal'
 import ModalContent from './components/detailModal'
+import LoginBtn from './components/buttons/LoginButton';
 
 export default function Home() {
   let session: any = useSession()
-
+  const [isLogin, setIsLogin] = useState(false)
+  const [isLoginOpen, setIsLoginOpen] = useState(false)
   const [map, setMap] = useState(false)
   const [publicReviews, setPublicReviews] = useState<any[]>([])
   const [selectedReview, setSelectedReview] =
@@ -74,6 +76,9 @@ export default function Home() {
 
   const handleChange = (index: any) => {
     setCurrentIndex(index)
+  }
+  const toggleLoginStatus = () => {
+    setIsLogin((prevLogin) => !prevLogin)
   }
 
   const getTopVisitedPlaces = () => {
@@ -219,7 +224,9 @@ export default function Home() {
   const scrollToTop = () => {
     window.scrollTo({ top: 0, behavior: 'smooth' })
   }
-
+  const closeLoginModal = () => {
+    setIsLoginOpen(false)
+  }
   useEffect(() => {
     function handleResize() {
       const screenWidth = window.innerWidth
@@ -242,6 +249,18 @@ export default function Home() {
   return (
     <div>
       <NavBar />
+      {isLoginOpen &&
+        <CustomModal onClose={closeLoginModal} isOpen={true} size={'30rem'}>
+          <div className="p-[2rem]">
+            <div className="font-bold text-2xl">로그인</div>
+            <div className="text-xs text-[#E57C65] py-2">
+              <h1>로그인을 하고 모든 기능을 이용해 보세요</h1>
+              <h1>필요한 시간은 단 3초!</h1>
+            </div>
+            <LoginBtn onLogin={toggleLoginStatus} />
+          </div>
+        </CustomModal>}
+      
       <div
         className="relative w-full bg-cover py-24 sm:py-10 sm:px-10 grid sm:grid-cols-1 px-[25%] grid-cols-2 "
         style={{
@@ -269,12 +288,7 @@ export default function Home() {
             ) : (
               <div
                 className=" bg-[#FFB988] inline-block text-white font-bold py-4 px-6 hover:bg-[#AF6C3E] rounded-lg shadow-md hover:shadow-lg"
-                onClick={async () => {
-                  await signIn('kakao', {
-                    callbackUrl:
-                      'http://localhost:8081/login/oauth2/code/kakao',
-                  })
-                }}
+                onClick={()=>setIsLoginOpen(true)}
               >
                 독후감 기록하기
               </div>
@@ -303,7 +317,7 @@ export default function Home() {
                   .map((tag: any, i: number) => (
                     <div
                       key={i}
-                      className={`box-border flex justify-center items-center px-4 py-2 my-2 mx-2 border border-gray-300 rounded-full ${isSelectedTags[i] ? 'bg-[#E57C65] text-white' : 'bg-white hover:border-[#C05555] hover:text-[#C05555]'}`}
+                      className={`box-border flex justify-center items-center px-4 py-2 my-2 mx-2 border border-gray-300 rounded-full ${isSelectedTags[startIdx + i] ? 'bg-[#E57C65] text-white' : 'bg-white hover:border-[#C05555] hover:text-[#C05555]'}`}
                       onClick={() => {
                         searchTag(i)
                       }}
