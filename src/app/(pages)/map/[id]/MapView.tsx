@@ -318,12 +318,12 @@ const MapView = ({
           const mapInstance = new window.kakao.maps.Map(container, options)
           mapRef.current = mapInstance
 
-          const contentsParams = () => {
+          const contentsParams = async() => {
             const isParams = myMapData.find((d:any) => d.pinRespDto.placeId == query)
             console.log(isParams);
         
             mapRef.current.setLevel(2);
-            mapRef.current.panTo(
+            await mapRef.current.panTo(
               new window.kakao.maps.LatLng(isParams.pinRespDto.y, isParams.pinRespDto.x),
             )
           }

@@ -11,7 +11,7 @@ import { Suspense } from 'react';
 
 function MapPage() {
   return (
-    <Suspense fallback={<div>Loading...</div>}>
+    <Suspense >
       <SharedMapPage />
     </Suspense>
   );
