@@ -18,6 +18,7 @@ interface MapDataType {
   isFull: string
   markerImage: StaticImageData
   isMain?: boolean
+  query?: any;
 }
 
 const MapView = ({
@@ -26,6 +27,7 @@ const MapView = ({
   isFull,
   markerImage,
   isMain,
+  query,
 }: MapDataType) => {
   const mapRef = useRef<any>(null)
   const listContainerRef = useRef<any>(null)
@@ -316,6 +318,16 @@ const MapView = ({
           const mapInstance = new window.kakao.maps.Map(container, options)
           mapRef.current = mapInstance
 
+          const contentsParams = () => {
+            const isParams = myMapData.find((d:any) => d.pinRespDto.placeId == query)
+            console.log(isParams);
+        
+            mapRef.current.setLevel(2);
+            mapRef.current.panTo(
+              new window.kakao.maps.LatLng(isParams.pinRespDto.y, isParams.pinRespDto.x),
+            )
+          }
+
           let bounds = new window.kakao.maps.LatLngBounds()
 
           if (filteredReviews.length === 0) {
@@ -331,6 +343,9 @@ const MapView = ({
 
               mapInstance.setBounds(bounds)
             })
+            if(query){
+              contentsParams();
+            }
           }
         })
       })
