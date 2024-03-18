@@ -343,9 +343,10 @@ const MapView = ({
 
               mapInstance.setBounds(bounds)
             })
-            if(query){
-              contentsParams();
-            }
+            
+          }
+          if(query){
+            contentsParams();
           }
         })
       })
