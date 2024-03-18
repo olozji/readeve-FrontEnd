@@ -22,6 +22,7 @@ import markerImage from '/public/images/marker1.png'
 import privateMarker from '/public/images/privateMarker.png'
 import isPrivatedIcon from '/public/images/isPrivatedIcon.png'
 import isSharedIcon from '/public/images/isSharedIcon.png'
+import mainFrame from '/public/images/mainFrame.png';
 import { BookLayout } from './components/bookLayout'
 import NavBar from './components/NavBar'
 import CustomModal from './components/modal'
@@ -242,19 +243,17 @@ export default function Home() {
     <div>
       <NavBar />
       <div
-        className="relative w-full py-24 sm:px-10 grid sm:grid-cols-1 px-[25%] grid-cols-2 "
+        className="relative w-full bg-cover py-24 sm:py-10 sm:px-10 grid sm:grid-cols-1 px-[25%] grid-cols-2 "
         style={{
-          width: '100%',
-          height: '100%',
-          background: 'radial-gradient( #ffffff 20%, #f7e9d4)',
+          backgroundImage: `url(${mainFrame.src})`,
         }}
       >
         <div className="relative z-10 text-start py-4">
-          <div className="text-black text-left text-3xl font-display font-bold mb-2">
+          <div className="text-black text-left text-3xl sm:text-xl font-display font-bold mb-2">
             나만의 독후감 지도를
-            <br /> 만들어보세요!
+            <br />만들어보세요!
           </div>
-          <div className="text-black text-left text-sm font-display mb-10">
+          <div className="text-black text-left max-w-[70vw] w-[50vw] text-sm sm:text-xs font-display mb-10">
             읽는 곳곳을 통해 지도 위에 독후감을 작성하고
             <br />
             독서장소를 공유하며 새로이 독서를 기억할 수 있습니다.
@@ -263,7 +262,7 @@ export default function Home() {
             {session.data ? (
               <Link
                 href="/write"
-                className=" bg-[#FFB988] text-white font-bold py-4 px-6 hover:bg-[#AF6C3E] rounded-lg shadow-md hover:shadow-lg"
+                className=" bg-[#FFB988] text-white font-bold py-4 px-6 sm:px-2 sm:py-2 hover:bg-[#AF6C3E] rounded-lg shadow-md hover:shadow-lg"
               >
                 독후감 기록하기
               </Link>
@@ -282,8 +281,8 @@ export default function Home() {
             )}
           </div>
         </div>
-        <div className="flex justify-center">
-          <Image src={mainLogo} alt="메인 로고" style={{ width: '200px' }} />
+        <div className="py-10 max-w-full w-[15vw] ml-4 sm:absolute sm:top-[10vh] sm:left-[65vw]">
+          <Image src={mainLogo} alt="메인 로고" />
         </div>
       </div>
 
