@@ -225,7 +225,7 @@ const Editor = ({ editReviewId }: PropType) => {
     const postData = async () => {
       try {
         const response = await axios.put(
-          `https://api.bookeverywhere.site/api/write/${editReviewId}`,
+          `https://api.bookeverywhere.site/api/review/edit/${editReviewId}?prevBookTitle=${editDefault.bookRespDto.title}&prevAddress=${editDefault.pinRespDto.address}`,
           data,
         )
         console.log(data)
@@ -233,7 +233,7 @@ const Editor = ({ editReviewId }: PropType) => {
         setAllDataInfo({})
         setTitleInfo('')
         setPlaceInfo({})
-        window.location.href = `/mypage/${session.data?.user.id}`
+        // window.location.href = `/mypage/${session.data?.user.id}`
       } catch (error) {
         console.log(data)
         console.log(showAlert)
