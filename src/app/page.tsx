@@ -379,7 +379,7 @@ export default function Home() {
             <div key={index} className="mb-3">
               <div className={`inline-flex pl-3 items-center gap-10 sm:gap-2  w-auto rounded-xl shadow-md sm:shadow-sm relative ${index === 0 ? 'border-2 border-[#AE695A]' : ''}`}>
               <span className="font-bold px-8 sm:px-2 sm:text-xs sm:w-[10vw]">{index + 1}위</span>
-              <span className="font-bold sm:text-xs sm:w-[10vw]">{place.name}</span>
+              <span className="font-bold max-w-[30vw] w-[20vw] sm:max-w-[60vw] sm:w-[50vw] sm:text-xs">{place.name}</span>
               <div
                 className="flex flex-col justify-center relative w-[calc((100% - 100px) * 0.3)]"
               >
@@ -398,7 +398,8 @@ export default function Home() {
                  <Image
                  src={mainLogo}
                  alt='mainLogo'
-                 className='w-[2vw] h-[3vh] sm:w-[5vw] sm:h-[3vh]'
+                 className='sm:w-[6vw] sm:h-[3vh]'
+                 width={30}
                />
                </>
                )}
