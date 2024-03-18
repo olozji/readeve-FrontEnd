@@ -7,7 +7,15 @@ import { allReviewDataState } from '@/store/writeAtoms';
 import axios from 'axios';
 import { useSearchParams } from 'next/navigation';
 
+import { Suspense } from 'react';
 
+function MapPage() {
+  return (
+    <Suspense fallback={<div>Loading...</div>}>
+      <SharedMapPage />
+    </Suspense>
+  );
+}
 
 const SharedMapPage = () => {
   const [documents, setDocuments] = useState<any[]>([])
@@ -62,4 +70,4 @@ const SharedMapPage = () => {
   )
 }
 
-export default SharedMapPage
+export default MapPage
