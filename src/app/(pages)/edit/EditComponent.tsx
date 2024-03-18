@@ -230,10 +230,7 @@ const Editor = ({ editReviewId }: PropType) => {
         )
         console.log(data)
         console.log('Success:', response.data)
-        setAllDataInfo({})
-        setTitleInfo('')
-        setPlaceInfo({})
-        // window.location.href = `/mypage/${session.data?.user.id}`
+        
       } catch (error) {
         console.log(data)
         console.log(showAlert)
@@ -250,6 +247,12 @@ const Editor = ({ editReviewId }: PropType) => {
         } else if (content.length > 1500) {
           setAlertMessage('내용이 1500자 이상입니다!')
         }
+        //TODO: 이 부분은 서버에서 에러 안 나오게 되면 위로 올려야 합니다
+        setAllDataInfo({})
+        setTitleInfo('')
+        setPlaceInfo({})
+        window.location.href = `/mypage/${session.data?.user.id}`
+        //
         setShowAlert(true)
         console.error('Error:', error)
         console.log(showAlert)

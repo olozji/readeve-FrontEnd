@@ -41,8 +41,11 @@ const ModalContent: React.FC<ModalContentProps> = ({
     // 삭제 요청이 성공한 경우의 처리
   } catch(error) {
     console.error('리뷰 삭제 실패:', error);
-    // 삭제 요청이 실패한 경우의 처리
-    // window.location.href = `/mypage/${sessionUserId}`
+      // 삭제 요청이 실패한 경우의 처리
+      
+      //TODO: 이 부분은 서버에서 에러 안 나오게 되면 위로 올려야 합니다
+      window.location.href = `/mypage/${sessionUserId}`
+      //
   };
 
   }
