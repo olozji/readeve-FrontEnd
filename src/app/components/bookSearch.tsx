@@ -164,7 +164,7 @@ export const BookSearch = ({edit}:BookType) => {
               </div>
             </div>
            
-            <div className="grid grid-cols-1 overflow-y-auto max-h-[37vh] mt-4 justify-items-start">
+            <div className="grid grid-cols-1 overflow-y-auto max-h-[37vh] mt-4 justify-items-start scrollBar">
               {documents.map((d: any, i: number) => (
                <div  className={` w-[100%] sm:max-h-[30vh] block ${selectedBook && selectedBook.isbn === d.isbn ? 'rounded-[13px] border-4 border-[#E57c65]' : 'rounded-lg border-4 border-transparent'}`}>
                 <div
