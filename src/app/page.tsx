@@ -427,10 +427,16 @@ export default function Home() {
               <div
                 className="flex flex-col justify-center relative w-[calc((100% - 100px) * 0.3)]"
               >
-               <div
+               {/* <div
                 className={`w-[calc((100% - 100px) * 0.7)] bg-gradient-to-r from-[#FFD6CD] to-[#E67D67] rounded-xl ${maxCountWidth ? 'sm:w-[10vw]' : ''}`}
                 style={{ 
                   width: `${Math.min(place.visitCount * 50, maxCountWidth ? 100 : 300)}px`
+              }}
+              > */}
+                 <div
+                className={`w-[calc((100% - 100px) * 0.7)] bg-gradient-to-r from-[#FFD6CD] to-[#E67D67] rounded-xl`}
+                style={{ 
+                  width: `${place.visitCount ? 100 : 300}px`
               }}
               >
                 <div className='flex justify-center items-center float-end'>
