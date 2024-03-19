@@ -15,16 +15,10 @@ import { useRouter } from 'next/navigation'
 import { use, useEffect, useState } from 'react'
 import { useRecoilState, useRecoilValue } from 'recoil'
 
-import Private from '/public/images/private.png'
-import unLock from '/public/images/unLock.png'
-import lampIcon from '/public/images/lampicon.png'
 import detailPaper from '/public/images/detailPaper.png'
-import privateMarker from '/public/images/privateMarker.png'
-import isPrivatedIcon from '/public/images/isPrivatedIcon.png'
-import isSharedIcon from '/public/images/isSharedIcon.png'
-import whitePaper from '/public/images//whitePager.png'
-import { all } from 'node_modules/axios/index.cjs'
-import axios from 'axios'
+import privateIcon from '/public/images/privateIcon.png'
+import sharedIcon from '/public/images/sharedIcon.png'
+
 import ModalContent from '@/app/components/detailModal'
 
 interface bookLayoutItemType {
@@ -169,10 +163,10 @@ const BookLayoutItem = ({ bookId, propsData }: bookLayoutItemType) => {
                       <div className="flex justify-between items-center text-2xl sm:text-base font-black pt-2  mb-2">
                         <div>{data.title}</div>
                         <Image
-                          src={data.private ? Private : unLock}
+                          src={data.private ? privateIcon : sharedIcon}
                           alt="private"
-                          style={{ width: '25px', height: '25px' }}
-                          className=" mt-1 justify-self-center"
+                          style={{ width: '20px', height: '25px' }}
+                          className=" mt-2 ml-2 justify-self-center sm:mt-[-1vw]"
                         />
                       </div>
                       <div className="grid absolute bottom-0 right-0 sm:bottom-0 sm:right-2 sm:text-xs justify-itmes-center">

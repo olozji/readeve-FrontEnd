@@ -4,6 +4,8 @@ import Image from 'next/image';
 import Link from 'next/link';
 import privateMarker from '/public/images/privateMarker.png'
 import closeIcon from '/public/images/closeIcon.png';
+import privateIcon from '/public/images/privateIcon.png'
+import sharedIcon from '/public/images/sharedIcon.png'
 import CustomAlert from './alert';
 import axios from 'axios';
 
@@ -91,6 +93,16 @@ const ModalContent: React.FC<ModalContentProps> = ({
                   data.private ? 'bg-[#E57C65] text-white' : 'bg-white text-[#6F5C52]'
                 }`}
               >
+                  <Image
+                    src={
+                      data.private
+                        ? privateIcon
+                        : sharedIcon
+                    }
+                    alt="Icon"
+                    width={10}
+                    height={10}
+                  />
                 {data.private ? '나만보기' : '전체공개'}
               </span>
             </div>
