@@ -8,7 +8,7 @@ import CustomAlert from './alert';
 import axios from 'axios';
 
 interface ModalContentProps {
-  bookData: any;
+  bookData?: any;
   data: any;
   sessionUserId: string | undefined;
   closeModal: () => void;
@@ -16,7 +16,6 @@ interface ModalContentProps {
 }
 
 const ModalContent: React.FC<ModalContentProps> = ({
-  bookData,
   data,
   sessionUserId,
   closeModal,
