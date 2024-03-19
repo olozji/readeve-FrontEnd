@@ -164,7 +164,7 @@ export const BookSearch = ({edit}:BookType) => {
               </div>
             </div>
            
-            <div className="grid grid-cols-1 overflow-y-auto max-h-[37vh] mt-4 justify-items-start scrollBar">
+            <div className="grid grid-cols-1 overflow-y-auto max-h-[37vh] mt-4 justify-items-start">
               {documents.map((d: any, i: number) => (
                <div  className={` w-[100%] sm:max-h-[30vh] block ${selectedBook && selectedBook.isbn === d.isbn ? 'rounded-[13px] border-4 border-[#E57c65]' : 'rounded-lg border-4 border-transparent'}`}>
                 <div
@@ -184,7 +184,7 @@ export const BookSearch = ({edit}:BookType) => {
                     />
                     <div className="p-4 mt-2 sm:text-sm">
                       <div className='font-black text-lg lg:text-xl '>{d.title}</div>
-                      <div className='font-semibold text-[#646464'>| 지은이 {d.authors[0]}</div>
+                      <div className='font-semibold text-[#646464]'>| 지은이 {d.authors[0]}</div>
                       <div className='pt-8  font-bold'>출판사:{d.publisher}</div>
                       <div className='font-bold'>출판일 : {formatDate(d.datetime)}</div>
                   </div>
