@@ -23,6 +23,7 @@ import privateMarker from '/public/images/privateMarker.png'
 import isPrivatedIcon from '/public/images/isPrivatedIcon.png'
 import isSharedIcon from '/public/images/isSharedIcon.png'
 import mainFrame from '/public/images/mainFrame.png';
+import contentLogo from '/public/images/contentsLogo.png';
 import { BookLayout } from './components/bookLayout'
 import NavBar from './components/NavBar'
 import CustomModal from './components/modal'
@@ -55,8 +56,6 @@ export default function Home() {
   const [smallTagShow, setSmallTagShow] = useState(false)
 
   const numVisibleBooks = 5
-  //const maxCountWidth = window.innerWidth <= 819;
-
 
   const [isModalOpen, setIsModalOpen] = useState<boolean[]>(
     Array(numVisibleBooks).fill(false),
@@ -427,18 +426,9 @@ export default function Home() {
               <div
                 className="flex flex-col justify-center relative w-[calc((100% - 100px) * 0.3)]"
               >
-               {/* <div
-                className={`w-[calc((100% - 100px) * 0.7)] bg-gradient-to-r from-[#FFD6CD] to-[#E67D67] rounded-xl ${maxCountWidth ? 'sm:w-[10vw]' : ''}`}
-                style={{ 
-                  width: `${Math.min(place.visitCount * 50, maxCountWidth ? 100 : 300)}px`
-              }}
-              > */}
                  <div
-                className={`w-[calc((100% - 100px) * 0.7)] bg-gradient-to-r from-[#FFD6CD] to-[#E67D67] rounded-xl`}
-                style={{ 
-                  width: `${place.visitCount ? 100 : 300}px`
-              }}
-              >
+                className={`w-[calc((100% - 100px) * 0.7)] bg-gradient-to-r from-[#FFD6CD] to-[#E67D67] rounded-xl sm:w-[10vw] ${place.visitCount > 300 ? 'max-w-[300px]' : ''}`}
+                style= { {width: `${place.visitCount * 50}px`} }>
                 <div className='flex justify-center items-center float-end'>
                 <div className='mr-2 sm-ml-1 text-white font-bold sm:text-xs'>
                 {place.visitCount}명
@@ -446,8 +436,8 @@ export default function Home() {
                 {index === 0  && (
                   <>
                  <Image
-                 src={mainLogo}
-                 alt='mainLogo'
+                 src={contentLogo}
+                 alt='contentLogo'
                  className='sm:w-[6vw] sm:h-[3vh]'
                  width={30}
                />
