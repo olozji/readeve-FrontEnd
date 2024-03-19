@@ -283,7 +283,7 @@ export default function Home() {
         </CustomModal>}
       
       <div
-        className="relative w-full bg-cover py-24 sm:py-10 sm:px-10 grid sm:grid-cols-1 px-[25%] grid-cols-2 "
+        className="relative grid w-full bg-cover py-24 sm:py-10 sm:px-10 grid sm:grid-cols-1 px-[25%] grid-cols-2 "
         style={{
           backgroundImage: `url(${mainFrame.src})`,
         }}
@@ -484,8 +484,8 @@ export default function Home() {
               </section>
             </div>
           ) : (
-            <div className="flex justify-between items-center">
-              <div className="grid sm:grid-cols-1 sm:w-[100%] grid-cols-2 gap-4 justify-center items-center">
+
+              <div className="grid sm:grid-cols-1 sm:w-[100%] grid-cols-2 gap-4 justify-between sm:justify-center items-center">
                 {publicReviews.slice(0, 2).map((d: any, i: number) => (
                   <div key={i} onClick={() => openModal(i)}>
                     {/* 모든리뷰 상세 모달 */}
@@ -552,8 +552,7 @@ export default function Home() {
                   </div>
                 ))}
               </div>
-              <div className="flex items-center justify-center"></div>
-            </div>
+
           )}
         </div>
         <div className="py-[10rem] text-center">
