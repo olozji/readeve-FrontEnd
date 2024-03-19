@@ -52,7 +52,7 @@ const ListItem = ({
     }
   }, [selectedMarkerIndex])
   return (
-    <div className="opacity-100 sm:flex sm:whitespace-nowrap">
+    <div className="opacity-100 sm:flex sm:whitespace-nowrap sm:w-[90%] sm:mx-[5%]">
       {isShared ? (
         <div
           className={`relative text-left block pt-6 my-2 
