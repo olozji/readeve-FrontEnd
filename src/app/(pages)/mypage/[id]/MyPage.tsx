@@ -233,7 +233,7 @@ const MyPageComponent = (props: ParamType) => {
               </section>
             </div>
           ) : (
-            <div className="flex justify-between items-center sm:justify-center">
+            <div className="">
               <div className="grid sm:grid-cols-1 grid-cols-3 justify-center items-center ">
                 {myPageData.slice(0, 3).map((d: any, i: number) => (
                   <Link
