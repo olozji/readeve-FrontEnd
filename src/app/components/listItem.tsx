@@ -114,7 +114,21 @@ const ListItem = ({
           onMouseEnter={() => setIsHovered(true)}
           onMouseLeave={()=>mouseLeaveList(index)}
             
-        >
+          >
+            {detailOpen && (
+                    <CustomModal
+                      size={'70rem'}
+                      isOpen={detailOpen}
+                      modalColor="#FEF6E6"
+                    >
+                     <ModalContent
+                      data={data}
+                      sessionUserId={data.socialId}
+                        closeModal={handleModal}
+                        isMyPage={true}
+                     />
+                    </CustomModal>
+                  )}
           <div className="gap-3">
             <div className="flex gap-3">
               <div className="flex">
@@ -129,7 +143,7 @@ const ListItem = ({
               </div>
 
               <button
-                onClick={()=>handleModal}
+                onClick={handleModal}
               >
                 <Image
                   src={isHovered ? linkArrow : blackLinkArrow}
@@ -139,20 +153,7 @@ const ListItem = ({
                   height={10}
                 />
                 </button>
-                {detailOpen && (
-                    <CustomModal
-                      size={'70rem'}
-                      isOpen={detailOpen}
-                      modalColor="#FEF6E6"
-                    >
-                     <ModalContent
-                      data={data}
-                      sessionUserId={data.socialId}
-                        closeModal={() => handleModal}
-                        isMyPage={true}
-                     />
-                    </CustomModal>
-                  )}
+                
               </div>
               <div className='mb-2'>
             <div className="flex align-center ">
