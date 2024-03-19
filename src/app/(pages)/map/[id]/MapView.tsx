@@ -426,7 +426,7 @@ const MapView = ({
                           {isShared ? '공유 지도' : '개인 지도'}
                         </div>
                       </div>
-                      <h1 className="font-bold">{isTitleActive}</h1>
+                      <h1 className="font-bold sm:hidden">{isTitleActive}</h1>
                       {filteredReviews.length === 0 ? (
                         isShared ? (
                           <div className="ml-12">
