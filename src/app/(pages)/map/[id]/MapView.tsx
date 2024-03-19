@@ -435,7 +435,7 @@ const MapView = ({
                         ) : (
                             
                           myMapData.map((data: any, i: number) => (
-                            <div key={i} className='flex whitespace-nowrap'>
+                            <div key={i} >
                               <ListItem
                                 key={i}
                                 index={i}
