@@ -511,7 +511,7 @@ export default function Home() {
 
                       <div className="flex flex-col ml-2">
                         <div className="">
-                          <h1 className="font-black text-xl sm:text-md">
+                          <h1 className="font-black text-xl sm:text-sm">
                             {d.title}
                           </h1>
                           <div className="flex sm:max-w-[50vw] text-xs text-[#3C3C3C] items-start sm:text-xs sm:pr-2">
