@@ -391,7 +391,7 @@ export default function Home() {
         </div>
 
         <div className="mt-10 sm:px-5">
-          <div className='flex justify-between items-center py-10'>
+          <div className='flex justify-between items-center py-10 sm:py-6'>
             <div className="text-2xl font-display font-bold ">내 서재</div>
             {session.data &&
             <Link href={`/mypage/${session.data.user.id}`}>

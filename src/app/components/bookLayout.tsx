@@ -72,7 +72,7 @@ export const BookLayout = ({ width, isMain, bookData }: bookLayoutProps) => {
               &lt;
             </div>
             <div className="flex items-start">
-              <div className={`grid ${isMain?'sm:grid-cols-1':'sm:grid-cols-2'} grid-cols-5 gap-x-4 justify-center `}>
+              <div className={`grid ${isMain?'sm:grid-cols-3 sm:gap-x-0':'sm:grid-cols-2'} grid-cols-5 gap-x-4 justify-center `}>
                 {documents
                   .slice(startIdx, startIdx + numVisibleBooks)
                   .map((d: any, i: number) => (
@@ -80,7 +80,7 @@ export const BookLayout = ({ width, isMain, bookData }: bookLayoutProps) => {
                       key={i}
                       href={`/detail/${d.bookRespDto && d.bookRespDto.isbn ? d.bookRespDto.isbn.replace(' ', '') : ''}`}
                     >
-                      <div className="flex flex-col items-center rounded-lg border-4 border-transparent p-4 cursor-pointer">
+                      <div className={`flex flex-col items-center rounded-lg border-4 border-transparent ${isMain&&'sm:p-0'}p-4 cursor-pointer`}>
                         <img
                           src={
                             d.bookRespDto.thumbnail
@@ -107,7 +107,7 @@ export const BookLayout = ({ width, isMain, bookData }: bookLayoutProps) => {
                                 ).length
                               }{' '}
                             </span>
-                            <div className="px-1 py-1 text-[#5F5F5F] text-sm">
+                            <div className="px-1 py-1 text-[#5F5F5F] text-sm sm:text-xs">
                               {d.bookRespDto.title}
                             </div>
                           </div>
