@@ -193,7 +193,9 @@ const BookLayoutItem = ({ bookId, propsData }: bookLayoutItemType) => {
                     </div>
                     {/* TODO:내용 글자 많으면 ...으로 표시하기 */}
                     <p className="text-sm font-semibold text-[#767676] max-w-[50vw] pt-12 sm:pt-6 sm:ml-2 sm:text-xs">
-                      {data.content}
+                      {data.content.length > 20
+                        ? `${data.content.slice(0, 20)}...`
+                        : data.content}
                     </p>
                   </div>
                 </div>
