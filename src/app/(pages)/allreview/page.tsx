@@ -215,8 +215,8 @@ const AllReviewPage = () => {
                                   <div>등록된 내용이 없습니다</div>
                                 ) : (
                                   <div>
-                                    {item.content.length > 100
-                                      ? `${item.content.slice(0, 100)}...`
+                                    {item.content.length > 20
+                                      ? `${item.content.slice(0, 20)}...`
                                       : item.content}
                                   </div>
                                 )}

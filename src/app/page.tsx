@@ -537,8 +537,8 @@ export default function Home() {
                               <div>등록된 내용이 없습니다</div>
                             ) : (
                               <div>
-                                {d.content.length > 100
-                                  ? `${d.content.slice(0, 100)}...`
+                                {d.content.length > 20
+                                  ? `${d.content.slice(0, 20)}...`
                                   : d.content}
                               </div>
                             )}
