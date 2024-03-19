@@ -416,7 +416,7 @@ const MapView = ({
 
                     <div
                       ref={listContainerRef}
-                      className="absolute lg:scrollBar sm:w-[100vw] sm:top-[70%] w-[26vw] bg-[#f9f9f9] sm:h-[30%] h-full px-[2vw] py-[1vw] bg-opacity-80 sm:bg-opacity-0 overflow-y-auto rounded-lg"
+                      className="absolute lg:scrollBar sm:flex sm:flex-nowrap sm:overflow-x-auto sm:w-[100vw] sm:top-[70%] w-[26vw] bg-[#f9f9f9] sm:h-[30%] h-full px-[2vw] py-[1vw] bg-opacity-80 sm:bg-opacity-0 overflow-y-auto rounded-lg"
                       style={{ zIndex: 2 }}
                     >
                       <div className="flex py-2 w-full sm:hidden justify-between text-center font-bold border-b-[1px] border-gray-600 mb-4">
@@ -433,8 +433,9 @@ const MapView = ({
                             선택된 태그에 해당하는 장소가 없습니다
                           </div>
                         ) : (
+                            
                           myMapData.map((data: any, i: number) => (
-                            <div key={i}>
+                            <div key={i} className='flex whitespace-nowrap'>
                               <ListItem
                                 key={i}
                                 index={i}
