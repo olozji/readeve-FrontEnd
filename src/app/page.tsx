@@ -140,14 +140,17 @@ export default function Home() {
     setSharedReview(idx)
   }
 
-  function maskName(name: string) {
-    if (name.length <= 2) {
-      return name
+  function maskName(name: string): string {
+    if (name.length === 2) {
+      return name.charAt(0) + '*';
+    } else if (name.length > 2) {
+      const firstChar = name.charAt(0);
+      const lastChar = name.charAt(name.length - 1);
+      const maskedPart = '*'.repeat(name.length - 2);
+      return firstChar + maskedPart + lastChar;
+    } else {
+      return name;
     }
-    const firstChar = name.charAt(0)
-    const lastChar = name.charAt(name.length - 1)
-    const maskedPart = '*'.repeat(name.length - 2)
-    return firstChar + maskedPart + lastChar
   }
 
   const fetchData = async () => {
@@ -227,12 +230,6 @@ export default function Home() {
     setDocuments(filteredData)
   }, [allReviewData])
 
-  useEffect(() => {
-    const topVisitedPlaces = allReviewData.filter(
-      (item: any) => item.pinRespDto.name,
-    )
-    setPublicReviews(documents)
-  }, [topVisitedPlaces])
 
   useEffect(() => {
     setMyPageData(myData)
@@ -285,17 +282,17 @@ export default function Home() {
         </CustomModal>}
       
       <div
-        className="relative w-full bg-cover py-24 sm:py-10 sm:px-10 grid sm:grid-cols-1 px-[25%] grid-cols-2 "
+        className="relative w-full bg-cover py-24 sm:py-8 sm:px-5 grid sm:grid-flow-row-dense items-center sm:grid-cols-3 sm:grid-rows-1 px-[25%] grid-cols-2 "
         style={{
           backgroundImage: `url(${mainFrame.src})`,
         }}
       >
-        <div className="relative z-10 text-start py-4">
-          <div className="text-black text-left text-3xl sm:text-xl font-display font-bold mb-2">
+        <div className="relative z-10 text-start sm:col-span-2 py-4">
+          <div className="text-black text-left text-3xl sm:text-2xl  font-bold mb-2">
             나만의 독후감 지도를
             <br />만들어보세요!
           </div>
-          <div className="text-black text-left max-w-[70vw] w-[50vw] text-sm sm:text-xs font-display mb-10">
+          <div className="text-black text-left text-sm sm:text-[10px] font-bold sm:mb-4 mb-10">
             읽는 곳곳을 통해 지도 위에 독후감을 작성하고
             <br />
             독서장소를 공유하며 새로이 독서를 기억할 수 있습니다.
@@ -304,13 +301,13 @@ export default function Home() {
             {session.data ? (
               <Link
                 href="/write"
-                className=" bg-[#FFB988] text-white font-bold py-4 px-6 sm:px-2 sm:py-2 hover:bg-[#AF6C3E] rounded-lg shadow-md hover:shadow-lg"
+                className=" bg-[#FFB988] text-white font-bold py-4 px-6 sm:text-xs sm:px-2 sm:py-2 hover:bg-[#AF6C3E] rounded-lg shadow-md hover:shadow-lg"
               >
                 독후감 기록하기
               </Link>
             ) : (
               <div
-                className=" bg-[#FFB988] inline-block text-white font-bold py-4 px-6 hover:bg-[#AF6C3E] rounded-lg shadow-md hover:shadow-lg"
+                className=" bg-[#FFB988] inline-block text-white font-bold sm:text-xs py-4 px-6 hover:bg-[#AF6C3E] rounded-lg shadow-md hover:shadow-lg"
                 onClick={()=>setIsLoginOpen(true)}
               >
                 독후감 기록하기
@@ -318,7 +315,7 @@ export default function Home() {
             )}
           </div>
         </div>
-        <div className="py-10 max-w-full w-[15vw] ml-4 sm:absolute sm:top-[10vh] sm:left-[65vw]">
+        <div className="py-10 max-w-full w-[15vw] sm:w-[25vw] ml-4 ">
           <Image src={mainLogo} alt="메인 로고" />
         </div>
       </div>
@@ -393,7 +390,14 @@ export default function Home() {
         </div>
 
         <div className="mt-10 sm:px-5">
-          <div className="text-2xl font-display font-bold py-10">내 서재</div>
+          <div className='flex justify-between items-center py-10 sm:py-6'>
+            <div className="text-2xl font-display font-bold ">내 서재</div>
+            {session.data &&
+            <Link href={`/mypage/${session.data.user.id}`}>
+            <Image src={moreIcon} alt={'moreIcon'} width={22} height={30} />
+          </Link>}
+          </div>
+          
           {session.data ? (
             <BookLayout
               bookData={myPageData}
@@ -477,8 +481,8 @@ export default function Home() {
               </section>
             </div>
           ) : (
-            <div className="flex justify-between items-center">
-              <div className="grid sm:grid-cols-1 sm:w-[100%] grid-cols-2 gap-4 justify-center items-center">
+
+              <div className="grid sm:grid-cols-1 sm:w-[100%] grid-cols-2 gap-4 justify-between sm:justify-center items-center">
                 {publicReviews.slice(0, 2).map((d: any, i: number) => (
                   <div key={i} onClick={() => openModal(i)}>
                     {/* 모든리뷰 상세 모달 */}
@@ -530,8 +534,8 @@ export default function Home() {
                               <div>등록된 내용이 없습니다</div>
                             ) : (
                               <div>
-                                {d.content.length > 100
-                                  ? `${d.content.slice(0, 100)}...`
+                                {d.content.length > 50
+                                  ? `${d.content.slice(0, 50)}...`
                                   : d.content}
                               </div>
                             )}
@@ -545,8 +549,7 @@ export default function Home() {
                   </div>
                 ))}
               </div>
-              <div className="flex items-center justify-center"></div>
-            </div>
+
           )}
         </div>
         <div className="py-[10rem] text-center">
