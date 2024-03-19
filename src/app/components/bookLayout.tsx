@@ -23,7 +23,11 @@ export const BookLayout = ({ width, isMain, bookData }: bookLayoutProps) => {
     function handleResize() {
       const screenWidth = window.innerWidth
       if (screenWidth < 819) {
-        setNumVisibleBooks(4) // 화면이 작을 때
+        if (isMain) {
+          setNumVisibleBooks(3)
+        } else {
+          setNumVisibleBooks(4) // 화면이 작을 때
+        }
       } else {
         setNumVisibleBooks(5) // 큰 화면
       }
@@ -68,7 +72,7 @@ export const BookLayout = ({ width, isMain, bookData }: bookLayoutProps) => {
               &lt;
             </div>
             <div className="flex items-start">
-              <div className="grid sm:grid-cols-2 grid-cols-5 gap-x-4 justify-center ">
+              <div className={`grid ${isMain?'sm:grid-cols-1':'sm:grid-cols-2'} grid-cols-5 gap-x-4 justify-center `}>
                 {documents
                   .slice(startIdx, startIdx + numVisibleBooks)
                   .map((d: any, i: number) => (
