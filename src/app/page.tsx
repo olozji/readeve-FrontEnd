@@ -55,7 +55,7 @@ export default function Home() {
   const [smallTagShow, setSmallTagShow] = useState(false)
 
   const numVisibleBooks = 5
-  const maxCountWidth = window.innerWidth <= 819;
+  //const maxCountWidth = window.innerWidth <= 819;
 
 
   const [isModalOpen, setIsModalOpen] = useState<boolean[]>(
