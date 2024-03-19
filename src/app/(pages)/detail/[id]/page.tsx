@@ -47,7 +47,7 @@ const Detail = (props: PropType) => {
   return (
     <><NavBar />
       <section className={`bg-[#F1E5CF] px-[15vw] sm:px-0 mx-auto`}>
-      <div className='absolute py-20 sm:hidden'>
+      <div className='absolute py-20 z-50 sm:hidden'>
         <GoBackButton/> 
       </div>
       {/* 램프&내 서재 */}
