@@ -163,10 +163,17 @@ const ModalContent: React.FC<ModalContentProps> = ({
               <h2 className="text-2xl sm:text-lg font-bold mb-4 border-black border-b pb-5 text-[#503526]">
                 {data.title}
               </h2>
-              <div
+              {/* <div
                 className="h-[45vh] mx-auto text-[#999999]"
                 dangerouslySetInnerHTML={{ __html: data.content.replace(/\n/g, '<br>') }}
-              ></div>
+              ></div> 
+              */}
+              {/* TODO: 각각의 문자를 split로 쪼개고 단락을 <p> 태그로 감싸는 방식으로 수정해보았어요 */}
+                <div className="h-[45vh] mx-auto text-[#999999] overflow-y-auto max-h-[45vh]">
+              {data.content.split('\n').map((p:any, index:any) => (
+                <p key={index}>{p}</p>
+              ))}
+            </div>
             </div>
           </div>
         </div>

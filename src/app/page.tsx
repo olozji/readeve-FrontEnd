@@ -49,11 +49,14 @@ export default function Home() {
   const [myData, setMyData] = useState([])
   const [myPageData, setMyPageData] = useState<any>([])
   const [tagData, setTagData] = useState<any>([])
+  const [selectedCount, setSelectedCount] = useState<boolean[]>([]);
   const [isLoading, setIsLoading] = useState(true)
   const [sharedReview, setSharedReview] = useState(null)
   const [smallTagShow, setSmallTagShow] = useState(false)
 
   const numVisibleBooks = 5
+  const maxCountWidth = window.innerWidth <= 819;
+
 
   const [isModalOpen, setIsModalOpen] = useState<boolean[]>(
     Array(numVisibleBooks).fill(false),
@@ -77,6 +80,15 @@ export default function Home() {
   const handleChange = (index: any) => {
     setCurrentIndex(index)
   }
+
+  const handleCountClick = (index:number) => {
+    setSelectedCount((prevState) => {
+      const clickCount = [...prevState];
+      clickCount[index] = !clickCount[index]
+      return clickCount;
+    });
+  }
+
   const toggleLoginStatus = () => {
     setIsLogin((prevLogin) => !prevLogin)
   }
@@ -393,7 +405,7 @@ export default function Home() {
             <div>로그인 하고 내 서재 를 확인하세요</div>
           )}
         </div>
-        <div className="mt-10 sm:px-5">
+        <div className="mt-10 sm:px-3">
           <h1 className="text-2xl sm:text-xl font-display font-bold py-10">
             재방문 장소를 확인해 보세요!
           </h1>
@@ -401,18 +413,25 @@ export default function Home() {
           <div className="">
           <div className="p-5 mb-3 sm:p-0 rounded-lg shadow-xl relative sm:shadow-none">
           {topVisitedPlaces.map((place, index) => (
-            <div key={index} className="mb-3" onClick={() => handlePlaceClick(place,index)}>
-              <div className={`inline-flex pl-3 items-center gap-10 sm:gap-2  w-auto rounded-xl shadow-md sm:shadow-sm relative ${index === 0 ? 'border-2 border-[#AE695A]' : ''}`}>
+            <div 
+              key={index} 
+              className="mb-3" 
+              onClick={() => handlePlaceClick(place,index)}>
+               <div
+                className={`inline-flex pl-3 items-center gap-10 sm:gap-2  w-auto rounded-xl hover:border-[#AE695A] shadow-md sm:shadow-sm relative 
+                ${selectedCount[index] ? 'border-2 border-[#AE695A]' : 'border-2'} `}
+                onClick={() => handleCountClick(index)}
+                >
               <span className="font-bold px-8 sm:px-2 sm:text-xs sm:w-[10vw]">{index + 1}위</span>
               <span className="font-bold max-w-[30vw] w-[20vw] sm:max-w-[60vw] sm:w-[50vw] sm:text-xs">{place.name}</span>
               <div
                 className="flex flex-col justify-center relative w-[calc((100% - 100px) * 0.3)]"
               >
                <div
-                className="w-[calc((100% - 100px) * 0.7)] 
-                bg-gradient-to-r from-[#FFD6CD] to-[#E67D67] 
-                rounded-xl sm:w-[10vw]"
-                style={{ width: `${place.visitCount * 50}px` }}
+                className={`w-[calc((100% - 100px) * 0.7)] bg-gradient-to-r from-[#FFD6CD] to-[#E67D67] rounded-xl ${maxCountWidth ? 'sm:w-[10vw]' : ''}`}
+                style={{ 
+                  width: `${Math.min(place.visitCount * 50, maxCountWidth ? 100 : 300)}px`
+              }}
               >
                 <div className='flex justify-center items-center float-end'>
                 <div className='mr-2 sm-ml-1 text-white font-bold sm:text-xs'>
@@ -492,7 +511,7 @@ export default function Home() {
 
                       <div className="flex flex-col ml-2">
                         <div className="">
-                          <h1 className="font-black text-xl sm:text-md">
+                          <h1 className="font-black text-xl sm:text-sm">
                             {d.title}
                           </h1>
                           <div className="flex sm:max-w-[50vw] text-xs text-[#3C3C3C] items-start sm:text-xs sm:pr-2">
