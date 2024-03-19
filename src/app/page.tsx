@@ -141,14 +141,17 @@ export default function Home() {
     setSharedReview(idx)
   }
 
-  function maskName(name: string) {
-    if (name.length <= 2) {
-      return name
+  function maskName(name: string): string {
+    if (name.length === 2) {
+      return name.charAt(0) + '*';
+    } else if (name.length > 2) {
+      const firstChar = name.charAt(0);
+      const lastChar = name.charAt(name.length - 1);
+      const maskedPart = '*'.repeat(name.length - 2);
+      return firstChar + maskedPart + lastChar;
+    } else {
+      return name;
     }
-    const firstChar = name.charAt(0)
-    const lastChar = name.charAt(name.length - 1)
-    const maskedPart = '*'.repeat(name.length - 2)
-    return firstChar + maskedPart + lastChar
   }
 
   const fetchData = async () => {
@@ -228,12 +231,6 @@ export default function Home() {
     setDocuments(filteredData)
   }, [allReviewData])
 
-  useEffect(() => {
-    const topVisitedPlaces = allReviewData.filter(
-      (item: any) => item.pinRespDto.name,
-    )
-    setPublicReviews(documents)
-  }, [topVisitedPlaces])
 
   useEffect(() => {
     setMyPageData(myData)

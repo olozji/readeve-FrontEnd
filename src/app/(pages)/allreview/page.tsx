@@ -94,14 +94,17 @@ const AllReviewPage = () => {
    fetchData()
   }, [])
 
-  function maskName(name: string) {
-    if (name.length <= 2) {
-      return name
+  function maskName(name: string): string {
+    if (name.length === 2) {
+      return name.charAt(0) + '*';
+    } else if (name.length > 2) {
+      const firstChar = name.charAt(0);
+      const lastChar = name.charAt(name.length - 1);
+      const maskedPart = '*'.repeat(name.length - 2);
+      return firstChar + maskedPart + lastChar;
+    } else {
+      return name;
     }
-    const firstChar = name.charAt(0)
-    const lastChar = name.charAt(name.length - 1)
-    const maskedPart = '*'.repeat(name.length - 2)
-    return firstChar + maskedPart + lastChar
   }
 
   function formatDateToYYMMDD(isoDateString: string) {
