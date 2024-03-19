@@ -8,7 +8,7 @@ import CustomAlert from './alert';
 import axios from 'axios';
 
 interface ModalContentProps {
-  bookData: any;
+  bookData?: any;
   data: any;
   sessionUserId: string | undefined;
   closeModal: () => void;
@@ -16,7 +16,6 @@ interface ModalContentProps {
 }
 
 const ModalContent: React.FC<ModalContentProps> = ({
-  bookData,
   data,
   sessionUserId,
   closeModal,
@@ -50,6 +49,19 @@ const ModalContent: React.FC<ModalContentProps> = ({
 
   }
   const [showQAlert, setShowQAlert] = useState(false);
+
+  function maskName(name: string): string {
+    if (name.length === 2) {
+      return name.charAt(0) + '*';
+    } else if (name.length > 2) {
+      const firstChar = name.charAt(0);
+      const lastChar = name.charAt(name.length - 1);
+      const maskedPart = '*'.repeat(name.length - 2);
+      return firstChar + maskedPart + lastChar;
+    } else {
+      return name;
+    }
+  }
 
   return (
     <div className="">
@@ -124,7 +136,14 @@ const ModalContent: React.FC<ModalContentProps> = ({
                   {data.pinRespDto && (
                     <>
                       <Image src={privateMarker} alt={'장소'} />
-                      {data.pinRespDto.name}
+                      {data.pinRespDto.private ? (
+                                  <div>{maskName(data.writer)}님만의 장소</div>
+                                ) : (
+                                  <div className="">
+                                    독서장소: {data.pinRespDto?.name} |{' '}
+                                    {data.pinRespDto?.address}
+                                  </div>
+                                )}
                     </>
                   )}
                 </div>

@@ -368,7 +368,7 @@ const MapView = ({
         myMapData.forEach((d: any, i: number) => {
           displayMarker(d.pinRespDto, i)
 
-          if (i == myMapData.length - 1) {
+          if (i == 0) {
             mapRef.current.setLevel(6)
             mapRef.current.panTo(
               new window.kakao.maps.LatLng(d.pinRespDto.y, d.pinRespDto.x),

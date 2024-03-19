@@ -11,6 +11,8 @@ import blackLinkArrow from '/public/images/blackLinkArrow.png'
 import unLock from '/public/images/unLock.png'
 import hoverPrivateMarker from '/public/images/hoverPrivateMarker.png'
 import privateMarker from '/public/images/privateMarker.png'
+import CustomModal from './modal';
+import ModalContent from './detailModal';
 
 interface listItemProps {
   data: any
@@ -32,10 +34,14 @@ const ListItem = ({
   const [recoilMap] = useRecoilState<any>(mapState)
   const [isHovered, setIsHovered] = useState(false)
   const [iscontentExpanded, setIsContentExpanded] = useState(false)
+  const [detailOpen,setDetailOpen] = useState(false)
 
   const mouseLeaveList = (i: number) => {
     onListMouseLeave(i)
     setIsHovered(false)
+  }
+  const handleModal = () => {
+    setDetailOpen(!detailOpen)
   }
 
   useEffect(() => {
@@ -108,7 +114,21 @@ const ListItem = ({
           onMouseEnter={() => setIsHovered(true)}
           onMouseLeave={()=>mouseLeaveList(index)}
             
-        >
+          >
+            {detailOpen && (
+                    <CustomModal
+                      size={'70rem'}
+                      isOpen={detailOpen}
+                      modalColor="#FEF6E6"
+                    >
+                     <ModalContent
+                      data={data}
+                      sessionUserId={data.socialId}
+                        closeModal={handleModal}
+                        isMyPage={true}
+                     />
+                    </CustomModal>
+                  )}
           <div className="gap-3">
             <div className="flex gap-3">
               <div className="flex">
@@ -122,8 +142,8 @@ const ListItem = ({
                 />
               </div>
 
-              <Link
-                href={`/detail/${data.bookRespDto && data.bookRespDto.isbn ? data.bookRespDto.isbn.replace(' ', '') : ''}`}
+              <button
+                onClick={handleModal}
               >
                 <Image
                   src={isHovered ? linkArrow : blackLinkArrow}
@@ -132,7 +152,8 @@ const ListItem = ({
                   width={16}
                   height={10}
                 />
-              </Link>
+                </button>
+                
               </div>
               <div className='mb-2'>
             <div className="flex align-center ">
