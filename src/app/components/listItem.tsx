@@ -80,7 +80,7 @@ const ListItem = ({
               <Image
                 src={isHovered ? hoverPrivateMarker : privateMarker}
                 alt="hoverPrivateMarker"
-                className="mr-2 w-4 h-4"
+                className="mr-1 w-4 h-4"
                 width={15}
                 height={10}
               />
@@ -99,7 +99,7 @@ const ListItem = ({
               data.tags.map(
                 (tag: any, i: number) =>
                   tag.selected && (
-                    <div className="text-gray-600 py-1 text-xs">
+                    <div className="text-[#464646] py-1 text-xs">
                       #{tag.content}
                     </div>
                   ),
