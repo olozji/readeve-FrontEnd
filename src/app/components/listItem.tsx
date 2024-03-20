@@ -76,15 +76,15 @@ const ListItem = ({
             </Link>
           </div>
           <div>
-            <div className="flex my-2 px-6">
+            <div className="flex my-2 px-6 items-center">
               <Image
                 src={isHovered ? hoverPrivateMarker : privateMarker}
                 alt="hoverPrivateMarker"
-                className="mr-2"
-                width={16}
+                className="mr-2 w-4 h-4"
+                width={15}
                 height={10}
               />
-              <p className="text-sm">{data.pinRespDto.address}</p>
+              <p className="text-sm sm:text-xs">{data.pinRespDto.address}</p>
             </div>
             {!isHovered && (
               <div className="px-6">
