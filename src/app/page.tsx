@@ -391,10 +391,10 @@ export default function Home() {
 
         <div className="mt-10 sm:px-5">
           <div className='flex justify-between items-center py-10 sm:py-6'>
-            <div className="text-2xl font-display font-bold ">내 서재</div>
+            <div className="text-2xl sm:text-xl font-display font-bold ">내 서재</div>
             {session.data &&
             <Link href={`/mypage/${session.data.user.id}`}>
-            <Image src={moreIcon} alt={'moreIcon'} width={22} height={30} />
+            <Image src={moreIcon} alt={'moreIcon'} width={22} height={30} className='sm:w-[4vw]'/>
           </Link>}
           </div>
           
@@ -555,7 +555,7 @@ export default function Home() {
         <div className="py-[10rem] text-center">
           <h1
             onClick={scrollToTop}
-            className="cursor-pointer underline decoration-solid"
+            className="cursor-pointer underline decoration-solid text-[#E57C65]"
           >
             △첫 화면으로 올라가기
           </h1>
