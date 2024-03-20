@@ -152,7 +152,7 @@ const ModalContent: React.FC<ModalContentProps> = ({
                                   <div>{maskName(data.writer)}님만의 장소</div>
                                 ) : (
                                   <div className="">
-                                    독서장소: {data.pinRespDto?.name} |{' '}
+                                    독서장소: {data.pinRespDto?.name} |{' '} <br/>
                                     {data.pinRespDto?.address}
                                   </div>
                                 )}
