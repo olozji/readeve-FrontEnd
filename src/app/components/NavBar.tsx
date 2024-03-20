@@ -60,7 +60,7 @@ const NavBar = () => {
           </div>
 
           {/* 햄버거 아이콘 (sm 화면에서만 보임) */}
-          <div className="hidden sm:absolute right-5 top-4 sm:block">
+          <div className="hidden sm:absolute right-5 top-4 sm:block sm:top-2">
             <label htmlFor="menu-toggle" className="cursor-pointer" onClick={toggleDropdown}>
               <svg
                 xmlns="http://www.w3.org/2000/svg"
