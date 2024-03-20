@@ -80,7 +80,7 @@ export const BookLayout = ({ width, isMain, bookData }: bookLayoutProps) => {
                       key={i}
                       href={`/detail/${d.bookRespDto && d.bookRespDto.isbn ? d.bookRespDto.isbn.replace(' ', '') : ''}`}
                     >
-                      <div className={`flex flex-col items-center rounded-lg border-4 border-transparent ${isMain&&'sm:p-0'}p-4 cursor-pointer`}>
+                      <div className={`flex flex-col items-center rounded-lg border-4 border-transparent ${isMain&&'sm:p-0'} p-4 cursor-pointer`}>
                         <img
                           src={
                             d.bookRespDto.thumbnail
