@@ -128,7 +128,7 @@ const MyPageComponent = (props: ParamType) => {
                   <div className="flex gap-2 pb-[3%]">
                     <h1>나만의 지도</h1>
                     <div className="flex items-center gap-3">
-                      <span className="inline-flex items-center justify-center max-h-10 rounded-lg gap-1 bg-[#F8F3ED] px-3 py-1 text-xs font-medium text-[#5F5F5F]">
+                      <span className="inline-flex items-center justify-center max-h-10 rounded-lg gap-1 bg-[#FFFCF9] px-3 py-1 text-xs font-medium text-[#5F5F5F]">
                         <Image
                           src={bookIcon}
                           alt={'bookIcon'}
@@ -137,7 +137,7 @@ const MyPageComponent = (props: ParamType) => {
                         />
                         {`${new Set(myPageData.map((data: any) => data.bookRespDto.isbn)).size} 권`}
                       </span>
-                      <span className="inline-flex items-center justify-center max-h-10 rounded-lg gap-1 bg-[#F8F3ED] px-3 py-1 text-xs font-medium text-[#5F5F5F]">
+                      <span className="inline-flex items-center justify-center max-h-10 rounded-lg gap-1 bg-[#FFFCF9] px-3 py-1 text-xs font-medium text-[#5F5F5F]">
                         <Image
                           src={NotesImg}
                           alt={'NotesImg'}
