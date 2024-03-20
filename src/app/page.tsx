@@ -466,7 +466,7 @@ export default function Home() {
             </h1>
             <span className="inline-block align-middle">
               <Link href={'/allreview'}>
-                <Image src={moreIcon} alt={'moreIcon'} width={22} height={30} />
+                <Image src={moreIcon} alt={'moreIcon'} width={22} height={30} className='sm:[4vw]' />
               </Link>
             </span>
           </div>
