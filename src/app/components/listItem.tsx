@@ -129,16 +129,16 @@ const ListItem = ({
                      />
                     </CustomModal>
                   )}
-          <div className="gap-3">
+          <div className="gap-3 mb-3">
             <div className="flex gap-3">
               <div className="flex">
-                <h5 className="mb-2 text-lg font-bold tracking-tight">
+                <h5 className="mb-2 text-lg text-[#3D3D3D] font-bold tracking-tight">
                   {data.bookRespDto?.title}
                 </h5>
                 <Image
                   src={data.private ? Private : unLock}
                   alt="private"
-                  style={{ width: '25px', height: '25px' }}
+                  className='ml-2 w-4 h-5'
                 />
               </div>
 
@@ -148,31 +148,31 @@ const ListItem = ({
                 <Image
                   src={isHovered ? linkArrow : blackLinkArrow}
                   alt="linkArrow"
-                  className="absolute right-10"
-                  width={16}
+                  className="absolute right-6"
+                  width={15}
                   height={10}
                 />
                 </button>
                 
               </div>
               <div className='mb-2'>
-            <div className="flex align-center ">
+            <div className="flex align-center items-center">
               <Image
                 src={isHovered ? hoverPrivateMarker : privateMarker}
                 alt="hoverPrivateMarker"
-                className=""
+                className="mr-1 w-4 h-4"
               />
-              <h5 className=" text-sm font-bold tracking-tight">
+              <h5 className="text-sm text-[#3D3D3D] font-bold tracking-tight">
                 {data.pinRespDto.name
                   ? data.pinRespDto.name
                   : data.pinRespDto.address}
               </h5>
             </div>
-                <p className="text-xs text-gray-600">{data.pinRespDto.address}</p>
+                <p className="text-xs text-[#3D3D3D]">{data.pinRespDto.address}</p>
                 </div>
           </div>
           <p
-            className={`font-normal ${iscontentExpanded ? 'whitespace-pre-line' : 'line-clamp-2'}`}
+            className={`font-normal ${iscontentExpanded ? 'whitespace-pre-line' : 'line-clamp-2'} text-sm text-[#3D3D3D]`}
           >
             {data.content}
           </p>
