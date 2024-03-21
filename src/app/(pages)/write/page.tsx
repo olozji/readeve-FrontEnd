@@ -266,11 +266,11 @@ const [showQAlert, setShowQAlert] = useState(false);
               </div>
             </div>
             <div className="px-8 py-3 flex gap-5 items-center sm:px-2">
-              <h4 className="px-5 font-extrabold sm:px-0 sm:text-xs">장소</h4>
+              <h4 className="px-5 font-extrabold sm:px-0 sm:text-sm">장소</h4>
               <div className="flex px-3 max-w-[60vw] sm:px-0 ">
                 <input
                   placeholder="독서한 장소를 입력해주세요"
-                  className="inline-block w-[35rem] sm:w-[55vw] h-[2rem] text-[16px] px-3 rounded-2xl bg-[#F9F9F9] placeholder-[#A08A7E] "
+                  className="inline-block w-[35rem] sm:w-[59vw] h-[2.3rem] text-[16px] px-3 rounded-2xl bg-[#F9F9F9] placeholder-[#A08A7E] "
                   value={placeInfo?placeInfo.place_name:''}
                   onClick={handleSearchMap}
                   readOnly 
@@ -321,8 +321,8 @@ const [showQAlert, setShowQAlert] = useState(false);
                 )}
               </div>
             </div>
-            <div className="px-8 py-3 flex gap-5 items-start sm:px-2">
-              <h4 className="px-5 font-extrabold sm:px-0 sm:text-xs">도서</h4>
+            <div className="px-8 py-3 flex gap-5 items-center sm:px-2">
+              <h4 className="px-5 font-extrabold sm:px-0 sm:text-sm">도서</h4>
               <div>
                 <BookSearch></BookSearch>
                 {bookInfo.title && (
