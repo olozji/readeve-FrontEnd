@@ -479,8 +479,8 @@ const [showQAlert, setShowQAlert] = useState(false);
                   전체공개
                 </span>
               </div>
-              <div className="px-5 py-8">
-                <div className="flex gap-2 pb-5">
+              <div className="px-5 py-8 sm:py-4 sm:px-2">
+                <div className="flex gap-2 pb-5 sm:pb-0">
                   <Image src={pen} alt="pen" width={30} height={30} />
                   <h1 className="font-extrabold text-xl">작성</h1>
                 </div>

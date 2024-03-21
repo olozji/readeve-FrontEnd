@@ -167,7 +167,7 @@ export const MapDirectSearch = ({ onMarkerClick, markerImage }: any) => {
           현재 위치설정
       </div>
       <div className='flex sm:flex-col'>
-      <div id="map" className='w-[55%] sm:w-[100%]'style={{ height: '45vh' }}></div>
+      <div id="map" className='w-[55%] sm:w-[100%] h-[45vh] sm:h-[40vh]'></div>
       <div className='w-[45%] sm:w-[100%] bg-white bg-opacity-80 overflow-y-auto rounded-lg'>
         {address.length === 0 ? (
           <div className="text-[#B6B6B6] ml-2 mt-40">
