@@ -124,14 +124,15 @@ export const BookSearch = ({edit}:BookType) => {
   return (
     <div className="flex px-3 max-w-[60vw] sm:px-0">
       <input
-        className="inline-block w-[35rem] h-[2rem] text-[16px] px-3 rounded-2xl  bg-[#F9F9F9] placeholder-[#A08A7E] gap-4 sm:gap-0"
+        className="inline-block w-[35rem] h-[2rem] text-xs px-3 rounded-2xl  bg-[#F9F9F9] placeholder-[#A08A7E] gap-4 sm:gap-0"
         ref={inputRef}
         type="text"
         placeholder="책 제목을 입력해주세요"
         value={bookInfo?bookInfo.title:selectedBook?selectedBook.title:''}
-        onClick={() => setModalOpen(true)}
+        onClick={handleSearchBook}
         onChange={(e) => setBookName(e.target.value)}
         onKeyDown={handleKeyDown}
+        readOnly
       />
 
       {modalOpen && (
