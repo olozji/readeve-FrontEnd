@@ -21,12 +21,7 @@ export const metadata: Metadata = {
   },
   
 };
-export const viewPort: Viewport = {
-  width: 'divice-width',
-  initialScale: 1,
-  userScalable: false,
-  maximumScale:1
-}
+
 export default function RootLayout({
   children,
 }: {
