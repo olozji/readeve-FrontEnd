@@ -452,7 +452,7 @@ const Editor = ({ editReviewId }: PropType) => {
                               <div className="flex">
                                 <div
                                   key={i}
-                                  className={`box-border flex justify-center items-center px-6 py-3
+                                  className={`box-border flex justify-center items-center px-6 sm:px-2 py-3
                  mr-2 mb-2 border rounded-[8px] text-xs/[10px] 
                  ${
                    selectedTag.includes(tag.content)

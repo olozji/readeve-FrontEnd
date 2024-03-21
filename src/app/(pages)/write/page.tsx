@@ -395,7 +395,7 @@ const [showQAlert, setShowQAlert] = useState(false);
                               <div
                                 key={i}
                                 className={`box-border flex justify-center items-center px-6 py-3
-                 mr-2 mb-2 border rounded-[8px] text-xs/[10px] 
+                 mr-2 mb-2 border rounded-[8px] sm:px-2 text-xs/[10px] 
                  ${
                    selectedTag.includes(tag.content)
                      ? 'bg-[#FFE5E5] text-[#E57C65] border-[#E57C65]'
