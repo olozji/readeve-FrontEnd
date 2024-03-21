@@ -109,7 +109,7 @@ const ListItem = ({
       ) : (
         <div
           className="relative text-left block p-6 my-2
-            border bg-white border-gray-200 rounded-lg shadow z-50 hover:bg-[#E57C65] hover:text-white"
+            border bg-white text-[#3D3D3D] border-gray-200 rounded-lg shadow z-50 hover:bg-[#E57C65] hover:text-white"
           onClick={() => onListItemClick(data.pinRespDto, index)}
           onMouseEnter={() => setIsHovered(true)}
           onMouseLeave={()=>mouseLeaveList(index)}
@@ -132,7 +132,7 @@ const ListItem = ({
           <div className="gap-3 mb-3">
             <div className="flex gap-3">
               <div className="flex">
-                <h5 className="mb-2 text-lg text-[#3D3D3D] font-bold tracking-tight">
+                <h5 className="mb-2 text-lg font-bold tracking-tight">
                   {data.bookRespDto?.title}
                 </h5>
                 <Image
@@ -162,17 +162,17 @@ const ListItem = ({
                 alt="hoverPrivateMarker"
                 className="mr-1 w-4 h-4"
               />
-              <h5 className="text-sm text-[#3D3D3D] font-bold tracking-tight">
+              <h5 className="text-sm font-bold tracking-tight">
                 {data.pinRespDto.name
                   ? data.pinRespDto.name
                   : data.pinRespDto.address}
               </h5>
             </div>
-                <p className="text-xs text-[#3D3D3D]">{data.pinRespDto.address}</p>
+                <p className="text-xs">{data.pinRespDto.address}</p>
                 </div>
           </div>
           <p
-            className={`font-normal ${iscontentExpanded ? 'whitespace-pre-line' : 'line-clamp-2'} text-sm text-[#3D3D3D]`}
+            className={`font-normal ${iscontentExpanded ? 'whitespace-pre-line' : 'line-clamp-2'} text-sm`}
           >
             {data.content}
           </p>
