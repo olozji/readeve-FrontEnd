@@ -3,10 +3,12 @@
 import ListItem from '@/app/components/listItem'
 import { mainTagState, tagState } from '@/store/writeAtoms'
 import { StaticImageData } from 'next/image'
+import Image from 'next/image';
 import Link from 'next/link'
 import { useEffect, useRef, useState } from 'react'
 import { useRecoilState } from 'recoil'
 import sharedMarker from '/public/images/sharedMarker.png'
+import writeIcon from '/public/images/writeIcon.png';
 
 import { GoBackButton } from '@/app/components/buttons/goBackButton'
 import { useSession } from 'next-auth/react'
@@ -519,6 +521,20 @@ const MapView = ({
                       </div>
                     )}
                   </div>
+                )}
+                 {!isShared && (
+                  <Link
+                  href={`/write`}
+                  className="absolute top-4 right-10 z-40 bg-[#E57C65] p-9 rounded-full sm:top-5 sm:right-5"
+                >
+                  <div className="absolute top-3 right-2">
+                    <Image
+                      src={writeIcon}
+                      alt='writeIcon' 
+                      width={55}
+                    />
+                  </div>
+                </Link>
                 )}
               </div>
             </div>
