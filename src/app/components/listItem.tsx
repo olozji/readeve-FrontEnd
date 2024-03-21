@@ -33,6 +33,7 @@ const ListItem = ({
 }: listItemProps) => {
   const [recoilMap] = useRecoilState<any>(mapState)
   const [isHovered, setIsHovered] = useState(false)
+  const [isSelected, setIsSelected] = useState(false)
   const [iscontentExpanded, setIsContentExpanded] = useState(false)
   const [detailOpen,setDetailOpen] = useState(false)
 
@@ -44,19 +45,31 @@ const ListItem = ({
     setDetailOpen(!detailOpen)
   }
 
+  // useEffect(() => {
+  //   if (selectedMarkerIndex === data.pinRespDto.id) {
+  //     setIsHovered(true)
+  //   } else {
+  //     setIsHovered(false)
+  //   }
+  // }, [selectedMarkerIndex])
+
   useEffect(() => {
-    if (selectedMarkerIndex === data.pinRespDto.id) {
-      setIsHovered(true)
+    if (selectedMarkerIndex === data.pinRespDto.placeId) {
+      setIsSelected(true)
     } else {
-      setIsHovered(false)
+      setIsSelected(false)
     }
   }, [selectedMarkerIndex])
+
+
   return (
     <div className="opacity-100 sm:flex sm:whitespace-nowrap sm:w-[90%] sm:mx-[5%]">
       {isShared ? (
         <div
-          className={`relative text-left block pt-6 my-2 
-          border  rounded-2xl shadow z-50 hover:bg-[#E57C65] hover:border-[#e57c65] hover:border-2 hover:text-white  ${isHovered ? 'bg-[#E57C65] border-[#E57C65] border-2 text-white' : 'bg-white border-gray-200'}`}
+        className={`relative text-left block pt-6 my-2 
+        border rounded-2xl shadow z-50 hover:bg-[#E57C65] hover:border-[#e57c65] hover:border-2 hover:text-white 
+        ${isSelected ? 'bg-[#E57C65] border-[#E57C65] border-2 text-white' : 'bg-white border-gray-200'}
+        `}
           onClick={() => onListItemClick(data.pinRespDto, index)}
           onMouseEnter={() => setIsHovered(true)}
           onMouseLeave={()=>mouseLeaveList(index)}
@@ -108,8 +121,10 @@ const ListItem = ({
         </div>
       ) : (
         <div
-          className="relative text-left block p-6 my-2
-            border bg-white text-[#3D3D3D] border-gray-200 rounded-lg shadow z-50 hover:bg-[#E57C65] hover:text-white"
+        className={`relative text-left block p-6 my-2
+            border text-[#3D3D3D] border-gray-200 rounded-lg shadow z-50 hover:bg-[#e57c65] hover:text-white 
+            ${isSelected ? 'bg-[#E57C65] border-[#E57C65] border-2 text-white' : 'bg-white border-gray-200'}
+            `}
           onClick={() => onListItemClick(data.pinRespDto, index)}
           onMouseEnter={() => setIsHovered(true)}
           onMouseLeave={()=>mouseLeaveList(index)}
