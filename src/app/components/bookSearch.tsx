@@ -1,6 +1,6 @@
 import { bookState } from '@/store/writeAtoms'
 import axios from 'axios'
-import { useEffect, useRef, useState } from 'react'
+import { useCallback, useEffect, useRef, useState } from 'react'
 import { useRecoilState } from 'recoil'
 import Button from './buttons/button'
 import mapSearchIcon from '/public/images/mapSearchIcon.png'
@@ -116,6 +116,10 @@ export const BookSearch = ({edit}:BookType) => {
     let copy = data
     setSelectedBook(copy)
   }
+  const handleSearchBook = useCallback((e: any) => {
+    e.preventDefault()
+    setModalOpen(true)
+  }, [])
 
   return (
     <div className="flex px-3 max-w-[60vw] sm:px-0">

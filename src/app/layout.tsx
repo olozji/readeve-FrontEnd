@@ -19,7 +19,13 @@ export const metadata: Metadata = {
   icons: {
     icon: "/mainIcon.svg",
   },
-  viewport:"initial-scale=1.0, user-scalable=no, maximum-scale=1, width=device-width"
+  viewport: {
+    width: 'divice-width',
+    initialScale: 1,
+    userScalable: false,
+    maximumScale:1
+
+  }
 };
 
 export default function RootLayout({
