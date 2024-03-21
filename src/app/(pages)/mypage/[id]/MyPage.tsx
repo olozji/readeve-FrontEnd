@@ -171,7 +171,7 @@ const MyPageComponent = (props: ParamType) => {
             className="inline-block text-center"
             alt={tableImageSmall.src}
           />
-          <div className="absolute top-[7%] left-1/2 max-w-[100%] transform -translate-x-1/2 z-10">
+          <div className="absolute top-[7%] sm:top-[3%] left-1/2 max-w-[100%] transform -translate-x-1/2 z-10">
             <BookLayout
               bookData={myPageData}
               width={'[100vw]'}
@@ -241,7 +241,7 @@ const MyPageComponent = (props: ParamType) => {
                     href={`/detail/${d.bookRespDto && d.bookRespDto.isbn ? d.bookRespDto.isbn.replace(' ', '') : ''}`}
                   >
                     <div className="flex flex-col items-center rounded-lg border-4 border-transparent p-4 sm:py-2 sm:px-0 cursor-pointer">
-                      <div className="w-[100%] h-[15vh] rounded-2xl">
+                      <div className="w-[100%] rounded-2xl">
                         <div className="mx-auto h-full border rounded-2xl shadow-xl bg-[#fcfcfc]">
                           <div className="text-left">
                             <div className="text-xl font-display font-bold px-5 py-5 sm:text-md">
