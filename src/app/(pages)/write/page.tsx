@@ -26,7 +26,16 @@ import isSharededIcon from '/public/images/isSharedIcon.png'
 import LoadingScreen from '@/app/components/loadingScreen'
 import CustomAlert from '@/app/components/alert';
 import { GoBackButton } from '@/app/components/buttons/goBackButton'
-
+import type { Viewport } from 'next'
+ 
+export const viewport: Viewport = {
+  width: 'device-width',
+  initialScale: 1,
+  maximumScale: 1,
+  userScalable: false,
+  // Also supported by less commonly used
+  // interactiveWidget: 'resizes-visual',
+}
 const Editor = () => {
   const [content, setContent] = useState('')
   const [showMap, setShowMap] = useState(false)
