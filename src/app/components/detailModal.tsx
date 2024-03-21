@@ -195,7 +195,7 @@ const ModalContent: React.FC<ModalContentProps> = ({
                   삭제
                 </span>
               </div>
-            )}
+            }
 
             <div className="mt-10 px-5">
               <h2 className="text-2xl sm:text-lg font-bold mb-4 border-black border-b pb-5 text-[#503526]">
