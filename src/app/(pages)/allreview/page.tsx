@@ -157,7 +157,7 @@ const AllReviewPage = () => {
                     publicReviews.map((item: any, i: number) => (
                       <div
                         key={i}
-                        className="w-[70vw] sm:w-full sm:max-w-[100%] my-4 sm:my-2 mx-auto rounded-lg overflow-hidden"
+                        className="w-[70vw] sm:w-full sm:max-w-[100%] my-4 sm:my-2 mx-auto rounded-lg overflow-hidden cursor-pointer"
                         onClick={() => handleModal(i)}
                       >
                         {detailOpen && (
@@ -175,7 +175,7 @@ const AllReviewPage = () => {
                           </CustomModal>
                         )}
 
-                        <div className="relative flex p-4 sm:px-0 w-[100%] min-h-52 bg-[#fff9f6] rounded-2xl ">
+                        <div className="relative flex p-4 sm:px-0 w-[100%] min-h-52 bg-[#FEF6E6] border-4 border-white rounded-2xl ">
                           <div
                             className="bg-auto sm:min-w-[8rem] w-[12rem] bg-no-repeat bg-center rounded-2xl "
                             style={{

@@ -245,12 +245,12 @@ const [showQAlert, setShowQAlert] = useState(false);
           {showAlert && <CustomAlert message={alertMessage} onClose={handleCloseAlert} />}
           {showQAlert && <CustomAlert message={alertMessage} onClose={handleCloseQAlert} isActive={true} active={handleAllData} />}
           <section className="py-10 px-10 sm:py-0 sm:mx-0">
-            <div className="px-5 sm:px-0 sm:py-4 py-8 flex rounded-t-md  ">
+            <div className="px-5 sm:px-0 sm:py-4 py-8 flex rounded-t-md">
               <div className="flex px-3 max-w-[60vw] sm:max-w-full sm:px-0 ">
                 <input
                   placeholder="제목"
                   ref={inputRef}
-                  className="inline-block  w-[60rem] sm:w-[72vw] h-[2.8rem] text-base px-3 rounded-md bg-[#F9F9F9] placeholder-[#A08A7E]"
+                  className="inline-block w-[60rem] sm:w-[72vw] h-[2.8rem] text-base px-3 rounded-md bg-[#F9F9F9] placeholder-[#A08A7E]"
                   value={titleInfo}
                   onChange={handleTitle}
                 />

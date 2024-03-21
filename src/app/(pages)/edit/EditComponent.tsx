@@ -96,6 +96,7 @@ const Editor = ({ editReviewId }: PropType) => {
           setBookInfo(editBook)
           setContent(editArticle.content)
           setTagInfo(editArticle.tags)
+          setIsPrivate(editArticle.private)
           setEditDefault(editArticle)
         } else {
           console.error('Review not found:', editReviewId);

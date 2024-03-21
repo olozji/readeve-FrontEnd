@@ -152,13 +152,15 @@ const ModalContent: React.FC<ModalContentProps> = ({
                     <>
                       <Image src={privateMarker} alt={'장소'} />
                       {data.pinRespDto.private ? (
-                        <div>{maskName(data.writer)}님만의 장소</div>
-                      ) : (
-                        <div className="">
-                          독서장소: {data.pinRespDto?.name} |{' '}
-                          {data.pinRespDto?.address}
-                        </div>
-                      )}
+
+                                  <div>{maskName(data.writer)}님만의 장소</div>
+                                ) : (
+                                  <div className="">
+                                    독서장소: {data.pinRespDto?.name} |{' '} <br/>
+                                    {data.pinRespDto?.address}
+                                  </div>
+                                )}
+
                     </>
                   )}
                 </div>
@@ -168,13 +170,16 @@ const ModalContent: React.FC<ModalContentProps> = ({
         </div>
         {/* 내용 엔터키 적용 */}
         <div className="flex justify-center items-center">
-          <div className="w-[50vw] sm:w-[90vw] my-4 rounded-lg overflow-hidden shadow-lg px-3 py-3 sm:pt-0 p-10 bg-[#FFFCF9]">
-            {isMyPage && (
-              <div className="flex relative float-end items-center gap-4">
-                <Link href={`/edit/${data.reviewId}`}>
-                  <span className="text-[#D37C7C] text-sm font-bold">수정</span>
-                </Link>
-                {/* {sessionUserId && sessionUserId === data.userId && (
+
+          <div
+            className="w-[50vw] sm:w-[90vw] my-4 rounded-lg overflow-hidden shadow-lg px-3 py-3 sm:pt-0 p-10 bg-[#FFFCF9]"
+          >
+            {isMyPage&&<div className="flex relative float-end items-center gap-4 sm:top-4">
+              <Link href={`/edit/${data.reviewId}`}>
+                <span className="text-[#D37C7C] text-sm font-bold">수정</span>
+              </Link>
+              {/* {sessionUserId && sessionUserId === data.userId && (
+
                 <span
                   className="text-[#828282] text-sm font-bold"
                   onClick={() => handleRemove(data.isbn)}
