@@ -26,8 +26,15 @@ import isPrivatedIcon from '/public/images/isPrivatedIcon.png'
 import isSharededIcon from '/public/images/isSharedIcon.png'
 import LoadingScreen from '@/app/components/loadingScreen'
 import CustomAlert from '@/app/components/alert'
+import { Viewport } from 'next';
 export interface PropType {
   editReviewId: number
+}
+export const viewPort: Viewport = {
+  width: 'divice-width',
+  initialScale: 1,
+  userScalable: false,
+  maximumScale:1
 }
 const Editor = ({ editReviewId }: PropType) => {
   const [content, setContent] = useState('')
