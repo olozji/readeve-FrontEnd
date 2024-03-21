@@ -8,7 +8,7 @@ import Link from 'next/link'
 import { useEffect, useRef, useState } from 'react'
 import { useRecoilState } from 'recoil'
 import sharedMarker from '/public/images/sharedMarker.png'
-import writeIcon from '/public/images/writeIcon.png';
+import writeIcon from '/public/images/write.png';
 
 import { GoBackButton } from '@/app/components/buttons/goBackButton'
 import { useSession } from 'next-auth/react'
