@@ -1,4 +1,4 @@
-import type { Metadata } from "next";
+import type { Metadata, Viewport } from "next";
 import { Inter } from "next/font/google";
 import "./globals.css";
 import RecoilRootProvider from '../utils/recoilRootProvider'
@@ -21,7 +21,12 @@ export const metadata: Metadata = {
   },
   
 };
-
+export const viewPort: Viewport = {
+  width: 'divice-width',
+  initialScale: 1,
+  userScalable: false,
+  maximumScale:1
+}
 export default function RootLayout({
   children,
 }: {

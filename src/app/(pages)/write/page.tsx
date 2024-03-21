@@ -20,19 +20,13 @@ import { useCallback, useEffect, useRef, useState } from 'react'
 import { useRecoilState } from 'recoil'
 
 import Image from 'next/image'
-import { Viewport } from 'next'
 import pen from 'public/images/Pen.png'
 import isPrivatedIcon from '/public/images/isPrivatedIcon.png'
 import isSharededIcon from '/public/images/isSharedIcon.png'
 import LoadingScreen from '@/app/components/loadingScreen'
 import CustomAlert from '@/app/components/alert';
 import { GoBackButton } from '@/app/components/buttons/goBackButton'
-export const viewPort: Viewport = {
-  width: 'divice-width',
-  initialScale: 1,
-  userScalable: false,
-  maximumScale:1
-}
+
 const Editor = () => {
   const [content, setContent] = useState('')
   const [showMap, setShowMap] = useState(false)
