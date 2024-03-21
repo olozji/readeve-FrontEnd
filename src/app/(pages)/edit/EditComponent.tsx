@@ -29,6 +29,7 @@ import CustomAlert from '@/app/components/alert'
 export interface PropType {
   editReviewId: number
 }
+
 const Editor = ({ editReviewId }: PropType) => {
   const [content, setContent] = useState('')
   const [showMap, setShowMap] = useState(false)

@@ -20,14 +20,22 @@ import { useCallback, useEffect, useRef, useState } from 'react'
 import { useRecoilState } from 'recoil'
 
 import Image from 'next/image'
-
 import pen from 'public/images/Pen.png'
 import isPrivatedIcon from '/public/images/isPrivatedIcon.png'
 import isSharededIcon from '/public/images/isSharedIcon.png'
 import LoadingScreen from '@/app/components/loadingScreen'
 import CustomAlert from '@/app/components/alert';
 import { GoBackButton } from '@/app/components/buttons/goBackButton'
-
+import type { Viewport } from 'next'
+ 
+export const viewport: Viewport = {
+  width: 'device-width',
+  initialScale: 1,
+  maximumScale: 1,
+  userScalable: false,
+  // Also supported by less commonly used
+  // interactiveWidget: 'resizes-visual',
+}
 const Editor = () => {
   const [content, setContent] = useState('')
   const [showMap, setShowMap] = useState(false)
@@ -51,7 +59,6 @@ const [showQAlert, setShowQAlert] = useState(false);
   const [allReviewData, setAllReviewData] =
     useRecoilState<any>(allReviewDataState)
   let session: any = useSession()
-
   let user: any = session.data?.user
 
   const handleSearchMap = useCallback((e: any) => {
@@ -59,11 +66,13 @@ const [showQAlert, setShowQAlert] = useState(false);
     setShowMap(true)
   }, [])
 
-  useEffect(() => {
-    if (inputRef.current) {
-      inputRef.current.focus() // Input에 focus() 호출
-    }
-  }, [isPrivatePlace])
+  
+
+  // useEffect(() => {
+  //   if (inputRef.current) {
+  //     inputRef.current.focus() // Input에 focus() 호출
+  //   }
+  // }, [isPrivatePlace])
 
   let numTag: any[] = []
   useEffect(() => {
@@ -257,14 +266,14 @@ const [showQAlert, setShowQAlert] = useState(false);
               </div>
             </div>
             <div className="px-8 py-3 flex gap-5 items-center sm:px-2">
-              <h4 className="px-5 font-extrabold sm:px-0 sm:text-xs">장소</h4>
+              <h4 className="px-5 font-extrabold sm:px-0 sm:text-sm">장소</h4>
               <div className="flex px-3 max-w-[60vw] sm:px-0 ">
                 <input
                   placeholder="독서한 장소를 입력해주세요"
-                  ref={inputRef}
-                  className="inline-block w-[35rem] h-[2rem] text-xs/[10px]  px-3 rounded-2xl bg-[#F9F9F9] placeholder-[#A08A7E]"
+                  className="inline-block w-[35rem] sm:w-[59vw] h-[2.3rem] text-[16px] px-3 rounded-2xl bg-[#F9F9F9] placeholder-[#A08A7E] "
                   value={placeInfo?placeInfo.place_name:''}
                   onClick={handleSearchMap}
+                  readOnly 
                 />
                 {showMap && (
                   <CustomModal
@@ -312,8 +321,8 @@ const [showQAlert, setShowQAlert] = useState(false);
                 )}
               </div>
             </div>
-            <div className="px-8 py-3 flex gap-5 items-start sm:px-2">
-              <h4 className="px-5 font-extrabold sm:px-0 sm:text-xs">도서</h4>
+            <div className="px-8 py-3 flex gap-5 items-center sm:px-2">
+              <h4 className="px-5 font-extrabold sm:px-0 sm:text-sm">도서</h4>
               <div>
                 <BookSearch></BookSearch>
                 {bookInfo.title && (

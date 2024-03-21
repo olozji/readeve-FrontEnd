@@ -1,4 +1,4 @@
-import type { Metadata } from "next";
+import type { Metadata, Viewport } from "next";
 import { Inter } from "next/font/google";
 import "./globals.css";
 import RecoilRootProvider from '../utils/recoilRootProvider'
@@ -19,6 +19,7 @@ export const metadata: Metadata = {
   icons: {
     icon: "/mainIcon.svg",
   },
+  
 };
 
 export default function RootLayout({
@@ -34,6 +35,10 @@ export default function RootLayout({
         <meta property="og:title" content="나만의 독후감 지도" />
         <meta property="og:description" content="독후감을 작성하고 공유하는 지도 서비스입니다." />
         <meta property="og:image" content="/public/images/mainTitle.png" />
+        <meta
+            name="viewport"
+            content="initial-scale=1.0, user-scalable=no, maximum-scale=1, width=device-width"
+          />
       </Head>
       <body className={notoSansKr.className}>
       <RecoilRootProvider>

@@ -39,16 +39,17 @@ const ModalContent: React.FC<ModalContentProps> = ({
         .map((tag: any) => tag.content)
 
       await axios.delete(
-        `https://api.bookeverywhere.site/api/review/delete/${reviewId}?socialId=${data.socialId}&bookTitle=${data.bookRespDto.title}&address=${data.bookRespDto.address}&tags=${selectedTags}`,
+        `https://api.bookeverywhere.site/api/review/delete/${reviewId}?socialId=${data.socialId}&bookTitle=${data.bookRespDto.title}&address=${data.bookRespDto.address}`,
       )
       console.log('리뷰 삭제 성공:')
+      window.location.href = `/mypage/${sessionUserId}`
       // 삭제 요청이 성공한 경우의 처리
     } catch (error) {
       console.error('리뷰 삭제 실패:', error)
       // 삭제 요청이 실패한 경우의 처리
 
       //TODO: 이 부분은 서버에서 에러 안 나오게 되면 위로 올려야 합니다
-      window.location.href = `/mypage/${sessionUserId}`
+      
       //
     }
   }
@@ -195,7 +196,7 @@ const ModalContent: React.FC<ModalContentProps> = ({
                   삭제
                 </span>
               </div>
-            )}
+            }
 
             <div className="mt-10 px-5">
               <h2 className="text-2xl sm:text-lg font-bold mb-4 border-black border-b pb-5 text-[#503526]">
