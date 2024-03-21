@@ -271,7 +271,7 @@ const [showQAlert, setShowQAlert] = useState(false);
                 <input
                   placeholder="독서한 장소를 입력해주세요"
                   
-                  className="inline-block w-[35rem] h-[2rem] text-xs/[10px]  px-3 rounded-2xl bg-[#F9F9F9] placeholder-[#A08A7E]"
+                  className="inline-block w-[35rem] h-[2rem] text-[16px]  px-3 rounded-2xl bg-[#F9F9F9] placeholder-[#A08A7E]"
                   value={placeInfo?placeInfo.place_name:''}
                   onClick={handleSearchMap}
                 />
