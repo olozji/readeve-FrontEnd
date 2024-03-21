@@ -312,10 +312,10 @@ const MapSearch = ({
   }
 
   return (
-    <div className="pb-10 border-b-2">
+    <div className="pb-10 sm:pb-2 border-b-2">
       {/* 페이지 컨텐츠 및 지도를 표시할 컨테이너 */}
       <div className="flex sm:flex-col">
-        <div id="map" className="sm:w-[100%] w-[60%]" style={{ height: mapHeight }}>
+        <div id="map" className="sm:w-[100%] w-[60%] h-[45vh] sm:h-[40vh] " >
           {/* 다른 페이지 컨텐츠 */}
         </div>
         <div

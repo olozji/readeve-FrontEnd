@@ -395,7 +395,7 @@ const [showQAlert, setShowQAlert] = useState(false);
                               <div
                                 key={i}
                                 className={`box-border flex justify-center items-center px-6 py-3
-                 mr-2 mb-2 border rounded-[8px] text-xs/[10px] 
+                 mr-2 mb-2 border rounded-[8px] sm:px-2 text-xs/[10px] 
                  ${
                    selectedTag.includes(tag.content)
                      ? 'bg-[#FFE5E5] text-[#E57C65] border-[#E57C65]'
@@ -479,8 +479,8 @@ const [showQAlert, setShowQAlert] = useState(false);
                   전체공개
                 </span>
               </div>
-              <div className="px-5 py-8">
-                <div className="flex gap-2 pb-5">
+              <div className="px-5 py-8 sm:py-4 sm:px-2">
+                <div className="flex gap-2 pb-5 sm:pb-0">
                   <Image src={pen} alt="pen" width={30} height={30} />
                   <h1 className="font-extrabold text-xl">작성</h1>
                 </div>

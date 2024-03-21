@@ -64,7 +64,7 @@ const AddPlace: React.FC<AddPlaceProps> = ({
 
   return (
     <div className="bg-white py-8 px-16 rounded-lg sm:px-4 sm:py-2">
-      <div className="pt-8 pb-4 flex sm:text-sm gap-x-8 sm:gap-x-4 text-[#9f9f9f] border-b-2 font-semibold">
+      <div className="pt-8 sm:pt-4 pb-4 flex sm:text-sm gap-x-8 sm:gap-x-4 text-[#9f9f9f] border-b-2 font-semibold">
         <button
           onClick={() => setDirectSearch(false)}
           className={`${!directSearch && 'text-[#e57C65]'}`}
@@ -91,7 +91,7 @@ const AddPlace: React.FC<AddPlaceProps> = ({
           <div className="pt-4 text-3xl sm:text-xl font-extrabold">
             장소를 검색해주세요
           </div>
-          <form className="py-5">
+          <form className="py-5 sm:py-2">
             <div className="flex items-center gap-4 sm:gap-1">
               <div className="searchInputDiv">
                 <input

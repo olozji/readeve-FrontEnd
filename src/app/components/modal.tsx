@@ -1,7 +1,8 @@
 import Modal from "@mui/material/Modal";
 import Paper from "@mui/material/Paper";
+import Image from "next/image";
 import { useState, useEffect } from "react";
-
+import closeIcon from '/public/images/closeIcon.png'
 interface ModalType {
   isOpen: boolean;
   onClose?: () => void; // 모달을 닫을 때 호출할 함수
@@ -55,6 +56,7 @@ const handleInsideClick = (e: React.MouseEvent<HTMLDivElement>) => {
   return (
     <Modal open={open} onClose={handleClose}>
       <div onClick={handleInsideClick}>
+      
         <Paper
           elevation={2}
           sx={{
@@ -63,13 +65,19 @@ const handleInsideClick = (e: React.MouseEvent<HTMLDivElement>) => {
             left: "50%",
             transform: "translate(-50%, -50%)",
             width: size,
-            height:modalheight,
             backgroundColor: modalColor || "white",
             maxWidth: "100%",
-            maxHeight: "90%",
+            maxHeight: "100%",
             overflowY: "auto",
           }}
+          className={`h-[${modalheight}] sm:h-[100vh]`}
         >
+          <Image
+          src={closeIcon}
+          alt="closeIcon"
+          className="mr-6 mt-6 float-right cursor-pointer"
+          onClick={handleClose}
+        />
           {children}
         </Paper>
       </div>
