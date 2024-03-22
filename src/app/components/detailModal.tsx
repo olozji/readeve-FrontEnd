@@ -79,12 +79,6 @@ const ModalContent: React.FC<ModalContentProps> = ({
         />
       )}
       <div className="px-8 py-8 sm:px-2">
-        <Image
-          src={closeIcon}
-          alt="closeIcon"
-          className="float-right cursor-pointer"
-          onClick={closeModal}
-        />
         <div className="flex sm:flex-col justify-center items-center">
           <img
             src={
