@@ -5,10 +5,10 @@ import Link from 'next/link'
 import React, { useEffect, useState } from 'react'
 import { useRecoilState } from 'recoil'
 import Image from 'next/image'
-import Private from '/public/images/private.png'
+import Private from '/public/images/privateIcon.png'
 import linkArrow from '/public/images/linkArrow.png'
 import blackLinkArrow from '/public/images/blackLinkArrow.png'
-import unLock from '/public/images/unLock.png'
+import unLock from '/public/images/sharedIcon.png'
 import hoverPrivateMarker from '/public/images/hoverPrivateMarker.png'
 import privateMarker from '/public/images/privateMarker.png'
 import CustomModal from './modal';
@@ -39,6 +39,7 @@ const ListItem = ({
 
   const mouseLeaveList = (i: number) => {
     onListMouseLeave(i)
+    setIsSelected(false)
     setIsHovered(false)
   }
   const handleModal = () => {
@@ -153,7 +154,8 @@ const ListItem = ({
                 <Image
                   src={data.private ? Private : unLock}
                   alt="private"
-                  className='absolute top-7 left-24 ml-2 w-4 h-5'
+                    width={10}
+                    className='ml-2'
                 />
               </div>
 
