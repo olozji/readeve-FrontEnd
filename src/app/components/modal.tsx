@@ -72,12 +72,6 @@ const handleInsideClick = (e: React.MouseEvent<HTMLDivElement>) => {
           }}
           className={`h-[${modalheight}] sm:h-[100vh]`}
         >
-          <Image
-          src={closeIcon}
-          alt="closeIcon"
-          className="mr-6 mt-6 float-right cursor-pointer"
-          onClick={handleClose}
-        />
           {children}
         </Paper>
       </div>
