@@ -54,11 +54,11 @@ const MapView = ({
   const [selectedMarkerIndex, setSelectedMarkerIndex] = useState<string>('')
   const [innerHeight, setInnerHeight] = useState<number>(0);
 
-  // useEffect(() => {
-  //   if (typeof window !== 'undefined') {
-  //     setInnerHeight(window.innerHeight);
-  //   }
-  // }, []);
+  useEffect(() => {
+    if (typeof window !== 'undefined') {
+      setInnerHeight(window.innerHeight);
+    }
+  }, []);
   let session = useSession()
   let user: any = session.data?.user
 
