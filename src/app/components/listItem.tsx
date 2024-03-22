@@ -154,9 +154,9 @@ const ListItem = ({
                 <Image
                   src={data.private ? Private : unLock}
                   alt="private"
-                    width={15}
+                   
                     className='ml-2'
-                    style={{ transform: 'scale(0.5)' }}
+                    style={{ width: '20px', height: '25px' }}
                 />
               </div>
 
