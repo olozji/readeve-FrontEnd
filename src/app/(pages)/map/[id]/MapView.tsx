@@ -42,6 +42,7 @@ const MapView = ({
   const [loading, setLoading] = useState(true)
   const [numVisible, setNumVisible] = useState(5) // 기본값은 2개의 책
   const [numVisibleTags, setNumVisibleTags] = useState(1)
+  const [smallTagShow, setSmallTagShow] = useState(false)
 
   const [filteredReviews, setFilteredReviews] = useState<any>([])
   const [windowHeight, setWindowHeight] = useState(window.innerHeight)
@@ -354,7 +355,24 @@ const MapView = ({
       })
     }
   }, [filteredReviews])
+  useEffect(() => {
+    function handleResize() {
+      const screenWidth = window.innerWidth
+      if (screenWidth < 819) {
+        setSmallTagShow(true) // 화면이 작을 때
+      } else {
+        setSmallTagShow(false) // 큰 화면
+      }
+    }
+    handleResize()
+    // 창의 크기가 변경될 때마다 호출
+    window.addEventListener('resize', handleResize)
 
+    // 컴포넌트가 언마운트될 때 리스너 제거
+    return () => {
+      window.removeEventListener('resize', handleResize)
+    }
+  }, []) // 컴포넌트가 마운트될 때 한 번만 호출
   useEffect(() => {
     window.kakao.maps.load(() => {
       if (!isShared) {
@@ -490,6 +508,21 @@ const MapView = ({
 
                 {isShared && (
                   <div className="absolute top-6 left-1/3 transform -translate-x-1/5 sm:w-full sm:left-1/2 sm:-translate-x-1/2  z-40 flex flex-row rounded-lg">
+                    {smallTagShow&& <div className="flex scrollbar flex-nowrap min-h-[7vh] mb-10 text-sm overflow-x-auto">
+                {tagInfo.length > 0 &&
+                  tagInfo.map((tag: any, i: number) => (
+                    <div
+                      key={i}
+                      className={`box-border flex justify-center whitespace-nowrap items-center px-4 py-2 my-2 mx-2 border border-gray-300 rounded-full ${isSelectedTags[i] ? 'bg-[#E57C65] text-white' : 'bg-white hover:border-[#C05555] hover:text-[#C05555]'}`}
+                      onClick={() => {
+                        searchTag(i)
+                      }}
+                    >
+                      {tag.content}
+                    </div>
+                  ))}
+              </div>}
+                    <div className='sm:hidden'>
                     {!isMain && (
                       <div
                         className="p-2 cursor-pointer sm:absolute sm:left-4"
@@ -519,9 +552,10 @@ const MapView = ({
                       >
                         &gt;
                       </div>
-                    )}
+                    )}</div>
                   </div>
                 )}
+                  
                  {!isShared && (
                   <Link
                   href={`/write`}
