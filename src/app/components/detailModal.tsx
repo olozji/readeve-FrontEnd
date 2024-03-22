@@ -1,5 +1,5 @@
 'use client'
-import React, { useState } from 'react'
+import React, { useEffect, useState } from 'react'
 import Image from 'next/image'
 import Link from 'next/link'
 import privateMarker from '/public/images/privateMarker.png'
@@ -23,6 +23,13 @@ const ModalContent: React.FC<ModalContentProps> = ({
   closeModal,
   isMyPage,
 }) => {
+  const [innerHeight, setInnerHeight] = useState<number>(0);
+
+useEffect(() => {
+	if (typeof window !== 'undefined') {
+		setInnerHeight(window.innerHeight);
+	}
+}, []);
   const formatDateToYYMMDD = (isoDateString: string) => {
     const date = new Date(isoDateString)
     return `${date.getFullYear().toString().slice(2)}.${(date.getMonth() + 1)
@@ -79,6 +86,7 @@ const ModalContent: React.FC<ModalContentProps> = ({
         />
       )}
       <div className="px-8 py-8 sm:px-2">
+        <div className='flex justify-center items-center'>
         <div className="flex sm:flex-col justify-center items-center">
           <img
             src={
@@ -132,7 +140,7 @@ const ModalContent: React.FC<ModalContentProps> = ({
                     (tag: any) =>
                       tag.selected && (
                         <div className="flex bg-[#E57C65] rounded-full m-1 p-2 text-white font-semibold text-xs">
-                          #{tag.content}
+                          {tag.content}
                         </div>
                       ),
                   )}
@@ -162,6 +170,7 @@ const ModalContent: React.FC<ModalContentProps> = ({
               </div>
             </div>
           </div>
+        </div>
         </div>
         {/* 내용 엔터키 적용 */}
         <div className="flex justify-center items-center">
