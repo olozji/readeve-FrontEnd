@@ -106,7 +106,10 @@ const ListItem = ({
             )}
           </div>
           <div
-            className={`pt-2 pb-6 grid grid-cols-2 rounded-b-2xl px-6 ${isHovered ? 'bg-white text-black' : ''}`}
+            className={`pt-2 pb-6 grid grid-cols-2 rounded-b-2xl px-6 
+            ${isHovered ? 'bg-white text-black' : ''}
+            ${isSelected ? 'bg-white' : ''}
+            `}
           >
             {data &&
               data.tags.map(
