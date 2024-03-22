@@ -63,11 +63,11 @@ const ListItem = ({
 
 
   return (
-    <div className="opacity-100 sm:flex sm:whitespace-nowrap ">
+    <div className="opacity-100 sm:flex sm:whitespace-nowrap  ">
       {isShared ? (
         <div
-        className={`relative text-left block pt-6 my-2 
-        border rounded-2xl shadow z-50 sm:mx-[5%] hover:bg-[#E57C65] hover:border-[#e57c65] hover:border-2 hover:text-white 
+        className={`relative text-left block pt-6 my-2 sm:w-[94vw] 
+        border rounded-2xl shadow z-50 sm:mx-[3vw] hover:bg-[#E57C65] hover:border-[#e57c65] hover:border-2 hover:text-white 
         ${isSelected ? 'bg-[#E57C65] border-[#E57C65] border-2 text-white' : 'bg-white border-gray-200'}
         `}
           onClick={() => onListItemClick(data.pinRespDto, index)}

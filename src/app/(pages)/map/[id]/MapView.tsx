@@ -3,12 +3,12 @@
 import ListItem from '@/app/components/listItem'
 import { mainTagState, tagState } from '@/store/writeAtoms'
 import { StaticImageData } from 'next/image'
-import Image from 'next/image';
+import Image from 'next/image'
 import Link from 'next/link'
 import { useEffect, useRef, useState } from 'react'
 import { useRecoilState } from 'recoil'
 import sharedMarker from '/public/images/sharedMarker.png'
-import writeIcon from '/public/images/write.png';
+import writeIcon from '/public/images/write.png'
 
 import { GoBackButton } from '@/app/components/buttons/goBackButton'
 import { useSession } from 'next-auth/react'
@@ -20,7 +20,7 @@ interface MapDataType {
   isFull: string
   markerImage: StaticImageData
   isMain?: boolean
-  query?: any;
+  query?: any
 }
 
 const MapView = ({
@@ -177,11 +177,10 @@ const MapView = ({
     let yAnchor
     if (isMain) {
       yAnchor = 1.7
-
-    } else if(isShared){
+    } else if (isShared) {
       yAnchor = 1.3
     } else {
-      yAnchor=1.7
+      yAnchor = 1.7
     }
 
     const customOverlay = new window.kakao.maps.CustomOverlay({
@@ -322,12 +321,17 @@ const MapView = ({
           mapRef.current = mapInstance
 
           const contentsParams = () => {
-            const isParams = myMapData.find((d:any) => d.pinRespDto.placeId == query)
-            console.log(isParams);
-        
-            mapRef.current.setLevel(2);
+            const isParams = myMapData.find(
+              (d: any) => d.pinRespDto.placeId == query,
+            )
+            console.log(isParams)
+
+            mapRef.current.setLevel(2)
             mapRef.current.panTo(
-              new window.kakao.maps.LatLng(isParams.pinRespDto.y, isParams.pinRespDto.x),
+              new window.kakao.maps.LatLng(
+                isParams.pinRespDto.y,
+                isParams.pinRespDto.x,
+              ),
             )
           }
 
@@ -346,10 +350,9 @@ const MapView = ({
 
               mapInstance.setBounds(bounds)
             })
-            
           }
-          if(query){
-            contentsParams();
+          if (query) {
+            contentsParams()
           }
         })
       })
@@ -436,9 +439,7 @@ const MapView = ({
 
                     <div
                       ref={listContainerRef}
-
                       className="absolute lg:scrollBar sm:flex sm:flex-nowrap sm:overflow-x-auto sm:w-[100vw] sm:top-[70%] w-[26vw] bg-[#f9f9f9] sm:h-[30%] h-full px-[2vw] py-[1vw] bg-opacity-80 sm:bg-opacity-0 overflow-y-auto rounded-lg"
-
                       style={{ zIndex: 2 }}
                     >
                       <div className="flex py-2 w-full sm:hidden justify-between text-center font-bold border-b-[1px] border-gray-600 mb-4">
@@ -455,9 +456,8 @@ const MapView = ({
                             선택된 태그에 해당하는 장소가 없습니다
                           </div>
                         ) : (
-                            
                           myMapData.map((data: any, i: number) => (
-                            <div key={i} >
+                            <div key={i}>
                               <ListItem
                                 key={i}
                                 index={i}
@@ -508,67 +508,66 @@ const MapView = ({
 
                 {isShared && (
                   <div className="absolute top-6 left-1/3 transform -translate-x-1/5 sm:w-full sm:left-1/2 sm:-translate-x-1/2  z-40 flex flex-row rounded-lg">
-                    {smallTagShow&& <div className="flex scrollbar flex-nowrap min-h-[7vh] mb-10 text-sm overflow-x-auto">
-                {tagInfo.length > 0 &&
-                  tagInfo.map((tag: any, i: number) => (
-                    <div
-                      key={i}
-                      className={`box-border flex justify-center whitespace-nowrap items-center px-4 py-2 my-2 mx-2 border border-gray-300 rounded-full ${isSelectedTags[i] ? 'bg-[#E57C65] text-white' : 'bg-white hover:border-[#C05555] hover:text-[#C05555]'}`}
-                      onClick={() => {
-                        searchTag(i)
-                      }}
-                    >
-                      {tag.content}
-                    </div>
-                  ))}
-              </div>}
-                    <div className='sm:hidden'>
-                    {!isMain && (
-                      <div
-                        className="p-2 cursor-pointer sm:absolute sm:left-4"
-                        onClick={handleClickPrev}
-                      >
-                        &lt;
-                      </div>
-                    )}
-                    <div className=" flex mx-auto justify-between">
-                      {!isMain &&
-                        tagInfo
-                          .slice(startIdx, startIdx + numVisibleTags)
-                          .map((tag: any, i: number) => (
+                    {smallTagShow && (
+                      <div className="flex flex-nowrap min-h-[7vh] mb-10 text-sm overflow-x-auto">
+                        {tagInfo.length > 0 &&
+                          tagInfo.map((tag: any, i: number) => (
                             <div
                               key={i}
-                              className={`box-border flex flex-row justify-center text-sm sm:justify-between items-center px-4 py-2 mx-2 border border-gray-300 rounded-full  ${isSelectedTags[startIdx + i] ? 'bg-[#E57C65] text-white' : 'bg-white hover:border-[#C05555] hover:text-[#C05555]'}`}
-                              onClick={() => searchTag(startIdx + i)}
+                              className={`box-border flex justify-center whitespace-nowrap items-center px-4 py-2 my-2 mx-2 border border-gray-300 rounded-full ${isSelectedTags[i] ? 'bg-[#E57C65] text-white' : 'bg-white hover:border-[#C05555] hover:text-[#C05555]'}`}
+                              onClick={() => {
+                                searchTag(i)
+                              }}
                             >
                               {tag.content}
                             </div>
                           ))}
-                    </div>
-                    {!isMain && (
-                      <div
-                        className="p-2 cursor-pointer sm:absolute sm:right-4"
-                        onClick={handleClickNext}
-                      >
-                        &gt;
                       </div>
-                    )}</div>
+                    )}
+                    <div className="sm:hidden">
+                      {!isMain && (
+                        <div
+                          className="p-2 cursor-pointer sm:absolute sm:left-4"
+                          onClick={handleClickPrev}
+                        >
+                          &lt;
+                        </div>
+                      )}
+                      <div className=" flex mx-auto justify-between">
+                        {!isMain &&
+                          tagInfo
+                            .slice(startIdx, startIdx + numVisibleTags)
+                            .map((tag: any, i: number) => (
+                              <div
+                                key={i}
+                                className={`box-border flex flex-row justify-center text-sm sm:justify-between items-center px-4 py-2 mx-2 border border-gray-300 rounded-full  ${isSelectedTags[startIdx + i] ? 'bg-[#E57C65] text-white' : 'bg-white hover:border-[#C05555] hover:text-[#C05555]'}`}
+                                onClick={() => searchTag(startIdx + i)}
+                              >
+                                {tag.content}
+                              </div>
+                            ))}
+                      </div>
+                      {!isMain && (
+                        <div
+                          className="p-2 cursor-pointer sm:absolute sm:right-4"
+                          onClick={handleClickNext}
+                        >
+                          &gt;
+                        </div>
+                      )}
+                    </div>
                   </div>
                 )}
-                  
-                 {!isShared && (
+
+                {!isShared && (
                   <Link
-                  href={`/write`}
-                  className="absolute top-4 right-10 z-40 bg-[#E57C65] p-9 rounded-full sm:top-5 sm:right-5"
-                >
-                  <div className="absolute top-3 right-2">
-                    <Image
-                      src={writeIcon}
-                      alt='writeIcon' 
-                      width={55}
-                    />
-                  </div>
-                </Link>
+                    href={`/write`}
+                    className="absolute top-4 right-10 z-40 bg-[#E57C65] p-9 rounded-full sm:top-5 sm:right-5"
+                  >
+                    <div className="absolute top-3 right-2">
+                      <Image src={writeIcon} alt="writeIcon" width={55} />
+                    </div>
+                  </Link>
                 )}
               </div>
             </div>

@@ -356,7 +356,7 @@ export default function Home() {
                 슬라이드해서 태그를 선택해보세요
               </div>
 
-              <div className="flex scrollbar flex-nowrap min-h-[7vh] mb-10 text-sm overflow-x-auto">
+              <div className="flex scrollBar flex-nowrap min-h-[7vh] mb-10 text-sm overflow-x-auto">
                 {tagData.length > 0 &&
                   tagData.map((tag: any, i: number) => (
                     <div
