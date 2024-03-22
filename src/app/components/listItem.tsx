@@ -121,10 +121,10 @@ const ListItem = ({
         </div>
       ) : (
         <div
-        className={`relative text-left block p-6 my-2
-            border text-[#3D3D3D] border-gray-200 rounded-lg shadow z-50 hover:bg-[#e57c65] hover:text-white 
-            ${isSelected ? 'bg-[#E57C65] border-[#E57C65] border-2 text-white' : 'bg-white border-gray-200'}
-            `}
+        className={`relative text-left block p-6 my-2 sm:mx-[1vw] sm:w-[94vw] 
+        border  text-[#3D3D3D] border-gray-200 rounded-lg shadow z-50 hover:bg-[#e57c65] hover:text-white 
+        ${isSelected ? 'bg-[#E57C65] border-[#E57C65] border-2 text-white' : 'bg-white border-gray-200'}
+        `}
           onClick={() => onListItemClick(data.pinRespDto, index)}
           onMouseEnter={() => setIsHovered(true)}
           onMouseLeave={()=>mouseLeaveList(index)}
@@ -153,7 +153,7 @@ const ListItem = ({
                 <Image
                   src={data.private ? Private : unLock}
                   alt="private"
-                  className='ml-2 w-4 h-5'
+                  className='absolute top-7 left-24 ml-2 w-4 h-5'
                 />
               </div>
 

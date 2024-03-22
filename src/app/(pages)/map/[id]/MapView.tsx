@@ -559,15 +559,23 @@ const MapView = ({
                   </div>
                 )}
 
-                {!isShared && (
+                {!isShared && (  
+                <div>
+                {!isMain && (
                   <Link
-                    href={`/write`}
-                    className="absolute top-4 right-10 z-40 bg-[#E57C65] p-9 rounded-full sm:top-5 sm:right-5"
-                  >
-                    <div className="absolute top-3 right-2">
-                      <Image src={writeIcon} alt="writeIcon" width={55} />
-                    </div>
-                  </Link>
+                  href={`/write`}
+                  className="absolute top-4 right-10 z-40 bg-[#E57C65] p-9 rounded-full sm:top-5 sm:right-5"
+                >
+                    <div className="absolute top-3 right-2">          
+                    <Image
+                      src={writeIcon}
+                      alt='writeIcon' 
+                      width={55}
+                    />
+                  </div>
+                   </Link>
+                   )}
+                </div>   
                 )}
               </div>
             </div>
