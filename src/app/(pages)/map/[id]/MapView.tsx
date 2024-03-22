@@ -508,7 +508,7 @@ const MapView = ({
 
                 {isShared && (
                   <div className="absolute top-6 left-1/3 transform -translate-x-1/5 sm:w-full sm:left-1/2 sm:-translate-x-1/2  z-40 flex flex-row rounded-lg">
-                    {smallTagShow && (
+                    {!isMain&&smallTagShow && (
                       <div className="flex scrollBar flex-nowrap min-h-[7vh] mb-10 text-sm overflow-x-auto">
                         {tagInfo.length > 0 &&
                           tagInfo.map((tag: any, i: number) => (
