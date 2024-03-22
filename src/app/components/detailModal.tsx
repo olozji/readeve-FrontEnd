@@ -39,7 +39,7 @@ const ModalContent: React.FC<ModalContentProps> = ({
         .map((tag: any) => tag.content)
 
       await axios.delete(
-        `https://api.bookeverywhere.site/api/review/delete/${reviewId}?socialId=${data.socialId}&bookTitle=${data.bookRespDto.title}&address=${data.bookRespDto.address}`,
+        `https://api.bookeverywhere.site/api/review/delete/${reviewId}?socialId=${data.socialId}&bookTitle=${data.bookRespDto.isbn}&address=${data.pinRespDto.address}`,
       )
       console.log('리뷰 삭제 성공:')
       window.location.href = `/mypage/${sessionUserId}`
