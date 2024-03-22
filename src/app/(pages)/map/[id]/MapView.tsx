@@ -54,11 +54,11 @@ const MapView = ({
   const [selectedMarkerIndex, setSelectedMarkerIndex] = useState<string>('')
   const [innerHeight, setInnerHeight] = useState<number>(0);
 
-  useEffect(() => {
-    if (typeof window !== 'undefined') {
-      setInnerHeight(window.innerHeight);
-    }
-  }, []);
+  // useEffect(() => {
+  //   if (typeof window !== 'undefined') {
+  //     setInnerHeight(window.innerHeight);
+  //   }
+  // }, []);
   let session = useSession()
   let user: any = session.data?.user
 
@@ -431,7 +431,7 @@ const MapView = ({
 
   return (
     <div style={{ position: 'relative' }}>
-      {loading && <LoadingScreen height={`${mapHeight}`} />}
+      {loading && <LoadingScreen height={isFull} />}
       {myMapData.length !== 0 ? (
         <div
           className="
@@ -449,7 +449,7 @@ const MapView = ({
                 className={`${isFull !== `100vh` ? 'rounded-lg' : ''}`}
                 style={{
                   width: '100%',
-                  height: `${mapHeight}`,
+                  height: `${isFull}`,
                   position: 'relative',
                 }}
               >
