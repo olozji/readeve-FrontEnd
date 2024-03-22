@@ -261,14 +261,14 @@ const MapView = ({
     window.kakao.maps.event.addListener(newMarker, 'mouseout', () => {
       customOverlay.setMap(null)
     })
-    if (smallTagShow) {
-      window.kakao.maps.event.addListener(newMarker, 'click', () => {
-        customOverlay.setMap(mapRef.current, newMarker)
-      })
-      // window.kakao.maps.event.addListener(newMarker, 'touchend', () => {
-      //   customOverlay.setMap(null)
-      // })
-    }
+    // if (smallTagShow) {
+    //   window.kakao.maps.event.addListener(newMarker, 'click', () => {
+    //     customOverlay.setMap(mapRef.current, newMarker)
+    //   })
+    //   // window.kakao.maps.event.addListener(newMarker, 'touchend', () => {
+    //   //   customOverlay.setMap(null)
+    //   // })
+    // }
 
     setMarkers((prevMarkers) => [...prevMarkers, newMarker])
     setOverlay((prevOverlay) => [...prevOverlay, customOverlay])
