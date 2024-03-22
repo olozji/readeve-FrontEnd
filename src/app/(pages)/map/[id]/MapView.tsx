@@ -262,7 +262,7 @@ const MapView = ({
       customOverlay.setMap(null)
     })
     if (smallTagShow) {
-      window.kakao.maps.event.addListener(newMarker, 'touchstart', () => {
+      window.kakao.maps.event.addListener(newMarker, 'click', () => {
         customOverlay.setMap(mapRef.current, newMarker)
       })
       // window.kakao.maps.event.addListener(newMarker, 'touchend', () => {
