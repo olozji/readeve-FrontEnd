@@ -567,8 +567,8 @@ export default function Home() {
                         {formatDateToYYMMDD(d.createAt)}
                       </div>
                       <div className='flex items-center absolute bottom-4 right-4'>
-                        <LikeButton reviewId={d.reviewId } />
-                        <div>1</div>
+                        <LikeButton reviewId={d.reviewId } socialId={session.data?.user.id} />
+                        
                       </div>
                     </div>
                   </div>
