@@ -10,13 +10,15 @@ interface LikeBtnType {
 }
 
 function LikeButton({ reviewId, socialId }: LikeBtnType) {
-  const [likeCount, setLikeCount] = useState()
-  const [likeState, setLikeState] = useState()
+  const [likeCount, setLikeCount] = useState<any>()
+  const [likeState, setLikeState] = useState<any>()
   const postLike = async () => {
     try {
       const response = await axios.post(
         `https://api.bookeverywhere.site/api/review/${reviewId}/likes?socialId=${socialId}`,
       )
+      setLikeCount(likeCount! + 1)
+      setLikeState(true)
     } catch (error) {
       console.log(error)
     }
@@ -26,6 +28,8 @@ function LikeButton({ reviewId, socialId }: LikeBtnType) {
       const response = await axios.delete(
         `https://api.bookeverywhere.site/api/review/${reviewId}/likes?socialId=${socialId}`,
       )
+      setLikeCount(likeCount-1)
+      setLikeState(false)
     } catch (error) {
       console.log(error)
     }
@@ -50,13 +54,22 @@ function LikeButton({ reviewId, socialId }: LikeBtnType) {
     }
   }, [socialId])
 
+  const handlePostLike = (e:any) => {
+    e.stopPropagation()
+    postLike()
+  }
+  const handleDeleteLike = (e:any) => {
+    e.stopPropagation()
+    deleteLike()
+  }
+
   return (
-    <div className="flex items-center">
+    <div className="flex items-center z-50">
       {likeState ? (
         <IconButton
           aria-label="like"
           style={{ color: '#E57C65' }}
-          onClick={deleteLike}
+          onClick={(e)=>handleDeleteLike(e)}
         >
           <FavoriteIcon />
         </IconButton>
@@ -64,7 +77,7 @@ function LikeButton({ reviewId, socialId }: LikeBtnType) {
         <IconButton
           aria-label="like"
           style={{ color: 'black' }}
-          onClick={postLike}
+          onClick={(e)=>handlePostLike(e)}
         >
           <FavoriteIcon />
         </IconButton>
