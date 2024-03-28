@@ -15,7 +15,9 @@ function LikeButton({ reviewId, socialId }: LikeBtnType) {
   const postLike = async () => {
     try {
       const response = await axios.post(
-        `https://api.bookeverywhere.site/api/review/${reviewId}/likes?socialId=${socialId}`,
+        `https://api.bookeverywhere.site/api/review/${reviewId}/likes?socialId=${socialId}`,{
+          withCredentials: true,
+        }
       )
       setLikeCount(likeCount! + 1)
       setLikeState(true)
@@ -26,7 +28,9 @@ function LikeButton({ reviewId, socialId }: LikeBtnType) {
   const deleteLike = async () => {
     try {
       const response = await axios.delete(
-        `https://api.bookeverywhere.site/api/review/${reviewId}/likes?socialId=${socialId}`,
+        `https://api.bookeverywhere.site/api/review/${reviewId}/likes?socialId=${socialId}`,{
+          withCredentials: true,
+        }
       )
       setLikeCount(likeCount-1)
       setLikeState(false)
@@ -38,7 +42,9 @@ function LikeButton({ reviewId, socialId }: LikeBtnType) {
   const getReview = async () => {
     try {
       const response = await axios.get(
-        `https://api.bookeverywhere.site/api/review/${reviewId}?socialId=${socialId}`,
+        `https://api.bookeverywhere.site/api/review/${reviewId}?socialId=${socialId}`, {
+          withCredentials: true,
+        }
       )
       const data = response.data.data
       setLikeCount(data.likeCount)
