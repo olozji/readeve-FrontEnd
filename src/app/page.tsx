@@ -29,6 +29,7 @@ import NavBar from './components/NavBar'
 import CustomModal from './components/modal'
 import ModalContent from './components/detailModal'
 import LoginBtn from './components/buttons/LoginButton';
+import LikeButton from './components/buttons/LikeButton';
 
 export default function Home() {
   let session: any = useSession()
@@ -95,8 +96,7 @@ export default function Home() {
   const getTopVisitedPlaces = () => {
     // publicReviews 에서 가장 많이 중복된 장소명를 기준으로 카운트
     const visitCounts = publicReviews.reduce((counts: any, review: any) => {
-      console.log(publicReviews)
-      console.log(allReviewData)
+
       const placeName = review.pinRespDto.name
       counts[placeName] = (counts[placeName] || 0) + 1
       return counts
@@ -169,6 +169,22 @@ export default function Home() {
       console.error('Error fetching data:', error)
     }
   }
+  const fetchReviewId = async () => {
+    if (session.data.user.id) {
+      
+      try {
+        const response = await axios.get(
+          'https://api.bookeverywhere.site/api/review/1',
+        )
+        const data = response.data.data // 응답으로 받은 데이터
+  
+     console.log(data)
+      } catch (error) {
+        console.error('Error fetching data:', error)
+      }
+    }
+   
+  }
   const fetchTag = async () => {
     try {
       const response = await axios.get(
@@ -176,7 +192,7 @@ export default function Home() {
       )
       const data = response.data.data
       setTagInfo(data)
-      console.log(data)
+
     } catch (error) {
       console.error('Error fetching data:', error)
     }
@@ -190,7 +206,7 @@ export default function Home() {
         )
         const data = response.data.data
         setMyData(data)
-        console.log(data)
+
       } catch (error) {
         console.error('Error fetching data:', error)
       }
@@ -201,6 +217,7 @@ export default function Home() {
     fetchData()
     fetchPersonalData()
     fetchTag()
+    
     setMap(true)
   }, [])
 
@@ -210,7 +227,11 @@ export default function Home() {
   }, [tagInfo])
 
   useEffect(() => {
-    fetchPersonalData()
+    if (session) {
+      fetchPersonalData()
+      fetchReviewId()
+    }
+   
   }, [session])
 
   useEffect(() => {
@@ -544,6 +565,10 @@ export default function Home() {
                       </div>
                       <div className="absolute top-6 right-4 sm:text-xs sm:bottom-2 justify-itmes-center">
                         {formatDateToYYMMDD(d.createAt)}
+                      </div>
+                      <div className='flex items-center absolute bottom-4 right-4 z-50'>
+                        <LikeButton reviewId={d.reviewId } socialId={session.data?.user.id} />
+                        
                       </div>
                     </div>
                   </div>

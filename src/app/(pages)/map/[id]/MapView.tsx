@@ -52,7 +52,13 @@ const MapView = ({
   )
 
   const [selectedMarkerIndex, setSelectedMarkerIndex] = useState<string>('')
+  const [innerHeight, setInnerHeight] = useState<number>(0);
 
+  useEffect(() => {
+    if (typeof window !== 'undefined') {
+      setInnerHeight(window.innerHeight);
+    }
+  }, []);
   let session = useSession()
   let user: any = session.data?.user
 
@@ -225,15 +231,26 @@ const MapView = ({
     })
 
     const handleMarkerClick = (id: string) => {
+
       const listItem = document.getElementById(`list-item-${id}`)
       console.log(id)
       if (listItem && listContainerRef.current) {
-        const offsetTop =
+        if (!smallTagShow) {
+          const offsetTop =
           listItem.offsetTop - listContainerRef.current.offsetTop
         listContainerRef.current.scrollTo({
           top: offsetTop,
           behavior: 'smooth',
         })
+        } else {
+          const offsetLeft =
+    listItem.offsetLeft - listContainerRef.current.offsetLeft;
+  listContainerRef.current.scrollTo({
+    left: offsetLeft,
+    behavior: 'smooth',
+  });
+        }
+        
       }
       setSelectedMarkerIndex(id)
     }
@@ -244,6 +261,14 @@ const MapView = ({
     window.kakao.maps.event.addListener(newMarker, 'mouseout', () => {
       customOverlay.setMap(null)
     })
+    // if (smallTagShow) {
+    //   window.kakao.maps.event.addListener(newMarker, 'click', () => {
+    //     customOverlay.setMap(mapRef.current, newMarker)
+    //   })
+    //   // window.kakao.maps.event.addListener(newMarker, 'touchend', () => {
+    //   //   customOverlay.setMap(null)
+    //   // })
+    // }
 
     setMarkers((prevMarkers) => [...prevMarkers, newMarker])
     setOverlay((prevOverlay) => [...prevOverlay, customOverlay])
@@ -402,7 +427,7 @@ const MapView = ({
     })
   }, [myMapData])
 
-  const mapHeight = isFull === `100vh` ? windowHeight : 400
+  const mapHeight = isFull === `100vh` ? innerHeight: 400
 
   return (
     <div style={{ position: 'relative' }}>
@@ -424,7 +449,7 @@ const MapView = ({
                 className={`${isFull !== `100vh` ? 'rounded-lg' : ''}`}
                 style={{
                   width: '100%',
-                  height: `${isFull}`,
+                  height: mapHeight,
                   position: 'relative',
                 }}
               >
