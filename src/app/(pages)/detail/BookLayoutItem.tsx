@@ -170,7 +170,7 @@ const BookLayoutItem = ({ bookId, propsData }: bookLayoutItemType) => {
                         />
                       </div>
                       <div className="grid absolute bottom-0 right-0 sm:bottom-0 sm:right-2 sm:text-xs justify-itmes-center">
-                        {formatDateToYYMMDD(data.createAt)}
+                        {formatDateToYYMMDD(data.createdDate)}
                         
                       </div>
                     </div>
