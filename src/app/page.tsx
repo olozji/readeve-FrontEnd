@@ -452,8 +452,8 @@ export default function Home() {
                 className="flex flex-col justify-center relative w-[calc((100% - 100px) * 0.3)]"
               >
                  <div
-                className={`w-[calc((100% - 100px) * 0.7)] bg-gradient-to-r from-[#FFD6CD] to-[#E67D67] rounded-xl sm:w-[10vw] ${place.visitCount > 300 ? 'max-w-[300px]' : ''}`}
-                style= { {width: `${place.visitCount * 50}px`} }>
+                className={`w-[calc((100% - 100px) * 0.7)] bg-gradient-to-r from-[#FFD6CD] to-[#E67D67] rounded-xl sm:w-[10vw] ${place.visitCount > 5 ? 'max-w-[100px] sm:max-w-[40px]' : ''}`}
+                style= { {width: `${place.visitCount * 70}px`} }>
                 <div className='flex justify-center items-center float-end'>
                 <div className='mr-2 sm-ml-1 text-white font-bold sm:text-xs'>
                 {place.visitCount}명
