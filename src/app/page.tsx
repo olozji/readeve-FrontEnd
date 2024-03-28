@@ -568,7 +568,6 @@ export default function Home() {
                       </div>
                       <div className='flex items-center absolute bottom-4 right-4 z-50'>
                         <LikeButton reviewId={d.reviewId } socialId={session.data?.user.id} />
-                        
                       </div>
                     </div>
                   </div>

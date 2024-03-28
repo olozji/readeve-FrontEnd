@@ -25,6 +25,7 @@ import axios from 'axios'
 import { useSession } from 'next-auth/react'
 import ModalContent from '@/app/components/detailModal'
 import { GoBackButton } from '@/app/components/buttons/goBackButton'
+import LikeButton from '@/app/components/buttons/LikeButton'
 
 export interface ReviewData {
   [x: string]: any
@@ -225,6 +226,9 @@ const AllReviewPage = () => {
                           </div>
                           <div className="absolute bottom-4 right-4 sm:text-xs sm:bottom-2 justify-itmes-center">
                             {formatDateToYYMMDD(item.createdDate)}
+                          </div>
+                          <div className='flex items-center absolute bottom-2 right-24 z-50'>
+                            <LikeButton reviewId={item.reviewId } socialId={session.data?.user.id} />
                           </div>
                         </div>
                       </div>
