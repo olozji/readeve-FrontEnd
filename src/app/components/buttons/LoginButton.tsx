@@ -10,7 +10,8 @@ export default function LoginBtn({onLogin} : {onLogin?: () => void}) {
   return (
     <Image
       src={kakaologin}
-      alt=''
+      alt='kakaoLogin'
+      className='cursor-pointer'
       onClick={ async () => {
         const result = await signIn('kakao',{callbackUrl:'http://localhost:8081/login/oauth2/code/kakao'});
         if(result?.error) {

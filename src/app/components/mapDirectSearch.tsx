@@ -53,7 +53,9 @@ export const MapDirectSearch = ({ onMarkerClick, markerImage }: any) => {
             position: currentPosition,
             image: new window.kakao.maps.MarkerImage(
               markerImage.src,
-              new window.kakao.maps.Size(markerImage.width, markerImage.height),
+              // markerImage.width랑 height 하니까 이미지가 너무 커서 기존 숫자값으로 정해놨어요!
+              // 커밋전 한번 브라우저에서 확인해보시고 이 부분 봐주세요!!
+              new window.kakao.maps.Size(30, 35),
             ),
           })
           currMarker.setMap(map)
@@ -99,11 +101,11 @@ export const MapDirectSearch = ({ onMarkerClick, markerImage }: any) => {
                 setMarkers((prevMarkers: any) => [...prevMarkers, newMarker])
                 setPlaceInfo({
                   place_name: null,
-                  id: null,
+                  id: newMarker.lat+newMarker.lng,
                   y: newMarker.lat,
                   x: newMarker.lng,
                   road_address_name: addr,
-                  place_url: null,
+                  place_url: '누군가의 장소',
                 })
                 // 기존 마커를 제거하고 새로운 마커를 넣는다.
                 marker.setMap(null)
@@ -160,13 +162,13 @@ export const MapDirectSearch = ({ onMarkerClick, markerImage }: any) => {
     <div>
       <div className='pt-4 text-3xl font-extrabold'>위치를 선택해주세요</div>
       <div 
-        className='text-[#E57C65] text-md px-3 py-3 cursor-pointer'
+        className='text-[#E57C65] text-md px-3 sm:px-0 py-3 cursor-pointer'
         onClick={getCurrentPosBtn}>
           현재 위치설정
       </div>
-      <div className='flex'>
-      <div id="map" style={{ width: '55%', height: '45vh' }}></div>
-      <div className='w-[45%] bg-white bg-opacity-80 overflow-y-auto rounded-lg'>
+      <div className='flex sm:flex-col'>
+      <div id="map" className='w-[55%] sm:w-[100%] h-[45vh] sm:h-[40vh]'></div>
+      <div className='w-[45%] sm:w-[100%] bg-white bg-opacity-80 overflow-y-auto rounded-lg'>
         {address.length === 0 ? (
           <div className="text-[#B6B6B6] ml-2 mt-40">
                 핀을 직접 정하고 나만의 장소를 완성해보세요!
@@ -187,7 +189,7 @@ export const MapDirectSearch = ({ onMarkerClick, markerImage }: any) => {
                 <></>
               )}
             </div>
-            <div className='pt-10'>
+            <div className='pt-10 sm:pt-2'>
               <h2 className='font-bold pb-3'>별칭</h2>
             <input
               type="text"

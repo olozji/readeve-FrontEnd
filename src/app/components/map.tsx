@@ -21,7 +21,7 @@ const AddPlace: React.FC<AddPlaceProps> = ({
   selectedPlace,
 }) => {
   const [InputText, setInputText] = useState('') // 추가할 장소이름 검색
-  const [Place, setPlace] = useState('') // 추가할 장소 데이터 설정
+  const [Place, setPlace] = useState('장소명, 도로명, 지번, 건물명 검색') // 추가할 장소 데이터 설정
   const [directSearch, setDirectSearch] = useState(false) // 초기 상태는 검색창으로 검색
   const [placeName, setPlaceName] = useState<string>('')
 
@@ -63,8 +63,8 @@ const AddPlace: React.FC<AddPlaceProps> = ({
   }
 
   return (
-    <div className="bg-white py-8 px-16 rounded-lg">
-      <div className="pt-8 pb-4 flex gap-x-8 text-[#9f9f9f] border-b-2 font-semibold">
+    <div className="bg-white py-8 px-16 rounded-lg sm:px-4 sm:py-2">
+      <div className="pt-8 sm:pt-4 pb-4 flex sm:text-sm gap-x-8 sm:gap-x-4 text-[#9f9f9f] border-b-2 font-semibold">
         <button
           onClick={() => setDirectSearch(false)}
           className={`${!directSearch && 'text-[#e57C65]'}`}
@@ -88,22 +88,22 @@ const AddPlace: React.FC<AddPlaceProps> = ({
         </div>
       ) : (
         <div>
-          <div className="pt-4 text-3xl font-extrabold">
+          <div className="pt-4 text-3xl sm:text-xl font-extrabold">
             장소를 검색해주세요
           </div>
-          <form className="py-5">
-            <div className="flex items-center gap-4">
+          <form className="py-5 sm:py-2">
+            <div className="flex items-center gap-4 sm:gap-1">
               <div className="searchInputDiv">
                 <input
                   type="text"
                   size={50}
-                  placeholder="장소명, 도로명, 지번, 건물명 검색"
-                  className="w-[35rem] h-[2.5rem] px-3 border border-black rounded-2xl bg-white"
+                  placeholder={Place}
+                  className="w-[35rem] sm:w-[100%] h-[2.5rem] px-3  border border-black rounded-2xl bg-white"
                   onChange={onChange}
                   value={InputText}
                 />
               </div>
-              <div className="bg-[#E57C65] border-4 border-white px-2 py-1 rounded-3xl shadow-xl justify-center">
+              <div className="bg-[#E57C65] border-4 border-white px-2  py-1 rounded-3xl shadow-xl justify-center">
                 <button id="searchBtn" onClick={handleSubmit}>
                   <Image
                     src={mapSearchIcon}

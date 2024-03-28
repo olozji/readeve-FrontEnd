@@ -1,12 +1,15 @@
 import NavBar from "@/app/components/NavBar";
 import EditorComponent from "../EditComponent"
-
-const Edit = () => {
+export interface PropType {
+  params: {
+    id: number
+    searchParams: {}
+  }
+}
+const Edit = (props:PropType) => {
   return (
     <><NavBar/>
-    <EditorComponent params={{
-        id:"",
-    }}
+    <EditorComponent editReviewId={props.params.id}
     >
       </EditorComponent>
       </>
