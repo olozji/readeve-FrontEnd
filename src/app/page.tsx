@@ -159,7 +159,7 @@ export default function Home() {
         'https://api.bookeverywhere.site/api/data/all?isPrivate=false',
       )
       const data = response.data.data // 응답으로 받은 데이터
-
+      console.log(response.headers+'1')
       // 원본 배열을 복사하여 수정
       const newData = [...data]
 
@@ -172,16 +172,16 @@ export default function Home() {
   const fetchReviewId = async () => {
     if (session.data.user.id) {
       
-      try {
+     
         const response = await axios.get(
-          'https://api.bookeverywhere.site/api/review/1',
+          'https://api.bookeverywhere.site/api/review/1?socialId=3366977562'
+          
         )
+        console.log('헤더/n'+response.headers)
         const data = response.data.data // 응답으로 받은 데이터
-  
+        
      console.log(data)
-      } catch (error) {
-        console.error('Error fetching data:', error)
-      }
+      
     }
    
   }
