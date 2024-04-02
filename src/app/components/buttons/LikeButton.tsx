@@ -15,7 +15,7 @@ function LikeButton({ reviewId, socialId }: LikeBtnType) {
   const postLike = async () => {
     try {
        await axios.post(
-        `https://api.bookeverywhere.site/api/review/${reviewId}/likes?socialId=${socialId}`,{
+         `https://api.bookeverywhere.site/api/review/${reviewId}/likes?socialId=${socialId}`, {},{
           withCredentials: true,
         }
       )

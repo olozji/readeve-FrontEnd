@@ -22,14 +22,14 @@ import markerImage from '/public/images/marker1.png'
 import privateMarker from '/public/images/privateMarker.png'
 import isPrivatedIcon from '/public/images/isPrivatedIcon.png'
 import isSharedIcon from '/public/images/isSharedIcon.png'
-import mainFrame from '/public/images/mainFrame.png';
-import contentLogo from '/public/images/contentsLogo.png';
+import mainFrame from '/public/images/mainFrame.png'
+import contentLogo from '/public/images/contentsLogo.png'
 import { BookLayout } from './components/bookLayout'
 import NavBar from './components/NavBar'
 import CustomModal from './components/modal'
 import ModalContent from './components/detailModal'
-import LoginBtn from './components/buttons/LoginButton';
-import LikeButton from './components/buttons/LikeButton';
+import LoginBtn from './components/buttons/LoginButton'
+import LikeButton from './components/buttons/LikeButton'
 
 export default function Home() {
   let session: any = useSession()
@@ -51,7 +51,7 @@ export default function Home() {
   const [myData, setMyData] = useState([])
   const [myPageData, setMyPageData] = useState<any>([])
   const [tagData, setTagData] = useState<any>([])
-  const [selectedCount, setSelectedCount] = useState<boolean[]>([]);
+  const [selectedCount, setSelectedCount] = useState<boolean[]>([])
   const [isLoading, setIsLoading] = useState(true)
   const [sharedReview, setSharedReview] = useState(null)
   const [smallTagShow, setSmallTagShow] = useState(false)
@@ -81,12 +81,12 @@ export default function Home() {
     setCurrentIndex(index)
   }
 
-  const handleCountClick = (index:number) => {
+  const handleCountClick = (index: number) => {
     setSelectedCount((prevState) => {
-      const clickCount = [...prevState];
+      const clickCount = [...prevState]
       clickCount[index] = !clickCount[index]
-      return clickCount;
-    });
+      return clickCount
+    })
   }
 
   const toggleLoginStatus = () => {
@@ -96,7 +96,6 @@ export default function Home() {
   const getTopVisitedPlaces = () => {
     // publicReviews 에서 가장 많이 중복된 장소명를 기준으로 카운트
     const visitCounts = publicReviews.reduce((counts: any, review: any) => {
-
       const placeName = review.pinRespDto.name
       counts[placeName] = (counts[placeName] || 0) + 1
       return counts
@@ -113,17 +112,18 @@ export default function Home() {
     }))
   }
 
-  const handlePlaceClick = (place:any, i:any) => {
-    
-    console.log('장소 클릭:', place);
-    const placeReview = publicReviews.find((review:any) => review.pinRespDto.name == place.name);
-    
-    console.log(placeReview);
-    const mapLink = `/map/?placeId=${placeReview.pinRespDto.placeId}`;
+  const handlePlaceClick = (place: any, i: any) => {
+    console.log('장소 클릭:', place)
+    const placeReview = publicReviews.find(
+      (review: any) => review.pinRespDto.name == place.name,
+    )
 
-    console.log(mapLink);
-    window.location.href = mapLink;
-  };
+    console.log(placeReview)
+    const mapLink = `/map/?placeId=${placeReview.pinRespDto.placeId}`
+
+    console.log(mapLink)
+    window.location.href = mapLink
+  }
 
   const topVisitedPlaces = getTopVisitedPlaces()
 
@@ -142,14 +142,14 @@ export default function Home() {
 
   function maskName(name: string): string {
     if (name.length === 2) {
-      return name.charAt(0) + '*';
+      return name.charAt(0) + '*'
     } else if (name.length > 2) {
-      const firstChar = name.charAt(0);
-      const lastChar = name.charAt(name.length - 1);
-      const maskedPart = '*'.repeat(name.length - 2);
-      return firstChar + maskedPart + lastChar;
+      const firstChar = name.charAt(0)
+      const lastChar = name.charAt(name.length - 1)
+      const maskedPart = '*'.repeat(name.length - 2)
+      return firstChar + maskedPart + lastChar
     } else {
-      return name;
+      return name
     }
   }
 
@@ -159,7 +159,7 @@ export default function Home() {
         'https://api.bookeverywhere.site/api/data/all?isPrivate=false',
       )
       const data = response.data.data // 응답으로 받은 데이터
-      console.log(response.headers+'1')
+      console.log(response.headers + '1')
       // 원본 배열을 복사하여 수정
       const newData = [...data]
 
@@ -169,7 +169,7 @@ export default function Home() {
       console.error('Error fetching data:', error)
     }
   }
-  
+
   const fetchTag = async () => {
     try {
       const response = await axios.get(
@@ -177,7 +177,6 @@ export default function Home() {
       )
       const data = response.data.data
       setTagInfo(data)
-
     } catch (error) {
       console.error('Error fetching data:', error)
     }
@@ -187,13 +186,13 @@ export default function Home() {
     if (session.data.user.id) {
       try {
         const response = await axios.get(
-          `https://api.bookeverywhere.site/api/data/all/${session.data.user.id}`,{
+          `https://api.bookeverywhere.site/api/data/all/${session.data.user.id}`,
+          {
             withCredentials: true,
-          }
+          },
         )
         const data = response.data.data
         setMyData(data)
-
       } catch (error) {
         console.error('Error fetching data:', error)
       }
@@ -204,7 +203,7 @@ export default function Home() {
     fetchData()
     fetchPersonalData()
     fetchTag()
-    
+
     setMap(true)
   }, [])
 
@@ -217,7 +216,6 @@ export default function Home() {
     if (session) {
       fetchPersonalData()
     }
-   
   }, [session])
 
   useEffect(() => {
@@ -236,7 +234,6 @@ export default function Home() {
     const filteredData = allReviewData.filter((d: any) => !d.pinRespDto.private)
     setDocuments(filteredData)
   }, [allReviewData])
-
 
   useEffect(() => {
     setMyPageData(myData)
@@ -276,7 +273,7 @@ export default function Home() {
   return (
     <div>
       <NavBar />
-      {isLoginOpen &&
+      {isLoginOpen && (
         <CustomModal onClose={closeLoginModal} isOpen={true} size={'30rem'}>
           <div className="p-[2rem]">
             <div className="font-bold text-2xl">로그인</div>
@@ -286,8 +283,9 @@ export default function Home() {
             </div>
             <LoginBtn onLogin={toggleLoginStatus} />
           </div>
-        </CustomModal>}
-      
+        </CustomModal>
+      )}
+
       <div
         className="relative w-full bg-cover py-24 sm:py-8 sm:px-5 grid sm:grid-flow-row-dense items-center sm:grid-cols-3 sm:grid-rows-1 px-[25%] grid-cols-2 "
         style={{
@@ -297,7 +295,8 @@ export default function Home() {
         <div className="relative z-10 text-start sm:col-span-2 py-4">
           <div className="text-black text-left text-3xl sm:text-2xl  font-bold mb-2">
             나만의 독후감 지도를
-            <br />만들어보세요!
+            <br />
+            만들어보세요!
           </div>
           <div className="text-black text-left text-sm sm:text-[10px] font-bold sm:mb-4 mb-10">
             읽는 곳곳을 통해 지도 위에 독후감을 작성하고
@@ -315,7 +314,7 @@ export default function Home() {
             ) : (
               <div
                 className=" bg-[#FFB988] inline-block text-white font-bold sm:text-xs py-4 px-6 hover:bg-[#AF6C3E] rounded-lg shadow-md hover:shadow-lg"
-                onClick={()=>setIsLoginOpen(true)}
+                onClick={() => setIsLoginOpen(true)}
               >
                 독후감 기록하기
               </div>
@@ -397,14 +396,23 @@ export default function Home() {
         </div>
 
         <div className="mt-10 sm:px-5">
-          <div className='flex justify-between items-center py-10 sm:py-6'>
-            <div className="text-2xl sm:text-xl font-display font-bold ">내 서재</div>
-            {session.data &&
-            <Link href={`/mypage/${session.data.user.id}`}>
-            <Image src={moreIcon} alt={'moreIcon'} width={22} height={30} className='sm:w-[4vw]'/>
-          </Link>}
+          <div className="flex justify-between items-center py-10 sm:py-6">
+            <div className="text-2xl sm:text-xl font-display font-bold ">
+              내 서재
+            </div>
+            {session.data && (
+              <Link href={`/mypage/${session.data.user.id}`}>
+                <Image
+                  src={moreIcon}
+                  alt={'moreIcon'}
+                  width={22}
+                  height={30}
+                  className="sm:w-[4vw]"
+                />
+              </Link>
+            )}
           </div>
-          
+
           {session.data ? (
             <BookLayout
               bookData={myPageData}
@@ -421,50 +429,54 @@ export default function Home() {
           </h1>
           {/* TODO: 추후 데이터 들어가야할 부분 */}
           <div className="">
-          <div className="p-5 mb-3 sm:p-0 rounded-lg shadow-xl relative sm:shadow-none">
-          {topVisitedPlaces.map((place, index) => (
-            <div 
-              key={index} 
-              className="mb-3" 
-              onClick={() => handlePlaceClick(place,index)}>
-               <div
-                className={`inline-flex pl-3 items-center gap-10 sm:gap-2  w-auto rounded-xl hover:border-[#AE695A] shadow-md sm:shadow-sm relative 
-                ${selectedCount[index] ? 'border-2 border-[#AE695A]' : 'border-2'} `}
-                onClick={() => handleCountClick(index)}
+            <div className="p-5 mb-3 sm:p-0 rounded-lg shadow-xl relative sm:shadow-none">
+              {topVisitedPlaces.map((place, index) => (
+                <div
+                  key={index}
+                  className="mb-3"
+                  onClick={() => handlePlaceClick(place, index)}
                 >
-              <span className="font-bold px-8 sm:px-2 sm:text-xs sm:w-[10vw]">{index + 1}위</span>
-              <span className="font-bold max-w-[30vw] w-[20vw] sm:max-w-[60vw] sm:w-[50vw] sm:text-xs">{place.name}</span>
-              <div
-                className="flex flex-col justify-center relative w-[calc((100% - 100px) * 0.3)]"
-              >
-                 <div
-                className={`w-[calc((100% - 100px) * 0.7)] bg-gradient-to-r from-[#FFD6CD] to-[#E67D67] rounded-xl sm:w-[10vw] ${place.visitCount > 300 ? 'max-w-[300px]' : ''}`}
-                style= { {width: `${place.visitCount * 50}px`} }>
-                <div className='flex justify-center items-center float-end'>
-                <div className='mr-2 sm-ml-1 text-white font-bold sm:text-xs'>
-                {place.visitCount}명
+                  <div
+                    className={`inline-flex pl-3 items-center gap-10 sm:gap-2  w-auto rounded-xl hover:border-[#AE695A] shadow-md sm:shadow-sm relative 
+                ${selectedCount[index] ? 'border-2 border-[#AE695A]' : 'border-2'} `}
+                    onClick={() => handleCountClick(index)}
+                  >
+                    <span className="font-bold px-8 sm:px-2 sm:text-xs sm:w-[10vw]">
+                      {index + 1}위
+                    </span>
+                    <span className="font-bold max-w-[30vw] w-[20vw] sm:max-w-[60vw] sm:w-[50vw] sm:text-xs">
+                      {place.name}
+                    </span>
+                    <div className="flex flex-col justify-center relative w-[calc((100% - 100px) * 0.3)]">
+                      <div
+                        className={`w-[calc((100% - 100px) * 0.7)] bg-gradient-to-r from-[#FFD6CD] to-[#E67D67] rounded-xl sm:w-[10vw] ${place.visitCount > 300 ? 'max-w-[300px]' : ''}`}
+                        style={{ width: `${place.visitCount * 50}px` }}
+                      >
+                        <div className="flex justify-center items-center float-end">
+                          <div className="mr-2 sm-ml-1 text-white font-bold sm:text-xs">
+                            {place.visitCount}명
+                          </div>
+                          {index === 0 && (
+                            <>
+                              <Image
+                                src={contentLogo}
+                                alt="contentLogo"
+                                className="sm:w-[6vw] sm:h-[3vh]"
+                                width={30}
+                              />
+                            </>
+                          )}
+                        </div>
+                      </div>
+                    </div>
+                  </div>
                 </div>
-                {index === 0  && (
-                  <>
-                 <Image
-                 src={contentLogo}
-                 alt='contentLogo'
-                 className='sm:w-[6vw] sm:h-[3vh]'
-                 width={30}
-               />
-               </>
-               )}
-                </div>
-                </div>
+              ))}
+              <div className="absolute right-5 bottom-4 font-semibold sm:top-[-4vh] sm:left-0 text-[#9E9E9E] sm:text-xs ">
+                (2번 이상 방문한 장소 기준)
               </div>
-               </div>
             </div>
-          ))}
-        <div className='absolute right-5 bottom-4 font-semibold sm:top-[-4vh] sm:left-0 text-[#9E9E9E] sm:text-xs '>
-        (2번 이상 방문한 장소 기준)
-        </div>
-        </div>
-            </div>
+          </div>
         </div>
         <div className="mt-10 sm:px-5">
           <div className="flex justify-between items-center">
@@ -473,7 +485,13 @@ export default function Home() {
             </h1>
             <span className="inline-block align-middle">
               <Link href={'/allreview'}>
-                <Image src={moreIcon} alt={'moreIcon'} width={22} height={30} className='sm:[4vw]' />
+                <Image
+                  src={moreIcon}
+                  alt={'moreIcon'}
+                  width={22}
+                  height={30}
+                  className="sm:[4vw]"
+                />
               </Link>
             </span>
           </div>
@@ -488,79 +506,79 @@ export default function Home() {
               </section>
             </div>
           ) : (
-
-              <div className="grid sm:grid-cols-1 sm:w-[100%] grid-cols-2 gap-4 justify-between sm:justify-center items-center">
+            <div className="grid sm:grid-cols-1 sm:w-[100%] grid-cols-2 gap-4 justify-between sm:justify-center items-center">
                 {publicReviews.slice(0, 2).map((d: any, i: number) => (
-                  <div key={i} onClick={() => openModal(i)}>
+                
+                <div key={i} onClick={() => openModal(i)}>
                     {/* 모든리뷰 상세 모달 */}
-                    {isModalOpen && (
-                      <CustomModal
-                        size={'70rem'}
-                        isOpen={isModalOpen[i]}
-                        modalColor="#FEF6E6"
-                      >
-                        <ModalContent
-                          bookData={publicReviews}
-                          data={publicReviews[i]}
-                          sessionUserId={session.data?.user.id}
-                          closeModal={() => openModal(i)}
-                        />
-                      </CustomModal>
-                    )}
-                    {/* 모든 리뷰 */}
-                    <div className="relative flex p-6 sm:px-2 min-h-40 border shadow-lg rounded-2xl w-full">
-                      <div
-                        className="bg-contain sm:min-w-[8rem] w-[8rem] bg-no-repeat bg-center rounded-3xl"
-                        style={{
-                          backgroundImage: `url(${d.bookRespDto?.thumbnail})`,
-                        }}
-                      ></div>
+                    
+                  {isModalOpen && (
+                    <CustomModal
+                      size={'70rem'}
+                      isOpen={isModalOpen[i]}
+                      modalColor="#FEF6E6"
+                    >
+                      <ModalContent
+                        bookData={publicReviews}
+                        data={publicReviews[i]}
+                        sessionUserId={session.data?.user.id}
+                        closeModal={() => openModal(i)}
+                      />
+                    </CustomModal>
+                  )}
+                  {/* 모든 리뷰 */}
+                  <div className="relative flex p-6 sm:px-2 min-h-40 border shadow-lg rounded-2xl w-full">
+                    <div
+                      className="bg-contain sm:min-w-[8rem] w-[8rem] bg-no-repeat bg-center rounded-3xl"
+                      style={{
+                        backgroundImage: `url(${d.bookRespDto?.thumbnail})`,
+                      }}
+                    ></div>
 
-                      <div className="flex flex-col ml-2">
-                        <div className="">
-                          <h1 className="font-black text-xl sm:text-sm">
-                            {d.title}
-                          </h1>
-                          <div className="flex sm:max-w-[50vw] text-xs text-[#3C3C3C] items-start sm:text-xs sm:pr-2">
-                            {d.pinRespDto.private ? (
-                              <div>
-                                독서장소: {maskName(d.writer)}님만의 장소
-                              </div>
-                            ) : (
-                              <div className="">
-                                독서장소: {d.pinRespDto?.name} |{' '}
-                                {d.pinRespDto?.address}
-                              </div>
-                            )}
-                          </div>
-                        </div>
-
-                        <div className="flex">
-                          <div className="py-6 sm:pr-4 text-sm text-[#767676] sm:text-xs">
-                            {d.content.length === 0 ? (
-                              <div>등록된 내용이 없습니다</div>
-                            ) : (
-                              <div>
-                                {d.content.length > 50
-                                  ? `${d.content.slice(0, 50)}...`
-                                  : d.content}
-                              </div>
-                            )}
-                          </div>
+                    <div className="flex flex-col ml-2">
+                      <div className="">
+                        <h1 className="font-black text-xl sm:text-sm">
+                          {d.title}
+                        </h1>
+                        <div className="flex sm:max-w-[50vw] text-xs text-[#3C3C3C] items-start sm:text-xs sm:pr-2">
+                          {d.pinRespDto.private ? (
+                            <div>독서장소: {maskName(d.writer)}님만의 장소</div>
+                          ) : (
+                            <div className="">
+                              독서장소: {d.pinRespDto?.name} |{' '}
+                              {d.pinRespDto?.address}
+                            </div>
+                          )}
                         </div>
                       </div>
-                      <div className="absolute top-6 right-4 sm:text-xs sm:bottom-2 justify-itmes-center">
-                        {formatDateToYYMMDD(d.createDate)}
-                      </div>
-                      <div className='flex items-center absolute bottom-4 right-4 z-50'>
-                        <LikeButton reviewId={d.reviewId } socialId={session.data?.user.id} />
-                        
+
+                      <div className="flex">
+                        <div className="py-6 sm:pr-4 text-sm text-[#767676] sm:text-xs">
+                          {d.content.length === 0 ? (
+                            <div>등록된 내용이 없습니다</div>
+                          ) : (
+                            <div>
+                              {d.content.length > 50
+                                ? `${d.content.slice(0, 50)}...`
+                                : d.content}
+                            </div>
+                          )}
+                        </div>
                       </div>
                     </div>
+                    <div className="absolute top-6 right-4 sm:text-xs sm:bottom-2 justify-itmes-center">
+                      {formatDateToYYMMDD(d.createdDate)}
+                    </div>
+                    <div className="flex items-center absolute bottom-4 right-4 z-50">
+                      <LikeButton
+                        reviewId={d.reviewId}
+                        socialId={session.data?.user.id}
+                      />
+                    </div>
                   </div>
-                ))}
-              </div>
-
+                </div>
+              ))}
+            </div>
           )}
         </div>
         <div className="py-[10rem] text-center">
