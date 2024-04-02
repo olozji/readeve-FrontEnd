@@ -14,7 +14,7 @@ function LikeButton({ reviewId, socialId }: LikeBtnType) {
   const [likeState, setLikeState] = useState<any>()
   const postLike = async () => {
     try {
-      const response = await axios.post(
+       await axios.post(
         `https://api.bookeverywhere.site/api/review/${reviewId}/likes?socialId=${socialId}`,{
           withCredentials: true,
         }
@@ -27,7 +27,7 @@ function LikeButton({ reviewId, socialId }: LikeBtnType) {
   }
   const deleteLike = async () => {
     try {
-      const response = await axios.delete(
+      await axios.delete(
         `https://api.bookeverywhere.site/api/review/${reviewId}/likes?socialId=${socialId}`,{
           withCredentials: true,
         }

@@ -34,7 +34,9 @@ const Detail = (props: PropType) => {
     if (session.data.user.id) {
       try {
         const response = await axios.get(
-          `https://api.bookeverywhere.site/api/data/all/${session.data.user.id}`,
+          `https://api.bookeverywhere.site/api/data/all/${session.data.user.id}`,{
+            withCredentials: true,
+          }
         );
         const data = response.data.data;
         setMyData(data);

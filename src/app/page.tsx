@@ -169,22 +169,7 @@ export default function Home() {
       console.error('Error fetching data:', error)
     }
   }
-  const fetchReviewId = async () => {
-    if (session.data.user.id) {
-      
-     
-        const response = await axios.get(
-          'https://api.bookeverywhere.site/api/review/1?socialId=3366977562'
-          
-        )
-        console.log('헤더/n'+response.headers)
-        const data = response.data.data // 응답으로 받은 데이터
-        
-     console.log(data)
-      
-    }
-   
-  }
+  
   const fetchTag = async () => {
     try {
       const response = await axios.get(
@@ -202,7 +187,9 @@ export default function Home() {
     if (session.data.user.id) {
       try {
         const response = await axios.get(
-          `https://api.bookeverywhere.site/api/data/all/${session.data.user.id}`,
+          `https://api.bookeverywhere.site/api/data/all/${session.data.user.id}`,{
+            withCredentials: true,
+          }
         )
         const data = response.data.data
         setMyData(data)
@@ -229,7 +216,6 @@ export default function Home() {
   useEffect(() => {
     if (session) {
       fetchPersonalData()
-      fetchReviewId()
     }
    
   }, [session])
