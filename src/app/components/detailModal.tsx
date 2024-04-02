@@ -129,7 +129,7 @@ const ModalContent: React.FC<ModalContentProps> = ({
                   >
                     등록일
                   </span>
-                  <div>{formatDateToYYMMDD(data.createAt)}</div>
+                  <div>{formatDateToYYMMDD(data.createDate)}</div>
                 </div>
                 <div className="flex">
                   <span
