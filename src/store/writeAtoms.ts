@@ -53,7 +53,7 @@ export const allDataState = atom({
 // 리뷰 필터링
 export const filterReviewState = atom({
     key:'filterReviewState',
-    default:'전체'
+    default:[],
 })
 // 모든 리뷰데이터 호출
 export const allReviewDataState = atom({
@@ -86,22 +86,22 @@ export const sortOptionState = atom({
   default: 'latest', 
 });
 
-export const filteredReviewsState = selector({
-  key: 'filteredReviewsState',
-  get: ({ get }) => {
-    const filterReview = get(filterReviewState);
-    let allReviews = get(reviewState);
-
-  
-    if (filterReview === '최신등록순') {
-      return allReviews.slice().reverse(); 
-    } else if (filterReview === '오래된 순') {
-      return allReviews; 
-    }
-
-    return allReviews;
-  },
-});
+// export const filteredReviewsState = selector({
+//   key: 'filteredReviewsState',
+//   get: ({ get }) => {
+//     const filterReview = get(filterReviewState);
+//     let allReviews = get(reviewState);
+//
+//
+//     if (filterReview === '최신등록순') {
+//       return allReviews.slice().reverse();
+//     } else if (filterReview === '오래된순') {
+//       return allReviews;
+//     }
+//
+//     return allReviews;
+//   },
+// });
   
 // 상품 API 가져오기
 export const getReviewData = selector({
