@@ -26,6 +26,7 @@ import { useSession } from 'next-auth/react'
 import ModalContent from '@/app/components/detailModal'
 import { GoBackButton } from '@/app/components/buttons/goBackButton'
 import LikeButton from '@/app/components/buttons/LikeButton'
+import {updateInitialEnv} from "@next/env";
 
 export interface ReviewData {
   [x: string]: any
@@ -57,7 +58,7 @@ const AllReviewPage = () => {
   const [selectedReview, setSelectedReview] =
     useRecoilState(selectedReviewState)
   const [isReviewsModal, setIsReviewsModal] = useState(false)
-
+  const [filteredReview, setFilteredReview] = useState<ReviewData[]>([]);
   const [detailOpen, setDetailOpen] = useState<boolean[]>(
     Array(publicReviews.length).fill(false),
   )
@@ -65,7 +66,53 @@ const AllReviewPage = () => {
   const [allReviewData, setAllReviewData] =
     useRecoilState<any>(allReviewDataState)
 
+  const filterReview = useRecoilValue(filterReviewState);
+
   let session: any = useSession()
+
+  const sortFilterRecentReview = (reviews: ReviewData[]) => {
+    return reviews.slice().sort((a,b) => {
+      return new Date(b.createdDate).getTime() - new Date(a.createdDate).getTime();
+    });
+  }
+
+  const sortFilterOldReview = (reviews: ReviewData[]) => {
+    return reviews.slice().sort((a,b) => {
+      return new Date(a.createdDate).getTime() - new Date(b.createdDate).getTime();
+    })
+  }
+
+  const updatedFilterReviews = (filterType: string) => {
+    let filtered: ReviewData[] = [];
+    console.log(filtered);
+    if (filterType === '최신등록순') {
+      filtered = sortFilterRecentReview([...publicReviews]);
+    } else if (filterType === '오래된순') {
+      filtered = sortFilterOldReview([...publicReviews]);
+    }
+    setFilteredReview(filtered);
+  };
+
+  console.log(filteredReview,'sdsddsdsddd');
+
+  const handleRecentClick = () => {
+    // 1. 현재 선택된 필터 확인
+    console.log('최신등록순');
+
+
+    updatedFilterReviews('최신등록순');
+
+  };
+
+  const handleOldClick = () => {
+    // 1. 현재 선택된 필터 확인
+    console.log('오래된순');
+
+
+      updatedFilterReviews('오래된순');
+
+  };
+
 
   const handleModal = (idx: number) => {
     setDetailOpen((prevState) => {
@@ -118,6 +165,10 @@ const AllReviewPage = () => {
     setPublicReviews(PublicReviewData)
   }, [allReviewData])
 
+  useEffect(() => {
+    setFilteredReview(allReviewData)
+  },[allReviewData])
+
   return (
     <>
       <NavBar />
@@ -125,7 +176,7 @@ const AllReviewPage = () => {
         <section className="pt-20 sm:pt-10">
         {/*<section className="main mx-auto max-w-6xl px-4">*/}
         <div className='absolute py-10 sm:hidden'>
-        <GoBackButton/> 
+        <GoBackButton/>
         </div>
           <section className="pt-20 lg:pt-5 pb-4 lg:pb-8 px-4 xl:px-2 xl:container mx-auto">
             <div className="text-center mt-4 mx-auto myCustomText text-3xl text-white">
@@ -138,14 +189,18 @@ const AllReviewPage = () => {
                     id="filter"
                     className=" flex gap-3 text-gray-900 text-sm rounded-lg w-full p-2.5"
                   >
-                    <div>최신등록순</div>
-                    <div>오래된순</div>
+                    <div
+                      className="cursor-pointer"
+                      onClick={handleRecentClick}>최신등록순</div>
+                    <div
+                      className="cursor-pointer"
+                      onClick={handleOldClick}>오래된순</div>
                   </div>
                 </div>
               </div>
             </div>
             <div className="grid gap-4 md:grid-cols-1 lg:grid-cols-1 lg:pt-20">
-              {publicReviews.length === 0 ? (
+              {filteredReview.length === 0 ? (
                 <div className="blank pt-4 lg:pt-5 pb-4 lg:pb-8 px-4 xl:px-2 xl:container mx-auto">
                   <div className="pt-16">
                     <div className="mx-auto">
@@ -155,8 +210,7 @@ const AllReviewPage = () => {
                 </div>
               ) : (
                 <div className="grid gap-6 sm:gap-0 md:grid-cols-1 lg:grid-cols-1 lg:pt-20 md:pt-20 sm:pt-20">
-                  {publicReviews &&
-                    publicReviews.map((item: any, i: number) => (
+                  {filteredReview.map((item: any, i: number) => (
                       <div
                         key={i}
                         className="w-[70vw] sm:w-full sm:max-w-[100%] my-4 sm:my-2 mx-auto rounded-lg overflow-hidden cursor-pointer"
@@ -208,7 +262,7 @@ const AllReviewPage = () => {
                               <div className='text-xs sm:pr-2'>책 이름 : {item.bookRespDto.title}</div>
                               <div className='text-xs sm:pr-2'>저자 : {item.bookRespDto.author}</div>
 
-                            
+
                             </div>
 
                             <div className="flex justify-between">
