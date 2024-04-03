@@ -264,7 +264,6 @@ const AllReviewPage = () => {
 
 
                             </div>
-
                             <div className="flex justify-between">
                             <div className="py-2 sm:pr-4 text-sm sm:text-xs">
                                 {item.content.length === 0 ? (
