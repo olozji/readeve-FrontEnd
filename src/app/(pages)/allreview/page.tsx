@@ -262,7 +262,6 @@ const AllReviewPage = () => {
                               <div className='text-xs sm:pr-2'>책 이름 : {item.bookRespDto.title}</div>
                               <div className='text-xs sm:pr-2'>저자 : {item.bookRespDto.author}</div>
 
-
                             </div>
                             <div className="flex justify-between">
                             <div className="py-2 sm:pr-4 text-sm sm:text-xs">
