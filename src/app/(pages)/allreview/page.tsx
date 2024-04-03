@@ -121,8 +121,9 @@ const AllReviewPage = () => {
   return (
     <>
       <NavBar />
-      <div className="bg-[#f1e5cf]">
-        <section className="main mx-auto max-w-6xl px-4">
+      <div className="bg-[#f1e5cf] flex justify-center box-border min-h-full">
+        <section className="pt-20 sm:pt-10">
+        {/*<section className="main mx-auto max-w-6xl px-4">*/}
         <div className='absolute py-10 sm:hidden'>
         <GoBackButton/> 
         </div>
