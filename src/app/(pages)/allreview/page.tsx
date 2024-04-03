@@ -18,8 +18,6 @@ import Button from '@/app/components/buttons/button'
 
 import Image from 'next/image'
 import privateMarker from '/public/images/privateMarker.png'
-import isPrivatedIcon from '/public/images/isPrivatedIcon.png'
-import isSharedIcon from '/public/images/isSharedIcon.png'
 
 import axios from 'axios'
 import { useSession } from 'next-auth/react'
@@ -227,7 +225,7 @@ const AllReviewPage = () => {
                             data={publicReviews[i]}
                             sessionUserId={session.data?.user.id}
                             closeModal={() => handleModal(i)}
-                     />
+                          />
                           </CustomModal>
                         )}
 
