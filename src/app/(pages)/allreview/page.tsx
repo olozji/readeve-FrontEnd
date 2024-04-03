@@ -238,7 +238,6 @@ const AllReviewPage = () => {
                               backgroundImage: `url(${item.bookRespDto?.thumbnail})`,
                             }}
                           ></div>
-
                           <div className="flex flex-col justify-between ml-2">
                             <div className="">
                               <h1 className="font-black text-2xl sm:text-base">
