@@ -10,117 +10,157 @@
 }
 
 body {
-  font-weight:600;
+  font-weight: 600;
 }
 
 .myCustomText {
-  font-family: "Gugi", sans-serif;
+  font-family: 'Gugi', sans-serif;
 }
 
-/* .scrollbar {
-  scrollbar-width: thin;
-  background: #e57c65;
-  border-radius: 14px;
-}
 
-.scrollbar-webkit-scrollbar {
-  width: 15px;
-  background: #e57c65;
-  border-radius: 14px;
-} */
-
-.scrollBar {
-  overflow-y: scroll;
-}
 .marker_overlay {
   text-align: center;
   padding: 10px 20px;
   min-width: 100px;
-  background-color: #FEFEFE;
+  background-color: #fefefe;
   border-radius: 18px;
   position: relative;
   white-space: normal;
   word-break: keep-all;
   width: max-content;
-  max-width: 80vw
+  max-width: 80vw;
 }
+.loading-container {
+  width: 100%;
+  min-height: 400px;
+  display: flex;
+  flex-direction: column;
+  justify-content: center;
+  align-items: center;
+}
+.moving-image {
+  width: 70px; /* 이미지의 너비 */
+  height:87px;
+  background-image: url('/images/sharedMarker.png'); /* 이미지 경로 설정 */
+  background-size: contain;
+  background-repeat: no-repeat;
+  animation: moveUpDown 1s infinite alternate; /* 애니메이션 설정 */
+}
+.loading-bar {
+  width: 400px; /* 막대의 너비 */
+  height: 20px; /* 막대의 높이 */
+  padding: -2px;
+  background-color: #f7f5f5; /* 막대의 배경색 */
+  position: relative; /* 상대적 위치 지정 */
+}
+.loading-progress {
+  position: absolute; /* 절대적 위치 지정 */
+  top: 15%;
+  left: 1%;
+
+  height: 70%;
+  background-color: #f66464; /* 로딩 진행 중 색상 */
+  animation: fillLoading 2s linear infinite; /* 로딩 애니메이션 */
+}
+input {
+  touch-action: manipulation; /* 화면이 살짝 확대되는 것을 막음 */
+}
+
+
+@keyframes fillLoading {
+  0% {
+    width: 0; /* 시작 시 막대의 너비 */
+  }
+  100% {
+    width: 98%; /* 끝 시 막대의 너비 */
+  }
+}
+@keyframes moveUpDown {
+  0% {
+    transform: translateY(-15px); /* 시작 위치 */
+  }
+  100% {
+    transform: translateY(15px); /* 끝 위치 */
+  }
+}
+
 .marker_overlay_isPrivate {
   text-align: left;
   padding: 10px 20px;
   min-width: 100px;
-  background-color: #FEFEFE;
+  background-color: #fefefe;
   border-radius: 18px;
   position: relative;
   white-space: normal;
   word-break: keep-all;
   width: max-content;
-  max-width: 80vw
+  max-width: 80vw;
 }
-.tag{
+.tag {
   font-size: small;
 }
 
 .marker_overlay.mytheme {
   max-width: 300px;
-  padding: 14px 20px
+  padding: 14px 20px;
 }
 
 .marker_overlay.mytheme.plus_info {
-  width: 90vw
+  width: 90vw;
 }
 
 .marker_overlay.mytheme hr {
-  margin: 5px 0 10px
+  margin: 5px 0 10px;
 }
 
 .marker_overlay::after {
   border-bottom: 0px solid transparent;
   border-left: 10px solid transparent;
   border-right: 10px solid transparent;
-  border-top: 10px solid #FEFEFE;
-  content: "";
+  border-top: 10px solid #fefefe;
+  content: '';
   position: absolute;
   bottom: -10px;
-  left: calc(50% - 10px)
+  left: calc(50% - 10px);
 }
 .marker_overlay_isPrivate::after {
   border-bottom: 0px solid transparent;
   border-left: 10px solid transparent;
   border-right: 10px solid transparent;
-  border-top: 10px solid #FEFEFE;
-  content: "";
+  border-top: 10px solid #fefefe;
+  content: '';
   position: absolute;
   bottom: -10px;
-  left: calc(50% - 10px)
+  left: calc(50% - 10px);
 }
 
 .marker_overlay a:hover {
-  text-decoration: underline
+  text-decoration: underline;
 }
 
 .marker_overlay hr {
-  margin: 3px 0 10px
+  margin: 3px 0 10px;
 }
 
 .marker_overlay .place_name {
   font-weight: 600;
   font-size: 15px;
   line-height: 1.4;
-  word-break: keep-all
+  word-break: keep-all;
 }
 
 .marker_overlay_isPrivate .place_address {
-  font-size: 9px
+  font-size: 9px;
 }
 .marker_overlay_isPrivate .place_name {
   font-weight: 600;
   font-size: 15px;
   line-height: 1.4;
-  word-break: keep-all
+  word-break: keep-all;
 }
 
 .marker_overlay .place_address {
-  font-size: 9px
+  font-size: 9px;
 }
 
 .marker_overlay .avatar {
@@ -128,32 +168,32 @@ body {
   position: absolute;
   top: -16px;
   right: 5px;
-  font-size: 25px
+  font-size: 25px;
 }
 
 .marker_overlay .avatar a:hover {
-  text-decoration: none
+  text-decoration: none;
 }
 
 .marker_overlay .avatar .profile_emozi:hover {
-  font-size: 30px
+  font-size: 30px;
 }
 
 .marker_overlay .avatar .profile_pic {
   width: 30px;
   border-radius: 30px;
   line-height: 1;
-  overflow: hidden
+  overflow: hidden;
 }
 
 .marker_overlay .avatar .profile_pic img {
   width: 100%;
-  height: auto
+  height: auto;
 }
 
 .marker_overlay .avatar .profile_pic:hover {
   width: 33px;
-  border-radius: 33px
+  border-radius: 33px;
 }
 
 .marker_overlay .theme_name {
@@ -163,32 +203,39 @@ body {
   max-width: 300px;
   line-height: 1.65;
   margin-top: 3px;
-  white-space: pre-wrap
+  white-space: pre-wrap;
+}
+
+.scrollBar {
+  overflow-y: scroll;
 }
 
 /* 아래의 모든 코드는 영역::코드로 사용 */
 .scrollBar::-webkit-scrollbar {
-    width: 10px;  /* 스크롤바의 너비 */
+  width: 10px; /* 스크롤바의 너비 */
 }
 
 .scrollBar::-webkit-scrollbar-thumb {
-    height: 10%; /* 스크롤바의 길이 */
-    background: #e57c65; /* 스크롤바의 색상 */
-    
-    border-radius: 10px;
+  height: 10%; /* 스크롤바의 길이 */
+  background: #e57c65; /* 스크롤바의 색상 */
+
+  border-radius: 10px;
 }
 
 .scrollBar::-webkit-scrollbar-track {
-    background: rgba(33, 122, 244, .1);  /*스크롤바 뒷 배경 색상*/
+  background: rgba(33, 122, 244, 0.1); /*스크롤바 뒷 배경 색상*/
 }
 
 .content-wrapper {
   /* display:flex; */
   justify-content: start;
   /* text-align:center; */
-  left:10%;
-  font-weight:bold;
+  left: 10%;
+  font-weight: bold;
+}
 
+.blank {
+  min-height: calc(100vh - 4rem - 224px)
 }
 
 /* :root {
@@ -220,3 +267,30 @@ body {
     text-wrap: balance;
   }
 } */
+
+@media (max-width: 768px) {
+  .menuLogo {
+    margin:0 auto;
+    display:flex;
+    justify-content: center;
+  }
+
+  .menuLogo h1 {
+    max-width: 80%; 
+  }
+
+  .blank {
+    min-height: calc(100vh - 4rem - 215px)
+  }
+
+  .footer_hidden {
+    display:none;
+  }
+
+  .footer_logo {
+    margin:0 auto;
+    /* width:50px;
+    height:50px; */
+  }
+}
+

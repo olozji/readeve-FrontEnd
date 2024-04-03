@@ -5,12 +5,14 @@ import Link from 'next/link'
 import React, { useEffect, useState } from 'react'
 import { useRecoilState } from 'recoil'
 import Image from 'next/image'
-import Private from '/public/images/private.png'
+import Private from '/public/images/privateIcon.png'
 import linkArrow from '/public/images/linkArrow.png'
 import blackLinkArrow from '/public/images/blackLinkArrow.png'
-import unLock from '/public/images/unLock.png'
+import unLock from '/public/images/sharedIcon.png'
 import hoverPrivateMarker from '/public/images/hoverPrivateMarker.png'
 import privateMarker from '/public/images/privateMarker.png'
+import CustomModal from './modal';
+import ModalContent from './detailModal';
 
 interface listItemProps {
   data: any
@@ -31,37 +33,55 @@ const ListItem = ({
 }: listItemProps) => {
   const [recoilMap] = useRecoilState<any>(mapState)
   const [isHovered, setIsHovered] = useState(false)
+  const [isSelected, setIsSelected] = useState(false)
   const [iscontentExpanded, setIsContentExpanded] = useState(false)
+  const [detailOpen,setDetailOpen] = useState(false)
 
   const mouseLeaveList = (i: number) => {
     onListMouseLeave(i)
+    setIsSelected(false)
     setIsHovered(false)
   }
+  const handleModal = () => {
+    setDetailOpen(!detailOpen)
+  }
+
+  // useEffect(() => {
+  //   if (selectedMarkerIndex === data.pinRespDto.id) {
+  //     setIsHovered(true)
+  //   } else {
+  //     setIsHovered(false)
+  //   }
+  // }, [selectedMarkerIndex])
 
   useEffect(() => {
-    if (selectedMarkerIndex === data.pinRespDto.id) {
-      setIsHovered(true)
+    if (selectedMarkerIndex === data.pinRespDto.placeId) {
+      setIsSelected(true)
     } else {
-      setIsHovered(false)
+      setIsSelected(false)
     }
   }, [selectedMarkerIndex])
+
+
   return (
-    <div className="opacity-100">
+    <div className="opacity-100 sm:flex sm:whitespace-nowrap  ">
       {isShared ? (
         <div
-          className={`relative text-left block pt-6 my-2 
-          border  rounded-2xl shadow z-50 hover:bg-[#E57C65] hover:border-[#e57c65] hover:border-2 hover:text-white  ${isHovered ? 'bg-[#E57C65] border-[#E57C65] border-2 text-white' : 'bg-white border-gray-200'}`}
+        className={`relative text-left block pt-6 my-2 sm:w-[94vw] 
+        border rounded-2xl shadow z-50 sm:mx-[1vw] hover:bg-[#E57C65] hover:border-[#e57c65] hover:border-2 hover:text-white 
+        ${isSelected ? 'bg-[#E57C65] border-[#E57C65] border-2 text-white' : 'bg-white border-gray-200'}
+        `}
           onClick={() => onListItemClick(data.pinRespDto, index)}
           onMouseEnter={() => setIsHovered(true)}
           onMouseLeave={()=>mouseLeaveList(index)}
         >
           <div className="flex justify-between px-6">
-            <h5 className="mb-2 text-xl font-bold tracking-tight">
+            <h5 className="mb-2 text-xl max-w-[10vw] sm:max-w-[70vw] px-2 font-bold tracking-tight">
               {data.pinRespDto.name
                 ? data.pinRespDto.name
                 : data.pinRespDto.address}
             </h5>
-            <Link href={data.pinRespDto.url ? data.pinRespDto.url : ''}>
+            <Link href={data.pinRespDto.url ? data.pinRespDto.url : ''} className={data.pinRespDto.url&&data.pinRespDto.url=='누군가의 장소'?'hidden':''}>
               <div
                 className={`text-xs underline decoration-solid ${isHovered ? 'text-white' : 'text-gray'}`}
               >
@@ -70,15 +90,15 @@ const ListItem = ({
             </Link>
           </div>
           <div>
-            <div className="flex my-2 px-6">
+            <div className="flex my-2 px-6 items-center">
               <Image
                 src={isHovered ? hoverPrivateMarker : privateMarker}
                 alt="hoverPrivateMarker"
-                className="mr-2"
-                width={16}
+                className="mr-1 w-4 h-4"
+                width={15}
                 height={10}
               />
-              <p className="text-sm">{data.pinRespDto.address}</p>
+              <p className="text-sm sm:text-xs">{data.pinRespDto.address}</p>
             </div>
             {!isHovered && (
               <div className="px-6">
@@ -87,13 +107,16 @@ const ListItem = ({
             )}
           </div>
           <div
-            className={`pt-2 pb-6 grid grid-cols-2 rounded-b-2xl px-6 ${isHovered ? 'bg-white text-black' : ''}`}
+            className={`pt-2 pb-6 grid grid-cols-2 rounded-b-2xl px-6 
+            ${isHovered ? 'bg-white text-black' : ''}
+            ${isSelected ? 'bg-white' : ''}
+            `}
           >
             {data &&
               data.tags.map(
                 (tag: any, i: number) =>
                   tag.selected && (
-                    <div className="text-gray-600 py-1 text-xs">
+                    <div className="text-[#464646] py-1 text-xs">
                       #{tag.content}
                     </div>
                   ),
@@ -102,14 +125,30 @@ const ListItem = ({
         </div>
       ) : (
         <div
-          className="relative text-left block p-6 my-2
-            border bg-white border-gray-200 rounded-lg shadow z-50 hover:bg-[#E57C65] hover:text-white"
+        className={`relative text-left block p-6 my-2 sm:mx-[1vw] sm:w-[94vw] 
+        border  text-[#3D3D3D] border-gray-200 rounded-lg shadow z-50 hover:bg-[#e57c65] hover:text-white 
+        ${isSelected ? 'bg-[#E57C65] border-[#E57C65] border-2 text-white' : 'bg-white border-gray-200'}
+        `}
           onClick={() => onListItemClick(data.pinRespDto, index)}
           onMouseEnter={() => setIsHovered(true)}
           onMouseLeave={()=>mouseLeaveList(index)}
             
-        >
-          <div className="gap-3">
+          >
+            {detailOpen && (
+                    <CustomModal
+                      size={'70rem'}
+                      isOpen={detailOpen}
+                      modalColor="#FEF6E6"
+                    >
+                     <ModalContent
+                      data={data}
+                      sessionUserId={data.socialId}
+                        closeModal={handleModal}
+                        isMyPage={true}
+                     />
+                    </CustomModal>
+                  )}
+          <div className="gap-3 mb-3">
             <div className="flex gap-3">
               <div className="flex">
                 <h5 className="mb-2 text-lg font-bold tracking-tight">
@@ -118,40 +157,43 @@ const ListItem = ({
                 <Image
                   src={data.private ? Private : unLock}
                   alt="private"
-                  style={{ width: '25px', height: '25px' }}
+                   
+                    className='ml-2'
+                    style={{ width: '20px', height: '25px' }}
                 />
               </div>
 
-              <Link
-                href={`/detail/${data.bookRespDto && data.bookRespDto.isbn ? data.bookRespDto.isbn.replace(' ', '') : ''}`}
+              <button
+                onClick={handleModal}
               >
                 <Image
                   src={isHovered ? linkArrow : blackLinkArrow}
                   alt="linkArrow"
-                  className="absolute right-10"
-                  width={16}
+                  className="absolute right-6"
+                  width={15}
                   height={10}
                 />
-              </Link>
+                </button>
+                
               </div>
               <div className='mb-2'>
-            <div className="flex align-center ">
+            <div className="flex align-center items-center">
               <Image
                 src={isHovered ? hoverPrivateMarker : privateMarker}
                 alt="hoverPrivateMarker"
-                className=""
+                className="mr-1 w-4 h-4"
               />
-              <h5 className=" text-sm font-bold tracking-tight">
+              <h5 className="text-sm font-bold tracking-tight">
                 {data.pinRespDto.name
                   ? data.pinRespDto.name
                   : data.pinRespDto.address}
               </h5>
             </div>
-                <p className="text-xs text-gray-600">{data.pinRespDto.address}</p>
+                <p className="text-xs">{data.pinRespDto.address}</p>
                 </div>
           </div>
           <p
-            className={`font-normal ${iscontentExpanded ? 'whitespace-pre-line' : 'line-clamp-2'}`}
+            className={`font-normal ${iscontentExpanded ? 'whitespace-pre-line' : 'line-clamp-2'} text-sm`}
           >
             {data.content}
           </p>
