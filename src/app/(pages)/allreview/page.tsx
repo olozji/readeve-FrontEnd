@@ -270,7 +270,7 @@ const AllReviewPage = () => {
                                 {item.content.length === 0 ? (
                                   <div>등록된 내용이 없습니다</div>
                                 ) : (
-                                  <div>
+                                  <div className="sm:w-[30vw]">
                                     {item.content.length > 20
                                       ? `${item.content.slice(0, 20)}...`
                                       : item.content}
@@ -279,10 +279,10 @@ const AllReviewPage = () => {
                               </div>
                             </div>
                           </div>
-                          <div className="absolute bottom-4 right-4 sm:text-xs sm:bottom-2 justify-itmes-center">
+                          <div className="absolute bottom-4 right-4 sm:text-xs sm:bottom-2 justify-items-center">
                             {formatDateToYYMMDD(item.createdDate)}
                           </div>
-                          <div className='flex items-center absolute bottom-2 right-24 z-50'>
+                          <div className='flex items-center absolute bottom-2 right-20 z-50 sm:right-0 sm:bottom-4'>
                             <LikeButton reviewId={item.reviewId } socialId={session.data?.user.id} />
                           </div>
                         </div>
