@@ -436,37 +436,40 @@ export default function Home() {
                   className="mb-3"
                   onClick={() => handlePlaceClick(place, index)}
                 >
-
                   <div
                     className={`inline-flex pl-3 items-center gap-10 sm:gap-2  w-auto rounded-xl hover:border-[#AE695A] shadow-md sm:shadow-sm relative 
                 ${selectedCount[index] ? 'border-2 border-[#AE695A]' : 'border-2'} `}
                     onClick={() => handleCountClick(index)}
                   >
-                   
-              <span className="font-bold px-8 sm:px-2 sm:text-xs sm:w-[10vw]">{index + 1}위</span>
-              <span className="font-bold max-w-[30vw] w-[20vw] sm:max-w-[60vw] sm:w-[50vw] sm:text-xs">{place.name}</span>
-              <div
-                className="flex flex-col justify-center relative w-[calc((100% - 100px) * 0.3)]"
-              >
-                 <div
-                className={`w-[calc((100% - 100px) * 0.7)] bg-gradient-to-r from-[#FFD6CD] to-[#E67D67] rounded-xl sm:w-[10vw] ${place.visitCount > 5 ? 'max-w-[100px] sm:max-w-[40px]' : ''}`}
-                style= { {width: `${place.visitCount * 70}px`} }>
-                <div className='flex justify-center items-center float-end'>
-                <div className='mr-2 sm-ml-1 text-white font-bold sm:text-xs'>
-                {place.visitCount}명
-                </div>
-                {index === 0  && (
-                  <>
-                 <Image
-                 src={contentLogo}
-                 alt='contentLogo'
-                 className='sm:w-[6vw] sm:h-[3vh]'
-                 width={30}
-               />
-               </>
-               )}
-                </div>
-
+                    <span className="font-bold px-8 sm:px-2 sm:text-xs sm:w-[10vw]">
+                      {index + 1}위
+                    </span>
+                    <span className="font-bold max-w-[30vw] w-[20vw] sm:max-w-[60vw] sm:w-[50vw] sm:text-xs">
+                      {place.name}
+                    </span>
+                    <div className="flex flex-col justify-center relative w-[calc((100% - 100px) * 0.3)]">
+                      <div
+                        className={`w-[calc((100% - 100px) * 0.7)] bg-gradient-to-r from-[#FFD6CD] to-[#E67D67] rounded-xl sm:w-[10vw] ${place.visitCount > 300 ? 'max-w-[300px]' : ''}`}
+                        style={{ width: `${place.visitCount * 50}px` }}
+                      >
+                        <div className="flex justify-center items-center float-end">
+                          <div className="mr-2 sm-ml-1 text-white font-bold sm:text-xs">
+                            {place.visitCount}명
+                          </div>
+                          {index === 0 && (
+                            <>
+                              <Image
+                                src={contentLogo}
+                                alt="contentLogo"
+                                className="sm:w-[6vw] sm:h-[3vh]"
+                                width={30}
+                              />
+                            </>
+                          )}
+                        </div>
+                      </div>
+                    </div>
+                  </div>
                 </div>
               ))}
               <div className="absolute right-5 bottom-4 font-semibold sm:top-[-4vh] sm:left-0 text-[#9E9E9E] sm:text-xs ">
@@ -562,7 +565,6 @@ export default function Home() {
                           )}
                         </div>
                       </div>
-
                     </div>
                     <div className="absolute top-6 right-4 sm:text-xs sm:bottom-2 justify-itmes-center">
                       {formatDateToYYMMDD(d.createdDate)}
@@ -572,7 +574,6 @@ export default function Home() {
                         reviewId={d.reviewId}
                         socialId={session.data?.user.id}
                       />
-
                     </div>
                   </div>
                 </div>
