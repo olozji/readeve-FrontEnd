@@ -187,7 +187,9 @@ const [showQAlert, setShowQAlert] = useState(false);
       try {
         const response = await axios.post(
           'https://api.bookeverywhere.site/api/write',
-          data,
+          data,{
+            withCredentials: true,
+          }
         )
         console.log(data)
         console.log('Success:', response.data)

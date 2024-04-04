@@ -228,7 +228,9 @@ const Editor = ({ editReviewId }: PropType) => {
       try {
         const response = await axios.put(
           `https://api.bookeverywhere.site/api/review/edit/${editReviewId}?prevBookTitle=${editDefault.bookRespDto.title}&prevAddress=${editDefault.pinRespDto.address}`,
-          data,
+          data,{
+            withCredentials: true,
+          }
         )
         console.log(data)
         console.log('Success:', response.data)

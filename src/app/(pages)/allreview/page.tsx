@@ -274,11 +274,13 @@ const AllReviewPage = () => {
                               </div>
                             </div>
                           </div>
+
                           <div className="absolute bottom-4 right-4 sm:text-xs sm:bottom-2 justify-items-center">
                             {formatDateToYYMMDD(item.createdDate)}
                           </div>
                           <div className='flex items-center absolute bottom-2 right-20 z-50 sm:right-0 sm:bottom-4'>
                             <LikeButton reviewId={item.reviewId } socialId={session.data?.user.id} />
+
                           </div>
                         </div>
                       </div>

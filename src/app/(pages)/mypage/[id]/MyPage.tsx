@@ -45,7 +45,9 @@ const MyPageComponent = (props: ParamType) => {
   const fetchData = async () => {
     try {
       const response = await axios.get(
-        `https://api.bookeverywhere.site/api/data/all/${props.id}`,
+        `https://api.bookeverywhere.site/api/data/all/${props.id}`,{
+          withCredentials: true,
+        }
       )
       const data = response.data.data
       setMyData(data)

@@ -25,7 +25,9 @@ const MyMapPage = (props: PropType) => {
   
     try {
       const response = await axios.get(
-        `https://api.bookeverywhere.site/api/data/all/${props.params.id}`,
+        `https://api.bookeverywhere.site/api/data/all/${props.params.id}`,{
+          withCredentials: true,
+        }
       )
       const data = response.data.data // 응답으로 받은 데이터
       setMyData(data)

@@ -14,8 +14,8 @@ function LikeButton({ reviewId, socialId }: LikeBtnType) {
   const [likeState, setLikeState] = useState<any>()
   const postLike = async () => {
     try {
-      const response = await axios.post(
-        `https://api.bookeverywhere.site/api/review/${reviewId}/likes?socialId=${socialId}`,{
+       await axios.post(
+         `https://api.bookeverywhere.site/api/review/${reviewId}/likes?socialId=${socialId}`, {},{
           withCredentials: true,
         }
       )
@@ -27,7 +27,7 @@ function LikeButton({ reviewId, socialId }: LikeBtnType) {
   }
   const deleteLike = async () => {
     try {
-      const response = await axios.delete(
+      await axios.delete(
         `https://api.bookeverywhere.site/api/review/${reviewId}/likes?socialId=${socialId}`,{
           withCredentials: true,
         }
@@ -40,18 +40,35 @@ function LikeButton({ reviewId, socialId }: LikeBtnType) {
   }
 
   const getReview = async () => {
-    try {
+    
+//       const cookies = document.cookie;
+// console.log(cookies)
+
+// const accessCookie = cookies
+//   .split('; ')
+//   .find(cookie => cookie.startsWith('access='));
+      
+//     if (accessCookie) {
+      // const accessToken = accessCookie.split('=')[1];
+    
+      // axios 요청 헤더에 access 토큰 추가
+      // const headers = {
+      //   headers: {
+      //     'access': `Bearer ${accessToken}`
+      //   }
+      // };
       const response = await axios.get(
         `https://api.bookeverywhere.site/api/review/${reviewId}?socialId=${socialId}`, {
-          withCredentials: true,
+          withCredentials:true
         }
-      )
-      const data = response.data.data
-      setLikeCount(data.likeCount)
-      setLikeState(data.likeState)
-    } catch (error) {
-      console.log(error)
-    }
+      );
+      console.log(response.headers);
+      const data = response.data.data;
+      setLikeCount(data.likeCount);
+      setLikeState(data.likeState);
+    // } else {
+    //   console.error('Access token not found in cookies');
+    // }
   }
 
   useEffect(() => {
