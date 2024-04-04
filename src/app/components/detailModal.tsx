@@ -8,6 +8,8 @@ import privateIcon from '/public/images/privateIcon.png'
 import sharedIcon from '/public/images/sharedIcon.png'
 import CustomAlert from './alert'
 import axios from 'axios'
+import LikeButton from './buttons/LikeButton'
+import { useSession } from 'next-auth/react'
 
 interface ModalContentProps {
   bookData?: any
@@ -24,6 +26,7 @@ const ModalContent: React.FC<ModalContentProps> = ({
   isMyPage,
 }) => {
   const [innerHeight, setInnerHeight] = useState<number>(0)
+  let session: any = useSession()
 
   useEffect(() => {
     if (typeof window !== 'undefined') {
@@ -172,6 +175,17 @@ const ModalContent: React.FC<ModalContentProps> = ({
                     )}
                   </div>
                 </div>
+                <div className="flex items-center gap-5 sm:gap-0">
+                  <span
+                    className="font-bold"
+                    style={{ verticalAlign: 'middle' }}
+                  >
+                    좋아요
+                  </span>
+                  <div className='flex items-center'>
+                        <LikeButton reviewId={data.reviewId} socialId={session.data?.user.id} />
+                  </div>
+                </div>
               </div>
             </div>
           </div>
@@ -214,12 +228,6 @@ const ModalContent: React.FC<ModalContentProps> = ({
                 }}
               ></div>
 
-              {/* 어차피 20자로 제한둘거니까 상관없는 코드 같아서 원래대로 하는게 좋을 것 같아요 일단 주석처리 해놓을게용 */}
-              {/* <div className="h-[45vh] mx-auto text-[#999999] overflow-y-auto max-h-[45vh]">
-              {data.content.split('\n').map((p:any, index:any) => (
-                <p key={index}>{p}</p>
-              ))}
-            </div> */}
             </div>
           </div>
         </div>
