@@ -3,6 +3,9 @@ import Paper from "@mui/material/Paper";
 import Image from "next/image";
 import { useState, useEffect } from "react";
 import closeIcon from '/public/images/closeIcon.png'
+import Slide from '@mui/material/Slide';
+
+
 interface ModalType {
   isOpen: boolean;
   onClose?: () => void; // 모달을 닫을 때 호출할 함수
@@ -29,18 +32,9 @@ const CustomModal = ({ isOpen, onClose, children,size,modalheight, modalColor }:
   };
 
   const handleOutsideClick = (e: React.MouseEvent<HTMLDivElement>) => {
-    // 모달 외부를 클릭했을 때 모달을 닫음
-    if (e.target === e.currentTarget) {
       handleClose();
-    }
+    
   };
-
-//   const handleConfirmation = (selected:any) => {
-//     if(selected) {
-//         onConfirm(selected);
-//     }
-//     setOpen(false);
-// }
 
 
 const confirmPlace = (place:any) => {
@@ -54,16 +48,27 @@ const handleInsideClick = (e: React.MouseEvent<HTMLDivElement>) => {
 
 
   return (
-    <Modal open={open} onClose={handleClose}>
-      <div onClick={handleInsideClick}>
-      
+    <Modal 
+      open={open} 
+      onClose={handleClose}
+      closeAfterTransition 
+      onClick={handleOutsideClick} 
+      >
+      <Slide direction="up" in={isOpen} timeout={600}>
+      <div style={{
+          display: 'flex',
+          justifyContent: 'center',
+          alignItems: 'center',
+          height: '100%', 
+        }}
+        >
         <Paper
           elevation={2}
           sx={{
             position: "absolute",
-            top: "50%",
-            left: "50%",
-            transform: "translate(-50%, -50%)",
+            top: '50%', 
+            left: '50%', 
+            transform: 'translate(-50%, -50%)',
             width: size,
             backgroundColor: modalColor || "white",
             maxWidth: "100%",
@@ -71,6 +76,7 @@ const handleInsideClick = (e: React.MouseEvent<HTMLDivElement>) => {
             overflowY: "auto",
           }}
           className={`h-[${modalheight}] sm:h-[100vh]`}
+          onClick={handleInsideClick}
         >
           <Image
           src={closeIcon}
@@ -80,7 +86,8 @@ const handleInsideClick = (e: React.MouseEvent<HTMLDivElement>) => {
         />
           {children}
         </Paper>
-      </div>
+        </div>
+      </Slide>
     </Modal>
   );
 };
