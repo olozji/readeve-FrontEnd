@@ -217,7 +217,6 @@ export default function Home() {
     fetchData()
     fetchPersonalData()
     fetchTag()
-    
     setMap(true)
   }, [])
 
@@ -231,7 +230,6 @@ export default function Home() {
       fetchPersonalData()
       fetchReviewId()
     }
-   
   }, [session])
 
   useEffect(() => {
@@ -268,6 +266,7 @@ export default function Home() {
   const closeLoginModal = () => {
     setIsLoginOpen(false)
   }
+
   useEffect(() => {
     function handleResize() {
       const screenWidth = window.innerWidth
@@ -318,7 +317,7 @@ export default function Home() {
             <br />
             독서장소를 공유하며 새로이 독서를 기억할 수 있습니다.
           </div>
-          <div>
+          <div>가
             {session.data ? (
               <Link
                 href="/write"
@@ -502,7 +501,6 @@ export default function Home() {
               </section>
             </div>
           ) : (
-
               <div className="grid sm:grid-cols-1 sm:w-[100%] grid-cols-2 gap-4 justify-between sm:justify-center items-center">
                 {publicReviews.slice(0, 2).map((d: any, i: number) => (
                   <div key={i} onClick={() => openModal(i)}>
