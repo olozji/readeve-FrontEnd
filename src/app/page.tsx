@@ -3,7 +3,7 @@ import { signIn, useSession } from 'next-auth/react'
 import Image from 'next/image'
 import AddPlace from './components/map'
 import Link from 'next/link'
-import React, { useEffect, useState } from 'react'
+import { useEffect, useState } from 'react'
 import { useRecoilState, useRecoilValue } from 'recoil'
 import {
   allReviewDataState,
@@ -30,10 +30,6 @@ import CustomModal from './components/modal'
 import ModalContent from './components/detailModal'
 import LoginBtn from './components/buttons/LoginButton';
 import LikeButton from './components/buttons/LikeButton';
-import SearchIcon from '@mui/icons-material/Search';
-import TextField from '@mui/material/TextField';
-import Button from "@/app/components/buttons/button";
-
 
 export default function Home() {
   let session: any = useSession()
@@ -307,33 +303,42 @@ export default function Home() {
         </CustomModal>}
       
       <div
-        className="relative w-full bg-cover py-24 sm:py-8 sm:px-5 grid sm:grid-flow-row-dense items-center sm:grid-cols-3 sm:grid-rows-1 px-[25%]"
+        className="relative w-full bg-cover py-24 sm:py-8 sm:px-5 grid sm:grid-flow-row-dense items-center sm:grid-cols-3 sm:grid-rows-1 px-[25%] grid-cols-2 "
         style={{
           backgroundImage: `url(${mainFrame.src})`,
         }}
       >
-        <div className="relative z-10 sm:col-span-2 py-4">
-          <div className="text-black text-center text-3xl sm:text-2xl  font-bold mb-2">
-            어느 지역에서 독서를 하시나요?
+        <div className="relative z-10 text-start sm:col-span-2 py-4">
+          <div className="text-black text-left text-3xl sm:text-2xl  font-bold mb-2">
+            나만의 독후감 지도를
+            <br />만들어보세요!
           </div>
-          <div className="text-black text-center text-sm sm:text-[10px] font-bold sm:mb-4 mb-10">
-            여러분의 독서장소를 찾아드립니다.
+          <div className="text-black text-left text-sm sm:text-[10px] font-bold sm:mb-4 mb-10">
+            읽는 곳곳을 통해 지도 위에 독후감을 작성하고
+            <br />
+            독서장소를 공유하며 새로이 독서를 기억할 수 있습니다.
           </div>
-          <div className="text-center">
-            <TextField
-                id="search"
-                label="독서 장소 검색하기"
-                InputProps={{
-                  endAdornment: <SearchIcon />,
-                }}
-                className="w-[20vw] bg-white rounded-2xl"
-            />
-          </div>
-          <div className="mx-auto mt-10 w-[6vw] shadow-xl">
-            <Button label="현재 위치 검색" outline={true} />
+          <div>
+            {session.data ? (
+              <Link
+                href="/write"
+                className=" bg-[#FFB988] text-white font-bold py-4 px-6 sm:text-xs sm:px-2 sm:py-2 hover:bg-[#AF6C3E] rounded-lg shadow-md hover:shadow-lg"
+              >
+                독후감 기록하기
+              </Link>
+            ) : (
+              <div
+                className=" bg-[#FFB988] inline-block text-white font-bold sm:text-xs py-4 px-6 hover:bg-[#AF6C3E] rounded-lg shadow-md hover:shadow-lg"
+                onClick={()=>setIsLoginOpen(true)}
+              >
+                독후감 기록하기
+              </div>
+            )}
           </div>
         </div>
-
+        <div className="py-10 max-w-full w-[15vw] sm:w-[25vw] ml-4 ">
+          <Image src={mainLogo} alt="메인 로고" />
+        </div>
       </div>
 
       <div className="mx-auto max-w-5xl ">
@@ -406,15 +411,12 @@ export default function Home() {
         </div>
 
         <div className="mt-10 sm:px-5">
-          <div className='flex justify-between items-center py-10 sm:py-6 p-5 mb-3 sm:p-0 rounded-lg shadow-xl relative sm:shadow-none'>
-            <div className="text-2xl sm:text-xl font-display font-bold ">인기 독서 장소</div>
-          {/*  {session.data &&*/}
-          {/*  <Link href={`/mypage/${session.data.user.id}`}>*/}
-          {/*  <Image src={moreIcon} alt={'moreIcon'} width={22} height={30} className='sm:w-[4vw]'/>*/}
-          {/*</Link>}*/}
-            <div className='flex'>
-              <div className="w-50 h-50 border border-black rounded-10"></div>
-            </div>
+          <div className='flex justify-between items-center py-10 sm:py-6'>
+            <div className="text-2xl sm:text-xl font-display font-bold ">내 서재</div>
+            {session.data &&
+            <Link href={`/mypage/${session.data.user.id}`}>
+            <Image src={moreIcon} alt={'moreIcon'} width={22} height={30} className='sm:w-[4vw]'/>
+          </Link>}
           </div>
           
           {session.data ? (
@@ -427,75 +429,57 @@ export default function Home() {
             <div>로그인 하고 내 서재 를 확인하세요</div>
           )}
         </div>
-
-        <div className="mt-10 sm:px-5">
-          <div className='flex justify-between items-center py-10 sm:py-6 p-5 mb-3 sm:p-0 rounded-lg shadow-xl relative sm:shadow-none'>
-            <div className="text-2xl sm:text-xl font-display font-bold ">오늘의 독서 장소</div>
-            {/*  {session.data &&*/}
-            {/*  <Link href={`/mypage/${session.data.user.id}`}>*/}
-            {/*  <Image src={moreIcon} alt={'moreIcon'} width={22} height={30} className='sm:w-[4vw]'/>*/}
-            {/*</Link>}*/}
-            <div className='flex'>
-              <div className="w-50 h-50 border border-black rounded-10"></div>
-            </div>
-          </div>
-        </div>
-
-
         <div className="mt-10 sm:px-3">
-          <div className='flex justify-between items-center py-10 sm:py-6 p-5 mb-3 sm:p-0 rounded-lg shadow-xl relative sm:shadow-none'>
           <h1 className="text-2xl sm:text-xl font-display font-bold py-10">
-            이런곳은 어때요?
+            재방문 장소를 확인해 보세요!
           </h1>
           {/* TODO: 추후 데이터 들어가야할 부분 */}
-        {/*  <div className="">*/}
-        {/*  <div className="p-5 mb-3 sm:p-0 rounded-lg shadow-xl relative sm:shadow-none">*/}
-        {/*  {topVisitedPlaces.map((place, index) => (*/}
-        {/*    <div */}
-        {/*      key={index} */}
-        {/*      className="mb-3" */}
-        {/*      onClick={() => handlePlaceClick(place,index)}>*/}
-        {/*       <div*/}
-        {/*        className={`inline-flex pl-3 items-center gap-10 sm:gap-2  w-auto rounded-xl hover:border-[#AE695A] shadow-md sm:shadow-sm relative */}
-        {/*        ${selectedCount[index] ? 'border-2 border-[#AE695A]' : 'border-2'} `}*/}
-        {/*        onClick={() => handleCountClick(index)}*/}
-        {/*        >*/}
-        {/*      <span className="font-bold px-8 sm:px-2 sm:text-xs sm:w-[10vw]">{index + 1}위</span>*/}
-        {/*      <span className="font-bold max-w-[30vw] w-[20vw] sm:max-w-[60vw] sm:w-[50vw] sm:text-xs">{place.name}</span>*/}
-        {/*      <div*/}
-        {/*        className="flex flex-col justify-center relative w-[calc((100% - 100px) * 0.3)]"*/}
-        {/*      >*/}
-        {/*         <div*/}
-        {/*        className={`w-[calc((100% - 100px) * 0.7)] bg-gradient-to-r from-[#FFD6CD] to-[#E67D67] rounded-xl sm:w-[10vw] ${place.visitCount > 300 ? 'max-w-[300px]' : ''}`}*/}
-        {/*        style= { {width: `${place.visitCount * 50}px`} }>*/}
-        {/*        <div className='flex justify-center items-center float-end'>*/}
-        {/*        <div className='mr-2 sm-ml-1 text-white font-bold sm:text-xs'>*/}
-        {/*        {place.visitCount}명*/}
-        {/*        </div>*/}
-        {/*        {index === 0  && (*/}
-        {/*          <>*/}
-        {/*         <Image*/}
-        {/*         src={contentLogo}*/}
-        {/*         alt='contentLogo'*/}
-        {/*         className='sm:w-[6vw] sm:h-[3vh]'*/}
-        {/*         width={30}*/}
-        {/*       />*/}
-        {/*       </>*/}
-        {/*       )}*/}
-        {/*        </div>*/}
-        {/*        </div>*/}
-        {/*      </div>*/}
-        {/*       </div>*/}
-        {/*    </div>*/}
-        {/*  ))}*/}
-        {/*<div className='absolute right-5 bottom-4 font-semibold sm:top-[-4vh] sm:left-0 text-[#9E9E9E] sm:text-xs '>*/}
-        {/*(2번 이상 방문한 장소 기준)*/}
-        {/*</div>*/}
-        {/*</div>*/}
-        {/*    </div>*/}
+          <div className="">
+          <div className="p-5 mb-3 sm:p-0 rounded-lg shadow-xl relative sm:shadow-none">
+          {topVisitedPlaces.map((place, index) => (
+            <div 
+              key={index} 
+              className="mb-3" 
+              onClick={() => handlePlaceClick(place,index)}>
+               <div
+                className={`inline-flex pl-3 items-center gap-10 sm:gap-2  w-auto rounded-xl hover:border-[#AE695A] shadow-md sm:shadow-sm relative 
+                ${selectedCount[index] ? 'border-2 border-[#AE695A]' : 'border-2'} `}
+                onClick={() => handleCountClick(index)}
+                >
+              <span className="font-bold px-8 sm:px-2 sm:text-xs sm:w-[10vw]">{index + 1}위</span>
+              <span className="font-bold max-w-[30vw] w-[20vw] sm:max-w-[60vw] sm:w-[50vw] sm:text-xs">{place.name}</span>
+              <div
+                className="flex flex-col justify-center relative w-[calc((100% - 100px) * 0.3)]"
+              >
+                 <div
+                className={`w-[calc((100% - 100px) * 0.7)] bg-gradient-to-r from-[#FFD6CD] to-[#E67D67] rounded-xl sm:w-[10vw] ${place.visitCount > 300 ? 'max-w-[300px]' : ''}`}
+                style= { {width: `${place.visitCount * 50}px`} }>
+                <div className='flex justify-center items-center float-end'>
+                <div className='mr-2 sm-ml-1 text-white font-bold sm:text-xs'>
+                {place.visitCount}명
+                </div>
+                {index === 0  && (
+                  <>
+                 <Image
+                 src={contentLogo}
+                 alt='contentLogo'
+                 className='sm:w-[6vw] sm:h-[3vh]'
+                 width={30}
+               />
+               </>
+               )}
+                </div>
+                </div>
+              </div>
+               </div>
+            </div>
+          ))}
+        <div className='absolute right-5 bottom-4 font-semibold sm:top-[-4vh] sm:left-0 text-[#9E9E9E] sm:text-xs '>
+        (2번 이상 방문한 장소 기준)
         </div>
         </div>
-
+            </div>
+        </div>
         <div className="mt-10 sm:px-5">
           <div className="flex justify-between items-center">
             <h1 className="text-2xl sm:text-xl font-display font-bold py-10">
