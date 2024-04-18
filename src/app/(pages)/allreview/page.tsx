@@ -91,28 +91,19 @@ const AllReviewPage = () => {
     setFilteredReview(filtered);
   };
 
-  console.log(filteredReview,'sdsddsdsddd');
-
   const handleRecentClick = () => {
-    // 1. 현재 선택된 필터 확인
     console.log('최신등록순');
-
-
     updatedFilterReviews('최신등록순');
 
   };
 
   const handleOldClick = () => {
-    // 1. 현재 선택된 필터 확인
     console.log('오래된순');
-
-
       updatedFilterReviews('오래된순');
-
   };
 
 
-  const handleModal = (idx: number) => {
+  const handleModal = (idx: any) => {
     setDetailOpen((prevState) => {
       const copy = [...prevState]
       copy[idx] = !copy[idx]
