@@ -35,7 +35,7 @@ const MyPageComponent = (props: ParamType) => {
   const session: any = useSession()
 
   let user: any = session.data?.user
-  console.log(props.id)
+  // console.log(session.data)
 
   const [myData, setMyData] = useState<any>([])
   const [isLoading, setIsLoading] = useState(true)
