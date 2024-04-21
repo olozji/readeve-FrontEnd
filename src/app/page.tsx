@@ -3,7 +3,7 @@ import { signIn, useSession } from 'next-auth/react'
 import Image from 'next/image'
 import AddPlace from './components/map'
 import Link from 'next/link'
-import React, { useEffect, useState } from 'react'
+import { useEffect, useState } from 'react'
 import { useRecoilState, useRecoilValue } from 'recoil'
 import {
   allReviewDataState,
@@ -226,7 +226,6 @@ export default function Home() {
     fetchData()
     fetchPersonalData()
     fetchTag()
-    
     setMap(true)
   }, [])
 
@@ -240,7 +239,6 @@ export default function Home() {
       fetchPersonalData()
       fetchReviewId()
     }
-   
   }, [session])
 
   useEffect(() => {
@@ -277,6 +275,7 @@ export default function Home() {
   const closeLoginModal = () => {
     setIsLoginOpen(false)
   }
+
   useEffect(() => {
     function handleResize() {
       const screenWidth = window.innerWidth
@@ -312,17 +311,20 @@ export default function Home() {
         </CustomModal>}
       
       <div
-        className="relative w-full bg-cover py-24 sm:py-8 sm:px-5 grid sm:grid-flow-row-dense items-center sm:grid-cols-3 sm:grid-rows-1 px-[25%]"
+        className="relative w-full bg-cover py-24 sm:py-8 sm:px-5 grid sm:grid-flow-row-dense items-center sm:grid-cols-3 sm:grid-rows-1 px-[25%] grid-cols-2 "
         style={{
           backgroundImage: `url(${mainFrame.src})`,
         }}
       >
-        <div className="relative z-10 sm:col-span-2 py-4">
-          <div className="text-black text-center text-3xl sm:text-2xl  font-bold mb-2">
-            어느 지역에서 독서를 하시나요?
+        <div className="relative z-10 text-start sm:col-span-2 py-4">
+          <div className="text-black text-left text-3xl sm:text-2xl  font-bold mb-2">
+            나만의 독후감 지도를
+            <br />만들어보세요!
           </div>
-          <div className="text-black text-center text-sm sm:text-[10px] font-bold sm:mb-4 mb-10">
-            여러분의 독서장소를 찾아드립니다.
+          <div className="text-black text-left text-sm sm:text-[10px] font-bold sm:mb-4 mb-10">
+            읽는 곳곳을 통해 지도 위에 독후감을 작성하고
+            <br />
+            독서장소를 공유하며 새로이 독서를 기억할 수 있습니다.
           </div>
           <div className="text-center">
             <TextField
@@ -338,7 +340,9 @@ export default function Home() {
             <Button label="현재 위치 검색" outline={true}/>
           </div>
         </div>
-
+        <div className="py-10 max-w-full w-[15vw] sm:w-[25vw] ml-4 ">
+          <Image src={mainLogo} alt="메인 로고" />
+        </div>
       </div>
 
       <div className="mx-auto max-w-5xl ">
@@ -514,7 +518,6 @@ export default function Home() {
               </section>
             </div>
           ) : (
-
               <div className="grid sm:grid-cols-1 sm:w-[100%] grid-cols-2 gap-4 justify-between sm:justify-center items-center">
                 {publicReviews.slice(0, 2).map((d: any, i: number) => (
                   <div key={i} onClick={() => openModal(i)}>
