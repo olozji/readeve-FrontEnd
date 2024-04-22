@@ -14,27 +14,27 @@ export const authOptions: any = {
   },
 
   callbacks: {
-    async redirect(url:any, baseUrl:any) {
-      return Promise.resolve('https://api.bookeverywhere.site/oauth2/authorization/kakao');
+    async redirect(url: any, baseUrl: any) {
+      return Promise.resolve(
+        'https://api.bookeverywhere.site/oauth2/authorization/kakao',
+      )
     },
-    jwt: async ({ token, user }: any) => {
-      if (user) {
-        token.user = {
-          id: user.id, // 카카오톡 소셜 로그인으로 받아온 고유한 ID 값
-          name: user.name,
-          role: user.role,
-          image: user.image
-        };
-      }
-      return token;
-    },
-    session: async ({ session, token }: any) => {
-      session.user = token.user;
-      return session;
-    },
+    async jwt({ token, user,trigger,session }:any) {
+      if (trigger === 'update') {
+              return {
+                ...token,
+                ...session.user,
+              }
+            }
+      
+            return { ...token, ...user };
+          },
+      
+          async session({ session, token }:any) {
+            session.user = token as any;
+            return session;
+          },
   },
-  
-  
 
   secret: process.env.NEXTAUTH_SECRET,
 }
