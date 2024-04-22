@@ -1,21 +1,46 @@
 'use client'
 import { useSession } from 'next-auth/react'
-import { useState, FormEvent } from 'react'
+import { useState, FormEvent, useEffect } from 'react'
 
+
+//현재는 클라이언트 사이드에서만 토큰정보가 변경되어서 로그아웃 후 재 로그인 하면 변경내용이 유지가 안됨. 백엔드와 상의 필요
 const ProfilePage = () => {
   const [name, setName] = useState('')
-  const [profilePicUrl, setProfilePicUrl] = useState('')
-  const { data: session, status, update } = useSession()
+  const [imagePreview, setImagePreview] = useState<string>('');
+    
+    const { data: session, status, update } = useSession()
+    //TODO:AWS s3 활용해서 이미지 url 길이 줄이기
   const updateSession = () => {
     update({
-        user: { name: name }
+        user: { name: name ,image:imagePreview}
     })
     console.log(session)
   }
+
+  const handleImageChange = (e: React.ChangeEvent<HTMLInputElement>) => {
+    const file = e.target.files ? e.target.files[0] : null;
+
+    if (file) {
+      const reader = new FileReader();
+
+      reader.onloadend = () => {
+        setImagePreview(reader.result as string);
+      };
+
+      reader.readAsDataURL(file);
+    }
+  };
+    useEffect(() => {
+        if (session) {
+            setImagePreview(session!.user!.image!)
+
+        }
+},[session])
   if (status === 'authenticated') {
     return (
       <>
-        {/* <p>Signed in as {session.user!.name}</p> */}
+            <p>Signed in as {session.user!.name}</p>
+
         <div>
           <label htmlFor="name">이름:</label>
           <input
@@ -25,22 +50,25 @@ const ProfilePage = () => {
             onChange={(e) => setName(e.target.value)}
           />
         </div>
-        {/* <div>
-        <label htmlFor="profilePicUrl">프로필 사진 URL:</label>
+        <div className="container mx-auto p-4">
+      <form className="flex flex-col items-center gap-4">
         <input
-          id="profilePicUrl"
-          type="text"
-          value={profilePicUrl}
-          onChange={(e) => setProfilePicUrl(e.target.value)}
+          type="file"
+          accept="image/*"
+          onChange={handleImageChange}
+          className="file:mr-4 file:py-2 file:px-4
+          file:rounded-full file:border-0
+          file:text-sm file:font-semibold
+          file:bg-violet-50 file:text-violet-700
+          hover:file:bg-violet-100"
         />
-      </div> */}
-        {/* 업데이트할 정보를 update 메서드의 인수로 전달한다. */}
+        {imagePreview && (
+          <img src={imagePreview} alt="Preview" className="w-24 h-24 rounded-full object-cover" />
+        )}
+      </form>
+    </div>
         <button onClick={updateSession}>Edit name</button>
-        {/*
-         * 인수없이 update 메서드를 다음과 같이 사용할 수 있다.
-         * 이미 서버를 업데이트 했다고 가정했을 때 session update만 트리거 한다.
-         * 아직 인수 없이 update 메서드를 사용하는 것에 대한 필요성을 모르겠다.
-         */}
+       
       </>
     )
   }

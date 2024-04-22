@@ -14,11 +14,11 @@ export const authOptions: any = {
   },
 
   callbacks: {
-    async redirect(url: any, baseUrl: any) {
-      return Promise.resolve(
-        'https://api.bookeverywhere.site/oauth2/authorization/kakao',
-      )
-    },
+    // async redirect(url: any, baseUrl: any) {
+    //   return Promise.resolve(
+    //     'https://api.bookeverywhere.site/oauth2/authorization/kakao',
+    //   )
+    // },
     async jwt({ token, user,trigger,session }:any) {
       if (trigger === 'update') {
               return {

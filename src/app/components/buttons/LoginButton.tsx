@@ -13,7 +13,7 @@ export default function LoginBtn({onLogin} : {onLogin?: () => void}) {
       alt='kakaoLogin'
       className='cursor-pointer'
       onClick={ async () => {
-        const result = await signIn('kakao',{callbackUrl:'https://localhost:8081/login/oauth2/code/kakao'});
+        const result = await signIn('kakao',{callbackUrl:'/mypage/edit'});
         if(result?.error) {
           // 로그인 실패시
         } else if (result?.url && onLogin) {
