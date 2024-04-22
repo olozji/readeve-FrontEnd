@@ -9,7 +9,10 @@ import { useEffect, useRef, useState } from 'react'
 import { useRecoilState } from 'recoil'
 import sharedMarker from '/public/images/sharedMarker.png'
 import writeIcon from '/public/images/write.png'
-
+import BookmarkIcon from '@mui/icons-material/Bookmark'
+import placeImage from '/public/images/placeImage.jpg'
+import profilImg from '/public/images/logo.png'
+import BookmarkBorderIcon from '@mui/icons-material/BookmarkBorder'
 import { GoBackButton } from '@/app/components/buttons/goBackButton'
 import { useSession } from 'next-auth/react'
 import LoadingScreen from '@/app/components/loadingScreen'
@@ -43,6 +46,7 @@ const MapView = ({
   const [numVisible, setNumVisible] = useState(5) // 기본값은 2개의 책
   const [numVisibleTags, setNumVisibleTags] = useState(1)
   const [smallTagShow, setSmallTagShow] = useState(false)
+  const [showArticle, setShowArticle] = useState(false)
 
   const [filteredReviews, setFilteredReviews] = useState<any>([])
   const [windowHeight, setWindowHeight] = useState(window.innerHeight)
@@ -52,13 +56,13 @@ const MapView = ({
   )
 
   const [selectedMarkerIndex, setSelectedMarkerIndex] = useState<string>('')
-  const [innerHeight, setInnerHeight] = useState<number>(0);
+  const [innerHeight, setInnerHeight] = useState<number>(0)
 
   useEffect(() => {
     if (typeof window !== 'undefined') {
-      setInnerHeight(window.innerHeight);
+      setInnerHeight(window.innerHeight)
     }
-  }, []);
+  }, [])
   let session = useSession()
   let user: any = session.data?.user
 
@@ -206,7 +210,7 @@ const MapView = ({
         })
       }
       console.log('Marker clicked:', place)
-      setSelectedPlace(place)
+
       mapRef.current.panTo(new window.kakao.maps.LatLng(place.y, place.x))
 
       // 전체 독후감 데이터
@@ -231,26 +235,24 @@ const MapView = ({
     })
 
     const handleMarkerClick = (id: string) => {
-
       const listItem = document.getElementById(`list-item-${id}`)
       console.log(id)
       if (listItem && listContainerRef.current) {
         if (!smallTagShow) {
           const offsetTop =
-          listItem.offsetTop - listContainerRef.current.offsetTop
-        listContainerRef.current.scrollTo({
-          top: offsetTop,
-          behavior: 'smooth',
-        })
+            listItem.offsetTop - listContainerRef.current.offsetTop
+          listContainerRef.current.scrollTo({
+            top: offsetTop,
+            behavior: 'smooth',
+          })
         } else {
           const offsetLeft =
-    listItem.offsetLeft - listContainerRef.current.offsetLeft;
-  listContainerRef.current.scrollTo({
-    left: offsetLeft,
-    behavior: 'smooth',
-  });
+            listItem.offsetLeft - listContainerRef.current.offsetLeft
+          listContainerRef.current.scrollTo({
+            left: offsetLeft,
+            behavior: 'smooth',
+          })
         }
-        
       }
       setSelectedMarkerIndex(id)
     }
@@ -281,13 +283,15 @@ const MapView = ({
   }
 
   const clickListItem = (place: any, i: number) => {
-    console.log(place)
-
     // useRef로 저장한 map을 참조하여 지도 이동 및 확대
     if (mapRef.current) {
       mapRef.current.setLevel(2)
       openCustomOverlay(place, i)
     }
+
+    setSelectedPlace(place)
+
+    setShowArticle(true)
   }
   const mouseLeaveListItem = (i: number) => {
     // useRef로 저장한 map을 참조하여 지도 이동 및 확대
@@ -427,7 +431,7 @@ const MapView = ({
     })
   }, [myMapData])
 
-  const mapHeight = isFull === `100vh` ? innerHeight: 400
+  const mapHeight = isFull === `100vh` ? innerHeight : 400
 
   return (
     <div style={{ position: 'relative' }}>
@@ -444,13 +448,68 @@ const MapView = ({
         >
           <div>
             <div>
+              {/* 장소 리스트 컨테이너 */}
+              <div
+                ref={listContainerRef}
+                className={`absolute lg:scrollBar left-0 sm:flex sm:flex-nowrap sm:overflow-x-auto sm:w-[100vw] sm:top-[70%] w-[26vw] bg-[#f9f9f9] sm:h-[30%] h-full  py-[1vw] bg-opacity-80 sm:bg-opacity-0 overflow-y-auto z-50 rounded-lg`}
+              >
+                <div className="flex py-2  flex-grow align-center ">
+                  <div className="flex sm:hidden w-10 justify-start text-center font-bold flex-grow-0">
+                    {isFull == '100vh' && <GoBackButton />}
+                  </div>
+                  <div className="flex justify-center mr-10 flex-grow">
+                    {isShared ? '공유 지도' : '개인 지도'}
+                  </div>
+                </div>
+
+                {filteredReviews.length === 0 ? (
+                  isShared ? (
+                    <div className="ml-12">
+                      선택된 태그에 해당하는 장소가 없습니다
+                    </div>
+                  ) : (
+                    myMapData.map((data: any, i: number) => (
+                      <div key={i}>
+                        <ListItem
+                          key={i}
+                          index={i}
+                          data={data}
+                          onListItemClick={() => {
+                            clickListItem(data.pinRespDto, i)
+                          }}
+                          onListMouseLeave={() => {
+                            mouseLeaveListItem(i)
+                          }}
+                          isShared={isShared}
+                          selectedMarkerIndex={selectedMarkerIndex}
+                        />
+                      </div>
+                    ))
+                  )
+                ) : (
+                  filteredReviews.map((data: any, i: number) => (
+                    <div key={i} id={`list-item-${data.pinRespDto.placeId}`}>
+                      <ListItem
+                        key={i}
+                        index={i}
+                        data={data}
+                        selectedMarkerIndex={selectedMarkerIndex}
+                        onListItemClick={() => {
+                          clickListItem(data.pinRespDto, i)
+                        }}
+                        onListMouseLeave={() => mouseLeaveListItem(i)}
+                        isShared={isShared}
+                      />
+                    </div>
+                  ))
+                )}
+              </div>
               <div
                 id="map"
-                className={`${isFull !== `100vh` ? 'rounded-lg' : ''}`}
+                className={`${isFull !== `100vh` ? 'rounded-lg' : ''} transition-transform duration-500 ${showArticle ? 'translate-x-[26vw]' : '-translate-x-0'}`}
                 style={{
                   width: '100%',
                   height: mapHeight,
-                  position: 'relative',
                 }}
               >
                 {!isMain && (
@@ -461,64 +520,61 @@ const MapView = ({
                     >
                       현재 위치
                     </button>
-
+                    {/* 상세정보 슬라이드 */}
                     <div
-                      ref={listContainerRef}
-                      className="absolute lg:scrollBar sm:flex sm:flex-nowrap sm:overflow-x-auto sm:w-[100vw] sm:top-[70%] w-[26vw] bg-[#f9f9f9] sm:h-[30%] h-full px-[2vw] py-[1vw] bg-opacity-80 sm:bg-opacity-0 overflow-y-auto rounded-lg"
-                      style={{ zIndex: 2 }}
+                      className={`absolute bg-white left-0  px-4 pt-8 h-full w-[26vw] hover:text-[#F66464] hover:bg-white font-bold z-20 flex flex-col gap-y-2 transition-transform duration-500 ${showArticle ? 'translate-x-[0vw]' : '-translate-x-full'}`}
                     >
-                      <div className="flex py-2 w-full sm:hidden justify-between text-center font-bold border-b-[1px] border-gray-600 mb-4">
-                        {isFull == '100vh' && <GoBackButton />}
-
-                        <div className=" mr-[8vw] ">
-                          {isShared ? '공유 지도' : '개인 지도'}
-                        </div>
+                      <div className="flex justify-between ">
+                        <div className="text-xl">{selectedPlace?.name}</div>
+                        <BookmarkBorderIcon />
                       </div>
-                      <h1 className="font-bold sm:hidden">{isTitleActive}</h1>
-                      {filteredReviews.length === 0 ? (
-                        isShared ? (
-                          <div className="ml-12">
-                            선택된 태그에 해당하는 장소가 없습니다
-                          </div>
-                        ) : (
-                          myMapData.map((data: any, i: number) => (
-                            <div key={i}>
-                              <ListItem
-                                key={i}
-                                index={i}
-                                data={data}
-                                onListItemClick={() => {
-                                  clickListItem(data.pinRespDto, i)
-                                }}
-                                onListMouseLeave={() => {
-                                  mouseLeaveListItem(i)
-                                }}
-                                isShared={isShared}
-                                selectedMarkerIndex={selectedMarkerIndex}
-                              />
-                            </div>
-                          ))
-                        )
-                      ) : (
-                        filteredReviews.map((data: any, i: number) => (
-                          <div
-                            key={i}
-                            id={`list-item-${data.pinRespDto.placeId}`}
+                      <div className="text-sm text-gray-500">
+                        {selectedPlace?.address}
+                      </div>
+                      <div className="flex relative">
+                        <ul className=" text-sm text-gray-500 list-disc pl-5">
+                          <li>휴무일:화요일</li>
+                          <li>휴무일:화요일</li>
+                          <li>휴무일:화요일</li>
+                        </ul>
+                        {/* TODO::작성자 프사 추가 */}
+                        {/* 아티클 상세정보 접었다 펴는 버튼  */}
+                        {showArticle && (
+                          <button
+                            className="absolute left-[24vw] w-[40px] h-[70px] py-2 bg-white text-gray-400 rounded-xl hover:text-black"
+                            onClick={() => {
+                              setShowArticle(false)
+                            }}
                           >
-                            <ListItem
-                              key={i}
-                              index={i}
-                              data={data}
-                              selectedMarkerIndex={selectedMarkerIndex}
-                              onListItemClick={() => {
-                                clickListItem(data.pinRespDto, i)
-                              }}
-                              onListMouseLeave={() => mouseLeaveListItem(i)}
-                              isShared={isShared}
+                            {'<'}
+                          </button>
+                        )}
+                      </div>
+                      <hr />
+                      {/* 아티클 1개분 */}
+                      <div>
+                        {/* 작성자&&팔로우버튼 */}
+                        <div className="flex justify-between items-center">
+                          <div className="flex items-center">
+                            <Image
+                              src={profilImg}
+                              alt="profilimg"
+                              className="rounded-full w-10 h-10 border-black border"
                             />
+                            <div className="pl-2 text-sm font-md">곳곳이</div>
                           </div>
-                        ))
-                      )}
+                          <div className="flex bg-gray-200 px-4 py-1 text-sm rounded-2xl">
+                            팔로우
+                          </div>
+                        </div>
+                        {/* TODO::이미지 여러개 */}
+                        <Image
+                          src={placeImage}
+                          alt="articleImg"
+                          className="w-full h-[200px] object-contain pt-4"
+                        />
+                        {/* TODO::아티클 제목, 내용 , 좋아요 추가 */}
+                      </div>
                     </div>
                   </div>
                 )}
@@ -532,8 +588,8 @@ const MapView = ({
                 )}
 
                 {isShared && (
-                  <div className="absolute top-6 left-1/3 transform -translate-x-1/5 sm:w-full sm:left-1/2 sm:-translate-x-1/2  z-40 flex flex-row rounded-lg">
-                    {!isMain&&smallTagShow && (
+                  <div className="absolute top-6 left-1/3 transform -translate-x-1/5 sm:w-full sm:left-1/2 sm:-translate-x-1/2  z-10 flex flex-row rounded-lg">
+                    {!isMain && smallTagShow && (
                       <div className="flex scrollBar flex-nowrap min-h-[7vh] mb-10 text-sm overflow-x-auto">
                         {tagInfo.length > 0 &&
                           tagInfo.map((tag: any, i: number) => (
@@ -584,23 +640,19 @@ const MapView = ({
                   </div>
                 )}
 
-                {!isShared && (  
-                <div>
-                {!isMain && (
-                  <Link
-                  href={`/write`}
-                  className="absolute top-4 right-10 z-40 bg-[#E57C65] p-9 rounded-full sm:top-5 sm:right-5"
-                >
-                    <div className="absolute top-3 right-2">          
-                    <Image
-                      src={writeIcon}
-                      alt='writeIcon' 
-                      width={55}
-                    />
+                {!isShared && (
+                  <div>
+                    {!isMain && (
+                      <Link
+                        href={`/write`}
+                        className="absolute top-4 right-10 z-40 bg-[#E57C65] p-9 rounded-full sm:top-5 sm:right-5"
+                      >
+                        <div className="absolute top-3 right-2">
+                          <Image src={writeIcon} alt="writeIcon" width={55} />
+                        </div>
+                      </Link>
+                    )}
                   </div>
-                   </Link>
-                   )}
-                </div>   
                 )}
               </div>
             </div>
