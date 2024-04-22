@@ -106,6 +106,7 @@ const ListItem = ({
             </div>
           </div>
           <div className="flex justify-end">
+            {/* TODO::북마크 이미지 우측상단에 추가 */}
             <Image
               src={placeImage}
               alt="placeImage"

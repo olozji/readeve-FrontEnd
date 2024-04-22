@@ -521,7 +521,6 @@ const MapView = ({
                       현재 위치
                     </button>
                     {/* 상세정보 슬라이드 */}
-
                     <div
                       className={`absolute bg-white left-0  px-4 pt-8 h-full w-[26vw] hover:text-[#F66464] hover:bg-white font-bold z-20 flex flex-col gap-y-2 transition-transform duration-500 ${showArticle ? 'translate-x-[0vw]' : '-translate-x-full'}`}
                     >
@@ -538,6 +537,8 @@ const MapView = ({
                           <li>휴무일:화요일</li>
                           <li>휴무일:화요일</li>
                         </ul>
+                        {/* TODO::작성자 프사 추가 */}
+                        {/* 아티클 상세정보 접었다 펴는 버튼  */}
                         {showArticle && (
                           <button
                             className="absolute left-[24vw] w-[40px] h-[70px] py-2 bg-white text-gray-400 rounded-xl hover:text-black"
@@ -550,6 +551,7 @@ const MapView = ({
                         )}
                       </div>
                       <hr />
+                      {/* 아티클 1개분 */}
                       <div>
                         {/* 작성자&&팔로우버튼 */}
                         <div className="flex justify-between items-center">
@@ -565,11 +567,13 @@ const MapView = ({
                             팔로우
                           </div>
                         </div>
+                        {/* TODO::이미지 여러개 */}
                         <Image
                           src={placeImage}
                           alt="articleImg"
                           className="w-full h-[200px] object-contain pt-4"
                         />
+                        {/* TODO::아티클 제목, 내용 , 좋아요 추가 */}
                       </div>
                     </div>
                   </div>
