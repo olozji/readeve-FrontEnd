@@ -311,20 +311,18 @@ export default function Home() {
         </CustomModal>}
       
       <div
-        className="relative w-full bg-cover py-24 sm:py-8 sm:px-5 grid sm:grid-flow-row-dense items-center sm:grid-cols-3 sm:grid-rows-1 px-[25%] grid-cols-2 "
+        className="relative w-full bg-cover py-24 sm:py-8 sm:px-5 grid sm:grid-flow-row-dense items-center sm:grid-cols-3 sm:grid-rows-1 px-[25%]"
         style={{
           backgroundImage: `url(${mainFrame.src})`,
         }}
       >
         <div className="relative z-10 text-start sm:col-span-2 py-4">
-          <div className="text-black text-left text-3xl sm:text-2xl  font-bold mb-2">
-            나만의 독후감 지도를
-            <br />만들어보세요!
+        <div className="relative z-10 sm:col-span-2 py-4">
+          <div className="text-black text-center text-3xl sm:text-2xl  font-bold mb-2">
+            어느 지역에서 독서를 하시나요?
           </div>
-          <div className="text-black text-left text-sm sm:text-[10px] font-bold sm:mb-4 mb-10">
-            읽는 곳곳을 통해 지도 위에 독후감을 작성하고
-            <br />
-            독서장소를 공유하며 새로이 독서를 기억할 수 있습니다.
+          <div className="text-black text-center text-sm sm:text-[10px] font-bold sm:mb-4 mb-10">
+            여러분의 독서장소를 찾아드립니다.
           </div>
           <div className="text-center">
             <TextField
@@ -340,9 +338,7 @@ export default function Home() {
             <Button label="현재 위치 검색" outline={true}/>
           </div>
         </div>
-        <div className="py-10 max-w-full w-[15vw] sm:w-[25vw] ml-4 ">
-          <Image src={mainLogo} alt="메인 로고" />
-        </div>
+      </div>
       </div>
 
       <div className="mx-auto max-w-5xl ">
@@ -417,15 +413,11 @@ export default function Home() {
         <div className="mt-10 sm:px-5">
           <div className='py-10 sm:py-6 p-5 mb-3 sm:p-0 border rounded-lg relative sm:shadow-none'>
             <div className="text-xl sm:text-xl font-display font-bold ">인기 독서 장소</div>
-          {/*  {session.data &&*/}
-          {/*  <Link href={`/mypage/${session.data.user.id}`}>*/}
-          {/*  <Image src={moreIcon} alt={'moreIcon'} width={22} height={30} className='sm:w-[4vw]'/>*/}
-          {/*</Link>}*/}
             <div className='flex mt-10 gap-2'>
-              <div className="w-[9vw] h-[25vh] border border-black rounded-10">
+              <div className="w-[9vw] h-[25vh] rounded-10">
                 <div className='relative'>
                 <img src={frameImage.src} className='object-cover h-[25vh]'/>
-                <div className='absolute top-0 right-0 cursor-pointer' onClick={handleBookMark}>
+                <div className='absolute top-1 right-2 cursor-pointer' onClick={handleBookMark}>
                   {activeBookMark ? <BookmarkIcon/> : <BookmarkBorderIcon/>}
                 </div>
                 <div className='absolute bottom-3 mx-3 text-white leading-3'>
@@ -436,30 +428,16 @@ export default function Home() {
               </div>
             </div>
           </div>
-          
-          {/* {session.data ? (
-            <BookLayout
-              bookData={myPageData}
-              width={'full'}
-              isMain={true}
-            ></BookLayout>
-          ) : (
-            <div>로그인 하고 내 서재 를 확인하세요</div>
-          )} */}
         </div>
 
         <div className="mt-10 sm:px-5">
           <div className='py-10 sm:py-6 p-5 mb-3 sm:p-0 border rounded-lg relative sm:shadow-none'>
             <div className="text-xl sm:text-xl font-display font-bold ">오늘의 독서장소</div>
-          {/*  {session.data &&*/}
-          {/*  <Link href={`/mypage/${session.data.user.id}`}>*/}
-          {/*  <Image src={moreIcon} alt={'moreIcon'} width={22} height={30} className='sm:w-[4vw]'/>*/}
-          {/*</Link>}*/}
             <div className='flex mt-10 gap-2'>
-              <div className="w-[9vw] h-[25vh] border border-black rounded-10">
+              <div className="w-[9vw] h-[25vh] rounded-10">
                 <div className='relative'>
                 <img src={frameImage.src} className='object-cover h-[25vh]'/>
-                <div className='absolute top-0 right-0 cursor-pointer' onClick={handleBookMark}>
+                <div className='absolute top-1 right-2 cursor-pointer' onClick={handleBookMark}>
                   {activeBookMark ? <BookmarkIcon/> : <BookmarkBorderIcon/>}
                 </div>
                 <div className='absolute bottom-3 mx-3 text-white leading-3'>
@@ -475,15 +453,13 @@ export default function Home() {
           <div className="mt-10 sm:px-5">
           <div className='py-10 sm:py-6 p-5 mb-3 sm:p-0 border rounded-lg relative sm:shadow-none'>
             <div className="text-xl sm:text-xl font-display font-bold ">이런장소는 어때요?</div>
-          {/*  {session.data &&*/}
-          {/*  <Link href={`/mypage/${session.data.user.id}`}>*/}
-          {/*  <Image src={moreIcon} alt={'moreIcon'} width={22} height={30} className='sm:w-[4vw]'/>*/}
-          {/*</Link>}*/}
-            <div className='flex mt-10 gap-2'>
-              <div className="w-[25vw] h-[25vh] border border-black rounded-10">
+            {session.data ? (
+              // 로그인된 상태
+              <div className='flex mt-10 gap-2'>
+              <div className="w-[25vw] h-[25vh] rounded-10">
                 <div className='relative'>
                 <img src={placeImage.src} className='object-cover w-[25vw] h-[25vh]'/>
-                <div className='absolute top-0 right-0 cursor-pointer' onClick={handleBookMark}>
+                <div className='absolute top-1 right-2 cursor-pointer' onClick={handleBookMark}>
                   {activeBookMark ? <BookmarkIcon/> : <BookmarkBorderIcon/>}
                 </div>
                 <div className='absolute bottom-3 mx-3 text-white leading-3'>
@@ -492,7 +468,27 @@ export default function Home() {
                 </div>
               </div>
               </div>
-            </div>
+            </div>            
+            ) : (
+              // 비로그인 상태
+              <div className='flex mt-10 gap-2'>
+              <div className="w-[25vw] h-[25vh] rounded-10">
+                <div className='relative'>
+                    <div className='absolute w-full h-full' style={{ backdropFilter: 'blur(5px)' }}>
+                      <div className='absolute top-20 left-20 text-white'>로그인을 하고 장소를 추천받아 보세요</div>
+                      </div>
+                <img src={placeImage.src} className='object-cover w-[25vw] h-[25vh]'/>
+                <div className='absolute top-1 right-2 cursor-pointer' onClick={handleBookMark}>
+                  {activeBookMark ? <BookmarkIcon/> : <BookmarkBorderIcon/>}
+                </div>
+                <div className='absolute bottom-3 mx-3 text-white leading-3'>
+                <div className='font-bold text-sm'>수지구청역 스타벅스</div>
+                  <div className='text-xs'>용인, 수지구 카페</div>
+                </div>
+              </div>
+              </div>
+              </div>
+            )}
           </div>
           </div>
 
