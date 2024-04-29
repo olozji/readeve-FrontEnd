@@ -1,37 +1,121 @@
+'use client';
+
 import Image from "next/image";
 import mainLogo from "/public/images/mainLogo.png";
 import ArrowForwardIcon from '@mui/icons-material/ArrowForward';
+import ArrowBackIcon from '@mui/icons-material/ArrowBack';
 import NavBar from "@/app/components/NavBar";
+import { useState } from "react";
+import { useRouter } from "next/navigation";
+import  Carousel  from 'react-material-ui-carousel';
 
-
-const onBoarding = () => {
+const SlideContent = ({ title, step }: any) => {
+    const backgroundColor = step === 0 ? "#E57C65" : "#F1F1F1"; // step에 따라 배경색 변경
+  
     return (
+      <div className="mt-20 flex justify-center items-center">
+        <div className="w-full mx-auto text-center flex flex-col items-center">
+          <div className="pb-10">
+            <div
+              className="relative w-[20vw] h-[0.8vh] bg-[#F1F1F1] rounded-xl"
+              style={{ backgroundColor }}
+            >
+              <div
+                className="absolute left-0 top-0 h-full bg-[#E57C65] transition-all duration-500"
+                style={{ width: `${10 + (step + 1) * 5}vw` }}
+              ></div>
+            </div>
+          </div>
+          <div className="text-2xl font-bold">{title}</div>
+          <div className="p-20">
+            <Image src={mainLogo} alt="mainLogo" />
+          </div>
+        </div>
+      </div>
+    );
+  };
 
-        <>
-        <NavBar/>
-        <div className="p-60 flex justify-center items-center">
+const OnBoarding = () => {
+    const [step, setStep] = useState(0);
+    const router = useRouter();
+
+    const handleNextStep = () => {
+        setStep(step + 1);
+    };
+
+    const handlePrevStep = () => {
+        setStep(step - 1);
+    };
+
+    const handleRouter = () => {
+        router.push('/')
+    }
+
+    const slides = [
+        <div>방해요소로 독서에 집중하기 어렵다면,<br/> 외부 독서 장소를 찾아보세요!</div>,
+        <div>내가 원하는 독서장소를 찾고,<br/>다른 독서장소를 추천 받아보세요!</div>,
+        <div>다른 사람들의 독서장소는 어떨까?<br/> 읽는곳곳에서 독서장소를 공유해보세요!</div>
+    ];
+
+    const SlideContent = ({ title }: any) => {
+        return (
+          <div className="mt-20 flex justify-center items-center">
             <div className="w-full mx-auto text-center flex flex-col items-center">
-                <div className="pb-10">
-                    <div className="w-[20vw] h-[0.8vh] bg-[#F1F1F1] rounded-xl">
-                    <div className="w-[10vw] relative">
-                        <div className="absolute left-0 top-0 h-full bg-[#E57C65]"></div>
+              <div className="pb-10">
+                <div
+                  className="relative w-[10vw] h-[0.8vh] bg-[#F1F1F1] rounded-xl"
+                >
+                  <div
+                    className="absolute left-0 top-0 h-full rounded-xl bg-[#E57C65] transition-all duration-500"
+                    style={{ width: `${1 + (step + 1) * 3}vw`, backgroundColor:'##E57C65' }}
+                  ></div>
+                </div>
+              </div>
+              <div className="text-2xl font-bold">{title}</div>
+              <div className="p-20">
+                <Image src={mainLogo} alt="mainLogo" />
+              </div>
+            </div>
+          </div>
+        );
+      };
+
+    return (
+        <>
+            <NavBar />
+            <Carousel
+                autoPlay={false}
+                animation="slide"
+                duration={800}
+                index={step}
+                onChange={(index:any) => setStep(index)}
+                indicators={false}
+                indicatorContainerProps={{ className: 'custom-indicator-container' }}
+            >
+                {slides.map((title, index) => (
+                    <SlideContent key={index} title={title} />
+                ))}
+            </Carousel>
+            <div className="flex justify-between">
+                {step !== 0 && (
+                    <div className="flex justify-between cursor-pointer" onClick={handlePrevStep}>
+                        <ArrowBackIcon style={{ color: '#E57C65' }} className="w-[10vw] h-[5vh]" />
                     </div>
+                )}
+                <div className="" onClick={handleNextStep}>
+                    {step < slides.length - 1 ? (
+                        <ArrowForwardIcon style={{ color: '#E57C65' }} className="w-[10vw] h-[5vh] mb-10" />
+                    ) : (
+                        <div className="text-right cursor-pointer" onClick={handleRouter}>
+                            <div className="w-[10vw] h-[5vh] text-white px-8 m bg-[#E57C65] rounded-lg items-center">
+                                이용해보기
+                            </div>
+                        </div>
+                    )}
                 </div>
-                </div>
-        <div className="text-2xl font-bold">
-            방해요소로 독서에 집중하기 어렵다면,<br/>
-            외부 독서 장소를 찾아보세요!
-        </div>
-            <div className="p-20">
-                <Image src={mainLogo} alt='mainLogo'/>
             </div>
-            </div>
-        </div>
-        <div className="text-right">
-            <ArrowForwardIcon style={{ color: '#E57C65' }} className="w-[10vw] h-[5vh] mb-10" />
-        </div>
         </>
     )
 }
 
-export default onBoarding;
+export default OnBoarding;

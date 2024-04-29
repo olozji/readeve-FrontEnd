@@ -3,7 +3,7 @@ import { signIn, useSession } from 'next-auth/react'
 import Image from 'next/image'
 import AddPlace from './components/map'
 import Link from 'next/link'
-import { useEffect, useState } from 'react'
+import { useEffect, useRef, useState } from 'react'
 import { useRecoilState, useRecoilValue } from 'recoil'
 import {
   allReviewDataState,
@@ -33,6 +33,7 @@ import TextField from '@mui/material/TextField';
 import Button from "@/app/components/buttons/button";
 import BookmarkIcon from '@mui/icons-material/Bookmark';
 import BookmarkBorderIcon from '@mui/icons-material/BookmarkBorder';
+import { useRouter } from 'next/navigation'
 
 
 export default function Home() {
@@ -61,7 +62,11 @@ export default function Home() {
   const [smallTagShow, setSmallTagShow] = useState(false)
   const [activeBookMark, setActiveBookMark] = useState(false);
 
+  const [searchedPlace, setSearchedPlace] = useState('');
+  const [Place, setPlace] = useState('독서 장소 검색하기')
+
   const numVisibleBooks = 5
+  const router = useRouter();
 
   const [isModalOpen, setIsModalOpen] = useState<boolean[]>(
     Array(numVisibleBooks).fill(false),
@@ -71,6 +76,30 @@ export default function Home() {
     const date = new Date(isoDateString)
     return `${date.getFullYear().toString().slice(2)}.${(date.getMonth() + 1).toString().padStart(2, '0')}.${date.getDate().toString().padStart(2, '0')}`
   }
+
+
+  const handleSubmit = (e: any) => {
+    e.preventDefault()
+    setPlace(searchedPlace)
+    setSearchedPlace('')
+  }
+
+  const getCurrentPositionAndNavigate = () => {
+    if (navigator.geolocation) {
+      navigator.geolocation.getCurrentPosition(
+        (position) => {
+          const { latitude, longitude } = position.coords;
+          // 현재 위치 정보를 URL 쿼리로 전달하여 다음 페이지로 이동
+          router.push(`/map?lat=${latitude}&lng=${longitude}`);
+        },
+        (error) => {
+          console.error('Error getting current position:', error);
+        }
+      );
+    } else {
+      console.error('Geolocation is not supported by this browser.');
+    }
+  };
 
   const handleClickPrev = () => {
     setStartIdx(Math.max(0, startIdx - numVisibleBooks))
@@ -222,6 +251,7 @@ export default function Home() {
     }
   }
 
+
   useEffect(() => {
     fetchData()
     fetchPersonalData()
@@ -327,15 +357,16 @@ export default function Home() {
           <div className="text-center">
             <TextField
                 id="search"
+                type='text'
                 label="독서 장소 검색하기"
                 InputProps={{
-                  endAdornment: <SearchIcon />,
+                  endAdornment: <SearchIcon className='cursor-pointer' onClick={handleSubmit} />,
                 }}
                 className="w-[20vw] bg-white rounded-2xl"
             />
+            <div className="mx-auto mt-10 w-[6vw] shadow-xl text-sm">
+            <Button label="현재 위치 검색" outline={true} onClick={getCurrentPositionAndNavigate}/>
           </div>
-          <div className="mx-auto mt-10 w-[6vw] shadow-xl text-sm">
-            <Button label="현재 위치 검색" outline={true}/>
           </div>
         </div>
       </div>
