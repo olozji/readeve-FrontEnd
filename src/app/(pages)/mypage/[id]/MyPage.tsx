@@ -138,13 +138,29 @@ const MyPageComponent = (props: ParamType) => {
             width={100} height={100} 
             alt="User Thumbnail" className="object-cover rounded-full w-[150px] h-[150px]" />
         </div>
-        <div className='flex-initial items-center relative top-5 w-[30vw] ml-10'>
+        <div className='justify-center items-center relative top-5 w-[30vw] ml-10'>
         <div className='mx-auto font-bold text-lg'>{session.data.user?.name} 님</div>
-        <div className='flex-initial mt-5'>
+        <div className='absolute top-0 left-[5vw] mx-auto w-[4vw] text-center text-white bg-[#E57C65] p-2 rounded-2xl'>팔로우</div>
+        <div className='mt-5'>
           제가 선호하는 장소는 수지구 입니다
         </div>
-        <div className='float-end w-[10vw]'>
-        <div className='absolute top-0 mx-auto w-[8vw] text-center text-white bg-[#E57C65] p-2 rounded-2xl'>팔로우</div>
+        <div className='absolute top-0 right-0'>
+     
+        <div className='flex gap-12'>
+        <div className='flex flex-col items-center'>
+        <div className='font-bold text-xl'>32</div>
+        <div>팔로우</div>
+        </div>
+        <div className='flex flex-col items-center'>
+        <div className='font-bold text-xl'>16</div>
+        <div>팔로워</div>
+        </div>
+        <div className='flex flex-col items-center'>
+        <div className='font-bold text-xl'>3</div>
+        <div>좋아요</div>
+        </div>
+        </div>
+       
         </div>
         </div>
         </div>
@@ -152,8 +168,8 @@ const MyPageComponent = (props: ParamType) => {
         )}
      
       <div className='relative h-[150px] top-10 flex justify-center items-center border-b rounded-lg shadow-xl'>
-      <div className='absolute bottom-0 bg-white w-[50vw] gap-2 rounded-xl sm:shadow-none'>
-      <div className="absolute bottom-0 grid grid-cols-4 w-full">
+      <div className='absolute bottom-0 bg-white w-full gap-2 rounded-xl sm:shadow-none'>
+      <div className="absolute bottom-0 grid grid-cols-2 w-full">
         <div className={`text-center cursor-pointer ${isActived === '북마크' ? `border-b-4 border-[#E57C65]` : ''}`} onClick={() => handleActived('북마크')}>
           <div className='w-[13vw] h-[8vh] mx-auto'>
           <div className='font-bold text-2xl'>32</div>
@@ -164,18 +180,6 @@ const MyPageComponent = (props: ParamType) => {
         <div className="w-[13vw] h-[8vh] mx-auto">
           <div className='font-bold text-2xl'>32</div>
           <div>게시글</div>
-        </div>
-        </div>
-        <div className={`text-center cursor-pointer ${isActived === '팔로우' ? `border-b-4 border-[#E57C65]` : ''}`} onClick={() => handleActived('팔로우')}>
-        <div className="w-[13vw] h-[8vh] mx-auto">
-          <div className='font-bold text-2xl'>32</div>
-          <div>팔로우</div>
-        </div>
-        </div>
-        <div className={`text-center cursor-pointer ${isActived === '팔로워' ? `border-b-4 border-[#E57C65]` : ''}`} onClick={() => handleActived('팔로워')}>
-        <div className="w-[13vw] h-[8vh] mx-auto">
-          <div className='font-bold text-2xl'>32</div>
-          <div>팔로워</div>
         </div>
         </div>
           </div>
