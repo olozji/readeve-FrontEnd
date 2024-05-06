@@ -8,32 +8,9 @@ import NavBar from "@/app/components/NavBar";
 import { useState } from "react";
 import { useRouter } from "next/navigation";
 import  Carousel  from 'react-material-ui-carousel';
+import Button from "@/app/components/buttons/button";
+import Footer from "@/app/components/footer";
 
-const SlideContent = ({ title, step }: any) => {
-    const backgroundColor = step === 0 ? "#E57C65" : "#F1F1F1"; // step에 따라 배경색 변경
-  
-    return (
-      <div className="mt-20 flex justify-center items-center">
-        <div className="w-full mx-auto text-center flex flex-col items-center">
-          <div className="pb-10">
-            <div
-              className="relative w-[20vw] h-[0.8vh] bg-[#F1F1F1] rounded-xl"
-              style={{ backgroundColor }}
-            >
-              <div
-                className="absolute left-0 top-0 h-full bg-[#E57C65] transition-all duration-500"
-                style={{ width: `${10 + (step + 1) * 5}vw` }}
-              ></div>
-            </div>
-          </div>
-          <div className="text-2xl font-bold">{title}</div>
-          <div className="p-20">
-            <Image src={mainLogo} alt="mainLogo" />
-          </div>
-        </div>
-      </div>
-    );
-  };
 
 const OnBoarding = () => {
     const [step, setStep] = useState(0);
@@ -83,6 +60,7 @@ const OnBoarding = () => {
     return (
         <>
             <NavBar />
+            <div className="p-[6.3rem]">
             <Carousel
                 autoPlay={false}
                 animation="slide"
@@ -102,17 +80,17 @@ const OnBoarding = () => {
                         <ArrowBackIcon style={{ color: '#E57C65' }} className="w-[10vw] h-[5vh]" />
                     </div>
                 )}
+                 <div className="flex-grow"></div>
                 <div className="" onClick={handleNextStep}>
                     {step < slides.length - 1 ? (
                         <ArrowForwardIcon style={{ color: '#E57C65' }} className="w-[10vw] h-[5vh] mb-10" />
                     ) : (
-                        <div className="text-right cursor-pointer" onClick={handleRouter}>
-                            <div className="w-[10vw] h-[5vh] text-white px-8 m bg-[#E57C65] rounded-lg items-center">
-                                이용해보기
-                            </div>
+                        <div className="w-[10vw]">
+                        <Button label={'이용해보기'} outline={true} onClick={handleRouter} />
                         </div>
                     )}
                 </div>
+            </div>
             </div>
         </>
     )

@@ -372,7 +372,7 @@ export default function Home() {
       </div>
       </div>
 
-      <div className="mx-auto max-w-5xl ">
+      <div className="mx-auto max-w-7xl ">
         <div className="text-center">
           <div className="text-2xl font-display font-bold pt-10 pb-8">
             이런 장소는 어때요?
@@ -443,11 +443,12 @@ export default function Home() {
 
         <div className="mt-10 sm:px-5">
           <div className='py-10 sm:py-6 p-5 mb-3 sm:p-0 border rounded-lg relative sm:shadow-none'>
-            <div className="text-xl sm:text-xl font-display font-bold ">인기 독서 장소</div>
-            <div className='flex mt-10 gap-2'>
-              <div className="w-[9vw] h-[25vh] rounded-10">
+            <div className="text-xl sm:text-xl font-display font-bold ">인기 독서장소</div>
+            <div className='grid lg:grid-cols-5 sm:grid-rows-1 mt-10 gap-2'>
+              {[...Array(5)].map((_, index) => (
+              <div key={index} className="h-[25vh] rounded-10">
                 <div className='relative'>
-                <img src={frameImage.src} className='object-cover h-[25vh]'/>
+                <img src={frameImage.src} className='object-cover w-full h-[25vh]'/>
                 <div className='absolute top-1 right-2 cursor-pointer' onClick={handleBookMark}>
                   {activeBookMark ? <BookmarkIcon/> : <BookmarkBorderIcon/>}
                 </div>
@@ -457,17 +458,19 @@ export default function Home() {
                 </div>
               </div>
               </div>
+               ))}
             </div>
           </div>
-        </div>
+          </div>
 
         <div className="mt-10 sm:px-5">
           <div className='py-10 sm:py-6 p-5 mb-3 sm:p-0 border rounded-lg relative sm:shadow-none'>
             <div className="text-xl sm:text-xl font-display font-bold ">오늘의 독서장소</div>
-            <div className='flex mt-10 gap-2'>
-              <div className="w-[9vw] h-[25vh] rounded-10">
+            <div className='grid lg:grid-cols-5 sm:grid-rows-1 mt-10 gap-2'>
+              {[...Array(5)].map((_, index) => (
+              <div key={index} className="h-[25vh] rounded-10">
                 <div className='relative'>
-                <img src={frameImage.src} className='object-cover h-[25vh]'/>
+                <img src={frameImage.src} className='object-cover w-full h-[25vh]'/>
                 <div className='absolute top-1 right-2 cursor-pointer' onClick={handleBookMark}>
                   {activeBookMark ? <BookmarkIcon/> : <BookmarkBorderIcon/>}
                 </div>
@@ -477,6 +480,7 @@ export default function Home() {
                 </div>
               </div>
               </div>
+               ))}
             </div>
           </div>
           </div>
@@ -486,138 +490,50 @@ export default function Home() {
             <div className="text-xl sm:text-xl font-display font-bold ">이런장소는 어때요?</div>
             {session.data ? (
               // 로그인된 상태
-              <div className='flex mt-10 gap-2'>
-              <div className="w-[25vw] h-[25vh] rounded-10">
-                <div className='relative'>
-                <img src={placeImage.src} className='object-cover w-[25vw] h-[25vh]'/>
-                <div className='absolute top-1 right-2 cursor-pointer' onClick={handleBookMark}>
-                  {activeBookMark ? <BookmarkIcon/> : <BookmarkBorderIcon/>}
-                </div>
-                <div className='absolute bottom-3 mx-3 text-white leading-3'>
-                <div className='font-bold text-sm'>수지구청역 스타벅스</div>
-                  <div className='text-xs'>용인, 수지구 카페</div>
-                </div>
-              </div>
-              </div>
+              <div className='grid lg:grid-cols-2 sm:grid-rows-1 mt-10 gap-2'>
+                 {[...Array(2)].map((_, index) => (
+                  <>
+              <div key={index} className="h-[25vh] rounded-10">
+                     <div className='relative'>
+                       <img src={placeImage.src} className='object-cover w-full h-[25vh]' />
+                       <div className='absolute top-1 right-2 cursor-pointer' onClick={handleBookMark}>
+                         {activeBookMark ? <BookmarkIcon /> : <BookmarkBorderIcon />}
+                       </div>
+                       <div className='absolute bottom-3 mx-3 text-white leading-3'>
+                         <div className='font-bold text-sm'>수지구청역 스타벅스</div>
+                         <div className='text-xs'>용인, 수지구 카페</div>
+                       </div>
+                     </div>
+                   </div>
+                     </>
+                ))}
             </div>            
             ) : (
               // 비로그인 상태
-              <div className='flex mt-10 gap-2'>
-              <div className="w-[25vw] h-[25vh] rounded-10">
-                <div className='relative'>
-                    <div className='absolute w-full h-full' style={{ backdropFilter: 'blur(5px)' }}>
-                      <div className='absolute top-20 left-20 text-white'>로그인을 하고 장소를 추천받아 보세요</div>
+              <div className='grid lg:grid-cols-2 sm:grid-rows-1 mt-10 gap-2'>
+                 {[...Array(2)].map((_, index) => (
+                  <>
+              <div key={index} className="h-[25vh] rounded-10">
+                     <div className='relative'>
+                     <div className='absolute w-full h-full' style={{ backdropFilter: 'blur(5px)' }}>
+                      <div className='text-center text-white'>로그인을 하고 장소를 추천받아 보세요</div>
                       </div>
-                <img src={placeImage.src} className='object-cover w-[25vw] h-[25vh]'/>
-                <div className='absolute top-1 right-2 cursor-pointer' onClick={handleBookMark}>
-                  {activeBookMark ? <BookmarkIcon/> : <BookmarkBorderIcon/>}
-                </div>
-                <div className='absolute bottom-3 mx-3 text-white leading-3'>
-                <div className='font-bold text-sm'>수지구청역 스타벅스</div>
-                  <div className='text-xs'>용인, 수지구 카페</div>
-                </div>
-              </div>
-              </div>
-              </div>
+                       <img src={placeImage.src} className='object-cover w-full h-[25vh]' />
+                       <div className='absolute top-1 right-2 cursor-pointer' onClick={handleBookMark}>
+                         {activeBookMark ? <BookmarkIcon /> : <BookmarkBorderIcon />}
+                       </div>
+                       <div className='absolute bottom-3 mx-3 text-white leading-3'>
+                         <div className='font-bold text-sm'>수지구청역 스타벅스</div>
+                         <div className='text-xs'>용인, 수지구 카페</div>
+                       </div>
+                     </div>
+                   </div>
+                     </>
+                ))}
+            </div>          
             )}
           </div>
           </div>
-
-        <div className="mt-10 sm:px-5">
-          <div className="flex justify-between items-center">
-            <h1 className="text-2xl sm:text-xl font-display font-bold py-10">
-              다른 사람의 독후감을 확인해 보세요!
-            </h1>
-            <span className="inline-block align-middle">
-              <Link href={'/allreview'}>
-                <Image src={moreIcon} alt={'moreIcon'} width={22} height={30} className='sm:[4vw]' />
-              </Link>
-            </span>
-          </div>
-          {documents.length === 0 ? (
-            <div className="pt-4 lg:pt-5 pb-4 lg:pb-8 px-4 xl:px-2 xl:container mx-auto">
-              <section className="pt-16">
-                <div className="pt-4 lg:pt-5 pb-4 lg:pb-8 px-4 xl:px-2 xl:container mx-auto">
-                  <h1 className="text-4xl sm:text-sm">
-                    등록된 리뷰가 없습니다
-                  </h1>
-                </div>
-              </section>
-            </div>
-          ) : (
-              <div className="grid sm:grid-cols-1 sm:w-[100%] grid-cols-2 gap-4 justify-between sm:justify-center items-center">
-                {publicReviews.slice(0, 2).map((d: any, i: number) => (
-                  <div key={i} onClick={() => openModal(i)}>
-                    {/* 모든리뷰 상세 모달 */}
-                    {isModalOpen && (
-                      <CustomModal
-                        size={'70rem'}
-                        isOpen={isModalOpen[i]}
-                        modalColor="#FEF6E6"
-                      >
-                        <ModalContent
-                          bookData={publicReviews}
-                          data={publicReviews[i]}
-                          sessionUserId={session.data?.user.id}
-                          closeModal={() => openModal(i)}
-                        />
-                      </CustomModal>
-                    )}
-                    {/* 모든 리뷰 */}
-                    <div className="relative flex p-6 sm:px-2 min-h-40 border shadow-lg rounded-2xl w-full">
-                      <div
-                        className="bg-contain sm:min-w-[8rem] w-[8rem] bg-no-repeat bg-center rounded-3xl"
-                        style={{
-                          backgroundImage: `url(${d.bookRespDto?.thumbnail})`,
-                        }}
-                      ></div>
-
-                      <div className="flex flex-col ml-2">
-                        <div className="">
-                          <h1 className="font-black text-xl sm:text-sm">
-                            {d.title}
-                          </h1>
-                          <div className="flex sm:max-w-[50vw] text-xs text-[#3C3C3C] items-start sm:text-xs sm:pr-2">
-                            {d.pinRespDto.private ? (
-                              <div>
-                                독서장소: {maskName(d.writer)}님만의 장소
-                              </div>
-                            ) : (
-                              <div className="">
-                                독서장소: {d.pinRespDto?.name} |{' '}
-                                {d.pinRespDto?.address}
-                              </div>
-                            )}
-                          </div>
-                        </div>
-
-                        <div className="flex">
-                          <div className="py-6 sm:pr-4 text-sm text-[#767676] sm:text-xs">
-                            {d.content.length === 0 ? (
-                              <div>등록된 내용이 없습니다</div>
-                            ) : (
-                              <div>
-                                {d.content.length > 50
-                                  ? `${d.content.slice(0, 50)}...`
-                                  : d.content}
-                              </div>
-                            )}
-                          </div>
-                        </div>
-                      </div>
-                      <div className="absolute top-6 right-4 sm:text-xs sm:bottom-2 justify-itmes-center">
-                        {formatDateToYYMMDD(d.createdDate)}
-                      </div>
-                      <div className='flex items-center absolute bottom-4 right-4 z-50'>
-                        <LikeButton reviewId={d.reviewId } socialId={session.data?.user.id} /> 
-                      </div>
-                    </div>
-                  </div>
-                ))}
-              </div>
-
-          )}
-        </div>
         <div className="py-[10rem] text-center">
           <h1
             onClick={scrollToTop}

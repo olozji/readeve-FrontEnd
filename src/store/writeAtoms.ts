@@ -86,38 +86,3 @@ export const sortOptionState = atom({
   default: 'latest', 
 });
 
-// export const filteredReviewsState = selector({
-//   key: 'filteredReviewsState',
-//   get: ({ get }) => {
-//     const filterReview = get(filterReviewState);
-//     let allReviews = get(reviewState);
-//
-//
-//     if (filterReview === '최신등록순') {
-//       return allReviews.slice().reverse();
-//     } else if (filterReview === '오래된순') {
-//       return allReviews;
-//     }
-//
-//     return allReviews;
-//   },
-// });
-  
-// 상품 API 가져오기
-export const getReviewData = selector({
-    key:'getReviewData',
-    get: async () => {
-        const res = await fetch('https://fakestoreapi.com/products/');
-        const data = await res.json();
-        return data;
-    }
-}) ;
-
-
-
-
-export const deleteReview = async (reviewId: any) => {
-    // 후에 API에서 독후감 삭제
-    await fetch('', { method: 'DELETE' });
-
-}
